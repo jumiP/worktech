@@ -7,6 +7,12 @@
 	<meta charset="UTF-8">
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
 	<title>관리자 예약 자산 관리</title>
+	<style>
+		.section-header{
+			padding: 20px, 35px;
+			margin: -10px, -30px, 30px;
+		}
+	</style>
 </head>
 
 <body>

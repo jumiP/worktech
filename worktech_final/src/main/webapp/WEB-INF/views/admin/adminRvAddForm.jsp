@@ -6,7 +6,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-	<title>관리자 예약 자산 관리</title>
+	<title>관리자 예약 자산 추가</title>
 	<style>
 		.section-header{
 			padding: 20px, 35px;
@@ -16,7 +16,7 @@
 </head>
 
 <body>
-	<c:import url="common/header.jsp" />
+	<c:import url="common/headerAdmin.jsp" />
 	<!-- Main Content -->
 	<div class="main-content">
 		<section class="section">

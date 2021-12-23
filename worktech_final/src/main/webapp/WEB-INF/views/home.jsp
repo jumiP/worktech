@@ -6,6 +6,6 @@
 	<title>Home</title>
 </head>
 <body>
-	<c:import url="admin/adminRvAddForm.jsp"/>
+	<div class="menu"><a href="noticeList.ad">공지사항 게시판</a></div>
 </body>
 </html>

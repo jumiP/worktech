@@ -5,4 +5,13 @@
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 	
+	<typeAliases>
+		<typeAlias type="com.groupware.worktech.board.model.vo.Board" alias="Board"/>
+		<typeAlias type="com.groupware.worktech.board.model.vo.File" alias="File"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mappers/board-mapper.xml"/>
+	</mappers>
+	
 </configuration>

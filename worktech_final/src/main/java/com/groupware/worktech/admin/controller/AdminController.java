@@ -39,7 +39,6 @@ public class AdminController {
 	@RequestMapping("noticeList.ad")
 	public String noticeList(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="boardLimit", required = false) Integer boardLimit,
 							 Model model) {
-		
 		int currentPage = 1;
 		
 		if(page != null) {
@@ -47,7 +46,6 @@ public class AdminController {
 		}
 		
 		int listCount = bService.getListCount("NOTICE");
-		
 		PageInfo pi = null;
 
 		if(boardLimit != null) {
@@ -57,7 +55,6 @@ public class AdminController {
 		}
 		
 		ArrayList<Board> list = bService.selectNoticeList(pi);
-
 		if(list != null) {
 			model.addAttribute("pi", pi);
 			model.addAttribute("list", list);

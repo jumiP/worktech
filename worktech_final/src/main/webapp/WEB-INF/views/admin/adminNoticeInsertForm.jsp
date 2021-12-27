@@ -102,7 +102,7 @@
 	                                <div class="form-group half-col left-item">
 	                                    <label>작성자</label>
 	                                    <input type="text" class="form-control" disabled value="${ loginUser.name }">
-	                                    <input type="hidden" name="bWriter" value="0">
+	                                    <input type="hidden" name="bWriter" value="000000">
 	                                </div>
 	                                <div class="form-group half-col">
 	                                    <label>작성일</label>
@@ -126,7 +126,7 @@
 	                                <div class="form-group">
 	                                    <label>작성 내용</label>
 	                                    <div>
-	                                    	<textarea name="bContent" class="summernote"></textarea>
+	                                    	<textarea name="bContent" class="summernote" id="summernote"></textarea>
 	                                    </div>
 	                                </div>
 	                            </div>
@@ -153,7 +153,8 @@
         });
         
         $("#file").on('change', readInputFile);
-
+		
+        // 파일 업로드
         function readInputFile(e) {
             var fileInput = document.getElementsByClassName("ex_file");
             var name = document.getElementById("uploadName").value;
@@ -190,6 +191,7 @@
                 alert("파일은 최대 3개까지 업로드 가능합니다.");
             }
         }
+        
     </script>
     
 	<!-- JS Libraies -->

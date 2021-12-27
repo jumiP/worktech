@@ -27,4 +27,19 @@ public class BoardService {
 		return bDAO.selectNoticeList(sqlSession, pi);
 	}
 
+	public int insertNotice(Board b) {
+		int result = bDAO.insertNotice(sqlSession, b);
+		
+		if(result > 0 && !b.getFileList().isEmpty()) {
+			for(int i = 0; i < b.getFileList().size(); i++) {
+				result += bDAO.insertNoticeFile(sqlSession, b.getFileList().get(i));
+			}
+		}
+		
+		return result;
+	}
+
+
+
+
 }

@@ -1,15 +1,15 @@
 package com.groupware.worktech.board.model.vo;
 
-public class File {
+public class BoardFile {
 	private int fNo;
 	private String fURL;
 	private String fName; // 원본 파일명
 	private String fRname; // 수정 파일명
 	private int refBNo; // 참조 글 번호
 	
-	public File() {}
+	public BoardFile() {}
 
-	public File(int fNo, String fURL, String fName, String fRname, int refBNo) {
+	public BoardFile(int fNo, String fURL, String fName, String fRname, int refBNo) {
 		super();
 		this.fNo = fNo;
 		this.fURL = fURL;

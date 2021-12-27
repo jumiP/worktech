@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.groupware.worktech.board.model.vo.Board;
+import com.groupware.worktech.board.model.vo.BoardFile;
 import com.groupware.worktech.common.PageInfo;
 
 @Repository("bDAO")
@@ -22,6 +23,14 @@ public class BoardDAO {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("boardMapper.selectNoticeList", pi, rowBounds);
+	}
+
+	public int insertNotice(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.insert("boardMapper.insertNotice", b);
+	}
+
+	public int insertNoticeFile(SqlSessionTemplate sqlSession, BoardFile boardFile) {
+		return sqlSession.insert("boardMapper.insertNoticeFile", boardFile);
 	}
 
 	

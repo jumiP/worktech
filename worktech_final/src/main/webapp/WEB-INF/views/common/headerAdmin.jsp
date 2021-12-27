@@ -30,15 +30,6 @@
         gtag('config', 'UA-94034622-3');
     </script>
     <!-- /END GA -->
-    <style>
-        #searchItem {
-            margin-bottom: 0;
-        }
-
-        #searchIcon {
-            padding: 14.9px;
-        }
-    </style>
 </head>
 
 <body>

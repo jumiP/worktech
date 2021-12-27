@@ -61,12 +61,12 @@
 </head>
 
 <body>
-    <c:import url="common/headerAdmin.jsp" />
+    <c:import url="../common/headerAdmin.jsp" />
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>공지사항 게시판</h1>
+                <h1>공지사항 목록</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item">게시판 관리</div>
                     <div class="breadcrumb-item">공지사항 게시판</div>
@@ -81,7 +81,7 @@
                                 <h4 style="font-size: 20px;">공지사항 목록</h4>
                             </div>
                             <div class="card-body">
-                                <table class="table">
+                                <table class="table" id="tb">
                                     <thead>
                                         <tr>
                                             <th style="width: 150px; height: 45px;">글 번호</th>
@@ -102,7 +102,7 @@
                                     				<td style="color: red; font-weight: 900;">
                                     			</c:if>	
                                     				${ n.bTitle }
-                                    				<c:if test="${ !empty n.fileList }">
+                                    				<c:if test="${ !empty n.fileList.get(0).fName }">
                                     					&nbsp;<i class="fas fa-save"></i>
                                     				</c:if>	
                                     			</td>
@@ -113,35 +113,94 @@
                                     	</c:forEach>
                                     </tbody>
                                 </table>
-                                <button class="btn btn-primary push">글쓰기</button>
+                                <button class="btn btn-primary push" onclick="location.href='ninsertView.ad';">글쓰기</button>
                                 <br clear="all">
                                 <div class="card-body paging-area">
                                     <div class="buttons">
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" aria-label="Previous">
-                                                        <i class="fas fa-angle-double-left"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" aria-label="Previous">
-                                                        <i class="fas fa-angle-left"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" aria-label="Next">
-                                                        <i class="fas fa-angle-right"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" aria-label="Next">
-                                                        <i class="fas fa-angle-double-right"></i>
-                                                    </a>
-                                                </li>
+
+                                            	<c:if test="${ pi.currentPage <= 1 }">
+	                                                <li class="page-item disabled">
+	                                                	<a class="page-link" aria-label="Previous">
+	                                                		<i class="fas fa-angle-double-left"></i>
+	                                                	</a>
+	                                                </li>
+	                                                
+	                                                <li class="page-item disabled">
+	                                                	<a class="page-link" aria-label="Previous">
+                                                        	<i class="fas fa-angle-left"></i>
+                                                        </a>
+                                                	</li>
+	                                            </c:if>
+                                            	<c:if test="${ pi.currentPage > 1 }">
+                                            		<c:url var="before" value="noticeList.ad">
+														<c:param name="page" value="${ pi.currentPage - 1 }"/>
+													</c:url>
+	                                                <li class="page-item">
+	                                                    <a class="page-link" href="${ before }" aria-label="Previous">
+	                                                        <i class="fas fa-angle-double-left"></i>
+	                                                    </a>
+	                                                </li>
+	                                                
+                                            		<c:url var="start" value="noticeList.ad">
+														<c:param name="page" value="1"/>
+													</c:url>
+	                                                <li class="page-item">
+	                                                    <a class="page-link" href="${ start }" aria-label="Previous">
+	                                                        <i class="fas fa-angle-left"></i>
+	                                                    </a>
+	                                                </li>
+	                                            </c:if>
+	                                            
+	                                            <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+	                                            	<c:if test="${ p eq pi.currentPage }">
+	                                            		<li class="page-item disabled"><a class="page-link">${ p }</a></li>
+	                                            	</c:if>
+	                                            
+	                                            	<c:if test="${ p ne pi.currentPage }">
+		                                            	<c:url var="pagination" value="noticeList.ad">
+															<c:param name="page" value="${ p }"/>
+														</c:url>
+	                                            		<li class="page-item">
+	                                            			<a class="page-link" href="${ pagination }">${ p }</a>
+	                                            		</li>
+	                                            	</c:if>
+	                                            </c:forEach>
+
+												<c:if test="${ pi.currentPage >= pi.maxPage }">
+	                                                <li class="page-item disabled">
+	                                                	<a class="page-link" aria-label="Next">
+	                                                		<i class="fas fa-angle-right"></i>
+	                                                	</a>
+	                                                </li>
+	                                                
+	                                                <li class="page-item disabled">
+	                                                	<a class="page-link" aria-label="Next">
+	                                                		<i class="fas fa-angle-double-right"></i>
+	                                                	</a>
+	                                                </li>
+												</c:if>
+
+												<c:if test="${ pi.currentPage < pi.maxPage }">
+													<c:url var="after" value="noticeList.ad">
+														<c:param name="page" value="${ pi.currentPage + 1 }"/>
+													</c:url>
+	                                                <li class="page-item">
+	                                                    <a class="page-link" href="${ after }" aria-label="Next">
+	                                                        <i class="fas fa-angle-right"></i>
+	                                                    </a>
+	                                                </li>
+													
+													<c:url var="end" value="noticeList.ad">
+														<c:param name="page" value="${ pi.maxPage }"/>
+													</c:url>
+	                                                <li class="page-item">
+	                                                    <a class="page-link" href="${ end }" aria-label="Next">
+	                                                        <i class="fas fa-angle-double-right"></i>
+	                                                    </a>
+	                                                </li>
+												</c:if>
                                             </ul>
                                         </nav>
                                     </div>
@@ -161,7 +220,20 @@
             </div>
         </section>
     </div>
-    <c:import url="common/footer.jsp" />
+    <c:import url="../common/footer.jsp" />
+    
+    <script>
+	    $(function() {
+			$('#tb tbody td').mouseenter(function() {
+				$(this).parent().css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
+			}).mouseout(function() {
+				$(this).parent().css({'background':'white', 'font-weight':'normal'});
+			}).click(function() {
+				var bNo = $(this).parent().children().eq(0).text();
+				location.href="ndetail.ad?bNo=" + bNo + '&page=' + ${pi.currentPage};
+			});
+		});
+    </script>
 
 </body>
 

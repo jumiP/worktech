@@ -69,15 +69,34 @@
 		and b_status = 'N'
 	</update>
 	
+	<select id="selectFile" resultMap="fileResultSet">
+		select *
+		from board_file
+		where f_no = #{fNO}
+	</select>
 	
+	<delete id="deleteNoticeFile">
+		delete from board_file
+		where f_no = #{fNo}
+	</delete>
 	
+	<update id="updateNotice">
+		update board
+		set b_title = #{bTitle}, b_content = #{bContent}, b_date = #{bDate}, b_critical = #{bCritical}
+		where b_no = #{bNo}
+		and b_status = 'N'
+	</update>
 	
+	<insert id="updateNoticeFile">
+		insert into board_file
+		values(SEQ_FILE.NEXTVAL, #{fURL}, #{fName}, #{fRname}, #{refBNo})
+	</insert>
 	
-	
-	
-	
-	
-	
+	<update id="deleteNotice">
+		update board
+		set b_status = 'Y'
+		where b_no = #{bNo}
+	</update>
 	
 	
 	

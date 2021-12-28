@@ -52,20 +52,51 @@
 		values(SEQ_FILE.NEXTVAL, #{fURL}, #{fName}, #{fRname}, SEQ_BOARD.CURRVAL)
 	</insert>
 	
-	<insert id="insertImages">
+	<select id="selectNotice" resultMap="noticeResultSet">
+		select B_NO, B_TITLE, B_CONTENT, B_DATE, B_COUNT, B_TYPE, B_CRITICAL, B_WRITER,
+       		   NAME, B_STATUS, F_NO, F_URL, F_NAME, F_RNAME
+		from board
+	 		 join member on (b_writer = m_no)
+	 		 left join board_file using (b_no)
+		where b_no = #{bNo}
+		and b_status = 'N'
+	</select>
+	
+	<update id="addReadCount">
+		update board
+		set b_count = b_count + 1
+		where b_no = #{bNo}
+		and b_status = 'N'
+	</update>
+	
+	<select id="selectFile" resultMap="fileResultSet">
+		select *
+		from board_file
+		where f_no = #{fNO}
+	</select>
+	
+	<delete id="deleteNoticeFile">
+		delete from board_file
+		where f_no = #{fNo}
+	</delete>
+	
+	<update id="updateNotice">
+		update board
+		set b_title = #{bTitle}, b_content = #{bContent}, b_date = #{bDate}, b_critical = #{bCritical}
+		where b_no = #{bNo}
+		and b_status = 'N'
+	</update>
+	
+	<insert id="updateNoticeFile">
 		insert into board_file
-		values(SEQ_FILE.NEXTVAL, #{fURL}, #{fName}, #{fRname}, 64)
+		values(SEQ_FILE.NEXTVAL, #{fURL}, #{fName}, #{fRname}, #{refBNo})
 	</insert>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	<update id="deleteNotice">
+		update board
+		set b_status = 'Y'
+		where b_no = #{bNo}
+	</update>
 	
 	
 	

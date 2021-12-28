@@ -49,13 +49,13 @@ public class AdminController {
 		
 		int listCount = bService.getListCount("NOTICE");
 		PageInfo pi = null;
-
+		
 		if(boardLimit != null) {
 			pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
+			model.addAttribute("boardLimit", boardLimit);
 		} else {
 			pi = Pagination.getPageInfo(currentPage, listCount);
 		}
-		
 		ArrayList<Board> list = bService.selectNoticeList(pi);
 		if(list != null) {
 			model.addAttribute("pi", pi);
@@ -292,5 +292,43 @@ public class AdminController {
 //			throw new BoardException("첨부 파일 삭제에 실패하였습니다."); 
 //		}
 //	}
+	
+	@RequestMapping("searchNotice.ad")
+	public String searchNotice(@RequestParam("searchCondition") String condition, @RequestParam("searchValue") String value, 
+							   @RequestParam(value="page", required=false) Integer page, @RequestParam(value="boardLimit", required = false) Integer boardLimit,
+							   Model model) {
+		HashMap<String, String> search = new HashMap<>();
+		search.put("condition", condition);
+		search.put("value", value);
+		search.put("type", "NOTICE");
+		
+		int currentPage = 1;
+		
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = bService.getNoticeSearchListCount(search);
+		PageInfo pi = null;
+
+		if(boardLimit != null) {
+			pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
+			model.addAttribute("boardLimit", boardLimit);
+		} else {
+			pi = Pagination.getPageInfo(currentPage, listCount);
+		}
+		
+		ArrayList<Board> list = bService.selectNoticeSearchList(pi, search);
+		if(list != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("list", list);
+			model.addAttribute("searchCondition", condition);
+			model.addAttribute("searchValue", value);
+		} else {
+			throw new BoardException("공지사항 검색 목록 조회에 실패하였습니다.");
+		}
+		
+		return "adminNoticeList";
+	}
 	
 }

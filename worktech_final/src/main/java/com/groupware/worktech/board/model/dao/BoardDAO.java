@@ -1,6 +1,7 @@
 package com.groupware.worktech.board.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -22,7 +23,7 @@ public class BoardDAO {
 		
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
-		return (ArrayList)sqlSession.selectList("boardMapper.selectNoticeList", pi, rowBounds);
+		return (ArrayList)sqlSession.selectList("boardMapper.selectNoticeList", null, rowBounds);
 	}
 
 	public int insertNotice(SqlSessionTemplate sqlSession, Board b) {
@@ -61,8 +62,18 @@ public class BoardDAO {
 		return sqlSession.update("boardMapper.deleteNotice", bNo);
 	}
 	
-	
-	
+	public int getNoticeSearchListCount(SqlSessionTemplate sqlSession, HashMap<String, String> search) {
+		return sqlSession.selectOne("boardMapper.getNoticeSearchListCount", search);
+	}
+
+	public ArrayList<Board> selectNoticeSearchList(SqlSessionTemplate sqlSession, PageInfo pi,
+			HashMap<String, String> search) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.selectNoticeSearchList", search, rowBounds);
+	}
 	
 	
 	
@@ -119,6 +130,9 @@ public class BoardDAO {
 	public int insertCommonBoard(SqlSessionTemplate sqlSession, Board b) {
 		return sqlSession.insert("boardMapper.insertCommonBoard", b);
 	}
+
+	
+
 
 	
 

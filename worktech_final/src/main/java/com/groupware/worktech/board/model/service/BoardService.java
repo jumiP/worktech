@@ -1,6 +1,7 @@
 package com.groupware.worktech.board.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,9 +82,13 @@ public class BoardService {
 		return bDAO.deleteNotice(sqlSession, bNo);
 	}
 	
+	public int getNoticeSearchListCount(HashMap<String, String> search) {
+		return bDAO.getNoticeSearchListCount(sqlSession, search);
+	}
 	
-	
-	
+	public ArrayList<Board> selectNoticeSearchList(PageInfo pi, HashMap<String, String> search) {
+		return bDAO.selectNoticeSearchList(sqlSession, pi, search);
+	}
 	
 	
 	
@@ -138,6 +143,10 @@ public class BoardService {
 		return result;
 
 	}
+
+	
+
+
 
 	
 

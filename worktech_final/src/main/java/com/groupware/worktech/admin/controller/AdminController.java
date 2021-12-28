@@ -156,8 +156,13 @@ public class AdminController {
 	}
 	
 	@RequestMapping("ndetail.ad")
-	public String noticeDetail(@RequestParam("page") int page, @RequestParam("bNo") int bNo, @RequestParam(value = "upd", required = false) String upd) {
-		return null;
+	public String noticeDetail(@RequestParam("page") int page, @RequestParam("bNo") int bNo, @RequestParam(value = "upd", required = false) String upd,
+								Model model) {
+		Board b = bService.selectNotice(bNo, upd);
+		
+		model.addAttribute("b", b).addAttribute("page", page); 
+		
+		return "adminNoticeDetail";
 	}
 	
 	

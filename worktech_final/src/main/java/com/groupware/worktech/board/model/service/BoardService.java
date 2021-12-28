@@ -39,6 +39,22 @@ public class BoardService {
 		return result;
 	}
 
+	public Board selectNotice(int bNo, String upd) {
+		Board b = null;
+		
+		if(upd != null && upd.equals("Y")) {
+			b = bDAO.selectNotice(sqlSession, bNo);
+		} else {
+			int result = bDAO.addReadCount(sqlSession, bNo);
+			
+			if(result > 0) {
+				b = bDAO.selectNotice(sqlSession, bNo);
+			} 
+			
+		}
+		
+		return b;
+
 	
 	
 	
@@ -101,6 +117,7 @@ public class BoardService {
 	public int insertCommonBoard(Board b) {
 		int result = bDAO.insertCommonBoard(sqlSession, b);
 		return result;
+
 	}
 
 

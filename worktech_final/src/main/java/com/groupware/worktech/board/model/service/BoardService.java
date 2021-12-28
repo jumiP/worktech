@@ -54,6 +54,70 @@ public class BoardService {
 		}
 		
 		return b;
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public int insertCommonBoard(Board b) {
+		int result = bDAO.insertCommonBoard(sqlSession, b);
+		return result;
+
 	}
 
 

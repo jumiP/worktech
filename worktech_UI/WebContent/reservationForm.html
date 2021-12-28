@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	.content{
+		margin: 0 auto;
+		display: table;
+		margin-left: auto;
+		margin-top: 80px; 
+		argin-right: auto;
+		width: 400px;
+		border: 1px solid #e3e3e3;
+	}
+	.title{
+		margin-top: 8%;
+		margin-left: 10%;
+	}
+	.table{
+		margin-top: 40px;
+		margin-left: 10%;
+	}
+	.table td{
+		height: 40px;
+		font-size: 14px;
+		/* border: 1px solid #e3e3e3;  */
+		
+	}
+
+	button{
+		background-color: #e3e3e3;
+		border: none;
+		margin-left: 20px;
+		margin-top: 10px;
+		width: 80px;
+		height: 40px;
+		border-radius: 5px;
+		margin-bottom: 10%;
+	}
+	.btn_class{
+		margin-left: 23%;
+	}
+	.first{
+		width: 90px;
+		font-weight: bold;
+	}
+</style>
+</head>
+<body>
+	<div class="content">
+		<div class="title">
+			<h3>예약하기</h3>
+		</div>
+		<table class="table">
+			<tr>
+				<td class="first">자원명</td>
+				<td>
+					<select name="resources" style="width: 188px; border: 1px solid #e3e3e3;">
+						<option>        -          </option>
+						<option>FLEX 5 14ALC R5 W10</option>
+						<option>LG전자 시네빔 PF50KS</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="first">수량</td>
+				<td><input type="number" style="width: 180px; border: 1px solid #e3e3e3;"></td>
+			</tr>
+			<tr>
+				<td class="first">날짜</td>
+				<td><input type="date" value="xxx" min="yyy" max"zzz" style="border: 1px solid #e3e3e3;"></td>
+			</tr>
+			<tr>
+				<td class="first">예약 시간</td>
+				<td>
+					<select name="time1" style="border: 1px solid #e3e3e3;">
+						<option>09:00</option>
+						<option>10:00</option>
+						<option>11:00</option>
+						<option>12:00</option>
+						<option>13:00</option>
+					</select> ~
+					<select name="time2" style="border: 1px solid #e3e3e3;">
+						<option>09:00</option>
+						<option>10:00</option>
+						<option>11:00</option>
+						<option>12:00</option>
+						<option>13:00</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" style="height: 130px; padding-top: 20px;"  class="first">사용 용도</td>
+				<td valign="top" style="padding-top: 20px;" ><input type="textarea" style="width: 180px; height: 80px; border: 1px solid #e3e3e3;"></td>
+			</tr>
+		</table>
+		<div class="btn_class">
+			<button>예약</button><button>취소</button>
+		</div>
+	</div>
+</body>
+</html>

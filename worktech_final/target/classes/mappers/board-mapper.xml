@@ -33,12 +33,28 @@
 		<collection property="fileList" resultMap="fileResultSet" javaType="arrayList"/>
 	</resultMap>
 	
-	<resultMap type="File" id="fileResultSet">
+	<resultMap type="BoardFile" id="fileResultSet">
 		<id column="F_NO" property="fNo"/>
 		<result column="F_URL" property="fURL"/>
 		<result column="F_NAME" property="fName"/>
 		<result column="F_RNAME" property="fRname"/>
 		<result column="B_NO" property="refBNo"/>
 	</resultMap>
+	
+	<insert id="insertNotice">
+		insert into board
+		values(SEQ_BOARD.NEXTVAL, #{bTitle}, #{bContent}, #{bDate}, DEFAULT, 'NOTICE', #{bCritical},
+			   #{bWriter}, NULL, DEFAULT)
+	</insert>
+	
+	<insert id="insertNoticeFile">
+		insert into board_file
+		values(SEQ_FILE.NEXTVAL, #{fURL}, #{fName}, #{fRname}, SEQ_BOARD.CURRVAL)
+	</insert>
+	
+	<insert id="insertImages">
+		insert into board_file
+		values(SEQ_FILE.NEXTVAL, #{fURL}, #{fName}, #{fRname}, 64)
+	</insert>
 	
 </mapper>

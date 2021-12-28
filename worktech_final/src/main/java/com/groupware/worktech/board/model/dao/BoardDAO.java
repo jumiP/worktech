@@ -33,6 +33,14 @@ public class BoardDAO {
 		return sqlSession.insert("boardMapper.insertNoticeFile", boardFile);
 	}
 
+	public Board selectNotice(SqlSessionTemplate sqlSession, int bNo) {
+		return sqlSession.selectOne("boardMapper.selectNotice", bNo);
+	}
+
+	public int addReadCount(SqlSessionTemplate sqlSession, int bNo) {
+		return sqlSession.update("boardMapper.addReadCount", bNo);
+	}
+
 	
 	
 }

@@ -95,13 +95,13 @@
                                     	<c:forEach var="n" items="${ list }">
 	                                        <tr>
 	                                            <td style="height: 45px;">${ n.bNo }</td>
-                                    			<c:if test="${ n.bCritical == 'NORMAL' }">
-                                    				<td>
-                                    			</c:if>	
-                                    			<c:if test="${ n.bCritical == 'IMPORTANT' }">
-                                    				<td style="color: red; font-weight: 900;">
-                                    			</c:if>	
-                                    				${ n.bTitle }
+                                				<td>
+	                                    			<c:if test="${ n.bCritical == 'NORMAL' }">
+	                                    				${ n.bTitle }
+	                                    			</c:if>	
+	                                    			<c:if test="${ n.bCritical == 'IMPORTANT' }">
+	                                    				<p style="color: red; font-weight: 900; display: inline">${ n.bTitle }</p>
+	                                    			</c:if>	
                                     				<c:if test="${ !empty n.fileList.get(0).fName }">
                                     					&nbsp;<i class="fas fa-save"></i>
                                     				</c:if>	

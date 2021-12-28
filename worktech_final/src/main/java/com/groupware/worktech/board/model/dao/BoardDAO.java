@@ -40,16 +40,26 @@ public class BoardDAO {
 	public int addReadCount(SqlSessionTemplate sqlSession, int bNo) {
 		return sqlSession.update("boardMapper.addReadCount", bNo);
 	}
+	
+	public BoardFile selectFile(SqlSessionTemplate sqlSession, int fNo) {
+		return sqlSession.selectOne("boardMapper.selectFile", fNo);
+	}
 
+	public int deleteNoticeFile(SqlSessionTemplate sqlSession, int fNo) {
+		return sqlSession.delete("boardMapper.deleteNoticeFile", fNo);
+	}
 	
+	public int updateNotice(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.update("boardMapper.updateNotice", b);
+	}
 	
+	public int updateNoticeFile(SqlSessionTemplate sqlSession, BoardFile boardFile) {
+		return sqlSession.insert("boardMapper.updateNoticeFile", boardFile);
+	}
 	
-	
-	
-	
-	
-	
-	
+	public int deleteNotice(SqlSessionTemplate sqlSession, int bNo) {
+		return sqlSession.update("boardMapper.deleteNotice", bNo);
+	}
 	
 	
 	
@@ -109,6 +119,16 @@ public class BoardDAO {
 	public int insertCommonBoard(SqlSessionTemplate sqlSession, Board b) {
 		return sqlSession.insert("boardMapper.insertCommonBoard", b);
 	}
+
+	
+
+	
+
+	
+
+
+
+	
 
 	
 	

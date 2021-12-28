@@ -16,13 +16,17 @@ public class Board {
 	private int categoryNo;
 	private String categoryName;
 	private String bStatus;
-	private ArrayList<File> fileList;
+	private ArrayList<BoardFile> fileList;
 	
 	public Board() {}
 
 	public Board(int bNo, String bTitle, String bContent, Date bDate, int bCount, String bType, String bCritical,
+<<<<<<< HEAD
 			String bWriter, String name, int categoryNo, String categoryName, String bStatus,
 			ArrayList<File> fileList) {
+=======
+			String bWriter, String name, int categoryNo, String categoryName, String bStatus, ArrayList<BoardFile> fileList) {
+>>>>>>> 9414e0835e97d53212cae1e0b7154948f718fbe7
 		super();
 		this.bNo = bNo;
 		this.bTitle = bTitle;
@@ -134,12 +138,17 @@ public class Board {
 	public void setbStatus(String bStatus) {
 		this.bStatus = bStatus;
 	}
+<<<<<<< HEAD
 
 	public ArrayList<File> getFileList() {
+=======
+	
+	public ArrayList<BoardFile> getFileList() {
+>>>>>>> 9414e0835e97d53212cae1e0b7154948f718fbe7
 		return fileList;
 	}
 
-	public void setFileList(ArrayList<File> fileList) {
+	public void setFileList(ArrayList<BoardFile> fileList) {
 		this.fileList = fileList;
 	}
 

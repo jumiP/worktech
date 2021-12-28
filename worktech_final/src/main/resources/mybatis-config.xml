@@ -7,7 +7,7 @@
 	
 	<typeAliases>
 		<typeAlias type="com.groupware.worktech.board.model.vo.Board" alias="Board"/>
-		<typeAlias type="com.groupware.worktech.board.model.vo.File" alias="File"/>
+		<typeAlias type="com.groupware.worktech.board.model.vo.BoardFile" alias="BoardFile"/>
 	</typeAliases>
 	
 	<mappers>

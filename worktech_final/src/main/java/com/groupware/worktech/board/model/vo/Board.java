@@ -1,5 +1,6 @@
 package com.groupware.worktech.board.model.vo;
 
+import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -11,17 +12,18 @@ public class Board {
 	private int bCount;
 	private String bType;
 	private String bCritical;
-	private int bWriter;
+	private String bWriter;
 	private String name; // 게시판 작성자 이름
 	private int categoryNo;
 	private String categoryName;
 	private String bStatus;
-	private ArrayList<File> fileList;
+	private ArrayList<BoardFile> fileList;
 	
 	public Board() {}
 
 	public Board(int bNo, String bTitle, String bContent, Date bDate, int bCount, String bType, String bCritical,
-			int bWriter, String name, int categoryNo, String categoryName, String bStatus, ArrayList<File> fileList) {
+			String bWriter, String name, int categoryNo, String categoryName, String bStatus,
+			ArrayList<BoardFile> fileList) {
 		super();
 		this.bNo = bNo;
 		this.bTitle = bTitle;
@@ -94,11 +96,11 @@ public class Board {
 		this.bCritical = bCritical;
 	}
 
-	public int getbWriter() {
+	public String getbWriter() {
 		return bWriter;
 	}
 
-	public void setbWriter(int bWriter) {
+	public void setbWriter(String bWriter) {
 		this.bWriter = bWriter;
 	}
 
@@ -133,12 +135,13 @@ public class Board {
 	public void setbStatus(String bStatus) {
 		this.bStatus = bStatus;
 	}
+
 	
-	public ArrayList<File> getFileList() {
+	public ArrayList<BoardFile> getFileList() {
 		return fileList;
 	}
 
-	public void setFileList(ArrayList<File> fileList) {
+	public void setFileList(ArrayList<BoardFile> fileList) {
 		this.fileList = fileList;
 	}
 
@@ -149,5 +152,6 @@ public class Board {
 				+ ", categoryNo=" + categoryNo + ", categoryName=" + categoryName + ", bStatus=" + bStatus
 				+ ", fileList=" + fileList + "]";
 	}
+	}
 
-}
+	

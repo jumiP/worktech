@@ -1,5 +1,6 @@
 package com.groupware.worktech.board.model.vo;
 
+import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -21,7 +22,8 @@ public class Board {
 	public Board() {}
 
 	public Board(int bNo, String bTitle, String bContent, Date bDate, int bCount, String bType, String bCritical,
-			String bWriter, String name, int categoryNo, String categoryName, String bStatus, ArrayList<BoardFile> fileList) {
+			String bWriter, String name, int categoryNo, String categoryName, String bStatus,
+			ArrayList<BoardFile> fileList) {
 		super();
 		this.bNo = bNo;
 		this.bTitle = bTitle;
@@ -133,6 +135,7 @@ public class Board {
 	public void setbStatus(String bStatus) {
 		this.bStatus = bStatus;
 	}
+
 	
 	public ArrayList<BoardFile> getFileList() {
 		return fileList;
@@ -149,5 +152,6 @@ public class Board {
 				+ ", categoryNo=" + categoryNo + ", categoryName=" + categoryName + ", bStatus=" + bStatus
 				+ ", fileList=" + fileList + "]";
 	}
+	}
 
-}
+	

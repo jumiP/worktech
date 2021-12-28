@@ -6,6 +6,9 @@
 	<title>Home</title>
 </head>
 <body>
-	<div class="menu"><a href="noticeList.ad">공지사항 게시판</a></div>
+	<div class="menu">
+		<a href="noticeList.ad">공지사항 게시판</a>
+		<a href="commonList.bo">일반 게시판</a>
+	</div>
 </body>
 </html>

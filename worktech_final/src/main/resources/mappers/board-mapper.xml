@@ -98,9 +98,35 @@
 		where b_no = #{bNo}
 	</update>
 	
+	<select id="getNoticeSearchListCount" resultType="_int">
+		select count(*)
+		from board 
+		where b_status = 'N'
+			  and b_type = #{type}
+		<if test="condition == 'title'">
+			  and b_title like '%' || #{value} || '%'
+		</if>
+		<if test="condition == 'content'">
+			  and b_content like '%' || #{value} || '%'
+		</if>
+	</select>
 	
-	
-	
+	<select id="selectNoticeSearchList" resultMap="noticeResultSet">
+		select B_NO, B_TITLE, B_CONTENT, B_DATE, B_COUNT, B_TYPE, B_CRITICAL, B_WRITER,
+       		   NAME, B_STATUS, F_NO, F_URL, F_NAME, F_RNAME
+		from board
+	 		 join member on (b_writer = m_no)
+	 		 left join board_file using (b_no)
+		where b_status = 'N'
+      	  and b_type = #{type}
+      	  <if test="condition == 'title'">
+			  and b_title like '%' || #{value} || '%'
+		  </if>
+		  <if test="condition == 'content'">
+			  and b_content like '%' || #{value} || '%'
+		  </if>
+		order by b_no desc
+	</select>
 	
 	
 	

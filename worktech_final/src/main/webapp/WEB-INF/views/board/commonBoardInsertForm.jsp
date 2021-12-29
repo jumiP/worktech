@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>공지사항 게시판 등록</title>
+    <title>일반 게시판 등록</title>
     
 	<!-- CSS Libraries -->
 	<link rel="stylesheet" href="resources/dist/assets/modules/summernote/summernote-bs4.css">
@@ -72,29 +72,46 @@
             border: 0;
         }
         
+        .select {
+        	border: 1px solid white;
+        }
+        
+        .select:focus{
+        	border: 1px solid black;
+        }
     </style>
 </head>
 
 <body>
-    <c:import url="../common/headerAdmin.jsp" />
+    <c:import url="../common/headerUser.jsp" />
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>공지사항 등록</h1>
+                <h1>일반 게시판</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item">게시판 관리</div>
-                    <div class="breadcrumb-item active"><a href="noticeList.ad">공지사항 게시판</a></div>
+                    <div class="breadcrumb-item">게시판</div>
+                    <div class="breadcrumb-item active"><a href="commonList.bo">일반 게시판</a></div>
                 </div>
             </div>
 
             <div class="section-body">
-                <h2 class="section-title">공지사항 등록</h2>
-                <form action="ninsert.ad" method="post" enctype="Multipart/form-data">
+                <h2 class="section-title">일반 게시판 등록</h2>
+                <form action="cinsert.bo" method="post" enctype="Multipart/form-data">
 	                <div class="row">
 	                    <div class="col-12 col-md-12 col-lg-12">
 	                        <div class="card">
 	                            <div class="card-body">
+	                            	<div class="form-group">
+		                            	<label>카테고리&nbsp;&nbsp;</label>
+		                            	<select class="select" name="categoryNo">
+		                            		<option value=100>회의</option>
+		                            		<option value=200>출장</option>
+		                            		<option value=300>홍보</option>
+		                            		<option value=400>기타</option>
+		                            		<option value=500>자료</option>
+		                            	</select>
+                            		</div>
 	                                <div class="form-group">
 	                                    <label>글 제목</label>
 	                                    <input type="text" class="form-control" name="bTitle" value="">
@@ -107,13 +124,6 @@
 	                                <div class="form-group half-col">
 	                                    <label>작성일</label>
 	                                    <input type="date" class="form-control" name="bDate" value="">
-	                                </div>
-	                                <div class="form-group half-col">
-	                                    <label>중요도</label>
-	                                    <select class="form-control" name="bCritical">
-	                                        <option value="NORMAL">일반</option>
-	                                        <option value="IMPORTANT">필독</option>
-	                                    </select>
 	                                </div>
 	                                <div class="form-group">
 	                                	<label>파일 첨부</label>

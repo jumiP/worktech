@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>공지사항 게시판 등록</title>
+    <title>공지사항 게시판 수정</title>
     
 	<!-- CSS Libraries -->
 	<link rel="stylesheet" href="resources/dist/assets/modules/summernote/summernote-bs4.css">
@@ -72,6 +72,18 @@
             border: 0;
         }
         
+        #originalF {
+        	display: none;
+        }
+        
+        .deleteBtn{
+        	color: red;
+        }
+        
+        .deleteBtn:hover{
+        	cursor: pointer;
+        }
+        
     </style>
 </head>
 
@@ -89,50 +101,65 @@
             </div>
 
             <div class="section-body">
-                <h2 class="section-title">공지사항 등록</h2>
-                <form action="ninsert.ad" method="post" enctype="Multipart/form-data">
+                <h2 class="section-title">공지사항 수정</h2>
+                <form action="nupdate.ad" method="post" enctype="Multipart/form-data">
+                	<input type="hidden" name="page" value="${ page }">
+					<input type="hidden" name="bNo" value="${ b.bNo }">
+                	
 	                <div class="row">
 	                    <div class="col-12 col-md-12 col-lg-12">
 	                        <div class="card">
 	                            <div class="card-body">
 	                                <div class="form-group">
 	                                    <label>글 제목</label>
-	                                    <input type="text" class="form-control" name="bTitle" value="">
+	                                    <input type="text" class="form-control" name="bTitle" value="${ b.bTitle }">
 	                                </div>
 	                                <div class="form-group half-col left-item">
 	                                    <label>작성자</label>
-	                                    <input type="text" class="form-control" disabled value="${ loginUser.name }">
-	                                    <input type="hidden" name="bWriter" value="000000">
+	                                    <input type="text" class="form-control" disabled value="${ b.name }">
+	                                    <input type="hidden" name="bWriter" value="${ b.bWriter }">
 	                                </div>
 	                                <div class="form-group half-col">
 	                                    <label>작성일</label>
-	                                    <input type="date" class="form-control" name="bDate" value="">
+	                                    <input type="date" class="form-control" name="bDate" value="${ b.bDate }">
 	                                </div>
 	                                <div class="form-group half-col">
 	                                    <label>중요도</label>
 	                                    <select class="form-control" name="bCritical">
-	                                        <option value="NORMAL">일반</option>
-	                                        <option value="IMPORTANT">필독</option>
+	                                        <option value="NORMAL" <c:if test="${ b.bCritical eq 'NORMAL'}">selected</c:if>>일반</option>
+	                                        <option value="IMPORTANT" <c:if test="${ b.bCritical eq 'IMPORTANT'}">selected</c:if>>필독</option>
 	                                    </select>
 	                                </div>
 	                                <div class="form-group">
 	                                	<label>파일 첨부</label>
-	                                    <div class="input-group-icon mt-10 filebox">
-	                                        <input type="text" class="upload-name form-control" id="uploadName" value="" disabled>
-	                                        <label for="file">파일 찾기</label>
-	                                        <input type="file" name="uploadFile" id="file" class="ex_file" multiple="multiple">
-	                                    </div>
+	                                	<div class="input-group-icon mt-10 filebox">
+	                                		<c:if test="${ !empty b.fileList.get(0).getfName() }">
+		                                    	<c:forEach var="f" items="${ b.fileList }">
+		                                    		<div>
+				                                    	<i class="fas fa-save"></i>
+				                                    	<a href="/resources/buploadFiles/${ f.getfRname() }" download="${ f.getfName() }">
+															${ f.getfName() }
+														</a>
+														&nbsp;<i class="fas fa-times deleteBtn" name="fileDelete"></i>
+														<input type="hidden" name="fNo" value="${ f.getfNo() }">
+													</div>
+												</c:forEach>
+											</c:if>
+												<input type="text" class="upload-name form-control" id="uploadName" value="" disabled>
+		                                        <label for="file">파일 찾기</label>
+		                                        <input type="file" name="reloadFile" id="file" class="ex_file" multiple="multiple">
+                                    	</div>
                                     </div>
 	                                <div class="form-group">
 	                                    <label>작성 내용</label>
 	                                    <div>
-	                                    	<textarea name="bContent" class="summernote" id="summernote"></textarea>
+	                                    	<textarea name="bContent" class="summernote" id="summernote">${ b.bContent }</textarea>
 	                                    </div>
 	                                </div>
 	                            </div>
 	                            <div class="card-footer text-right">
-	                                <button class="btn btn-primary mr-1" type="submit">저장</button>
-	                                <button class="btn btn-danger" type="reset">취소</button>
+	                                <button class="btn btn-primary mr-1" type="submit">수정</button>
+	                                <button class="btn btn-danger" type="button" onclick="location.href='noticeList.ad'">취소</button>
 	                            </div>
 	                        </div>
 	                    </div>
@@ -144,14 +171,6 @@
     <c:import url="../common/footer.jsp" />
     
     <script>
-        $(function () {
-            var now = new Date();
-            var year = now.getFullYear();
-            var month = now.getMonth() + 1;
-            var date = now.getDate();
-            $('input[name=bDate]').val(year + '-' + month + '-' + date);
-        });
-        
         $("#file").on('change', readInputFile);
 		
         // 파일 업로드
@@ -191,6 +210,29 @@
                 alert("파일은 최대 3개까지 업로드 가능합니다.");
             }
         }
+        
+        $(document).on("click", "i[name='fileDelete']", function() {
+//         	var fNo = $(this).parent().find('input').val();
+        	var fullDiv = $(this).parent();
+        	
+        	fullDiv.html('');
+        	
+        	// ajax를 이용한 파일 삭제
+//         	$.ajax({
+// 				url: 'deleteNoticeFile.ad',
+// 				data: {fNo:fNo},
+// 				success: function(data) {
+// 					console.log(data);
+					
+// 					if(data == 'success'){
+// 						fullDiv.html('');
+// 					}
+// 				}, 
+// 				error: function(data) {
+// 					console.log(data);
+// 				}
+// 			});
+		})
         
     </script>
     

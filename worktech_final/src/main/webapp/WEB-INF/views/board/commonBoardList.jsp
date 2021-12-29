@@ -3,10 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>공지사항 게시판 목록</title>
+    <title>일반 게시판</title>
 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+  
     <style>
         table {
             border-collapse: collapse;
@@ -58,49 +59,66 @@
             justify-content: center;
         }
         
-        select:focus {outline:none;}
-        input:focus {outline:none;}
-        
-        .limit{
-        	margin-bottom: 15px;
-        	border-radius: 20em;
+        .select {
+        	border: 1px solid white;
         }
         
-        #searchValue{
-        	padding-left: 5px;
+        .select:focus{
+        	border: 1px solid black;
         }
     </style>
 </head>
 
 <body>
-    <c:import url="../common/headerAdmin.jsp" />
+    <c:import url="../common/headerUser.jsp" />
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>공지사항 목록</h1>
+                <h1>일반 게시판</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item">게시판 관리</div>
-                    <div class="breadcrumb-item">공지사항 게시판</div>
+                    <div class="breadcrumb-item">게시판</div>
+                    <div class="breadcrumb-item">일반 게시판</div>
                 </div>
             </div>
-
+			
             <div class="section-body">
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 style="font-size: 20px;">공지사항 목록</h4>
+                                <h4 style="font-size: 20px;">일반 게시판 목록</h4>
                             </div>
                             <div class="card-body">
-	                            <div class="limit">
-	                            	게시글 수
-		                            <select style="height: 30px; width: 80px; border: 1px solid #e3e3e3;" name="boardLimit" id="boardLimit">
-		                                <option value="10" <c:if test="${ boardLimit eq 10 }">selected</c:if>>10개</option>
-		                                <option value="20" <c:if test="${ boardLimit eq 20 }">selected</c:if>>20개</option>
-		                                <option value="50" <c:if test="${ boardLimit eq 50 }">selected</c:if>>50개</option>
-		                            </select>
-	                            </div>
+                            	<div class="category">
+	                            	<i class="fas fa-chevron-circle-down"></i>
+	                            	<select class="select" name="categoryNo" onchange="location.href=this.value">
+                            			<option>카테고리</option>
+                           				<c:url var="all" value="commonList.bo"/>
+                            			<option value="${ all }">전체</option>
+                            			<c:url var="meeting" value="commonList.bo">
+                            				<c:param name="category" value="100" />
+                            			</c:url>
+	                            		<option value="${ meeting }">회의</option>
+	                            		<c:url var="businessTrip" value="commonList.bo">
+                            				<c:param name="category" value="200" />
+                            			</c:url>
+	                            		<option value="${ businessTrip }">출장</option>
+	                            		<c:url var="promotion" value="commonList.bo">
+                            				<c:param name="category" value="300" />
+                            			</c:url>
+	                            		<option value="${ promotion }">홍보</option>
+	                            		<c:url var="etc" value="commonList.bo">
+                            				<c:param name="category" value="400" />
+                            			</c:url>
+	                            		<option value="${ etc }">기타</option>
+	                            		<c:url var="materials" value="commonList.bo">
+                            				<c:param name="category" value="500" />
+                            			</c:url>
+	                            		<option value="${ materials }">자료</option>
+	                            	</select>
+                            	</div>
+                            	<br>
                                 <table class="table" id="tb">
                                     <thead>
                                         <tr>
@@ -115,17 +133,12 @@
                                     	<c:forEach var="n" items="${ list }">
 	                                        <tr>
 	                                            <td style="height: 45px;">${ n.bNo }</td>
-                                				<td>
-	                                    			<c:if test="${ n.bCritical == 'NORMAL' }">
-	                                    				${ n.bTitle }
-	                                    			</c:if>	
-	                                    			<c:if test="${ n.bCritical == 'IMPORTANT' }">
-	                                    				<p style="color: red; font-weight: 900; display: inline">${ n.bTitle }</p>
-	                                    			</c:if>	
-                                    				<c:if test="${ !empty n.fileList.get(0).fName }">
+												<td>
+													[ ${ n.categoryName } ] ${ n.bTitle }
+													<c:if test="${ !empty n.fileList.get(0).fName }">
                                     					&nbsp;<i class="fas fa-save"></i>
-                                    				</c:if>	
-                                    			</td>
+                                    				</c:if>
+												</td>
                                     			<td>${ n.name }</td>
                                     			<td>${ n.bDate }</td>
                                     			<td>${ n.bCount }</td>
@@ -133,7 +146,7 @@
                                     	</c:forEach>
                                     </tbody>
                                 </table>
-                                <button class="btn btn-primary push" onclick="location.href='ninsertView.ad';">글쓰기</button>
+                                <button class="btn btn-primary push" onclick="location.href='cinsertView.bo';">글쓰기</button>
                                 <br clear="all">
                                 <div class="card-body paging-area">
                                     <div class="buttons">
@@ -154,26 +167,21 @@
                                                 	</li>
 	                                            </c:if>
                                             	<c:if test="${ pi.currentPage > 1 }">
-                                            		<c:url var="before" value="${ loc }">
-														<c:param name="page" value="${ pi.currentPage - 1 }"/>
-														<c:param name="searchCondition" value="${ searchCondition }"/>
-														<c:param name="searchValue" value="${ searchValue }"/>
-														<c:param name="boardLimit" value="${ boardLimit }"/>
-													</c:url>
-	                                                <li class="page-item">
-	                                                    <a class="page-link" href="${ before }" aria-label="Previous">
-	                                                        <i class="fas fa-angle-double-left"></i>
-	                                                    </a>
-	                                                </li>
-	                                                
-                                            		<c:url var="start" value="${ loc }">
+                                            		<c:url var="start" value="commonList.bo">
 														<c:param name="page" value="1"/>
-														<c:param name="searchCondition" value="${ searchCondition }"/>
-														<c:param name="searchValue" value="${ searchValue }"/>
-														<c:param name="boardLimit" value="${ boardLimit }"/>
+														<c:param name="category" value="${ category }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ start }" aria-label="Previous">
+	                                                        <i class="fas fa-angle-double-left"></i>
+	                                                    </a>
+	                                                </li>
+													<c:url var="before" value="commonList.bo">
+														<c:param name="page" value="${ pi.currentPage - 1 }"/>
+														<c:param name="category" value="${ category }"/>
+													</c:url>
+	                                                <li class="page-item">
+	                                                    <a class="page-link" href="${ before }" aria-label="Previous">
 	                                                        <i class="fas fa-angle-left"></i>
 	                                                    </a>
 	                                                </li>
@@ -185,11 +193,9 @@
 	                                            	</c:if>
 	                                            
 	                                            	<c:if test="${ p ne pi.currentPage }">
-		                                            	<c:url var="pagination" value="${ loc }">
+		                                            	<c:url var="pagination" value="commonList.bo">
 															<c:param name="page" value="${ p }"/>
-															<c:param name="searchCondition" value="${ searchCondition }"/>
-															<c:param name="searchValue" value="${ searchValue }"/>
-															<c:param name="boardLimit" value="${ boardLimit }"/>
+															<c:param name="category" value="${ category }"/>
 														</c:url>
 	                                            		<li class="page-item">
 	                                            			<a class="page-link" href="${ pagination }">${ p }</a>
@@ -212,11 +218,9 @@
 												</c:if>
 
 												<c:if test="${ pi.currentPage < pi.maxPage }">
-													<c:url var="after" value="${ loc }">
+													<c:url var="after" value="commonList.bo">
 														<c:param name="page" value="${ pi.currentPage + 1 }"/>
-														<c:param name="searchCondition" value="${ searchCondition }"/>
-														<c:param name="searchValue" value="${ searchValue }"/>
-														<c:param name="boardLimit" value="${ boardLimit }"/>
+														<c:param name="category" value="${ category }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ after }" aria-label="Next">
@@ -224,11 +228,9 @@
 	                                                    </a>
 	                                                </li>
 													
-													<c:url var="end" value="${ loc }">
+													<c:url var="end" value="commonList.bo">
 														<c:param name="page" value="${ pi.maxPage }"/>
-														<c:param name="searchCondition" value="${ searchCondition }"/>
-														<c:param name="searchValue" value="${ searchValue }"/>
-														<c:param name="boardLimit" value="${ boardLimit }"/>
+														<c:param name="category" value="${ category }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ end }" aria-label="Next">
@@ -241,14 +243,12 @@
                                     </div>
                                 </div>
                                 <div class="search">
-                                    <select style="height: 30px; width: 80px; border: 1px solid #e3e3e3;" id="searchCondition" name="searchCondition">
-                                        <option>-------</option>
-                                        <option value="title" <c:if test="${ searchCondition eq 'title' }">selected</c:if>>제목</option>
-                                        <option value="content" <c:if test="${ searchCondition eq 'content' }">selected</c:if>>내용</option>
+                                    <select style="height: 30px; width: 80px; border: 1px solid #e3e3e3;">
+                                        <option>제목</option>
+                                        <option>내용</option>
                                     </select>
-                                    <input type="search" id="searchValue" style="height: 30px; width: 200px; border: 1px solid #e3e3e3;"
-                                    	<c:if test="${ !empty searchValue }">value="${ searchValue }"</c:if>>
-                                    <button class="Searchbtn" onclick="searchBoard();">검색</button>
+                                    <input type="text" style="height: 30px; width: 200px; border: 1px solid #e3e3e3;">
+                                    <button class="Searchbtn">검색</button>
                                 </div>
                             </div>
                         </div>
@@ -260,7 +260,6 @@
     <c:import url="../common/footer.jsp" />
     
     <script>
-    	// 게시글 목록 마우스오버 이벤트
 	    $(function() {
 			$('#tb tbody td').mouseenter(function() {
 				$(this).parent().css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
@@ -271,29 +270,8 @@
 				location.href="ndetail.ad?bNo=" + bNo + '&page=' + ${pi.currentPage};
 			});
 		});
-    	
-    	// 게시글 검색
-    	function searchBoard(){
-			var searchCondition = $("#searchCondition").val();
-			var searchValue = $("#searchValue").val();
-			
-			if(searchCondition ==  "-------"){
-				alert("검색 카테고리를 선택하세요.");
-				$("#searchValue").val('');
-				$("#searchValue").focus();
-			} else {
-				location.href="searchNotice.ad?searchCondition="+searchCondition+"&searchValue="+searchValue;
-			}
-		}
-    	
-    	// boardLimit 변경
-    	$(function() {
-			$('#boardLimit').on('change', function() {
-				var boardLimit = $(this).val();
-				location.href='noticeList.ad?boardLimit=' + boardLimit;
-			});
-		})
     </script>
+
 
 </body>
 

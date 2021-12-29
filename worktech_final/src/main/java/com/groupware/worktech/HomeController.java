@@ -22,7 +22,7 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/home.do", method = RequestMethod.GET) // web-xml의 /는 모든 부분을 담당한다는 의미이기 때문에 여기에서만 url을 변경해도 작동됨
+	@RequestMapping(value = "/home.do", method = RequestMethod.GET) 
 	public String home(Locale locale, Model model) {
 		return "home";
 	}

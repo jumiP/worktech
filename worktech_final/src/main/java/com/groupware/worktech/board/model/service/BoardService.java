@@ -54,7 +54,7 @@ public class BoardService {
 		}
 		
 		return b;
-
+	}
 	
 	
 	
@@ -116,9 +116,29 @@ public class BoardService {
 	
 	public int insertCommonBoard(Board b) {
 		int result = bDAO.insertCommonBoard(sqlSession, b);
+		
+		if(result > 0 && !b.getFileList().isEmpty()) {
+			for(int i = 0; i < b.getFileList().size(); i++) {
+				result += bDAO.insertNoticeFile(sqlSession, b.getFileList().get(i));
+			}
+		}
 		return result;
 
 	}
+
+	public ArrayList<Board> selectCommonList(PageInfo pi) {
+		return bDAO.selectCommonList(sqlSession, pi);
+	}
+	
+	public ArrayList<Board> selectCommonList(PageInfo pi, Integer category) {
+		return bDAO.selectCommonList(sqlSession, pi, category);
+	}
+
+	public int getCategoryListCount(Integer category) {
+		return bDAO.getCategoryListCount(sqlSession, category);
+	}
+
+	
 
 
 

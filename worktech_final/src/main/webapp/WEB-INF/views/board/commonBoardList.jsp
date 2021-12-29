@@ -3,10 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>일반 게시판 목록</title>
+    <title>일반 게시판</title>
 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+  
     <style>
         table {
             border-collapse: collapse;
@@ -57,6 +58,14 @@
             display: flex;
             justify-content: center;
         }
+        
+        .select {
+        	border: 1px solid white;
+        }
+        
+        .select:focus{
+        	border: 1px solid black;
+        }
     </style>
 </head>
 
@@ -72,7 +81,7 @@
                     <div class="breadcrumb-item">일반 게시판</div>
                 </div>
             </div>
-
+			
             <div class="section-body">
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
@@ -81,6 +90,35 @@
                                 <h4 style="font-size: 20px;">일반 게시판 목록</h4>
                             </div>
                             <div class="card-body">
+                            	<div class="category">
+	                            	<i class="fas fa-chevron-circle-down"></i>
+	                            	<select class="select" name="categoryNo" onchange="location.href=this.value">
+                            			<option>카테고리</option>
+                           				<c:url var="all" value="commonList.bo"/>
+                            			<option value="${ all }">전체</option>
+                            			<c:url var="meeting" value="commonList.bo">
+                            				<c:param name="category" value="100" />
+                            			</c:url>
+	                            		<option value="${ meeting }">회의</option>
+	                            		<c:url var="businessTrip" value="commonList.bo">
+                            				<c:param name="category" value="200" />
+                            			</c:url>
+	                            		<option value="${ businessTrip }">출장</option>
+	                            		<c:url var="promotion" value="commonList.bo">
+                            				<c:param name="category" value="300" />
+                            			</c:url>
+	                            		<option value="${ promotion }">홍보</option>
+	                            		<c:url var="etc" value="commonList.bo">
+                            				<c:param name="category" value="400" />
+                            			</c:url>
+	                            		<option value="${ etc }">기타</option>
+	                            		<c:url var="materials" value="commonList.bo">
+                            				<c:param name="category" value="500" />
+                            			</c:url>
+	                            		<option value="${ materials }">자료</option>
+	                            	</select>
+                            	</div>
+                            	<br>
                                 <table class="table" id="tb">
                                     <thead>
                                         <tr>
@@ -95,17 +133,12 @@
                                     	<c:forEach var="n" items="${ list }">
 	                                        <tr>
 	                                            <td style="height: 45px;">${ n.bNo }</td>
-                                    			<c:if test="${ n.bCritical == 'NORMAL' }">
-                                    				<td>
-                                    			</c:if>	
-                                    			<c:if test="${ n.bCritical == 'IMPORTANT' }">
-                                    				<td style="color: red; font-weight: 900;">
-                                    			</c:if>	
-                                    				${ n.bTitle }
-                                    				<c:if test="${ !empty n.fileList.get(0).fName }">
+												<td>
+													[ ${ n.categoryName } ] ${ n.bTitle }
+													<c:if test="${ !empty n.fileList.get(0).fName }">
                                     					&nbsp;<i class="fas fa-save"></i>
-                                    				</c:if>	
-                                    			</td>
+                                    				</c:if>
+												</td>
                                     			<td>${ n.name }</td>
                                     			<td>${ n.bDate }</td>
                                     			<td>${ n.bCount }</td>
@@ -134,20 +167,21 @@
                                                 	</li>
 	                                            </c:if>
                                             	<c:if test="${ pi.currentPage > 1 }">
-                                            		<c:url var="before" value="noticeList.ad">
-														<c:param name="page" value="${ pi.currentPage - 1 }"/>
-													</c:url>
-	                                                <li class="page-item">
-	                                                    <a class="page-link" href="${ before }" aria-label="Previous">
-	                                                        <i class="fas fa-angle-double-left"></i>
-	                                                    </a>
-	                                                </li>
-	                                                
-                                            		<c:url var="start" value="noticeList.ad">
+                                            		<c:url var="start" value="commonList.bo">
 														<c:param name="page" value="1"/>
+														<c:param name="category" value="${ category }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ start }" aria-label="Previous">
+	                                                        <i class="fas fa-angle-double-left"></i>
+	                                                    </a>
+	                                                </li>
+													<c:url var="before" value="commonList.bo">
+														<c:param name="page" value="${ pi.currentPage - 1 }"/>
+														<c:param name="category" value="${ category }"/>
+													</c:url>
+	                                                <li class="page-item">
+	                                                    <a class="page-link" href="${ before }" aria-label="Previous">
 	                                                        <i class="fas fa-angle-left"></i>
 	                                                    </a>
 	                                                </li>
@@ -159,8 +193,9 @@
 	                                            	</c:if>
 	                                            
 	                                            	<c:if test="${ p ne pi.currentPage }">
-		                                            	<c:url var="pagination" value="noticeList.ad">
+		                                            	<c:url var="pagination" value="commonList.bo">
 															<c:param name="page" value="${ p }"/>
+															<c:param name="category" value="${ category }"/>
 														</c:url>
 	                                            		<li class="page-item">
 	                                            			<a class="page-link" href="${ pagination }">${ p }</a>
@@ -183,8 +218,9 @@
 												</c:if>
 
 												<c:if test="${ pi.currentPage < pi.maxPage }">
-													<c:url var="after" value="noticeList.ad">
+													<c:url var="after" value="commonList.bo">
 														<c:param name="page" value="${ pi.currentPage + 1 }"/>
+														<c:param name="category" value="${ category }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ after }" aria-label="Next">
@@ -192,8 +228,9 @@
 	                                                    </a>
 	                                                </li>
 													
-													<c:url var="end" value="noticeList.ad">
+													<c:url var="end" value="commonList.bo">
 														<c:param name="page" value="${ pi.maxPage }"/>
+														<c:param name="category" value="${ category }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ end }" aria-label="Next">
@@ -234,6 +271,7 @@
 			});
 		});
     </script>
+
 
 </body>
 

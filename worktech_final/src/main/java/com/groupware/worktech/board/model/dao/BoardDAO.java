@@ -110,6 +110,28 @@ public class BoardDAO {
 		return sqlSession.insert("boardMapper.insertCommonBoard", b);
 	}
 
+	public ArrayList<Board> selectCommonList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonList", null, rowBounds);
+	}
+	
+	public ArrayList<Board> selectCommonList(SqlSessionTemplate sqlSession, PageInfo pi, int category) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.selectCategoryList", category, rowBounds);
+	}
+
+	public int getCategoryListCount(SqlSessionTemplate sqlSession, Integer category) {
+		return sqlSession.selectOne("boardMapper.getCategoryListCount", category);
+	}
+
+	
+
 	
 	
 }

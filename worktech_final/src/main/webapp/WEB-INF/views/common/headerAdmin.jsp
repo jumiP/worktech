@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="resources/dist/assets/css/components.css">
     <!-- Start GA -->
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+    <script src="resources/js/jquery-3.6.0.min.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 

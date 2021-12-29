@@ -267,7 +267,7 @@
 				$(this).parent().css({'background':'white', 'font-weight':'normal'});
 			}).click(function() {
 				var bNo = $(this).parent().children().eq(0).text();
-				location.href="ndetail.ad?bNo=" + bNo + '&page=' + ${pi.currentPage};
+				location.href="cdetail.bo?bNo=" + bNo + '&page=' + ${pi.currentPage};
 			});
 		});
     </script>

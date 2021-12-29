@@ -1,6 +1,7 @@
 package com.groupware.worktech.board.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.groupware.worktech.board.model.dao.BoardDAO;
 import com.groupware.worktech.board.model.vo.Board;
+import com.groupware.worktech.board.model.vo.BoardFile;
 import com.groupware.worktech.common.PageInfo;
 
 @Service("bService")
@@ -55,16 +57,38 @@ public class BoardService {
 		
 		return b;
 	}
+
+	public BoardFile selectFile(int fNo) {
+		return bDAO.selectFile(sqlSession, fNo);
+	}
+
+	public int deleteNoticeFile(int fNo) {
+		return bDAO.deleteNoticeFile(sqlSession, fNo);
+	}
 	
+	public int updateNotice(Board b) {
+		int result = bDAO.updateNotice(sqlSession, b);
+		
+		if(result > 0 && !b.getFileList().isEmpty()) {
+			for(int i = 0; i < b.getFileList().size(); i++) {
+				result += bDAO.updateNoticeFile(sqlSession, b.getFileList().get(i));
+			}
+		}
+		
+		return result;
+	}
 	
+	public int deleteNotice(int bNo) {
+		return bDAO.deleteNotice(sqlSession, bNo);
+	}
 	
+	public int getNoticeSearchListCount(HashMap<String, String> search) {
+		return bDAO.getNoticeSearchListCount(sqlSession, search);
+	}
 	
-	
-	
-	
-	
-	
-	
+	public ArrayList<Board> selectNoticeSearchList(PageInfo pi, HashMap<String, String> search) {
+		return bDAO.selectNoticeSearchList(sqlSession, pi, search);
+	}
 	
 	
 	
@@ -116,27 +140,19 @@ public class BoardService {
 	
 	public int insertCommonBoard(Board b) {
 		int result = bDAO.insertCommonBoard(sqlSession, b);
-		
-		if(result > 0 && !b.getFileList().isEmpty()) {
-			for(int i = 0; i < b.getFileList().size(); i++) {
-				result += bDAO.insertNoticeFile(sqlSession, b.getFileList().get(i));
-			}
-		}
 		return result;
 
 	}
 
-	public ArrayList<Board> selectCommonList(PageInfo pi) {
-		return bDAO.selectCommonList(sqlSession, pi);
-	}
 	
-	public ArrayList<Board> selectCommonList(PageInfo pi, Integer category) {
-		return bDAO.selectCommonList(sqlSession, pi, category);
-	}
 
-	public int getCategoryListCount(Integer category) {
-		return bDAO.getCategoryListCount(sqlSession, category);
-	}
+
+
+	
+
+	
+
+	
 
 	
 

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -47,13 +49,13 @@ public class AdminController {
 		
 		int listCount = bService.getListCount("NOTICE");
 		PageInfo pi = null;
-
+		
 		if(boardLimit != null) {
 			pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
+			model.addAttribute("boardLimit", boardLimit);
 		} else {
 			pi = Pagination.getPageInfo(currentPage, listCount);
 		}
-		
 		ArrayList<Board> list = bService.selectNoticeList(pi);
 		if(list != null) {
 			model.addAttribute("pi", pi);
@@ -90,7 +92,7 @@ public class AdminController {
 					f.setRefBNo(b.getbNo());
 					
 					fileList.add(f);
-					System.out.println(f);
+
 				}
 			}
 		}
@@ -156,9 +158,177 @@ public class AdminController {
 	}
 	
 	@RequestMapping("ndetail.ad")
-	public String noticeDetail(@RequestParam("page") int page, @RequestParam("bNo") int bNo, @RequestParam(value = "upd", required = false) String upd) {
-		return null;
+	public String noticeDetail(@RequestParam("page") int page, @RequestParam("bNo") int bNo, @RequestParam(value = "upd", required = false) String upd,
+								Model model) {
+		Board b = bService.selectNotice(bNo, upd);
+		
+		model.addAttribute("b", b).addAttribute("page", page); 
+		
+		return "adminNoticeDetail";
 	}
 	
+	@RequestMapping("nupdateView.ad")
+	public String updateNoticeView(@RequestParam("page") int page, @RequestParam("bNo") int bNo, @RequestParam(value = "upd", required = false) String upd, Model model) {
+		Board b = bService.selectNotice(bNo, upd);
+		
+		model.addAttribute("b", b).addAttribute("page", page); 
+		
+		return "adminNoticeUpdate";
+	}
+	
+	@RequestMapping("nupdate.ad")
+	public String updateNotice(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile,
+							   @RequestParam(value="fNo",required=false) ArrayList<Integer> fNoes, @RequestParam("page") int page, 
+							  HttpServletRequest request, Model model) {
+		// 저장되어 있는 파일 삭제
+		if(fNoes != null && !fNoes.isEmpty()) { 
+			ArrayList<BoardFile> fileList = bService.selectNotice(b.getbNo(), "Y").getFileList();
+			
+			for(int i = 0; i < fileList.size(); i++) {
+				int fNo = fileList.get(i).getfNo();
+				
+				if(!fNoes.contains(fNo)) {
+					
+					deleteFile(fileList.get(i).getfRname(), request);
+					
+					int result = bService.deleteNoticeFile(fNo);
+					
+					if(result <= 0) {
+						throw new BoardException("첨부 파일 삭제에 실패하였습니다."); 
+					}
+				}
+				
+			}
+		}
+		
+		// 새로 추가한 파일 등록
+		ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
+		if(reloadFile != null && reloadFile[0].getOriginalFilename() != null) {
+			for(int i=0; i<reloadFile.length; i++) {
+				HashMap<String, String> fileInfo = saveFile(reloadFile[i], request); 
+				
+				if(fileInfo.get("renameFileName") != null) {
+					BoardFile f = new BoardFile();
+					f.setfName(reloadFile[i].getOriginalFilename());
+					f.setfRname(fileInfo.get("renameFileName"));
+					f.setfURL(fileInfo.get("renamePath"));
+					f.setRefBNo(b.getbNo());
+					
+					fileList.add(f);
+				}
+			}
+		}
+		
+		b.setFileList(fileList);
+		
+		int result = bService.updateNotice(b);
+		
+		if(result >= b.getFileList().size() + 1) {
+			model.addAttribute("page", page);
+			return "redirect:ndetail.ad?bNo=" + b.getbNo() + "&upd=Y";
+		} else {
+			throw new BoardException("공지글 수정에 실패하였습니다.");
+		}
+	}
+	
+	public void deleteFile(String fileName, HttpServletRequest request) {
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "/buploadFiles";
+		
+		File f = new File(savePath + "/" + fileName);
+		
+		if(f.exists()) {
+			f.delete();
+		}
+	}
+	
+	@RequestMapping("noticeDelete.ad")
+	public String deleteBoard(@RequestParam("bNo") int bNo, HttpServletRequest request) {
+		Board b = bService.selectNotice(bNo, "Y");
+		
+		ArrayList<BoardFile> bfList = b.getFileList();
+		if(bfList != null && bfList.get(0).getfName() != null) { // 첨부파일이 존재하면 첨부파일 삭제
+			for(BoardFile bf : bfList) {
+				deleteFile(bf.getfRname(), request);
+				
+				int result = bService.deleteNoticeFile(bf.getfNo());
+				
+				if(result <= 0) {
+					throw new BoardException("첨부 파일 삭제에 실패하였습니다."); 
+				}
+			}
+		}
+		
+		int result = bService.deleteNotice(bNo);
+		
+		if(result > 0) {
+			return "redirect:noticeList.ad";
+		} else {
+			throw new BoardException("공지글 삭제에 실패하였습니다."); 
+		}
+	}
+	
+	
+//	ajax를 이용한 파일 삭제
+//	@RequestMapping("deleteNoticeFile.ad")
+//	@ResponseBody
+//	public String deleteNoticeFile(@RequestParam("fNo") int fNo, HttpServletRequest request) {
+//		BoardFile bf = bService.selectFile(fNo);
+//		
+//		String root = request.getSession().getServletContext().getRealPath("resources");
+//		String savePath = root + "/buploadFiles";
+//		
+//		File f = new File(savePath + "/" + bf.getfRname());
+//		
+//		if(f.exists()) {
+//			f.delete();
+//		}
+//		
+//		int result = bService.deleteNoticeFile(fNo);
+//		
+//		if(result > 0) {
+//			return "success";
+//		} else {
+//			throw new BoardException("첨부 파일 삭제에 실패하였습니다."); 
+//		}
+//	}
+	
+	@RequestMapping("searchNotice.ad")
+	public String searchNotice(@RequestParam("searchCondition") String condition, @RequestParam("searchValue") String value, 
+							   @RequestParam(value="page", required=false) Integer page, @RequestParam(value="boardLimit", required = false) Integer boardLimit,
+							   Model model) {
+		HashMap<String, String> search = new HashMap<>();
+		search.put("condition", condition);
+		search.put("value", value);
+		search.put("type", "NOTICE");
+		
+		int currentPage = 1;
+		
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = bService.getNoticeSearchListCount(search);
+		PageInfo pi = null;
+
+		if(boardLimit != null) {
+			pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
+			model.addAttribute("boardLimit", boardLimit);
+		} else {
+			pi = Pagination.getPageInfo(currentPage, listCount);
+		}
+		
+		ArrayList<Board> list = bService.selectNoticeSearchList(pi, search);
+		if(list != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("list", list);
+			model.addAttribute("searchCondition", condition);
+			model.addAttribute("searchValue", value);
+		} else {
+			throw new BoardException("공지사항 검색 목록 조회에 실패하였습니다.");
+		}
+		
+		return "adminNoticeList";
+	}
 	
 }

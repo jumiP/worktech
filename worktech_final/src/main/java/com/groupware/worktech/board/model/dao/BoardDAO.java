@@ -164,6 +164,10 @@ public class BoardDAO {
 		return sqlSession.selectOne("boardMapper.getCategoryListCount", category);
 	}
 
+	public Board selectCommonBoard(SqlSessionTemplate sqlSession, int bNo) {
+		return sqlSession.selectOne("boardMapper.selectCommonBoard", bNo);
+	}
+
 	
 
 	

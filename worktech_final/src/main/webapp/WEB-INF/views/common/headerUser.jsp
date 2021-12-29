@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="resources/dist/assets/css/components.css">
     <!-- Start GA -->
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+    <script src="resources/js/jquery-3.6.0.min.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -229,7 +230,7 @@
                     </ul>
 
                     <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-                        <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
+                        <a href="chatting.ct" class="btn btn-primary btn-lg btn-block btn-icon-split">
                             <i class="fas fa-comments"></i>
                             CHAT
                         </a>

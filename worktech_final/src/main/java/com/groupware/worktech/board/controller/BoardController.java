@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,8 @@ import com.groupware.worktech.board.model.exception.BoardException;
 import com.groupware.worktech.board.model.service.BoardService;
 import com.groupware.worktech.board.model.vo.Board;
 import com.groupware.worktech.board.model.vo.BoardFile;
+import com.groupware.worktech.common.PageInfo;
+import com.groupware.worktech.common.Pagination;
 
 @Controller
 public class BoardController {
@@ -29,9 +32,43 @@ public class BoardController {
 	private BoardService bService;
 	
 	@RequestMapping("commonList.bo")
-	public String commonBoardList() {
+	public String commonBoardList(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="category", required=false) Integer category, Model model) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		int listCount = 0;
+		if(category != null) {
+			listCount = bService.getCategoryListCount(category);
+		} else {
+			listCount = bService.getListCount("COMMON");
+		}
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Board> list = null;
+		if(category != null) {
+			list = bService.selectCommonList(pi, category);
+		} else {
+			list = bService.selectCommonList(pi);
+		}
+		
+		if(list != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("list", list);
+			model.addAttribute("category", category);
+		} else {
+			throw new BoardException("일반 게시판 전체 조회에 실패하였습니다.");
+		}
 		
 		return "commonBoardList";
+	}
+	
+	@RequestMapping("commonCategoryList.bo")
+	public String commonCategoryList() {
+		
+		return null;
 	}
 	
 	@RequestMapping("cinsertView.bo")
@@ -40,14 +77,14 @@ public class BoardController {
 	}
 	
 	@RequestMapping("cinsert.bo")
-	public String insertGeneralBoard(@ModelAttribute Board b, @RequestParam("uploadFile") MultipartFile[] uploadFile, HttpServletRequest request) {
+	public String insertCommonBoard(@ModelAttribute Board b, @RequestParam("uploadFile") MultipartFile[] uploadFile, HttpServletRequest request) {
 		ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
 		
 		if(uploadFile != null && !uploadFile[0].isEmpty()) {
 			for(int i = 0; i < uploadFile.length; i++) {
 				HashMap<String, String> fileInfo = saveFile(uploadFile[i], request);
 				
-				if(fileInfo.get("renameFileName") != null) {
+				if(fileInfo.get("renameFileName") != null) { // NullPointerException 발생
 					BoardFile f = new BoardFile();
 					f.setfName(uploadFile[i].getOriginalFilename());
 					f.setfRname(fileInfo.get("renameFileName"));
@@ -98,7 +135,8 @@ public class BoardController {
 		HashMap<String, String> fileInfo = new HashMap<String, String>();
 		fileInfo.put("renameFileName", renameFileName);
 		fileInfo.put("renamePath", renamePath);
-		return null;
+		
+		return fileInfo;
 	}
 	
 	public String randomStr(int length) {

@@ -38,6 +38,7 @@ public class AdminController {
 	@Autowired
 	private BoardService bService;
 	
+	// 관리자 공지사항 게시판 부분 시작
 	@RequestMapping("noticeList.ad")
 	public String noticeList(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="boardLimit", required = false) Integer boardLimit,
 							 Model model) {
@@ -330,5 +331,9 @@ public class AdminController {
 		
 		return "adminNoticeList";
 	}
+	// 관리자 공지사항 게시판 부분 끝
+	
+	// 관리자 예약 자산 추가 부분 시작
+	
 	
 }

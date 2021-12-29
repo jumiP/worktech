@@ -152,4 +152,17 @@ public class BoardController {
 								 .toString();
 		return generatedString;
 	}
+	
+	@RequestMapping("cdetail.bo")
+	public String commonBoardDetail(@RequestParam("bNo") int bNo, @RequestParam("page") int page, Model model) {
+//		Board b = bService.selectCommonBoard(bNo);
+//		
+//		if(b != null) {
+//			model.addAttribute("b", b);
+//		} else {
+//			throw new BoardException("게시글 상세 조회에 실패하였습니다.");
+//		}
+		
+		return "commonBoardDetail";
+	}
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.groupware.worktech.admin.model.dao.AdminDAO;
 import com.groupware.worktech.admin.model.vo.Department;
+import com.groupware.worktech.admin.model.vo.RvProduct;
 
 @Service("aService")
 public class AdminService {
@@ -100,9 +101,15 @@ public class AdminService {
 	public ArrayList<Department> getDepartmentList() {
 		return aDAO.getDepartmentList(sqlSession);
 	}
-	
-	
-	
-	
+
+	public int insertRvProduct(RvProduct rp) {
+		int result = aDAO.insertRvProduct(sqlSession, rp);
+		
+		if(result > 0) {
+			result += aDAO.insertRvRange(sqlSession, rp);
+		}
+		
+		return result;
+	}
 	
 }

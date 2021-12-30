@@ -32,41 +32,47 @@
 
 			<div class="section-body">
 				<h2 class="section-title">예약 자산 추가</h2>
-				<div class="row">
-					<div class="col-12 col-md-12 col-lg-12">
-						<div class="card">
-							<div class="card-body">
-								<div class="form-group">
-									<label>예약 자산 카테고리</label> <input type="text" class="form-control" required>
-								</div>
-								<div class="form-group">
-									<label>예약 자산명</label> <input type="text" class="form-control" required>
-								</div>
-								<div class="form-group">
-									<label>추가 일자</label> <input type="date" class="form-control" id="addDate" required>
-								</div>
-								<div class="form-group">
-									<label class="d-block">사용 범위</label>
-									<c:set var="i" value="1"/>
-									<c:forEach var="d" items="${ list }">
+				<form action="addRvProduct.ad" method="post">
+					<div class="row">
+						<div class="col-12 col-md-12 col-lg-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="form-group">
+										<label>예약 자산 카테고리</label> <input type="text" name="pdCategory" class="form-control" required>
+									</div>
+									<div class="form-group">
+										<label>예약 자산명</label> <input type="text" name="pdName" class="form-control" required>
+									</div>
+									<div class="form-group">
+										<label>추가 일자</label> <input type="date" name="pdDate" class="form-control" id="addDate" required>
+									</div>
+									<div class="form-group">
+										<label class="d-block">사용 범위</label>
 										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="defaultCheck${ i }" name="department">
-											<label class="form-check-label" for="defaultCheck${ i }">${ d.dName }</label>
+											<input class="form-check-input" type="checkbox" id="all" value="100">
+											<label class="form-check-label" for="all">전체</label>
 										</div>
-										<c:set var="i" value="${ i + 1 }"/>
-									</c:forEach>
+										<c:set var="i" value="1"/>
+										<c:forEach var="d" items="${ list }">
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox" id="defaultCheck${ i }" name="department" value="${ d.dNo }">
+												<label class="form-check-label" for="defaultCheck${ i }">${ d.dName }</label>
+											</div>
+											<c:set var="i" value="${ i + 1 }"/>
+										</c:forEach>
+									</div>
+									<div class="form-group">
+										<label>예약 가능 수량</label> <input type="number" name="pdCount" min="1" class="form-control" required value="1">
+									</div>
 								</div>
-								<div class="form-group">
-									<label>예약 가능 수량</label> <input type="number" min="1" class="form-control" required value="1">
+								<div class="card-footer text-right">
+									<button class="btn btn-primary mr-1" type="submit">등록</button>
+									<button class="btn btn-secondary" type="reset">취소</button>
 								</div>
-							</div>
-							<div class="card-footer text-right">
-								<button class="btn btn-primary mr-1" type="submit">등록</button>
-								<button class="btn btn-secondary" type="reset">취소</button>
 							</div>
 						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 		</section>
 	</div>
@@ -76,17 +82,19 @@
 		document.getElementById('addDate').value = new Date().toISOString().substring(0, 10);;
 		
 		// 전체 선택
-		function selectAll(selectAll)  {
-		  const checkboxes 
-		       = document.getElementsByName('department');
-		  
-		  checkboxes.forEach((checkbox) => {
-		    checkbox.checked = selectAll.checked;
-		  });
-		}
+		$(document).ready(function() {
+			$("#all").click(function() {
+				if($("#all").is(":checked")) $("input[name=department]").prop("checked", true);
+				else $("input[name=department]").prop("checked", false);
+			});
 		
-		$('#defaultCheck1').on('click', function() {
-			selectAll(this);
+			$("input[name=department]").click(function() {
+				var total = $("input[name=department]").length;
+				var checked = $("input[name=department]:checked").length;
+		
+				if(total != checked) $("#all").prop("checked", false);
+				else $("#all").prop("checked", true); 
+			});
 		});
 	</script>
 </body>

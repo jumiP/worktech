@@ -17,5 +17,26 @@
 		where m_No=#{mNo}
 	</select>
 	
+	<!-- 로그인 -->
+	<select id="memberLogin" resultMap="memberResultSet">
+		select *
+		from member
+		where m_no=#{mNo} and m_status='Y'
+	</select>
+		
+	<resultMap type="Member" id="memberResultSet">
+		<id column="M_NO" property="mNo"/>
+		<result column="EMAIL" property="email"/>
+		<result column="NAME" property="name"/>
+		<result column="PWD" property="pwd"/>
+		<result column="JOB_GRADE" property="jobGrade"/>
+		<result column="BIRTHDAY" property="birthDay"/>
+		<result column="PHONE" property="phone"/>
+		<result column="ADDRESS" property="Address"/>
+		<result column="M_GRADE" property="mGrade"/>
+		<result column="D_NO" property="dNo"/>
+		<result column="M_HIRED" property="hireDate"/>
+		<result column="M_STATUS" property="mStatus"/>
+	</resultMap>
 
 </mapper>

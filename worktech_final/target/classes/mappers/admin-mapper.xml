@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adminMapper">
+	<select id="getDepartmentList" resultMap="departmentResultSet">
+		select *
+		from department
+		where d_status = 'Y'
+	</select>
+	
+	<resultMap type="Department" id="departmentResultSet">
+		<id column="D_NO" property="dNo"/>
+		<result column="D_NAME" property="dName"/>
+		<result column="D_PARENT" property="dParent"/>
+		<result column="D_DATE" property="dDate"/>
+		<result column="D_STATUS" property="dStatus"/>
+	</resultMap>
+</mapper>

@@ -84,7 +84,7 @@ public class BoardController {
 			for(int i = 0; i < uploadFile.length; i++) {
 				HashMap<String, String> fileInfo = saveFile(uploadFile[i], request);
 				
-				if(fileInfo.get("renameFileName") != null) { // NullPointerException 발생
+				if(fileInfo.get("renameFileName") != null) {
 					BoardFile f = new BoardFile();
 					f.setfName(uploadFile[i].getOriginalFilename());
 					f.setfRname(fileInfo.get("renameFileName"));
@@ -155,14 +155,87 @@ public class BoardController {
 	
 	@RequestMapping("cdetail.bo")
 	public String commonBoardDetail(@RequestParam("bNo") int bNo, @RequestParam("page") int page, Model model) {
-//		Board b = bService.selectCommonBoard(bNo);
-//		
-//		if(b != null) {
-//			model.addAttribute("b", b);
-//		} else {
-//			throw new BoardException("게시글 상세 조회에 실패하였습니다.");
-//		}
+		Board b = bService.selectCommonBoard(bNo);
+		
+		if(b != null) {
+			model.addAttribute("b", b);
+			model.addAttribute("page", page);
+		} else {
+			throw new BoardException("게시글 상세 조회에 실패하였습니다.");
+		}
 		
 		return "commonBoardDetail";
+	}
+	
+	@RequestMapping("cupdateView.bo")
+	public String commonBoardUpdateView(@RequestParam("bNo") int bNo, Model model) {
+		Board b = bService.selectCommonBoard(bNo);
+		
+		model.addAttribute("b", b);
+		
+		return "commonBoardUpdate";
+	}
+	
+	@RequestMapping("cupdate.bo")
+	public String commonBoardUpdate(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile, @RequestParam(value="fNo", required=false) ArrayList<Integer> fNoes, HttpServletRequest request, Model model) {
+		if(fNoes != null && !fNoes.isEmpty()) {
+			ArrayList<BoardFile> fileList = bService.selectCommonBoard(b.getbNo()).getFileList();
+			
+			for(int i = 0; i < fileList.size(); i++) {
+				int fNo = fileList.get(i).getfNo();
+				
+				if(!fNoes.contains(fNo)) {
+					deleteFile(fileList.get(i).getfRname(), request);
+					
+					int result = bService.deleteCommonBoardFile(fNo);
+					
+					if(result <= 0) {
+						throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
+					}
+				};
+			}
+		}
+		
+		ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
+		
+		if(reloadFile != null && !reloadFile[0].isEmpty()) {
+			for(int i = 0; i < reloadFile.length; i++) {
+				HashMap<String, String> fileInfo = saveFile(reloadFile[i], request);
+				
+				if(fileInfo.get("renameFileName") != null) {
+					BoardFile f = new BoardFile();
+					f.setfName(reloadFile[i].getOriginalFilename());
+					f.setfRname(fileInfo.get("renameFileName"));
+					f.setfURL(fileInfo.get("renamePath"));
+					f.setRefBNo(b.getbNo());
+					
+					fileList.add(f);
+				}
+			}
+		}
+		
+		b.setFileList(fileList);
+		
+		int result = bService.updateCommonBoard(b);
+		
+		if(result > 0) {
+			Board updateBoard = bService.selectCommonBoard(b.getbNo());
+			model.addAttribute("b", updateBoard);
+			
+			return "commonBoardDetail";
+		} else {
+			throw new BoardException("게시글 수정에 실패하였습니다.");
+		}
+	}
+	
+	public void deleteFile(String fRname, HttpServletRequest request) {
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "/buploadFiles";
+		
+		File f = new File(savePath + "/" + fRname);
+		
+		if(f.exists()) {
+			f.delete();
+		}
 	}
 }

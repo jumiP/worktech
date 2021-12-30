@@ -15,10 +15,7 @@
 	<mappers>
 		<mapper resource="mappers/board-mapper.xml"/>
 		<mapper resource="mappers/member-mapper.xml"/>
-<<<<<<< HEAD
-=======
 		<mapper resource="mappers/admin-mapper.xml"/>
->>>>>>> 2034f64d3349f8305d6dab48acef68c97f1a6f37
 	</mappers>
 	
 </configuration>

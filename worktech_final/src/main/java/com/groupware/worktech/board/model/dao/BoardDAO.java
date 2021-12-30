@@ -168,6 +168,10 @@ public class BoardDAO {
 		return sqlSession.selectOne("boardMapper.selectCommonBoard", bNo);
 	}
 
+	public int updateCommonBoard(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.update("boardMapper.updateCommonBoard", b);
+	}
+
 	
 
 	

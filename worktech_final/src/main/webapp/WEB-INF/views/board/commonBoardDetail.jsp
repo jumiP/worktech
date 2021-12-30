@@ -55,7 +55,7 @@
 </head>
 
 <body>
-    <c:import url="../common/headerAdmin.jsp" />
+    <c:import url="../common/headerUser.jsp" />
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
@@ -78,7 +78,7 @@
                                 <div class="form-group">
                                     <label>글 제목</label>
                                     <input type="text" class="form-control" id="bTitle" disabled
-                                        value="${ b.bTitle }">
+                                        value="[ ${b.categoryName} ] ${ b.bTitle }">
                                 </div>
                                 <div class="form-group half-col left-item">
                                     <label>작성자</label>
@@ -117,21 +117,21 @@
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-	                            <c:url var="nupView" value="nupdateView.ad">
+	                            <c:url var="cupView" value="cupdateView.bo">
 									<c:param name="bNo" value="${ b.bNo }"/>
 									<c:param name="page" value="${ page }"/>
 									<c:param name="upd" value="Y"></c:param>
 								</c:url>
-                                <button class="btn btn-primary mr-1" type="button" onclick="location.href='${ nupView }'">수정</button>
+                                <button class="btn btn-primary mr-1" type="button" onclick="location.href='${ cupView }'">수정</button>
                                 
-								<form action="noticeDelete.ad" method="post" class="formStyle">
+								<form action="commonDelete.bo" method="post" class="formStyle">
 									<input type="hidden" name="bNo" value="${ b.bNo }">
-                                	<button class="btn btn-danger" type="submit" onclick="return deleteNotice();">삭제</button>
+                                	<button class="btn btn-danger" type="submit" onclick="return deleteCommonBoard();">삭제</button>
                                 </form>
-                                <c:url var="nlist" value="noticeList.ad">
+                                <c:url var="clist" value="commonList.bo">
 									<c:param name="page" value="${ page }"/>
 								</c:url>
-                                <button class="btn btn-secondary" type="button" onclick="location.href='${ nlist }'">목록으로</button>
+                                <button class="btn btn-secondary" type="button" onclick="location.href='${ clist }'">목록으로</button>
                             </div>
                         </div>
                     </div>
@@ -146,14 +146,7 @@
     <script src="resources/dist/assets/modules/jquery-selectric/jquery.selectric.min.js"></script>
 
 	<script>
-		$(function() {
-			var critical = '${ b.bCritical }';
-			if(critical.trim() == "IMPORTANT"){
-				$('#bTitle').css({'color':'red', 'font-weight':'900'});
-			}
-		});
-		
-		function deleteNotice() {
+		function deleteCommonBoard() {
 			var result = confirm('정말 삭제하시겠습니까?');
 			
 			if(!result){

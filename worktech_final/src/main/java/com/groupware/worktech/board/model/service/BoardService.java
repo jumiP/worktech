@@ -163,7 +163,31 @@ public class BoardService {
 	}
 
 	public Board selectCommonBoard(int bNo) {
-		return bDAO.selectCommonBoard(sqlSession, bNo);
+		int result = bDAO.addReadCount(sqlSession, bNo);
+		
+		Board b = null;
+		if(result > 0) {
+			b = bDAO.selectCommonBoard(sqlSession, bNo);
+		}
+		
+		return b;
+	}
+
+	public int deleteCommonBoardFile(int fNo) {
+		return bDAO.deleteNoticeFile(sqlSession, fNo);
+	}
+
+
+	public int updateCommonBoard(Board b) {
+		int result = bDAO.updateCommonBoard(sqlSession, b);
+		
+		if(result > 0 && !b.getFileList().isEmpty()) {
+			for(int i = 0; i < b.getFileList().size(); i++) {
+				result += bDAO.updateNoticeFile(sqlSession, b.getFileList().get(i));
+			}
+		}
+			
+		return result;
 	}
 
 	

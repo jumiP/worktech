@@ -259,7 +259,11 @@
     </div>
     <c:import url="../common/footer.jsp" />
     
+    <c:set var="category" value="${ category }"/>
+    
     <script>
+    	var category = '${category}';
+    	
 	    $(function() {
 			$('#tb tbody td').mouseenter(function() {
 				$(this).parent().css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
@@ -267,9 +271,11 @@
 				$(this).parent().css({'background':'white', 'font-weight':'normal'});
 			}).click(function() {
 				var bNo = $(this).parent().children().eq(0).text();
-				location.href="cdetail.bo?bNo=" + bNo + '&page=' + ${pi.currentPage};
+				
+				location.href="cdetail.bo?bNo=" + bNo + '&page=' + ${pi.currentPage} + '&category=' + category;
 			});
 		});
+	    
     </script>
 
 

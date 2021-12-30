@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.groupware.worktech.board.model.dao.BoardDAO;
 import com.groupware.worktech.board.model.vo.Board;
@@ -28,7 +29,8 @@ public class BoardService {
 	public ArrayList<Board> selectNoticeList(PageInfo pi) {
 		return bDAO.selectNoticeList(sqlSession, pi);
 	}
-
+	
+	@Transactional
 	public int insertNotice(Board b) {
 		int result = bDAO.insertNotice(sqlSession, b);
 		
@@ -41,6 +43,7 @@ public class BoardService {
 		return result;
 	}
 
+	@Transactional
 	public Board selectNotice(int bNo, String upd) {
 		Board b = null;
 		
@@ -66,6 +69,7 @@ public class BoardService {
 		return bDAO.deleteNoticeFile(sqlSession, fNo);
 	}
 	
+	@Transactional
 	public int updateNotice(Board b) {
 		int result = bDAO.updateNotice(sqlSession, b);
 		
@@ -89,7 +93,6 @@ public class BoardService {
 	public ArrayList<Board> selectNoticeSearchList(PageInfo pi, HashMap<String, String> search) {
 		return bDAO.selectNoticeSearchList(sqlSession, pi, search);
 	}
-	
 	
 	
 	

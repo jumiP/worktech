@@ -44,7 +44,7 @@
                         </div>
                         <div class="page-search">
                             <div class="mt-3">
-                                <a href="index.html">Back to Home</a>
+                                <a href="index.jsp">Back to Home</a>
                             </div>
                         </div>
                     </div>

@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.groupware.worktech.admin.model.service.AdminService;
 import com.groupware.worktech.admin.model.vo.Department;
@@ -25,11 +29,16 @@ import com.groupware.worktech.member.model.vo.Member;
 @Controller
 public class MemberController {
 	
+	private Logger logger = LoggerFactory.getLogger(MemberController.class);
+	
 	@Autowired
 	private MemberService mService; 
 	
 	@Autowired
-	private AdminService aService; 
+	private AdminService aService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcrypt;
 	
 	@RequestMapping("enrollView.me")
 	public String enrollView(Model model, @ModelAttribute Department d) {
@@ -83,28 +92,31 @@ public class MemberController {
 		}
 	}	
 	
-	
+	// 로그인(암호화) --> DB에 Spring 콘솔에 입력된 비밀번호(암호화)를 넣고 저장 후 로그인!
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
-	public String login(Member m, Model model, HttpServletRequest request) {		
-		String id = request.getParameter("mNo");
-		String pwd = request.getParameter("pwd");
-			
-//		System.out.println("id1 : " + id);
-//		System.out.println("pwd1 : " + pwd);		
-			
-		Member loginUser = mService.memberLogin(m);
-			
-		if(loginUser != null) {
-			model.addAttribute("loginUser", loginUser);
-				
+	public String login(Member m, Model model) {	
+		
+		System.out.println(bcrypt.encode(m.getPwd()));
+		
+		Member loginMember = mService.memberLogin(m);
+		
+		if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
+			model.addAttribute("loginUser", loginMember);
+			logger.info(loginMember.getmNo());
 			return "redirect:home.do";
-			
 		} else {
 			throw new MemberException("로그인에 실패하였습니다.");
 		}
+		
 	}
 	
-	
+	//로그아웃
+	@RequestMapping("logout.me")
+	public String logout(SessionStatus session) {
+		session.setComplete();
+		
+		return "redirect:index.jsp";
+	}
 	
 	
 	

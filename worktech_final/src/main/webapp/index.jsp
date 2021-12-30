@@ -2147,8 +2147,8 @@ label + .MuiInput-formControl {
 <div id="root">
 	<div class="MuiGrid-root jss1 MuiGrid-container">
 		<div class="jss2">
-			<img src="./static/media/logo.3d432ca2.svg" alt="logo" class="jss3">
-			<p class="MuiTypography-root jss4 MuiTypography-body1">Material Admin</p>
+			<img src="resources/dist/assets/img/login_logo.png" alt="logo" class="jss3">
+			<p class="MuiTypography-root jss4 MuiTypography-body1">WorkTech</p>
 		</div>
 		<div class="jss5">
 		<form action="login.me" method="post">
@@ -2175,11 +2175,11 @@ label + .MuiInput-formControl {
 				</div>
 				<div class="jss21">
 					<button class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge" tabindex="0" id="loginBtn">
-						<span class="MuiButton-label">Login</span>
+						<span class="MuiButton-label">로그인</span>
 						<span class="MuiTouchRipple-root"></span>
 					</button>
-					<button class="MuiButtonBase-root MuiButton-root MuiButton-text jss22 MuiButton-textPrimary MuiButton-textSizeLarge MuiButton-sizeLarge" tabindex="0" type="button">
-						<span class="MuiButton-label">Forget Password</span>
+					<button class="MuiButtonBase-root MuiButton-root MuiButton-text jss22 MuiButton-textPrimary MuiButton-textSizeLarge MuiButton-sizeLarge" tabindex="0" type="button" onclick="pwdBtn()">
+						<span class="MuiButton-label">비밀번호찾기</span>
 						<span class="MuiTouchRipple-root"></span>
 					</button>
 				</div>
@@ -2189,60 +2189,9 @@ label + .MuiInput-formControl {
 	</div>
 </div>
 	<script>
-		!function(e){
-			function r(r){
-				for(var n,a,i=r[0],l=r[1],f=r[2],p=0,s=[];p<i.length;p++)
-					a=i[p],Object.prototype.hasOwnProperty.call(o,a)&&o[a]&&s.push(o[a][0]),o[a]=0;
-				for(n in l)
-					Object.prototype.hasOwnProperty.call(l,n)&&(e[n]=l[n]);
-				for(c&&c(r);s.length;)
-					s.shift()();
-				return u.push.apply(u,f||[]),t()
-			}
-			
-			function t(){
-				for(var e,r=0;r<u.length;r++)
-					{for(var t=u[r],n=!0,i=1;i<t.length;i++)
-						{var l=t[i];0!==o[l]&&(n=!1)}
-						n&&(u.splice(r--,1),e=a(a.s=t[0]))
-					}
-				return e
-			}
-			
-			var n={},o={1:0},u=[];
-			
-			function a(r){
-				if(n[r])
-					return n[r].exports;
-				var t=n[r]={i:r,l:!1,exports:{}};
-				return e[r].call(t.exports,t,t.exports,a),t.l=!0,t.exports
-			}
-			
-			a.m=e,a.c=n,a.d=function(e,r,t){a.o(e,r)||Object.defineProperty(e,r,{
-				enumerable:!0,get:t})
-			},a.r=function(e){
-				"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})
-			},a.t=function(e,r){
-				if(1&r&&(e=a(e)),8&r)
-					return e;
-				if(4&r&&"object"==typeof e&&e&&e.__esModule)
-					return e;
-				var t=Object.create(null);
-				if(a.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)
-					for(var n in e)
-						a.d(t,n,function(r){return e[r]}.bind(null,n));
-				return t
-			},a.n=function(e){
-				var r=e&&e.__esModule?
-					function(){
-						return e.default;
-					}:function(){
-						return e
-					};return a.d(r,"a",r),r},a.o=function(e,r){
-						return Object.prototype.hasOwnProperty.call(e,r)},a.p="./";
-						var i=this["webpackJsonpreact-material-admin"]=this["webpackJsonpreact-material-admin"]||[],l=i.push.bind(i);i.push=r,i=i.slice();
-						for(var f=0;f<i.length;f++)
-							r(i[f]);var c=l;t()}([])
+		function pwdBtn(){
+			alert("비밀번호 찾기 문의는 관리자에게 연락 부탁드립니다 \n\n02)111-2222")
+		}
 	</script>
 	<script src="./static/js/2.af6eef2b.chunk.js"></script>
 	<script src="./static/js/main.fc3e922e.chunk.js"></script>

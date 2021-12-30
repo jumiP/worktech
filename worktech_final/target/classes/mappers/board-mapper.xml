@@ -69,19 +69,64 @@
 		and b_status = 'N'
 	</update>
 	
+	<select id="selectFile" resultMap="fileResultSet">
+		select *
+		from board_file
+		where f_no = #{fNO}
+	</select>
 	
+	<delete id="deleteNoticeFile">
+		delete from board_file
+		where f_no = #{fNo}
+	</delete>
 	
+	<update id="updateNotice">
+		update board
+		set b_title = #{bTitle}, b_content = #{bContent}, b_date = #{bDate}, b_critical = #{bCritical}
+		where b_no = #{bNo}
+		and b_status = 'N'
+	</update>
 	
+	<insert id="updateNoticeFile">
+		insert into board_file
+		values(SEQ_FILE.NEXTVAL, #{fURL}, #{fName}, #{fRname}, #{refBNo})
+	</insert>
 	
+	<update id="deleteNotice">
+		update board
+		set b_status = 'Y'
+		where b_no = #{bNo}
+	</update>
 	
+	<select id="getNoticeSearchListCount" resultType="_int">
+		select count(*)
+		from board 
+		where b_status = 'N'
+			  and b_type = #{type}
+		<if test="condition == 'title'">
+			  and b_title like '%' || #{value} || '%'
+		</if>
+		<if test="condition == 'content'">
+			  and b_content like '%' || #{value} || '%'
+		</if>
+	</select>
 	
-	
-	
-	
-	
-	
-	
-	
+	<select id="selectNoticeSearchList" resultMap="noticeResultSet">
+		select B_NO, B_TITLE, B_CONTENT, B_DATE, B_COUNT, B_TYPE, B_CRITICAL, B_WRITER,
+       		   NAME, B_STATUS, F_NO, F_URL, F_NAME, F_RNAME
+		from board
+	 		 join member on (b_writer = m_no)
+	 		 left join board_file using (b_no)
+		where b_status = 'N'
+      	  and b_type = #{type}
+      	  <if test="condition == 'title'">
+			  and b_title like '%' || #{value} || '%'
+		  </if>
+		  <if test="condition == 'content'">
+			  and b_content like '%' || #{value} || '%'
+		  </if>
+		order by b_no desc
+	</select>
 	
 	
 	
@@ -261,5 +306,16 @@
 			  and b_status = 'N'
 			  and category_no = #{category}
 		order by b_no desc
+	</select>
+	
+	<select id="selectCommonBoard" resultMap="commonBoardResultSet">
+		select b_no, b_title, b_content, b_date, b_type, b_writer, name, category_no, category_name, b_status,
+			   f_no, f_url, f_name, f_rname
+		from board
+			 join member on(b_writer = m_no)
+			 join category using(category_no)
+			 left join board_file using(b_no)
+		where b_status = 'N'
+			  and b_no = #{bNo}
 	</select>
 </mapper>

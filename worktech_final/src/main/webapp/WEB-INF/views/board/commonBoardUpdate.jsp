@@ -109,7 +109,10 @@
 
             <div class="section-body">
                 <h2 class="section-title">일반 게시판 수정</h2>
-                <form action="cupdate.bo" method="post" enctype="Multipart/form-data">
+                <c:url var="cupdate" value="cupdate.bo">
+                	<c:param name="upd" value="Y"/>
+                </c:url>
+                <form action="${ cupdate }" method="post" enctype="Multipart/form-data">
                 	<input type="hidden" name="page" value="${ page }">
 					<input type="hidden" name="bNo" value="${ b.bNo }">
                 	

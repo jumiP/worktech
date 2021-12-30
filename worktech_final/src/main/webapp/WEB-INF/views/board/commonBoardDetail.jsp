@@ -117,19 +117,24 @@
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-	                            <c:url var="cupView" value="cupdateView.bo">
-									<c:param name="bNo" value="${ b.bNo }"/>
+                            	
+                            	<c:if test="${ loginUser.mNo eq b.bWriter }">
+		                            <c:url var="cupView" value="cupdateView.bo">
+										<c:param name="bNo" value="${ b.bNo }"/>
+										<c:param name="page" value="${ page }"/>
+										<c:param name="upd" value="Y"/>
+									</c:url>
+									
+	                                <button class="btn btn-primary mr-1" type="button" onclick="location.href='${ cupView }'">수정</button>
+	                                
+									<form action="commonDelete.bo" method="post" class="formStyle">
+										<input type="hidden" name="bNo" value="${ b.bNo }">
+	                                	<button class="btn btn-danger" type="submit" onclick="return deleteCommonBoard();">삭제</button>
+	                                </form>
+								</c:if>
+								<c:url var="clist" value="commonList.bo">
 									<c:param name="page" value="${ page }"/>
-									<c:param name="upd" value="Y"></c:param>
-								</c:url>
-                                <button class="btn btn-primary mr-1" type="button" onclick="location.href='${ cupView }'">수정</button>
-                                
-								<form action="commonDelete.bo" method="post" class="formStyle">
-									<input type="hidden" name="bNo" value="${ b.bNo }">
-                                	<button class="btn btn-danger" type="submit" onclick="return deleteCommonBoard();">삭제</button>
-                                </form>
-                                <c:url var="clist" value="commonList.bo">
-									<c:param name="page" value="${ page }"/>
+									<c:param name="category" value="${ category }"/>
 								</c:url>
                                 <button class="btn btn-secondary" type="button" onclick="location.href='${ clist }'">목록으로</button>
                             </div>

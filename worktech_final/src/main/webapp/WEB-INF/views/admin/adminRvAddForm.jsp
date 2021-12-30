@@ -16,7 +16,7 @@
 </head>
 
 <body>
-	<c:import url="common/headerAdmin.jsp" />
+	<c:import url="../common/headerAdmin.jsp" />
 	<!-- Main Content -->
 	<div class="main-content">
 		<section class="section">
@@ -47,20 +47,14 @@
 								</div>
 								<div class="form-group">
 									<label class="d-block">사용 범위</label>
-									<div class="form-check">
-										<input class="form-check-input" type="checkbox" id="defaultCheck1" name="range">
-										<label class="form-check-label" for="defaultCheck1">
-											전사 </label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" type="checkbox" id="defaultCheck2" name="range">
-										<label class="form-check-label" for="defaultCheck2">
-											영업부 </label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" type="checkbox" id="defaultCheck3" name="range">
-										<label class="form-check-label" for="defaultCheck3">부서 추가 예정 </label>
-									</div>
+									<c:set var="i" value="1"/>
+									<c:forEach var="d" items="${ list }">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" id="defaultCheck${ i }" name="department">
+											<label class="form-check-label" for="defaultCheck${ i }">${ d.dName }</label>
+										</div>
+										<c:set var="i" value="${ i + 1 }"/>
+									</c:forEach>
 								</div>
 								<div class="form-group">
 									<label>예약 가능 수량</label> <input type="number" min="1" class="form-control" required value="1">
@@ -76,10 +70,24 @@
 			</div>
 		</section>
 	</div>
-	<c:import url="common/footer.jsp" />
+	<c:import url="../common/footer.jsp" />
 
 	<script>
 		document.getElementById('addDate').value = new Date().toISOString().substring(0, 10);;
+		
+		// 전체 선택
+		function selectAll(selectAll)  {
+		  const checkboxes 
+		       = document.getElementsByName('department');
+		  
+		  checkboxes.forEach((checkbox) => {
+		    checkbox.checked = selectAll.checked;
+		  });
+		}
+		
+		$('#defaultCheck1').on('click', function() {
+			selectAll(this);
+		});
 	</script>
 </body>
 

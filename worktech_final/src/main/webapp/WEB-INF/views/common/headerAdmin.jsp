@@ -106,13 +106,7 @@
                                 <span>예약 관리</span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="nav-link" href="bootstrap-breadcrumb.html">예약 자산 목록</a>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="bootstrap-alert.html">예약 자산 추가</a>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="bootstrap-badge.html">예약 자산 수정</a>
+                                    <a class="nav-link" href="rvProductList.ad">예약 자산 목록</a>
                                 </li>
                             </ul>
                         </li>
@@ -122,10 +116,10 @@
                                 <span>게시판 관리</span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="nav-link" href="components-article.html">공지사항 게시판</a>
+                                    <a class="nav-link" href="noticeList.ad">공지사항 게시판</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="components-avatar.html">일반 게시판</a>
+                                    <a class="nav-link" href="commonList.bo">일반 게시판</a>
                                 </li>
                                 <li>
                                     <a class="nav-link" href="components-chat-box.html">익명 게시판</a>

@@ -9,6 +9,7 @@
 		<typeAlias type="com.groupware.worktech.board.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.groupware.worktech.board.model.vo.BoardFile" alias="BoardFile"/>
 		<typeAlias type="com.groupware.worktech.admin.model.vo.Department" alias="Department"/>
+		<typeAlias type="com.groupware.worktech.member.model.vo.Member" alias="Member"/>
 	</typeAliases>
 	
 	<mappers>

@@ -16,4 +16,8 @@ public class MemberDAO {
 		return sqlSession.selectOne("memberMapper.duplicateMNo", mNo);
 	}
 
+	public Member memberLogin(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.selectOne("memberMapper.memberLogin", m);
+	}
+
 }

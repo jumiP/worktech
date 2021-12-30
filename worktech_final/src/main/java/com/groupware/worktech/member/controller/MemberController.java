@@ -2,18 +2,23 @@ package com.groupware.worktech.member.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.groupware.worktech.member.model.exception.MemberException;
 import com.groupware.worktech.member.model.service.MemberService;
 import com.groupware.worktech.member.model.vo.Member;
 
+@SessionAttributes("loginUser")
 @Controller
 public class MemberController {
 	
@@ -59,7 +64,25 @@ public class MemberController {
 		}
 	}	
 	
-	
+	@RequestMapping(value="login.me", method=RequestMethod.POST)
+	public String login(Member m, Model model, HttpServletRequest request) {		
+		String id = request.getParameter("mNo");
+		String pwd = request.getParameter("pwd");
+			
+//		System.out.println("id1 : " + id);
+//		System.out.println("pwd1 : " + pwd);		
+			
+		Member loginUser = mService.memberLogin(m);
+			
+		if(loginUser != null) {
+			model.addAttribute("loginUser", loginUser);
+				
+			return "redirect:home.do";
+			
+		} else {
+			throw new MemberException("로그인에 실패하였습니다.");
+		}
+	}
 	
 	
 	

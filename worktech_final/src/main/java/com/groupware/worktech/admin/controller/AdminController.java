@@ -13,15 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.groupware.worktech.admin.model.exception.AdminException;
 import com.groupware.worktech.admin.model.service.AdminService;
 import com.groupware.worktech.admin.model.vo.Department;
+import com.groupware.worktech.admin.model.vo.RvProduct;
+import com.groupware.worktech.admin.model.vo.RvRange;
 import com.groupware.worktech.board.model.exception.BoardException;
 import com.groupware.worktech.board.model.service.BoardService;
 import com.groupware.worktech.board.model.vo.Board;
@@ -343,6 +345,28 @@ public class AdminController {
 		}
 		
 		return "adminRvAddForm";
+	}
+	
+	@RequestMapping("addRvProduct.ad")
+	public String addRvProduct(@ModelAttribute RvProduct rp, @RequestParam(value = "department", required = false) int[] dNoes) {
+		ArrayList<RvRange> rrList = new ArrayList<RvRange>();		
+		
+		for(int i = 0; i < dNoes.length; i++) {
+			RvRange r = new RvRange();
+			r.setPdDNo(dNoes[i]);
+			rrList.add(r);
+		}
+		
+		rp.setRvRange(rrList);
+		
+		int result = aService.insertRvProduct(rp);
+		
+		if(result >= rrList.size() + 1) {
+			return "redirect:rvProductList.ad";
+		} else {
+			throw new AdminException("예약 자산 등록에 실패하였습니다."); 
+		}
+		
 	}
 	
 }

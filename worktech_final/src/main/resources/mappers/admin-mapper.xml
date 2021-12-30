@@ -5,6 +5,7 @@
 		select *
 		from department
 		where d_status = 'Y'
+		and d_name != '전체'
 	</select>
 	
 	<resultMap type="Department" id="departmentResultSet">
@@ -14,4 +15,9 @@
 		<result column="D_DATE" property="dDate"/>
 		<result column="D_STATUS" property="dStatus"/>
 	</resultMap>
+	
+	<insert id="insertRvProduct">
+		insert into rv_product
+		values(SEQ_RVP.NEXTVAL, #{pdNo}, #{pdCategory}, #{pdName}, #{pdDate}, #{pdCount})
+	</insert>
 </mapper>

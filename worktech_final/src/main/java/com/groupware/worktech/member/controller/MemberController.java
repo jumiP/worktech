@@ -1,6 +1,7 @@
 package com.groupware.worktech.member.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.groupware.worktech.admin.model.service.AdminService;
+import com.groupware.worktech.admin.model.vo.Department;
 import com.groupware.worktech.member.model.exception.MemberException;
 import com.groupware.worktech.member.model.service.MemberService;
 import com.groupware.worktech.member.model.vo.Member;
@@ -25,14 +28,30 @@ public class MemberController {
 	@Autowired
 	private MemberService mService; 
 	
+	@Autowired
+	private AdminService aService; 
+	
+	@RequestMapping("enrollView.me")
+	public String enrollView(Model model, @ModelAttribute Department d) {
+		
+		// 부서 등록
+		ArrayList<Department> list = aService.getDepartmentList();
+				
+		if(list != null) {
+			model.addAttribute("list", list);
+		}
+		
+		return "adminMemAddForm";
+	}
 	
 	@RequestMapping("minsert.me")
-	public String insertMember(@ModelAttribute Member m/* , @RequestParam("dName") String dName */) {
+	public String insertMember(@ModelAttribute Member m) {
 		
 		// 비밀번호 : 등록한 이메일 앞자리
 		// 비밀번호 암호화 => 나중에
 		String pwd = m.getEmail().substring(0, m.getEmail().indexOf("@"));
 		m.setPwd(pwd);
+		
 		
 		
 		System.out.println(m);
@@ -63,6 +82,7 @@ public class MemberController {
 			e.printStackTrace();
 		}
 	}	
+	
 	
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
 	public String login(Member m, Model model, HttpServletRequest request) {		

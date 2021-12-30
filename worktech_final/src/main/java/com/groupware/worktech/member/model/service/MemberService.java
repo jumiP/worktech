@@ -24,5 +24,9 @@ public class MemberService {
 		return mDAO.duplicateMNo(sqlSession, mNo);
 	}
 
+	public Member memberLogin(Member m) {
+		return mDAO.memberLogin(sqlSession, m);
+	}
+
 
 }

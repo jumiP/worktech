@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -161,11 +162,16 @@ public class AdminController {
 
 	@RequestMapping("ndetail.ad")
 	public String noticeDetail(@RequestParam("page") int page, @RequestParam("bNo") int bNo,
-			@RequestParam(value = "upd", required = false) String upd, Model model) {
+			@RequestParam(value = "upd", required = false) String upd, @RequestParam(value = "boardLimit", required = false) int boardLimit, 
+			@RequestParam(value ="searchCondition", required = false) String condition, @RequestParam(value = "searchValue", required = false) String value, Model model) {
 		Board b = bService.selectNotice(bNo, upd);
 
-		model.addAttribute("b", b).addAttribute("page", page);
-
+		model.addAttribute("b", b).addAttribute("page", page).addAttribute("boardLimit", boardLimit);
+		
+		if(value != null) {
+			model.addAttribute("searchCondition", condition).addAttribute("searchValue", value);
+		}
+		
 		return "adminNoticeDetail";
 	}
 
@@ -414,35 +420,55 @@ public class AdminController {
 		return "adminRvUpdate";
 	}
 	
+	@Transactional
 	@RequestMapping("rvupdate.ad")
-	public String updateRvProduct(@ModelAttribute RvProduct rp, @RequestParam(value = "department", required = false) List<Integer> editRrList) {
-		List<Integer> originRrList = aService.getOriginRvRangeList(rp.getPdNo());
-//		ArrayList<Integer> insertRrList = originRrList.removeAll(editRrList);
-		System.out.println(originRrList.removeAll(editRrList));
-//		ArrayList<RvRange> deleteRrList = editRrList.removeAll(c)
+	public String updateRvProduct(@ModelAttribute RvProduct rp, @RequestParam(value = "department", required = false) ArrayList<Integer> editRrList,
+								  @RequestParam("page") int page) {
+		ArrayList<Integer> originRrList = aService.getOriginRvRangeList(rp.getPdNo());
+		ArrayList<Integer> insertRrNoList = new ArrayList<Integer>(); // 받아온 목록 - DB에 저장된 목록 (차집합)
+		insertRrNoList.addAll(editRrList); 
+		ArrayList<Integer> deleteRrNoList = new ArrayList<Integer>(); // DB에 저장된 목록 - 받아온 목록 (차집합)
+		deleteRrNoList.addAll(originRrList);
+		
+		for(int i : originRrList) {
+			for(int j : editRrList) {
+				if(i == j) {
+					insertRrNoList.remove((Integer)j);
+					deleteRrNoList.remove((Integer)j);
+				}
+			}
+		}
+		
+		ArrayList<RvRange> insertRrList = new ArrayList<RvRange>();
+		ArrayList<RvRange> deleteRrList = new ArrayList<RvRange>();
+		
+		for(int pdDNo : insertRrNoList) {
+			RvRange rr = new RvRange();
+			rr.setPdDNo(pdDNo);
+			rr.setPdNo(rp.getPdNo());
+			
+			insertRrList.add(rr);
+		}
+		
+		for(int pdDNo : deleteRrNoList) {
+			RvRange rr = new RvRange();
+			rr.setPdDNo(pdDNo);
+			rr.setPdNo(rp.getPdNo());
+			
+			deleteRrList.add(rr);
+		}
 
-//		for (int i = 0; i < dNoes.length;) {
-//			for(int j = 0; j < originRrList.size(); j++) {
-//				if(dNoes[i] == originRrList.get(j).getPdDNo()) {
-//					i++;
-//				}
-//			}
-//			
-//			RvRange r = new RvRange();
-//			r.setPdDNo(dNoes[i]);
-//			rrList.add(r);
-//			
-//		}
-//
-//		rp.setRvRange(rrList);
-//
-//		int result = aService.updateRvProduct(rp);
-//
-//		if (result >= 0) {
-			return "redirect:rvpdetail.ad?bNo=" + rp.getPdNo();
-//		} else {
-//			throw new AdminException("예약 자산 수정에 실패하였습니다.");
-//		}
+		int result = 0;
+		
+		result += aService.updateRvRange(insertRrList);
+		result += aService.deleteRvRange(deleteRrList);
+		
+		if (result >= insertRrList.size() + deleteRrList.size()) {
+			return "redirect:rvpdetail.ad?pdNo=" + rp.getPdNo() + "&page=" + page;
+		} else {
+			throw new AdminException("예약 자산 수정에 실패하였습니다.");
+		}
+		
 	}
 	
 	@RequestMapping("rvProductDelete.ad")

@@ -209,7 +209,7 @@
                                 <span>게시판</span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="nav-link" href="components-article.html">공지 게시판</a>
+                                    <a class="nav-link" href="noticeList.ad">공지사항 게시판</a>
                                 </li>
                                 <li>
                                     <a class="nav-link" href="commonList.bo">일반 게시판</a>

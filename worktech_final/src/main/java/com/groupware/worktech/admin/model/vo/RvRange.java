@@ -1,9 +1,5 @@
 package com.groupware.worktech.admin.model.vo;
 
-/**
- * @author na
- *
- */
 public class RvRange {
 	private int rangeNo;
 	private int pdNo;

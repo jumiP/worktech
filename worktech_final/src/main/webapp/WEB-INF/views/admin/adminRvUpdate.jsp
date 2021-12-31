@@ -47,14 +47,18 @@
                     <div class="breadcrumb-item active"><a href="rvProductList.ad">예약 자산 목록</a></div>
 				</div>
 			</div>
+			<c:url var="rvupdate" value="rvupdate.ad">
+				<c:param name="page" value="${ page }"/>
+			</c:url>
 
 			<div class="section-body">
 				<h2 class="section-title">예약 자산 수정</h2>
-				<form action="rvupdate.ad" method="post">
+				<form action="${ rvupdate }" method="post">
 					<div class="row">
 						<div class="col-12 col-md-12 col-lg-12">
 							<div class="card">
 									<div class="card-body">
+										<input type="hidden" name="pdNo" value="${ rp.pdNo }">
 										<div class="form-group">
 											<label>예약 자산 카테고리</label> <input type="text" name="pdCategory" class="form-control" value="${ rp.pdCategory }">
 										</div>

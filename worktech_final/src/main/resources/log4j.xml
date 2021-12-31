@@ -10,13 +10,6 @@
 		</layout>
 	</appender>
 	
-	<appender name="chatConsole" class="org.apache.log4j.ConsoleAppender">
-		<param name="Target" value="System.out"/>
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-5p:%C{1}.%M{%L} - %m%n"/>
-		</layout>
-	</appender>
-	
 	<!-- Application Loggers -->
 	<logger name="com.groupware.worktech">
 		<level value="info" />
@@ -37,11 +30,6 @@
 
 	<logger name="org.springframework.web">
 		<level value="info" />
-	</logger>
-	
-	<logger name="com.groupware.worktech.chat.common" additivity="false">
-		<level value="debug"/>
-		<appender-ref ref="chatConsole"/>
 	</logger>
 
 	<!-- Root Logger -->

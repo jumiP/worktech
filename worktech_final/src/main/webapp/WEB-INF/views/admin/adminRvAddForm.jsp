@@ -23,10 +23,8 @@
 			<div class="section-header">
 				<h1>예약 자산 추가</h1>
 				<div class="section-header-breadcrumb">
-					<div class="breadcrumb-item active">
-						<a href="#">예약 관리</a>
-					</div>
-					<div class="breadcrumb-item">예약 자산 추가</div>
+					<div class="breadcrumb-item">예약 관리</div>
+                    <div class="breadcrumb-item active"><a href="rvProductList.ad">예약 자산 목록</a></div>
 				</div>
 			</div>
 

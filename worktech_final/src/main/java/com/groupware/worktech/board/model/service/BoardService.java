@@ -165,21 +165,20 @@ public class BoardService {
 		return bDAO.getCategoryListCount(sqlSession, category);
 	}
 
-	public Board selectCommonBoard(int bNo) {
-		int result = bDAO.addReadCount(sqlSession, bNo);
-		
+	public Board selectCommonBoard(int bNo, String upd) {
 		Board b = null;
-		if(result > 0) {
+		if(upd != null && upd.equals("Y")) {
 			b = bDAO.selectCommonBoard(sqlSession, bNo);
+		} else {
+			int result = bDAO.addReadCount(sqlSession, bNo);
+			
+			if(result > 0) {
+				b = bDAO.selectCommonBoard(sqlSession, bNo);
+			}
 		}
 		
 		return b;
 	}
-
-	public int deleteCommonBoardFile(int fNo) {
-		return bDAO.deleteNoticeFile(sqlSession, fNo);
-	}
-
 
 	public int updateCommonBoard(Board b) {
 		int result = bDAO.updateCommonBoard(sqlSession, b);

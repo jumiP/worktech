@@ -20,6 +20,8 @@
 		insert into rv_product
 		values(SEQ_RVP.NEXTVAL, #{pdCategory}, #{pdName}, #{pdDate}, #{pdCount}, DEFAULT)
 	</insert>
+<<<<<<< HEAD
+=======
 	
 	<insert id="insertRvRange">
 		insert into rv_pd_range
@@ -75,4 +77,5 @@
 	<select id="getOriginRvRangeList" resultType="_int">
 		select pd_dno from rv_pd_range where pd_no = #{pdNO}
 	</select>
+>>>>>>> 4a65d4caa9c6b44a44b482df592fbcf24dd2a29b
 </mapper>

@@ -324,4 +324,46 @@
 		set b_title = #{bTitle}, b_date = #{bDate}, b_content = #{bContent}, category_no = #{categoryNo}
 		where b_no = #{bNo}
 	</update>
+	
+	<select id="getCommonSearchListCount" resultType="_int">
+		select count(*)
+		from board
+		<where>
+			<if test="searchCategory == 'title'">
+				b_title like '%' || #{searchValue} || '%'
+			</if>
+			<if test="searchCategory == 'content'">
+				and b_content like '%' || #{searchValue} || '%'
+			</if>
+			<if test="category != null">
+				and category_no = #{category}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectCommonSearchList" resultMap="commonBoardResultSet">
+		select b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, category_no, category_name, b_status,
+			   f_no, f_url, f_name, f_rname
+		from board
+			 join member on(b_writer = m_no)
+			 join category using(category_no)
+			 left join board_file using(b_no)
+		<where>
+			b_type = 'COMMON'
+			and b_status = 'N'
+			<if test="searchCategory == 'title'">
+				and b_title like '%' || #{searchValue} || '%'
+			</if>
+			<if test="searchCategory == 'content'">
+				and b_content like '%' || #{searchValue} || '%'
+			</if>
+			<if test="searchCategory == 'writer'">
+				and name like '%' || #{searchValue} || '%'
+			</if>
+			<if test="category != null">
+				and category_no = #{category}
+			</if>
+		</where>	  
+		order by b_no desc
+	</select>
 </mapper>

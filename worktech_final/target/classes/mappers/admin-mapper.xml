@@ -75,4 +75,14 @@
 	<select id="getOriginRvRangeList" resultType="_int">
 		select pd_dno from rv_pd_range where pd_no = #{pdNO}
 	</select>
+	
+	<insert id="updateRvRange">
+		insert into rv_pd_range
+		values(SEQ_RVP_RANGE.NEXTVAL, #{pdNo}, #{pdDNo}) 
+	</insert>
+	
+	<delete id="deleteRvRange">
+		delete from rv_pd_range
+		where pd_no = #{pdNo} and pd_dno = #{pdDNo}
+	</delete>
 </mapper>

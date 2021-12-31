@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.groupware.worktech.board.model.vo.Board;
 import com.groupware.worktech.board.model.vo.BoardFile;
+import com.groupware.worktech.board.model.vo.Reply;
 import com.groupware.worktech.common.PageInfo;
 
 @Repository("bDAO")
@@ -185,6 +186,14 @@ public class BoardDAO {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonSearchList", searchListMap, rowBounds);
+	}
+
+	public int insertCommonReply(SqlSessionTemplate sqlSession, Reply r) {
+		return sqlSession.insert("boardMapper.insertCommonReply", r);
+	}
+
+	public ArrayList<Reply> selectCommonReplyList(SqlSessionTemplate sqlSession, int bNo) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonReplyList", bNo);
 	}
 
 	

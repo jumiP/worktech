@@ -12,6 +12,10 @@
 		<typeAlias type="com.groupware.worktech.member.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.groupware.worktech.admin.model.vo.RvProduct" alias="RvProduct"/>
 		<typeAlias type="com.groupware.worktech.admin.model.vo.RvRange" alias="RvRange"/>
+<<<<<<< HEAD
+		<typeAlias type="com.groupware.worktech.board.model.vo.Reply" alias="Reply"/>
+=======
+>>>>>>> b5f418561460094b135701b4bebe73554b8ef266
 	</typeAliases>
 	
 	<mappers>

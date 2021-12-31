@@ -51,6 +51,23 @@
         	margin-right: 10px;
         	margin-left: 5px;
         }
+
+        #replyBox{
+        	resize: none;
+        }
+        
+        #rTable{
+        	width: 100%;
+        	border-collapse: collapse;
+        }
+        
+        #rTable td{
+        	padding: 12px;
+        	border-top: 1px solid #dff5fa;
+        	border-bottom: 1px solid #dff5fa;
+        }
+        
+        
     </style>
 </head>
 
@@ -155,6 +172,15 @@
 								</c:if>
                                 <button class="btn btn-secondary" type="button" onclick="location.href='${ clist }'">목록으로</button>
                             </div>
+                            <div class="card-footer form-group">
+                            	<label id="rCount"></label>
+                           		<table id="rTable" width="100%"></table>
+                           		<br>
+                            	<div class="text-right">
+	                            	<textarea class="form-control" id="replyBox"></textarea><br>
+	                            	<button class="btn btn-primary mr-1" id="replyBtn">등록</button>
+                            	</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -176,6 +202,83 @@
 			}
 			
 		}
+		
+		$('#replyBtn').on('click', function(){
+			var rContent = $('#replyBox').val();
+			var rName = '${ loginUser.mNo}';
+			var bNo = '${ b.bNo }';
+			
+			$.ajax({
+				url: 'addCommonReply.bo',
+				data: {rName:rName, rContent:rContent, bNo:bNo},
+				success: function(data){
+					console.log(data);
+					
+					if(data.trim() == 'success'){
+						getReplyList();
+						$('#replyBox').val('');
+					}
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+		});
+		
+		function getReplyList() {
+			var bNo = ${b.bNo};
+			
+			$.ajax({
+				url: 'commonReplyList.bo',
+				data: {bNo:bNo},
+				dataType: 'json',
+				success: function(data){
+					console.log(data);
+					
+					var $rTable  = $('#rTable');
+					$rTable.html('');
+					
+					$('#rCount').text('댓글 (' + data.length + '개)');
+					
+					var $tr;
+					var $name;
+					var $content;
+					var $date;
+					
+					if(data.length > 0){
+						for(var i in data){
+							$tr = $('<tr>');
+							$name = $('<td width="15%" style="text-align: center;">').html('<b>' + data[i].name + '</b>');
+							$content = $('<td width="70%">').text(data[i].rContent);
+							$date = $('<td width="15%" style="text-align: center;">').text(data[i].rDate);
+							
+							$tr.append($name);
+							$tr.append($content);
+							$tr.append($date);
+							
+							$rTable.append($tr);
+						}
+					} else {
+						$tr = $('<tr>');
+						$content = $('<td colspan="3" style="border: none;">').text("댓글이 없습니다.");
+						
+						$tr.append($content);
+						$rTable.append($tr);
+					}
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+		}
+		
+		$(function(){
+			getReplyList();
+			
+// 			setInterval(function(){
+// 				getReplyList();
+// 			}, 7000);
+		});
 	</script>
 </body>
 

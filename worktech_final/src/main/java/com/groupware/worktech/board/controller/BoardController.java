@@ -154,13 +154,19 @@ public class BoardController {
 	}
 	
 	@RequestMapping("cdetail.bo")
-	public String commonBoardDetail(@RequestParam("bNo") int bNo, @RequestParam(value="page", required=false) Integer page, @RequestParam(value="category", required=false) Integer category, @RequestParam(value="upd", required=false) String upd, Model model) {
+	public String commonBoardDetail(@RequestParam("bNo") int bNo, @RequestParam(value="page", required=false) Integer page, 
+									@RequestParam(value="category", required=false) Integer category, 
+									@RequestParam(value="upd", required=false) String upd, 
+									@RequestParam(value="searchCategory", required=false) String searchCategory,
+									@RequestParam(value="searchValue", required=false) String searchValue, Model model) {
 		Board b = bService.selectCommonBoard(bNo, upd);
 		
 		if(b != null) {
 			model.addAttribute("b", b);
 			model.addAttribute("page", page);
 			model.addAttribute("category", category);
+			model.addAttribute("searchCategory", searchCategory);
+			model.addAttribute("searchValue", searchValue);
 		} else {
 			throw new BoardException("게시글 상세 조회에 실패하였습니다.");
 		}
@@ -264,5 +270,42 @@ public class BoardController {
 		} else {
 			throw new BoardException("게시글 삭제에 실패하였습니다.");
 		}
+	}
+	
+	@RequestMapping("searchCommon.bo")
+	public String searchCommonBoard(@RequestParam("searchCategory") String searchCategory, @RequestParam("searchValue") String searchValue, 
+									@RequestParam(value="page", required=false) Integer page, @RequestParam(value="category", required=false) Integer category, Model model) {
+		int currentPage = 1;
+		
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		HashMap<String, Object> searchCountMap = new HashMap<String, Object>();
+		searchCountMap.put("searchCategory", searchCategory);
+		searchCountMap.put("searchValue", searchValue);
+		searchCountMap.put("category", category);
+		
+		int listCount = bService.getCommonSearchListCount(searchCountMap);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		HashMap<String, Object> searchListMap = new HashMap<String, Object>();
+		searchListMap.put("pi", pi);
+		searchListMap.put("searchCategory", searchCategory);
+		searchListMap.put("searchValue", searchValue);
+		searchListMap.put("category", category);
+		
+		ArrayList<Board> list = bService.selectCommonSearchList(searchListMap);
+		
+		if(list != null) {
+			model.addAttribute("list", list);
+			model.addAttribute("searchCategory", searchCategory);
+			model.addAttribute("searchValue", searchValue);
+			model.addAttribute("pi", pi);
+			model.addAttribute("category", category);
+		}
+		
+		return "commonBoardList";
 	}
 }

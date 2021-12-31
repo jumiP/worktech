@@ -173,7 +173,8 @@
 	                            </div>
 	                            <div class="card-footer text-right">
 	                                <button class="btn btn-primary mr-1" type="submit">수정</button>
-	                                <button class="btn btn-danger" type="button" onclick="location.href='commonList.bo'">취소</button>
+	                                <c:url var="clist" value="commonList.bo"/>
+	                                <button class="btn btn-danger" type="button" onclick="location.href='${ clist }'">취소</button>
 	                            </div>
 	                        </div>
 	                    </div>

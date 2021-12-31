@@ -192,7 +192,14 @@ public class BoardService {
 		return result;
 	}
 
-	
+	public int getCommonSearchListCount(HashMap<String, Object> searchMap) {
+		return bDAO.getCommonSearchListCount(sqlSession, searchMap);
+	}
+
+	public ArrayList<Board> selectCommonSearchList(HashMap<String, Object> searchListMap) {
+		return bDAO.selectCommonSearchList(sqlSession, searchListMap);
+	}
+
 
 
 

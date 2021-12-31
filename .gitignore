@@ -122,3 +122,5 @@ $RECYCLE.BIN/
 target/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,eclipse,java
+*.classpath
+worktech_final/src/main/webapp/resources/buploadFiles/

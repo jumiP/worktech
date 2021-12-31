@@ -143,4 +143,12 @@ public class AdminDAO {
 		return (ArrayList)sqlSession.selectList("adminMapper.getOriginRvRangeList", pdNo);
 	}
 
+	public int updateRvRange(SqlSessionTemplate sqlSession, RvRange rr) {
+		return sqlSession.insert("adminMapper.updateRvRange", rr);
+	}
+
+	public int deleteRvRange(SqlSessionTemplate sqlSession, RvRange rr) {
+		return sqlSession.delete("adminMapper.deleteRvRange", rr);
+	}
+
 }

@@ -135,5 +135,25 @@ public class AdminService {
 	public ArrayList<Integer> getOriginRvRangeList(int pdNo) {
 		return aDAO.getOriginRvRangeList(sqlSession, pdNo);
 	}
+
+	public int updateRvRange(ArrayList<RvRange> insertRrList) {
+		int result = 0;
+		
+		for(RvRange rr : insertRrList) {
+			result += aDAO.updateRvRange(sqlSession, rr);
+		}
+		
+		return result;
+	}
+
+	public int deleteRvRange(ArrayList<RvRange> deleteRrList) {
+		int result = 0;
+		
+		for(RvRange rr : deleteRrList) {
+			result += aDAO.deleteRvRange(sqlSession, rr);
+		}
+		
+		return result;
+	}
 	
 }

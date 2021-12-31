@@ -55,7 +55,12 @@
 </head>
 
 <body>
-    <c:import url="../common/headerAdmin.jsp" />
+    <c:if test="${ loginUser.mGrade eq 'USER' }">
+		<c:import url="../common/headerUser.jsp" />
+	</c:if>
+	<c:if test="${ loginUser.mGrade eq 'ADMIN' }">
+	    <c:import url="../common/headerAdmin.jsp" />
+	</c:if>
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
@@ -115,20 +120,33 @@
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-	                            <c:url var="nupView" value="nupdateView.ad">
-									<c:param name="bNo" value="${ b.bNo }"/>
-									<c:param name="page" value="${ page }"/>
-									<c:param name="upd" value="Y"/>
-								</c:url>
-                                <button class="btn btn-primary mr-1" type="button" onclick="location.href='${ nupView }'">수정</button>
-                                
-								<form action="noticeDelete.ad" method="post" class="formStyle">
-									<input type="hidden" name="bNo" value="${ b.bNo }">
-                                	<button class="btn btn-danger" type="submit" onclick="return deleteNotice();">삭제</button>
-                                </form>
-                                <c:url var="nlist" value="noticeList.ad">
-									<c:param name="page" value="${ page }"/>
-								</c:url>
+	                            <c:if test="${ loginUser.mGrade eq 'ADMIN' }">
+		                            <c:url var="nupView" value="nupdateView.ad">
+										<c:param name="bNo" value="${ b.bNo }"/>
+										<c:param name="page" value="${ page }"/>
+										<c:param name="upd" value="Y"/>
+									</c:url>
+	                                <button class="btn btn-primary mr-1" type="button" onclick="location.href='${ nupView }'">수정</button>
+	                                
+									<form action="noticeDelete.ad" method="post" class="formStyle">
+										<input type="hidden" name="bNo" value="${ b.bNo }">
+	                                	<button class="btn btn-danger" type="submit" onclick="return deleteNotice();">삭제</button>
+	                                </form>
+	                                <c:if test="${ !empty searchValue }">
+		                                <c:url var="nlist" value="searchNotice.ad">
+		                                	<c:param name="page" value="${ page }"/>
+		                                	<c:param name="searchCondition" value="${ searchCondition }"/>
+											<c:param name="searchValue" value="${ searchValue }"/>
+											<c:param name="boardLimit" value="${ boardLimit }"/>
+										</c:url>
+	                                </c:if>
+	                            </c:if>
+                                <c:if test="${ empty searchValue }">
+	                                <c:url var="nlist" value="noticeList.ad">
+										<c:param name="page" value="${ page }"/>
+										<c:param name="boardLimit" value="${ boardLimit }"/>
+									</c:url>
+                                </c:if>
                                 <button class="btn btn-secondary" type="button" onclick="location.href='${ nlist }'">목록으로</button>
                             </div>
                         </div>

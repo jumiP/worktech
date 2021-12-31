@@ -142,7 +142,8 @@
 	                            </div>
 	                            <div class="card-footer text-right">
 	                                <button class="btn btn-primary mr-1" type="submit">저장</button>
-	                                <button class="btn btn-danger" type="reset">취소</button>
+	                                <c:url var="clist" value="commonBoard.bo"/>
+	                                <button class="btn btn-danger" type="reset" onclick="location.href='${ clist }'">취소</button>
 	                            </div>
 	                        </div>
 	                    </div>

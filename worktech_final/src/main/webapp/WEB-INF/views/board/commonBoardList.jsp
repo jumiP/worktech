@@ -2,8 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+
 <html>
 <head>
+<script src="resources/js/jquery-3.6.0.min.js"></script>
     <title>일반 게시판</title>
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
@@ -70,7 +72,13 @@
 </head>
 
 <body>
-    <c:import url="../common/headerUser.jsp" />
+	<c:if test="${ loginUser.mGrade eq 'USER' }">
+		<c:import url="../common/headerUser.jsp" />
+	</c:if>
+    <c:if test="${ loginUser.mGrade eq 'ADMIN' }">
+    	<c:import url="../common/headerAdmin.jsp" />
+    </c:if>
+    
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
@@ -81,7 +89,6 @@
                     <div class="breadcrumb-item">일반 게시판</div>
                 </div>
             </div>
-			
             <div class="section-body">
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
@@ -93,29 +100,29 @@
                             	<div class="category">
 	                            	<i class="fas fa-chevron-circle-down"></i>
 	                            	<select class="select" name="categoryNo" onchange="location.href=this.value">
-                            			<option>카테고리</option>
+                           				<option>카테고리</option>
                            				<c:url var="all" value="commonList.bo"/>
                             			<option value="${ all }">전체</option>
                             			<c:url var="meeting" value="commonList.bo">
                             				<c:param name="category" value="100" />
                             			</c:url>
-	                            		<option value="${ meeting }">회의</option>
+	                            		<option value="${ meeting }" <c:if test="${ category == 100 }">selected</c:if>>회의</option>
 	                            		<c:url var="businessTrip" value="commonList.bo">
                             				<c:param name="category" value="200" />
                             			</c:url>
-	                            		<option value="${ businessTrip }">출장</option>
+	                            		<option value="${ businessTrip }" <c:if test="${ category == 200 }">selected</c:if>>출장</option>
 	                            		<c:url var="promotion" value="commonList.bo">
                             				<c:param name="category" value="300" />
                             			</c:url>
-	                            		<option value="${ promotion }">홍보</option>
+	                            		<option value="${ promotion }" <c:if test="${ category == 300 }">selected</c:if>>홍보</option>
 	                            		<c:url var="etc" value="commonList.bo">
                             				<c:param name="category" value="400" />
                             			</c:url>
-	                            		<option value="${ etc }">기타</option>
+	                            		<option value="${ etc }" <c:if test="${ category == 400 }">selected</c:if>>기타</option>
 	                            		<c:url var="materials" value="commonList.bo">
                             				<c:param name="category" value="500" />
                             			</c:url>
-	                            		<option value="${ materials }">자료</option>
+	                            		<option value="${ materials }" <c:if test="${ category == 500 }">selected</c:if>>자료</option>
 	                            	</select>
                             	</div>
                             	<br>
@@ -243,12 +250,18 @@
                                     </div>
                                 </div>
                                 <div class="search">
-                                    <select style="height: 30px; width: 80px; border: 1px solid #e3e3e3;">
-                                        <option>제목</option>
-                                        <option>내용</option>
-                                    </select>
-                                    <input type="text" style="height: 30px; width: 200px; border: 1px solid #e3e3e3;">
-                                    <button class="Searchbtn">검색</button>
+                                	<c:url var="search" value="searchCommon.bo"/>
+                                	<form action="${ search }">
+                                		<input type="hidden" name="page" value="${ pi.currentPage }">
+                                		<input type="hidden" name="category" value="${ category }">
+	                                    <select name="searchCategory" style="height: 30px; width: 80px; border: 1px solid #e3e3e3;">
+	                                        <option value="title">제목</option>
+	                                        <option value="content">내용</option>
+	                                        <option value="writer">작성자</option>
+	                                    </select>
+	                                    <input name="searchValue" type="text" style="height: 30px; width: 200px; border: 1px solid #e3e3e3;">
+	                                    <button class="Searchbtn">검색</button>
+                                	</form>
                                 </div>
                             </div>
                         </div>
@@ -259,10 +272,10 @@
     </div>
     <c:import url="../common/footer.jsp" />
     
-    <c:set var="category" value="${ category }"/>
-    
     <script>
     	var category = '${category}';
+    	var searchCategory = '${searchCategory}';
+    	var searchValue = '${searchValue}';
     	
 	    $(function() {
 			$('#tb tbody td').mouseenter(function() {
@@ -272,7 +285,9 @@
 			}).click(function() {
 				var bNo = $(this).parent().children().eq(0).text();
 				
-				location.href="cdetail.bo?bNo=" + bNo + '&page=' + ${pi.currentPage} + '&category=' + category;
+				location.href="cdetail.bo?bNo=" + bNo + "&page=" + ${pi.currentPage} + "&category=" + category
+							  + "&searchCategory=" + searchCategory + "&searchValue=" + searchValue;
+// 				location.href="cdetail.bo?bNo=" + bNo + "&page=" + ${pi.currentPage} + "&category=" + category;
 			});
 		});
 	    

@@ -55,7 +55,13 @@
 </head>
 
 <body>
-    <c:import url="../common/headerUser.jsp" />
+    <c:if test="${ loginUser.mGrade eq 'USER' }">
+		<c:import url="../common/headerUser.jsp" />
+	</c:if>
+    <c:if test="${ loginUser.mGrade eq 'ADMIN' }">
+    	<c:import url="../common/headerAdmin.jsp" />
+    </c:if>
+    
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
@@ -118,7 +124,7 @@
                             </div>
                             <div class="card-footer text-right">
                             	
-                            	<c:if test="${ loginUser.mNo eq b.bWriter }">
+                            	<c:if test="${ (loginUser.mNo eq b.bWriter) || (loginUser.mGrade eq 'ADMIN') }">
 		                            <c:url var="cupView" value="cupdateView.bo">
 										<c:param name="bNo" value="${ b.bNo }"/>
 										<c:param name="page" value="${ page }"/>
@@ -132,10 +138,21 @@
 	                                	<button class="btn btn-danger" type="submit" onclick="return deleteCommonBoard();">삭제</button>
 	                                </form>
 								</c:if>
-								<c:url var="clist" value="commonList.bo">
-									<c:param name="page" value="${ page }"/>
-									<c:param name="category" value="${ category }"/>
-								</c:url>
+								
+								<c:if test="${ searchCategory == '' }">
+									<c:url var="clist" value="commonList.bo">
+										<c:param name="page" value="${ page }"/>
+										<c:param name="category" value="${ category }"/>
+									</c:url>
+								</c:if>
+								<c:if test="${ searchCategory != '' }">
+									<c:url var="clist" value="searchCommon.bo">
+										<c:param name="page" value="${ page }"/>
+										<c:param name="category" value="${ category }"/>
+										<c:param name="searchCategory" value="${ searchCategory }"/>
+										<c:param name="searchValue" value="${ searchValue }"/>
+									</c:url>
+								</c:if>
                                 <button class="btn btn-secondary" type="button" onclick="location.href='${ clist }'">목록으로</button>
                             </div>
                         </div>

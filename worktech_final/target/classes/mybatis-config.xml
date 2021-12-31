@@ -10,6 +10,9 @@
 		<typeAlias type="com.groupware.worktech.board.model.vo.BoardFile" alias="BoardFile"/>
 		<typeAlias type="com.groupware.worktech.admin.model.vo.Department" alias="Department"/>
 		<typeAlias type="com.groupware.worktech.member.model.vo.Member" alias="Member"/>
+		<typeAlias type="com.groupware.worktech.admin.model.vo.RvProduct" alias="RvProduct"/>
+		<typeAlias type="com.groupware.worktech.admin.model.vo.RvRange" alias="RvRange"/>
+		<typeAlias type="com.groupware.worktech.board.model.vo.Reply" alias="Reply"/>
 	</typeAliases>
 	
 	<mappers>

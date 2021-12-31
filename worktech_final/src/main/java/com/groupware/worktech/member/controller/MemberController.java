@@ -66,14 +66,14 @@ public class MemberController {
 	
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
 	public String login(Member m, Model model, HttpServletRequest request) {		
-		String id = request.getParameter("mNo");
-		String pwd = request.getParameter("pwd");
+//		String id = request.getParameter("mNo");
+//		String pwd = request.getParameter("pwd");
 			
 //		System.out.println("id1 : " + id);
 //		System.out.println("pwd1 : " + pwd);		
-			
+		
 		Member loginUser = mService.memberLogin(m);
-			
+		
 		if(loginUser != null) {
 			model.addAttribute("loginUser", loginUser);
 				

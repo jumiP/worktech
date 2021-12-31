@@ -93,7 +93,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>공지사항 등록</h1>
+                <h1>공지사항 게시판</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item">게시판 관리</div>
                     <div class="breadcrumb-item active"><a href="noticeList.ad">공지사항 게시판</a></div>
@@ -159,7 +159,11 @@
 	                            </div>
 	                            <div class="card-footer text-right">
 	                                <button class="btn btn-primary mr-1" type="submit">수정</button>
-	                                <button class="btn btn-danger" type="button" onclick="location.href='noticeList.ad'">취소</button>
+	                                <c:url var="ndetail" value="ndetail.ad">
+										<c:param name="bNo" value="${ b.bNo }"/>
+										<c:param name="page" value="${ page }"/>
+									</c:url>
+	                                <button class="btn btn-danger" type="button" onclick="location.href='${ ndetail }'">취소</button>
 	                            </div>
 	                        </div>
 	                    </div>

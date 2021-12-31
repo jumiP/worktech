@@ -5,7 +5,7 @@
 <html>
 
 <head>
-    <title>공지사항 게시판 목록</title>
+    <title>예약 자산 목록</title>
 
     <style>
         table {
@@ -78,10 +78,10 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>공지사항 게시판</h1>
+                <h1>예약 관리</h1>
                 <div class="section-header-breadcrumb">
-                    <div class="breadcrumb-item">게시판 관리</div>
-                    <div class="breadcrumb-item">공지사항 게시판</div>
+                    <div class="breadcrumb-item">예약 관리</div>
+                    <div class="breadcrumb-item active">예약 자산 목록</div>
                 </div>
             </div>
 
@@ -90,50 +90,32 @@
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 style="font-size: 20px;">공지사항 목록</h4>
+                                <h4 style="font-size: 20px;">예약 자산 목록</h4>
                             </div>
                             <div class="card-body">
-	                            <div class="limit">
-	                            	게시글 수
-		                            <select style="height: 30px; width: 80px; border: 1px solid #e3e3e3;" name="boardLimit" id="boardLimit">
-		                                <option value="10" <c:if test="${ boardLimit eq 10 }">selected</c:if>>10개</option>
-		                                <option value="20" <c:if test="${ boardLimit eq 20 }">selected</c:if>>20개</option>
-		                                <option value="50" <c:if test="${ boardLimit eq 50 }">selected</c:if>>50개</option>
-		                            </select>
-	                            </div>
                                 <table class="table" id="tb">
                                     <thead>
                                         <tr>
-                                            <th style="width: 150px; height: 45px;">글 번호</th>
-                                            <th style="width: 450px;">글 제목</th>
-                                            <th style="width: 110px;">작성자</th>
-                                            <th style="width: 170px;">작성일</th>
-                                            <th style="width: 100px;">조회수</th>
+                                            <th style="width: 100px; height: 45px;">번호</th>
+                                            <th style="width: 150px;">카테고리</th>
+                                            <th style="width: 300px;">자산명</th>
+                                            <th style="width: 170px;">등록 날짜</th>
+                                            <th style="width: 150px;">예약 가능 수량</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<c:forEach var="n" items="${ list }">
+                                    	<c:forEach var="r" items="${ list }">
 	                                        <tr>
-	                                            <td style="height: 45px;">${ n.bNo }</td>
-                                				<td>
-	                                    			<c:if test="${ n.bCritical == 'NORMAL' }">
-	                                    				${ n.bTitle }
-	                                    			</c:if>	
-	                                    			<c:if test="${ n.bCritical == 'IMPORTANT' }">
-	                                    				<p style="color: red; font-weight: 900; display: inline">${ n.bTitle }</p>
-	                                    			</c:if>	
-                                    				<c:if test="${ !empty n.fileList.get(0).fName }">
-                                    					&nbsp;<i class="fas fa-save"></i>
-                                    				</c:if>	
-                                    			</td>
-                                    			<td>${ n.name }</td>
-                                    			<td>${ n.bDate }</td>
-                                    			<td>${ n.bCount }</td>
+	                                            <td style="height: 45px;">${ r.pdNo }</td>
+                                				<td>${ r.pdCategory }</td>
+                                    			<td>${ r.pdName }</td>
+                                    			<td>${ r.pdDate }</td>
+                                    			<td>${ r.pdCount }</td>
                                     		</tr>
                                     	</c:forEach>
                                     </tbody>
                                 </table>
-                                <button class="btn btn-primary push" onclick="location.href='ninsertView.ad';">글쓰기</button>
+                                <button class="btn btn-primary push" onclick="location.href='addRvView.ad'">추가</button>
                                 <br clear="all">
                                 <div class="card-body paging-area">
                                     <div class="buttons">
@@ -156,9 +138,6 @@
                                             	<c:if test="${ pi.currentPage > 1 }">
                                             		<c:url var="before" value="${ loc }">
 														<c:param name="page" value="${ pi.currentPage - 1 }"/>
-														<c:param name="searchCondition" value="${ searchCondition }"/>
-														<c:param name="searchValue" value="${ searchValue }"/>
-														<c:param name="boardLimit" value="${ boardLimit }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ before }" aria-label="Previous">
@@ -168,9 +147,6 @@
 	                                                
                                             		<c:url var="start" value="${ loc }">
 														<c:param name="page" value="1"/>
-														<c:param name="searchCondition" value="${ searchCondition }"/>
-														<c:param name="searchValue" value="${ searchValue }"/>
-														<c:param name="boardLimit" value="${ boardLimit }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ start }" aria-label="Previous">
@@ -187,9 +163,6 @@
 	                                            	<c:if test="${ p ne pi.currentPage }">
 		                                            	<c:url var="pagination" value="${ loc }">
 															<c:param name="page" value="${ p }"/>
-															<c:param name="searchCondition" value="${ searchCondition }"/>
-															<c:param name="searchValue" value="${ searchValue }"/>
-															<c:param name="boardLimit" value="${ boardLimit }"/>
 														</c:url>
 	                                            		<li class="page-item">
 	                                            			<a class="page-link" href="${ pagination }">${ p }</a>
@@ -214,9 +187,6 @@
 												<c:if test="${ pi.currentPage < pi.maxPage }">
 													<c:url var="after" value="${ loc }">
 														<c:param name="page" value="${ pi.currentPage + 1 }"/>
-														<c:param name="searchCondition" value="${ searchCondition }"/>
-														<c:param name="searchValue" value="${ searchValue }"/>
-														<c:param name="boardLimit" value="${ boardLimit }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ after }" aria-label="Next">
@@ -226,9 +196,6 @@
 													
 													<c:url var="end" value="${ loc }">
 														<c:param name="page" value="${ pi.maxPage }"/>
-														<c:param name="searchCondition" value="${ searchCondition }"/>
-														<c:param name="searchValue" value="${ searchValue }"/>
-														<c:param name="boardLimit" value="${ boardLimit }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ end }" aria-label="Next">
@@ -239,16 +206,6 @@
                                             </ul>
                                         </nav>
                                     </div>
-                                </div>
-                                <div class="search">
-                                    <select style="height: 30px; width: 80px; border: 1px solid #e3e3e3;" id="searchCondition" name="searchCondition">
-                                        <option>-------</option>
-                                        <option value="title" <c:if test="${ searchCondition eq 'title' }">selected</c:if>>제목</option>
-                                        <option value="content" <c:if test="${ searchCondition eq 'content' }">selected</c:if>>내용</option>
-                                    </select>
-                                    <input type="search" id="searchValue" style="height: 30px; width: 200px; border: 1px solid #e3e3e3;"
-                                    	<c:if test="${ !empty searchValue }">value="${ searchValue }"</c:if>>
-                                    <button class="Searchbtn" onclick="searchBoard();">검색</button>
                                 </div>
                             </div>
                         </div>
@@ -267,32 +224,11 @@
 			}).mouseout(function() {
 				$(this).parent().css({'background':'white', 'font-weight':'normal'});
 			}).click(function() {
-				var bNo = $(this).parent().children().eq(0).text();
-				location.href="ndetail.ad?bNo=" + bNo + '&page=' + ${pi.currentPage};
+				var pdNo = $(this).parent().children().eq(0).text();
+				location.href="rvpdetail.ad?pdNo=" + pdNo + '&page=' + ${pi.currentPage};
 			});
 		});
     	
-    	// 게시글 검색
-    	function searchBoard(){
-			var searchCondition = $("#searchCondition").val();
-			var searchValue = $("#searchValue").val();
-			
-			if(searchCondition ==  "-------"){
-				alert("검색 카테고리를 선택하세요.");
-				$("#searchValue").val('');
-				$("#searchValue").focus();
-			} else {
-				location.href="searchNotice.ad?searchCondition="+searchCondition+"&searchValue="+searchValue;
-			}
-		}
-    	
-    	// boardLimit 변경
-    	$(function() {
-			$('#boardLimit').on('change', function() {
-				var boardLimit = $(this).val();
-				location.href='noticeList.ad?boardLimit=' + boardLimit;
-			});
-		})
     </script>
 
 </body>

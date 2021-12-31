@@ -20,11 +20,13 @@
 </head>
 
 <body>
-	<c:import url="common/header.jsp" />
+	<c:import url="../common/headerAdmin.jsp" />
 	<!-- Main Content -->
 	<div class="main-content">
 		<section class="section">
 			<div class="section-header">
+			
+			
 				<h1>사원 등록</h1>
 				<div class="section-header-breadcrumb">
 					<div class="breadcrumb-item active">
@@ -46,7 +48,7 @@
 				                    <div class="form-group">
 				                    	<label>사번</label>
 				                     	<input type="text" id="mNo" name="mNo" class="form-control" required placeholder="숫자 6자리를 입력해주세요">
-				                     	<!-- 아이디 중복확인 -->
+				                     	<!-- 아이디 중복확인 ajax -->
 				                     	<span class="valid-feedback">사용할 수 있는 사번입니다.</span>
 				                     	<span class="invalid-feedback">사용할 수 없는 사번입니다.</span>
 				                     	<input type="hidden" id="idDuplicateCheck" value='0'>
@@ -66,9 +68,11 @@
 				                      <label>부서</label>
 				                      <select class="form-control" name="dNo" id="dNo" required="true">
 				                        <option value="">부서를 선택해주세요</option>
-				                        <!-- value자리에 dNo를 전체자리에 dName을 적기 -->
-				                        <option value="1">전체</option>
-				                        <option value="2">영업부</option>
+				                        <!-- dNo : 부서번호 | dName : 부서이름 -->
+				                        <c:forEach var="d" items="${ list }">
+					                        <option value="${ d.dNo }">${ d.dName }</option>
+<!-- 					                        <option value="2">영업부</option> -->
+				                        </c:forEach>
 				                      </select>
 				                    </div>
 				                    
@@ -86,10 +90,7 @@
 				                      </select>
 				                    </div>
 				                    
-				                    <!-- 
-				                    	selectbox에 required가 안먹힌 이유
-				                    	: disabled를 사용했기때문에
-				                     -->
+				                    <!-- selectbox에 required가 안먹힌 이유 : disabled를 사용했기때문에 -->
 				                    
 				                    <div class="form-group">
 				                      <label>Email</label>
@@ -111,13 +112,19 @@
 			</div>
 		</section>
 	</div>
-	<c:import url="common/footer.jsp" />
+	<c:import url="../common/footer.jsp" />
+
+
 
 	<script type="text/javascript">
 	
-	// ajax : 사번 중복체크
-	$('#mNo').on('keyup', function(){
+	  /* 1. 아이디 검사 */
+
+        // 중복확인
+    	  $('#mNo').on('keyup', function(){
 			var mNo = $(this).val().trim();
+			var regExpId = /^[0-9]{6}$/; // 사번 유효성 검사  /^[\d]{6};
+			
 			
 			if(mNo.length < 6){
 				// 가이드가 안보이도록 숨기기
@@ -126,32 +133,45 @@
 				$('#idDubplicateCheck').val(0);
 				
 				return; 
-			} 
+			}
 			
-			$.ajax({
-				url : 'dupId.me',
-				data : {mNo:mNo},
-				success : function(data){
-					console.log(data);
-					data = data.trim();
-					if(data == 'NoDup'){
-						$('.invalid-feedback').hide();
-						$('.valid-feedback').show();
-						$('#idDuplicateCheck').val(1);
-					} else if(data == 'Dup'){
-						$('.invalid-feedback').show();
-						$('.valid-feedback').hide();
-						$('#idDuplicateCheck').val(0);
+			// 정규표현식 유효성 검사
+			if(!regExpId.test(document.getElementById("mNo").value)){
+
+				alert("사번은 숫자 6자리만 입력이 가능합니다.");
+				$('.invalid-feedback').show();
+				$('.valid-feedback').hide();
+				$('#idDuplicateCheck').val(0);
+				document.getElementById("mNo").focus();
+
+				return false;//전송(submit)이 되지 않게 한다.
+			} else {
+				$.ajax({
+					url : 'dupId.me',
+					data : {mNo:mNo},
+					success : function(data){
+						console.log(data);
+						data = data.trim();
+						if(data == 'NoDup'){
+							$('.invalid-feedback').hide();
+							$('.valid-feedback').show();
+							$('#idDuplicateCheck').val(1);
+						} else if(data == 'Dup'){
+							$('.invalid-feedback').show();
+							$('.valid-feedback').hide();
+							$('#idDuplicateCheck').val(0);
+						}
+						
+					},
+					error : function(data){
+						console.log(data);
 					}
-					
-				},
-				error : function(data){
-					console.log(data);
-				}
-			});
+				});
 			
+			}
 		});
-	
+    	  
+      
 		function validate(){
 			if($('#idDuplicateCheck').val() == 0 ){
 				alert('사용가능한 사번을 입력해주세요');
@@ -163,22 +183,6 @@
 			
 			
 		}
-
-	
-		
-		// 사번 : 숫자 6자리 
-		
-// 		if ( $(dNo).val().length==0) {
-// 			  alert("경고문구");
-// 			  return;
-// 			}
-	
-		
-	
-	
-	
-	
-	
 	
 	</script>
 

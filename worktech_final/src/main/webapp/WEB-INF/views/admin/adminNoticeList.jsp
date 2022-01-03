@@ -57,16 +57,33 @@
             display: flex;
             justify-content: center;
         }
+        
+        select:focus {outline:none;}
+        input:focus {outline:none;}
+        
+        .limit{
+        	margin-bottom: 15px;
+        	border-radius: 20em;
+        }
+        
+        #searchValue{
+        	padding-left: 5px;
+        }
     </style>
 </head>
 
 <body>
-    <c:import url="../common/headerAdmin.jsp" />
+	<c:if test="${ loginUser.mGrade eq 'USER' }">
+		<c:import url="../common/headerUser.jsp" />
+	</c:if>
+	<c:if test="${ loginUser.mGrade eq 'ADMIN' }">
+	    <c:import url="../common/headerAdmin.jsp" />
+	</c:if>
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>공지사항 목록</h1>
+                <h1>공지사항 게시판</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item">게시판 관리</div>
                     <div class="breadcrumb-item">공지사항 게시판</div>
@@ -81,6 +98,14 @@
                                 <h4 style="font-size: 20px;">공지사항 목록</h4>
                             </div>
                             <div class="card-body">
+	                            <div class="limit">
+	                            	게시글 수
+		                            <select style="height: 30px; width: 80px; border: 1px solid #e3e3e3;" name="boardLimit" id="boardLimit">
+		                                <option value="10" <c:if test="${ boardLimit eq 10 }">selected</c:if>>10개</option>
+		                                <option value="20" <c:if test="${ boardLimit eq 20 }">selected</c:if>>20개</option>
+		                                <option value="50" <c:if test="${ boardLimit eq 50 }">selected</c:if>>50개</option>
+		                            </select>
+	                            </div>
                                 <table class="table" id="tb">
                                     <thead>
                                         <tr>
@@ -95,13 +120,13 @@
                                     	<c:forEach var="n" items="${ list }">
 	                                        <tr>
 	                                            <td style="height: 45px;">${ n.bNo }</td>
-                                    			<c:if test="${ n.bCritical == 'NORMAL' }">
-                                    				<td>
-                                    			</c:if>	
-                                    			<c:if test="${ n.bCritical == 'IMPORTANT' }">
-                                    				<td style="color: red; font-weight: 900;">
-                                    			</c:if>	
-                                    				${ n.bTitle }
+                                				<td>
+	                                    			<c:if test="${ n.bCritical == 'NORMAL' }">
+	                                    				${ n.bTitle }
+	                                    			</c:if>	
+	                                    			<c:if test="${ n.bCritical == 'IMPORTANT' }">
+	                                    				<p style="color: red; font-weight: 900; display: inline">${ n.bTitle }</p>
+	                                    			</c:if>	
                                     				<c:if test="${ !empty n.fileList.get(0).fName }">
                                     					&nbsp;<i class="fas fa-save"></i>
                                     				</c:if>	
@@ -113,7 +138,9 @@
                                     	</c:forEach>
                                     </tbody>
                                 </table>
-                                <button class="btn btn-primary push" onclick="location.href='ninsertView.ad';">글쓰기</button>
+                                <c:if test="${ loginUser.mGrade eq 'ADMIN' }">
+                                	<button class="btn btn-primary push" onclick="location.href='ninsertView.ad';">글쓰기</button>
+                                </c:if>
                                 <br clear="all">
                                 <div class="card-body paging-area">
                                     <div class="buttons">
@@ -134,8 +161,11 @@
                                                 	</li>
 	                                            </c:if>
                                             	<c:if test="${ pi.currentPage > 1 }">
-                                            		<c:url var="before" value="noticeList.ad">
+                                            		<c:url var="before" value="${ loc }">
 														<c:param name="page" value="${ pi.currentPage - 1 }"/>
+														<c:param name="searchCondition" value="${ searchCondition }"/>
+														<c:param name="searchValue" value="${ searchValue }"/>
+														<c:param name="boardLimit" value="${ boardLimit }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ before }" aria-label="Previous">
@@ -143,8 +173,11 @@
 	                                                    </a>
 	                                                </li>
 	                                                
-                                            		<c:url var="start" value="noticeList.ad">
+                                            		<c:url var="start" value="${ loc }">
 														<c:param name="page" value="1"/>
+														<c:param name="searchCondition" value="${ searchCondition }"/>
+														<c:param name="searchValue" value="${ searchValue }"/>
+														<c:param name="boardLimit" value="${ boardLimit }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ start }" aria-label="Previous">
@@ -159,8 +192,11 @@
 	                                            	</c:if>
 	                                            
 	                                            	<c:if test="${ p ne pi.currentPage }">
-		                                            	<c:url var="pagination" value="noticeList.ad">
+		                                            	<c:url var="pagination" value="${ loc }">
 															<c:param name="page" value="${ p }"/>
+															<c:param name="searchCondition" value="${ searchCondition }"/>
+															<c:param name="searchValue" value="${ searchValue }"/>
+															<c:param name="boardLimit" value="${ boardLimit }"/>
 														</c:url>
 	                                            		<li class="page-item">
 	                                            			<a class="page-link" href="${ pagination }">${ p }</a>
@@ -183,8 +219,11 @@
 												</c:if>
 
 												<c:if test="${ pi.currentPage < pi.maxPage }">
-													<c:url var="after" value="noticeList.ad">
+													<c:url var="after" value="${ loc }">
 														<c:param name="page" value="${ pi.currentPage + 1 }"/>
+														<c:param name="searchCondition" value="${ searchCondition }"/>
+														<c:param name="searchValue" value="${ searchValue }"/>
+														<c:param name="boardLimit" value="${ boardLimit }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ after }" aria-label="Next">
@@ -192,8 +231,11 @@
 	                                                    </a>
 	                                                </li>
 													
-													<c:url var="end" value="noticeList.ad">
+													<c:url var="end" value="${ loc }">
 														<c:param name="page" value="${ pi.maxPage }"/>
+														<c:param name="searchCondition" value="${ searchCondition }"/>
+														<c:param name="searchValue" value="${ searchValue }"/>
+														<c:param name="boardLimit" value="${ boardLimit }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ end }" aria-label="Next">
@@ -206,12 +248,14 @@
                                     </div>
                                 </div>
                                 <div class="search">
-                                    <select style="height: 30px; width: 80px; border: 1px solid #e3e3e3;">
-                                        <option>제목</option>
-                                        <option>내용</option>
+                                    <select style="height: 30px; width: 80px; border: 1px solid #e3e3e3;" id="searchCondition" name="searchCondition">
+                                        <option>-------</option>
+                                        <option value="title" <c:if test="${ searchCondition eq 'title' }">selected</c:if>>제목</option>
+                                        <option value="content" <c:if test="${ searchCondition eq 'content' }">selected</c:if>>내용</option>
                                     </select>
-                                    <input type="text" style="height: 30px; width: 200px; border: 1px solid #e3e3e3;">
-                                    <button class="Searchbtn">검색</button>
+                                    <input type="search" id="searchValue" style="height: 30px; width: 200px; border: 1px solid #e3e3e3;"
+                                    	<c:if test="${ !empty searchValue }">value="${ searchValue }"</c:if>>
+                                    <button class="Searchbtn" onclick="searchBoard();">검색</button>
                                 </div>
                             </div>
                         </div>
@@ -221,8 +265,8 @@
         </section>
     </div>
     <c:import url="../common/footer.jsp" />
-    
     <script>
+    	// 게시글 목록 마우스오버 이벤트
 	    $(function() {
 			$('#tb tbody td').mouseenter(function() {
 				$(this).parent().css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
@@ -230,9 +274,47 @@
 				$(this).parent().css({'background':'white', 'font-weight':'normal'});
 			}).click(function() {
 				var bNo = $(this).parent().children().eq(0).text();
-				location.href="ndetail.ad?bNo=" + bNo + '&page=' + ${pi.currentPage};
+				var boardLimit = $('#boardLimit').val();
+				
+				var searchCondition = $("#searchCondition").val();
+				var searchValue = $("#searchValue").val();
+				
+				if(searchValue != ''){
+					location.href= "ndetail.ad?bNo=" + bNo + '&page=' + ${pi.currentPage} + '&boardLimit=' + boardLimit + "&searchCondition="+searchCondition+"&searchValue="+searchValue;
+				} else {
+					location.href= "ndetail.ad?bNo=" + bNo + '&page=' + ${pi.currentPage} + '&boardLimit=' + boardLimit;
+				}
 			});
 		});
+    	
+    	// 게시글 검색
+    	function searchBoard(){
+			var searchCondition = $("#searchCondition").val();
+			var searchValue = $("#searchValue").val();
+			
+			if(searchCondition ==  "-------"){
+				alert("검색 카테고리를 선택하세요.");
+				$("#searchValue").val('');
+				$("#searchValue").focus();
+			} else {
+				location.href="searchNotice.ad?searchCondition="+searchCondition+"&searchValue="+searchValue;
+			}
+		}
+    	
+    	// boardLimit 변경
+    	$(function() {
+			$('#boardLimit').on('change', function() {
+				var boardLimit = $(this).val();
+				var searchCondition = $("#searchCondition").val();
+				var searchValue = $("#searchValue").val();
+				
+				if(searchValue != ''){
+					location.href="searchNotice.ad?searchCondition="+searchCondition+"&searchValue="+searchValue + "&boardLimit=" + boardLimit;
+				} else {
+					location.href='noticeList.ad?boardLimit=' + boardLimit;
+				}
+			});
+		})
     </script>
 
 </body>

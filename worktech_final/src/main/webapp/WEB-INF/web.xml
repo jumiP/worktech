@@ -33,13 +33,30 @@
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 	
+	<!-- 멤버 관련 -->
+	<servlet>
+		<servlet-name>memberServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/member-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>memberServlet</servlet-name>
+		<url-pattern>*.me</url-pattern>
+	</servlet-mapping>
+	
 	<!-- 관리자 관련 -->
 	<servlet>
 		<servlet-name>adminServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring/appServlet/admin-context.xml</param-value>
+			<param-value>
+				/WEB-INF/spring/appServlet/admin-context.xml
+				/WEB-INF/spring/appServlet/aspect-context.xml
+			</param-value>
 		</init-param>
 	</servlet>
 	

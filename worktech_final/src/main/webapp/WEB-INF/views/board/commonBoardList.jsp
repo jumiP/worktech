@@ -62,9 +62,7 @@
         }
         
         .select {
-        	height: 30px;
-        	width: 80px;
-        	border: 1px solid #e3e3e3;
+        	border: 1px solid white;
         }
         
         .select:focus{
@@ -100,10 +98,9 @@
                             </div>
                             <div class="card-body">
                             	<div class="category">
-	                            	<i class="fas fa-chevron-circle-down"></i>&nbsp;
-	                            	카테고리&nbsp;&nbsp;
+	                            	<i class="fas fa-chevron-circle-down"></i>
 	                            	<select class="select" name="categoryNo" onchange="location.href=this.value">
-                           				<option>======</option>
+                           				<option>카테고리</option>
                            				<c:url var="all" value="commonList.bo"/>
                             			<option value="${ all }">전체</option>
                             			<c:url var="meeting" value="commonList.bo">

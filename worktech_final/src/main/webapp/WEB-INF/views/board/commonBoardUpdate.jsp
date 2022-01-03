@@ -123,6 +123,7 @@
 	                            	<div class="form-group">
 		                            	<label>카테고리&nbsp;&nbsp;</label>
 		                            	<select class="select" name="categoryNo">
+		                            		
 		                            		<option value=100 <c:if test="${ b.categoryNo == 100 }">selected</c:if>>회의</option>
 		                            		<option value=200 <c:if test="${ b.categoryNo == 200 }">selected</c:if>>출장</option>
 		                            		<option value=300 <c:if test="${ b.categoryNo == 300 }">selected</c:if>>홍보</option>

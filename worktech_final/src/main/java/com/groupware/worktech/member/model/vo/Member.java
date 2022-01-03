@@ -14,13 +14,14 @@ public class Member {
 	private String Address;
 	private String mGrade; // 회원 등급 : user/admin
 	private int dNo;
+	private String dName;
 	private Date hireDate;
 	private String mStatus;
 	
 	public Member() {}
 
 	public Member(String mNo, String email, String name, String pwd, String jobGrade, Date birthDay, String phone,
-			String address, String mGrade, int dNo, Date hireDate, String mStatus) {
+			String address, String mGrade, int dNo, String dName, Date hireDate, String mStatus) {
 		super();
 		this.mNo = mNo;
 		this.email = email;
@@ -32,6 +33,7 @@ public class Member {
 		Address = address;
 		this.mGrade = mGrade;
 		this.dNo = dNo;
+		this.dName = dName;
 		this.hireDate = hireDate;
 		this.mStatus = mStatus;
 	}
@@ -116,6 +118,14 @@ public class Member {
 		this.dNo = dNo;
 	}
 
+	public String getdName() {
+		return dName;
+	}
+
+	public void setdName(String dName) {
+		this.dName = dName;
+	}
+
 	public Date getHireDate() {
 		return hireDate;
 	}
@@ -136,9 +146,7 @@ public class Member {
 	public String toString() {
 		return "Member [mNo=" + mNo + ", email=" + email + ", name=" + name + ", pwd=" + pwd + ", jobGrade=" + jobGrade
 				+ ", birthDay=" + birthDay + ", phone=" + phone + ", Address=" + Address + ", mGrade=" + mGrade
-				+ ", dNo=" + dNo + ", hireDate=" + hireDate + ", mStatus=" + mStatus + "]";
+				+ ", dNo=" + dNo + ", dName=" + dName + ", hireDate=" + hireDate + ", mStatus=" + mStatus + "]";
 	}
 
-	
-	
 }

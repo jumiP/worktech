@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adbookMapper">
+
+	<select id="getAdbookListCount" resultType="_int">
+		select count(*)
+		from member
+		where m_status = 'Y'
+	</select>
+	
+	<select id="selectAdbookList" resultMap="AdbookResultSet">
+		select m_no, email, name, job_grade, phone, d_no, d_name, m_hired
+		from member
+			 join department using(d_no)
+		where m_status = 'Y'
+		order by m_no
+	</select>
+	
+	<resultMap type="Member" id="AdbookResultSet">
+		<id column="M_NO" property="mNo"/>
+		<result column="EMAIL" property="email"/>
+		<result column="NAME" property="name"/>
+		<result column="JOB_GRADE" property="jobGrade"/>
+		<result column="PHONE" property="phone"/>
+		<result column="D_NO" property="dNo"/>
+		<result column="D_NAME" property="dName"/>
+		<result column="M_HIRED" property="hireDate"/>
+	</resultMap>
+</mapper>

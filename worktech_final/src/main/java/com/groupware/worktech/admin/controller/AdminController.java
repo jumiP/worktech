@@ -161,4 +161,28 @@ public class AdminController {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping("mainPage.do")
+	public String mainView() {
+		return "main";
+	}
+	
+	
+	
 }

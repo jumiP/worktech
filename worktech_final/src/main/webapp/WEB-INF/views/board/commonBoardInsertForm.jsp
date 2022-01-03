@@ -102,9 +102,9 @@
 	                    <div class="col-12 col-md-12 col-lg-12">
 	                        <div class="card">
 	                            <div class="card-body">
-	                            	<div class="form-group half-col">
-		                            	<label>카테고리</label>
-		                            	<select class="form-control" name="categoryNo">
+	                            	<div class="form-group">
+		                            	<label>카테고리&nbsp;&nbsp;</label>
+		                            	<select class="select" name="categoryNo">
 		                            		<option value=100>회의</option>
 		                            		<option value=200>출장</option>
 		                            		<option value=300>홍보</option>
@@ -119,7 +119,7 @@
 	                                <div class="form-group half-col left-item">
 	                                    <label>작성자</label>
 	                                    <input type="text" class="form-control" disabled value="${ loginUser.name }">
-	                                    <input type="hidden" name="bWriter" value="${ loginUser.mNo }">
+	                                    <input type="hidden" name="bWriter" value="000000">
 	                                </div>
 	                                <div class="form-group half-col">
 	                                    <label>작성일</label>

@@ -212,7 +212,7 @@
                                     <a class="nav-link" href="noticeList.ad">공지사항 게시판</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="commonList.bo">일반 게시판</a>
+                                    <a class="nav-link" href="components-avatar.html">일반 게시판</a>
                                 </li>
                                 <li>
                                     <a class="nav-link" href="components-chat-box.html">익명 게시판</a>

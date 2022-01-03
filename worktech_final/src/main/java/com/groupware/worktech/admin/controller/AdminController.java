@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +31,7 @@ import com.groupware.worktech.board.model.vo.Board;
 import com.groupware.worktech.board.model.vo.BoardFile;
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.common.Pagination;
+
 
 @Controller
 public class AdminController {
@@ -470,6 +470,30 @@ public class AdminController {
 		}
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping("mainPage.do")
+	public String mainView() {
+		return "main";
+	}
+	
+	
 	
 	@RequestMapping("rvProductDelete.ad")
 	public String rvpDelete(@RequestParam("pdNo") int pdNo) {

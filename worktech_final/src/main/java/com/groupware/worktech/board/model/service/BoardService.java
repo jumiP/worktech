@@ -209,6 +209,9 @@ public class BoardService {
 		return bDAO.selectCommonReplyList(sqlSession, bNo);
 	}
 
+
+
+
 	
 
 	

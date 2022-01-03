@@ -223,6 +223,19 @@
                             </ul>
                         </li>
                         <li class="dropdown">
+                            <a href="#" class="nav-link has-dropdown">
+                                <i class="fas fa-th"></i>
+                                <span>캘린더</span></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="nav-link" href="myCal.cr">개인 캘린더</a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link" href="teamCal.cr">팀 캘린더</a>
+                                    </li>
+                                </ul>
+                        </li>
+                        <li class="dropdown">
                             <a href="#" class="nav-link">
                                 <i class="fas fa-user-lock"></i>
                                 <span>마이 페이지</span></a>

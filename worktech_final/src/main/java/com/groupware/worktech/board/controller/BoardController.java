@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,17 +16,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
 import com.groupware.worktech.board.model.exception.BoardException;
 import com.groupware.worktech.board.model.service.BoardService;
 import com.groupware.worktech.board.model.vo.Board;
 import com.groupware.worktech.board.model.vo.BoardFile;
-import com.groupware.worktech.board.model.vo.Reply;
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.common.Pagination;
 
@@ -313,37 +307,5 @@ public class BoardController {
 		}
 		
 		return "commonBoardList";
-	}
-	
-	@RequestMapping("addCommonReply.bo")
-	@ResponseBody
-	public String insertCommonReply(@ModelAttribute Reply r, Model model) {
-		int result = bService.insertCommonReply(r);
-		System.out.println(result);
-		
-		if(result > 0) {
-			return "success";
-		} else {
-			throw new BoardException("댓글 등록에 실패하였습니다.");
-		}
-	}
-	
-	@RequestMapping(value="commonReplyList.bo")
-	public void commonReplyList(@RequestParam("bNo") int bNo, HttpServletResponse response) {
-		response.setContentType("application/json; charset=UTF-8");
-		
-		ArrayList<Reply> list = bService.selectCommonReplyList(bNo);
-		
-		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
-		
-		Gson gson = gb.create();
-		
-		try {
-			gson.toJson(list, response.getWriter());
-		} catch (JsonIOException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }

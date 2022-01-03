@@ -12,5 +12,6 @@
 		<a href="chatting.ct">채팅</a>
 		<a href="addRvView.ad">관리자 예약자산 추가</a>
 	</div>
+	<c:import url="../views/chat/chatMessage.jsp" />
 </body>
 </html>

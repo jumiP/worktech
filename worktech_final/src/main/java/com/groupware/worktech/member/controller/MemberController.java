@@ -107,7 +107,6 @@ public class MemberController {
 		} else {
 			throw new MemberException("로그인에 실패하였습니다.");
 		}
-		
 	}
 	
 	//로그아웃

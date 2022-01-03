@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.groupware.worktech.board.model.dao.BoardDAO;
 import com.groupware.worktech.board.model.vo.Board;
 import com.groupware.worktech.board.model.vo.BoardFile;
+import com.groupware.worktech.board.model.vo.Reply;
 import com.groupware.worktech.common.PageInfo;
 
 @Service("bService")
@@ -198,6 +199,14 @@ public class BoardService {
 
 	public ArrayList<Board> selectCommonSearchList(HashMap<String, Object> searchListMap) {
 		return bDAO.selectCommonSearchList(sqlSession, searchListMap);
+	}
+
+	public int insertCommonReply(Reply r) {
+		return bDAO.insertCommonReply(sqlSession, r);
+	}
+
+	public ArrayList<Reply> selectCommonReplyList(int bNo) {
+		return bDAO.selectCommonReplyList(sqlSession, bNo);
 	}
 
 

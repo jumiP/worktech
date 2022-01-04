@@ -4,14 +4,16 @@ public class RvRange {
 	private int rangeNo;
 	private int pdNo;
 	private int pdDNo;
+	private String dName;
 	
 	public RvRange() {}
 
-	public RvRange(int rangeNo, int pdNo, int pdDNo) {
+	public RvRange(int rangeNo, int pdNo, int pdDNo, String dName) {
 		super();
 		this.rangeNo = rangeNo;
 		this.pdNo = pdNo;
 		this.pdDNo = pdDNo;
+		this.dName = dName;
 	}
 
 	public int getRangeNo() {
@@ -37,9 +39,17 @@ public class RvRange {
 	public void setPdDNo(int pdDNo) {
 		this.pdDNo = pdDNo;
 	}
+	
+	public String getdName() {
+		return dName;
+	}
+
+	public void setdName(String dName) {
+		this.dName = dName;
+	}
 
 	@Override
 	public String toString() {
-		return "RvRange [rangeNo=" + rangeNo + ", pdNo=" + pdNo + ", pdDNo=" + pdDNo + "]";
+		return "RvRange [rangeNo=" + rangeNo + ", pdNo=" + pdNo + ", pdDNo=" + pdDNo + ", dName=" + dName + "]";
 	}
 }

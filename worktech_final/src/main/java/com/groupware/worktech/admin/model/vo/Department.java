@@ -67,5 +67,4 @@ public class Department {
 				+ ", dStatus=" + dStatus + "]";
 	}
 	
-	
 }

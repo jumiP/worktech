@@ -209,6 +209,10 @@ public class BoardService {
 		return bDAO.selectCommonReplyList(sqlSession, bNo);
 	}
 
+	public int deleteCommonReply(int rNo) {
+		return bDAO.deleteCommonReply(sqlSession, rNo);
+	}
+
 
 
 

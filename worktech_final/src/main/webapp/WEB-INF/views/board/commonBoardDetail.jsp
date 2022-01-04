@@ -67,7 +67,9 @@
         	border-bottom: 1px solid #dff5fa;
         }
         
-        
+        i[name='rDeleteBtn']:hover{
+        	cursor: pointer;
+        }
     </style>
 </head>
 
@@ -194,6 +196,7 @@
     <script src="resources/dist/assets/modules/jquery-selectric/jquery.selectric.min.js"></script>
 
 	<script>
+		// 게시글 삭제 확인
 		function deleteCommonBoard() {
 			var result = confirm('정말 삭제하시겠습니까?');
 			
@@ -203,6 +206,7 @@
 			
 		}
 		
+		// 댓글 등록 ajax
 		$('#replyBtn').on('click', function(){
 			var rContent = $('#replyBox').val();
 			var rName = '${ loginUser.mNo}';
@@ -225,6 +229,7 @@
 			});
 		});
 		
+		// 댓글 목록 불러오기 ajax
 		function getReplyList() {
 			var bNo = ${b.bNo};
 			
@@ -233,8 +238,6 @@
 				data: {bNo:bNo},
 				dataType: 'json',
 				success: function(data){
-					console.log(data);
-					
 					var $rTable  = $('#rTable');
 					$rTable.html('');
 					
@@ -248,13 +251,17 @@
 					if(data.length > 0){
 						for(var i in data){
 							$tr = $('<tr>');
+							$rNo = $('<td>').html('<input type="hidden" name="rNo" value="' + data[i].rNo + '">');
 							$name = $('<td width="15%" style="text-align: center;">').html('<b>' + data[i].name + '</b>');
-							$content = $('<td width="70%">').text(data[i].rContent);
+							$content = $('<td width="65%">').text(data[i].rContent);
 							$date = $('<td width="15%" style="text-align: center;">').text(data[i].rDate);
+							$deleteBtn = $('<td width="5%">').html('<i class="fas fa-times" name="rDeleteBtn"></i>');
 							
+							$tr.append($rNo);
 							$tr.append($name);
 							$tr.append($content);
 							$tr.append($date);
+							$tr.append($deleteBtn);
 							
 							$rTable.append($tr);
 						}
@@ -272,6 +279,7 @@
 			});
 		}
 		
+		// 화면 로드 시 댓글 목록 불러오기 ajax
 		$(function(){
 			getReplyList();
 			
@@ -279,7 +287,26 @@
 // 				getReplyList();
 // 			}, 7000);
 		});
+		
+		var bNo = '${ b.bNo }';
+		
+		// 댓글 삭제 ajax
+		$(document).on("click", "i[name='rDeleteBtn']", function(){
+			var rNo = $(this).parent().parent().children().eq(0).children().val();
+			
+			$.ajax({
+				url: 'deleteCommonReply.bo',
+				data: {bNo:bNo, rNo:rNo},
+				success: function(data){
+					console.log(data);
+					getReplyList();
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+// 			location.href="deleteCommonReply.bo?bNo=" + bNo + "&rNo=" + rNo;
+		});
 	</script>
 </body>
-
 </html>

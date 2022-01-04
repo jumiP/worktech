@@ -195,5 +195,9 @@ public class BoardDAO {
 	public ArrayList<Reply> selectCommonReplyList(SqlSessionTemplate sqlSession, int bNo) {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonReplyList", bNo);
 	}
+
+	public int deleteCommonReply(SqlSessionTemplate sqlSession, int rNo) {
+		return sqlSession.update("boardMapper.deleteCommonReply", rNo);
+	}
 	
 }

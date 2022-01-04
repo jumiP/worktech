@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="chatMapper">
+	<select id="selectChatList" resultMap="chatRoomResultSet">
+		SELECT CHATROOM_NO, CHAT_OPEN, CHAT_TITLE, CHAT_TYPE, P_URL, MSG_CONTENT, SEND_TIME, NVL(CNT, 0) AS NOT_READ_COUNT, CHAT_LIST_NO, CHAT_MEMBER
+		FROM CHATROOM
+     		 LEFT JOIN CHAT_LIST USING(CHATROOM_NO)
+     		 LEFT JOIN PROFILE ON (CHAT_MEMBER = M_NO)
+    		 LEFT JOIN (SELECT *
+       			  		FROM (SELECT MSG_CONTENT, SEND_TIME, CHATROOM_NO, ROW_NUMBER() OVER (PARTITION BY CHATROOM_NO ORDER BY SEND_TIME DESC, MSG_ID DESC) AS RECENT
+         					  FROM CHAT_MSG CM)
+       					WHERE RECENT = 1) USING(CHATROOM_NO)
+   			 LEFT JOIN (SELECT CHATROOM_NO, COUNT(CHATROOM_NO) AS CNT
+    				    FROM CHAT_MSG
+    					WHERE read_yn = 'N'
+    					GROUP BY CHATROOM_NO) USING (CHATROOM_NO)
+    	WHERE CHATROOM_NO IN (SELECT CHATROOM_NO
+                    		  FROM CHAT_LIST
+							  WHERE CHAT_MEMBER = #{mNo})
+		ORDER BY CHATROOM_NO DESC
+	</select>
+	
+	<resultMap type="ChatRoom" id="chatRoomResultSet">
+		<id column="CHATROOM_NO" property="chatRoomNo"/>
+		<result column="CHAT_OPEN" property="chatOpenMem"/>
+		<result column="CHAT_TITLE" property="chatTitle"/>
+		<result column="CHAT_TYPE" property="chatType"/>
+		<result column="MSG_CONTENT" property="recentMsg"/>
+		<result column="SEND_TIME" property="sendTime"/>
+		<result column="NOT_READ_COUNT" property="notReadCount"/>
+		<collection property="gatheringList" resultMap="gatheringMemberResultSet" javaType="arrayList"/>		
+	</resultMap>
+	
+	<resultMap type="GatheringMember" id="gatheringMemberResultSet">
+		<id column="CHAT_LIST_NO" property="gatheringNo"/>
+		<result column="CHATROOM_NO" property="chatRoomNo"/>
+		<result column="CHAT_MEMBER" property="gatheringMember"/>
+		<result column="P_URL" property="profileUrl"/>
+	</resultMap>
+	
+</mapper>

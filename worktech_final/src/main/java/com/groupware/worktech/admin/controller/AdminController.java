@@ -337,167 +337,154 @@ public class AdminController {
 	}
 	// 관리자 공지사항 게시판 부분 끝
 	
-	// 관리자 예약 자산 추가 부분 시작
+		// 관리자 예약 자산 추가 부분 시작
 	@RequestMapping("addRvView.ad")
 	public String addRvView(Model model) {
 		ArrayList<Department> list = aService.getDepartmentList();
-		
-		if(list != null) {
+
+		if (list != null) {
 			model.addAttribute("list", list);
 		}
-		
+
 		return "adminRvAddForm";
+	}
+
+	@RequestMapping("rvProductList.ad")
+	public String rvpList(@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "boardLimit", required = false) Integer boardLimit, Model model) {
+		int currentPage = 1;
+
+		if (page != null) {
+			currentPage = page;
+		}
+
+		int listCount = aService.getRvListCount();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+
+		ArrayList<RvProduct> list = aService.selectRvProductList(pi);
+		if (list != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("list", list);
+
+		} else {
+			throw new AdminException("예약 자산 목록 조회에 실패하였습니다.");
+		}
+
+		return "adminRvProductList";
 	}
 	
 	@RequestMapping("addRvProduct.ad")
 	public String addRvProduct(@ModelAttribute RvProduct rp, @RequestParam(value = "department", required = false) int[] dNoes) {
-		ArrayList<RvRange> rrList = new ArrayList<RvRange>();		
-		
-		for(int i = 0; i < dNoes.length; i++) {
+		ArrayList<RvRange> rrList = new ArrayList<RvRange>();
+
+		for (int i = 0; i < dNoes.length; i++) {
 			RvRange r = new RvRange();
 			r.setPdDNo(dNoes[i]);
 			rrList.add(r);
 		}
-		
+
 		rp.setRvRange(rrList);
-		
+
 		int result = aService.insertRvProduct(rp);
-		
-		if(result >= rrList.size() + 1) {
+
+		if (result >= rrList.size() + 1) {
 			return "redirect:rvProductList.ad";
 		} else {
-			throw new AdminException("예약 자산 등록에 실패하였습니다."); 
+			throw new AdminException("예약 자산 등록에 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("rvpdetail.ad")
+	public String rvDetail(@RequestParam("page") int page, @RequestParam("pdNo") int pdNo, Model model) {
+		RvProduct rp = aService.selectRvProduct(pdNo);
+		
+		if(rp != null) {
+			model.addAttribute("rp", rp);
+			model.addAttribute("page", page);
+			return "adminRvDetail";
+		} else {
+			throw new AdminException("예약 자산 상세 조회에 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("rvupdateView.ad")
+	public String updateRvPView(@RequestParam("page") int page, @RequestParam("pdNo") int pdNo, Model model) {
+		RvProduct rp = aService.selectRvProduct(pdNo);
+		ArrayList<Department> list = aService.getDepartmentList();
+
+		model.addAttribute("rp", rp).addAttribute("page", page).addAttribute("list", list);
+
+		return "adminRvUpdate";
+	}
+	
+	@Transactional
+	@RequestMapping("rvupdate.ad")
+	public String updateRvProduct(@ModelAttribute RvProduct rp, @RequestParam(value = "department", required = false) ArrayList<Integer> editRrList,
+								  @RequestParam("page") int page) {
+		ArrayList<Integer> originRrList = aService.getOriginRvRangeList(rp.getPdNo());
+		ArrayList<Integer> insertRrNoList = new ArrayList<Integer>(); // 받아온 목록 - DB에 저장된 목록 (차집합)
+		insertRrNoList.addAll(editRrList); 
+		ArrayList<Integer> deleteRrNoList = new ArrayList<Integer>(); // DB에 저장된 목록 - 받아온 목록 (차집합)
+		deleteRrNoList.addAll(originRrList);
+		
+		for(int i : originRrList) {
+			for(int j : editRrList) {
+				if(i == j) {
+					insertRrNoList.remove((Integer)j);
+					deleteRrNoList.remove((Integer)j);
+				}
+			}
+		}
+		
+		ArrayList<RvRange> insertRrList = new ArrayList<RvRange>();
+		ArrayList<RvRange> deleteRrList = new ArrayList<RvRange>();
+		
+		for(int pdDNo : insertRrNoList) {
+			RvRange rr = new RvRange();
+			rr.setPdDNo(pdDNo);
+			rr.setPdNo(rp.getPdNo());
+			
+			insertRrList.add(rr);
+		}
+		
+		for(int pdDNo : deleteRrNoList) {
+			RvRange rr = new RvRange();
+			rr.setPdDNo(pdDNo);
+			rr.setPdNo(rp.getPdNo());
+			
+			deleteRrList.add(rr);
+		}
+
+		int result = 0;
+		
+		result += aService.updateRvRange(insertRrList);
+		result += aService.deleteRvRange(deleteRrList);
+		
+		if (result >= insertRrList.size() + deleteRrList.size()) {
+			return "redirect:rvpdetail.ad?pdNo=" + rp.getPdNo() + "&page=" + page;
+		} else {
+			throw new AdminException("예약 자산 수정에 실패하였습니다.");
 		}
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@RequestMapping("rvProductDelete.ad")
+	public String rvpDelete(@RequestParam("pdNo") int pdNo) {
+		int result = aService.deleteRvProduct(pdNo); // status만 변경하므로 range는 삭제하지 않음
+		
+		if(result > 0) {
+			return "redirect:rvProductList.ad";
+		} else {
+			throw new AdminException("예약 자산 삭제에 실패하였습니다.");
+		}
+	}
+	
+	// 관리자 예약 자산 추가 부분 끝
+	
+	@RequestMapping("mainPage.do")
+	public String mainView() {
+		return "main";
+	}
 	
 	// 부서 목록
 	@RequestMapping("dList.ad")

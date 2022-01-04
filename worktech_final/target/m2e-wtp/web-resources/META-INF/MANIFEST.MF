@@ -1,5 +1,6 @@
 Manifest-Version: 1.0
 <<<<<<< HEAD
+<<<<<<< HEAD
 Built-By: docon
 =======
 <<<<<<< HEAD
@@ -11,6 +12,9 @@ Built-By: user
 Built-By: ￬ﾹﾘ￬ﾹﾘ
 >>>>>>> 2b127c40623c2b66f533e979b7ea3c6a9ddef909
 >>>>>>> e40743353ae300ba941d3fc48cd8adb5c91a694c
+>>>>>>> main/main
+=======
+Built-By: user
 >>>>>>> main/main
 Build-Jdk: 1.8.0_302
 Created-By: Maven Integration for Eclipse

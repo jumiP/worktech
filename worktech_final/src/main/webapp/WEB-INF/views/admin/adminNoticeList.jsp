@@ -73,12 +73,17 @@
 </head>
 
 <body>
-    <c:import url="../common/headerAdmin.jsp" />
+	<c:if test="${ loginUser.mGrade eq 'USER' }">
+		<c:import url="../common/headerUser.jsp" />
+	</c:if>
+	<c:if test="${ loginUser.mGrade eq 'ADMIN' }">
+	    <c:import url="../common/headerAdmin.jsp" />
+	</c:if>
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>공지사항 목록</h1>
+                <h1>공지사항 게시판</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item">게시판 관리</div>
                     <div class="breadcrumb-item">공지사항 게시판</div>
@@ -133,7 +138,9 @@
                                     	</c:forEach>
                                     </tbody>
                                 </table>
-                                <button class="btn btn-primary push" onclick="location.href='ninsertView.ad';">글쓰기</button>
+                                <c:if test="${ loginUser.mGrade eq 'ADMIN' }">
+                                	<button class="btn btn-primary push" onclick="location.href='ninsertView.ad';">글쓰기</button>
+                                </c:if>
                                 <br clear="all">
                                 <div class="card-body paging-area">
                                     <div class="buttons">
@@ -258,7 +265,6 @@
         </section>
     </div>
     <c:import url="../common/footer.jsp" />
-    
     <script>
     	// 게시글 목록 마우스오버 이벤트
 	    $(function() {
@@ -268,7 +274,16 @@
 				$(this).parent().css({'background':'white', 'font-weight':'normal'});
 			}).click(function() {
 				var bNo = $(this).parent().children().eq(0).text();
-				location.href="ndetail.ad?bNo=" + bNo + '&page=' + ${pi.currentPage};
+				var boardLimit = $('#boardLimit').val();
+				
+				var searchCondition = $("#searchCondition").val();
+				var searchValue = $("#searchValue").val();
+				
+				if(searchValue != ''){
+					location.href= "ndetail.ad?bNo=" + bNo + '&page=' + ${pi.currentPage} + '&boardLimit=' + boardLimit + "&searchCondition="+searchCondition+"&searchValue="+searchValue;
+				} else {
+					location.href= "ndetail.ad?bNo=" + bNo + '&page=' + ${pi.currentPage} + '&boardLimit=' + boardLimit;
+				}
 			});
 		});
     	
@@ -290,7 +305,14 @@
     	$(function() {
 			$('#boardLimit').on('change', function() {
 				var boardLimit = $(this).val();
-				location.href='noticeList.ad?boardLimit=' + boardLimit;
+				var searchCondition = $("#searchCondition").val();
+				var searchValue = $("#searchValue").val();
+				
+				if(searchValue != ''){
+					location.href="searchNotice.ad?searchCondition="+searchCondition+"&searchValue="+searchValue + "&boardLimit=" + boardLimit;
+				} else {
+					location.href='noticeList.ad?boardLimit=' + boardLimit;
+				}
 			});
 		})
     </script>

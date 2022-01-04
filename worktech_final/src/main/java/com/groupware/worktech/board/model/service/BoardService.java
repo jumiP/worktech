@@ -6,10 +6,12 @@ import java.util.HashMap;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.groupware.worktech.board.model.dao.BoardDAO;
 import com.groupware.worktech.board.model.vo.Board;
 import com.groupware.worktech.board.model.vo.BoardFile;
+import com.groupware.worktech.board.model.vo.Reply;
 import com.groupware.worktech.common.PageInfo;
 
 @Service("bService")
@@ -28,7 +30,8 @@ public class BoardService {
 	public ArrayList<Board> selectNoticeList(PageInfo pi) {
 		return bDAO.selectNoticeList(sqlSession, pi);
 	}
-
+	
+	@Transactional
 	public int insertNotice(Board b) {
 		int result = bDAO.insertNotice(sqlSession, b);
 		
@@ -41,6 +44,7 @@ public class BoardService {
 		return result;
 	}
 
+	@Transactional
 	public Board selectNotice(int bNo, String upd) {
 		Board b = null;
 		
@@ -66,6 +70,7 @@ public class BoardService {
 		return bDAO.deleteNoticeFile(sqlSession, fNo);
 	}
 	
+	@Transactional
 	public int updateNotice(Board b) {
 		int result = bDAO.updateNotice(sqlSession, b);
 		
@@ -137,14 +142,77 @@ public class BoardService {
 	
 	
 	
-	
 	public int insertCommonBoard(Board b) {
 		int result = bDAO.insertCommonBoard(sqlSession, b);
+		
+		if(result > 0 && !b.getFileList().isEmpty()) {
+			for(int i = 0; i < b.getFileList().size(); i++) {
+				result += bDAO.insertNoticeFile(sqlSession, b.getFileList().get(i));
+			}
+		}
 		return result;
 
 	}
 
+	public ArrayList<Board> selectCommonList(PageInfo pi) {
+		return bDAO.selectCommonList(sqlSession, pi);
+	}
 	
+	public ArrayList<Board> selectCommonList(PageInfo pi, Integer category) {
+		return bDAO.selectCommonList(sqlSession, pi, category);
+	}
+
+	public int getCategoryListCount(Integer category) {
+		return bDAO.getCategoryListCount(sqlSession, category);
+	}
+
+	public Board selectCommonBoard(int bNo, String upd) {
+		Board b = null;
+		if(upd != null && upd.equals("Y")) {
+			b = bDAO.selectCommonBoard(sqlSession, bNo);
+		} else {
+			int result = bDAO.addReadCount(sqlSession, bNo);
+			
+			if(result > 0) {
+				b = bDAO.selectCommonBoard(sqlSession, bNo);
+			}
+		}
+		
+		return b;
+	}
+
+	public int updateCommonBoard(Board b) {
+		int result = bDAO.updateCommonBoard(sqlSession, b);
+		
+		if(result > 0 && !b.getFileList().isEmpty()) {
+			for(int i = 0; i < b.getFileList().size(); i++) {
+				result += bDAO.updateNoticeFile(sqlSession, b.getFileList().get(i));
+			}
+		}
+			
+		return result;
+	}
+
+	public int getCommonSearchListCount(HashMap<String, Object> searchMap) {
+		return bDAO.getCommonSearchListCount(sqlSession, searchMap);
+	}
+
+	public ArrayList<Board> selectCommonSearchList(HashMap<String, Object> searchListMap) {
+		return bDAO.selectCommonSearchList(sqlSession, searchListMap);
+	}
+
+	public int insertCommonReply(Reply r) {
+		return bDAO.insertCommonReply(sqlSession, r);
+	}
+
+	public ArrayList<Reply> selectCommonReplyList(int bNo) {
+		return bDAO.selectCommonReplyList(sqlSession, bNo);
+	}
+
+	public int deleteCommonReply(int rNo) {
+		return bDAO.deleteCommonReply(sqlSession, rNo);
+	}
+
 
 
 

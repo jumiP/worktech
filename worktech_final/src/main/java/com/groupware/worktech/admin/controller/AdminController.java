@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -421,51 +422,55 @@ public class AdminController {
 	@RequestMapping("rvupdate.ad")
 	public String updateRvProduct(@ModelAttribute RvProduct rp, @RequestParam(value = "department", required = false) ArrayList<Integer> editRrList,
 								  @RequestParam("page") int page) {
-		ArrayList<Integer> originRrList = aService.getOriginRvRangeList(rp.getPdNo());
-		ArrayList<Integer> insertRrNoList = new ArrayList<Integer>(); // 받아온 목록 - DB에 저장된 목록 (차집합)
-		insertRrNoList.addAll(editRrList); 
-		ArrayList<Integer> deleteRrNoList = new ArrayList<Integer>(); // DB에 저장된 목록 - 받아온 목록 (차집합)
-		deleteRrNoList.addAll(originRrList);
-		
-		for(int i : originRrList) {
-			for(int j : editRrList) {
-				if(i == j) {
-					insertRrNoList.remove((Integer)j);
-					deleteRrNoList.remove((Integer)j);
-				}
-			}
-		}
-		
-		ArrayList<RvRange> insertRrList = new ArrayList<RvRange>();
-		ArrayList<RvRange> deleteRrList = new ArrayList<RvRange>();
-		
-		for(int pdDNo : insertRrNoList) {
-			RvRange rr = new RvRange();
-			rr.setPdDNo(pdDNo);
-			rr.setPdNo(rp.getPdNo());
-			
-			insertRrList.add(rr);
-		}
-		
-		for(int pdDNo : deleteRrNoList) {
-			RvRange rr = new RvRange();
-			rr.setPdDNo(pdDNo);
-			rr.setPdNo(rp.getPdNo());
-			
-			deleteRrList.add(rr);
-		}
-
 		int result = 0;
 		
-		result += aService.updateRvRange(insertRrList);
-		result += aService.deleteRvRange(deleteRrList);
+		result = aService.updateRvProduct(rp);
 		
-		if (result >= insertRrList.size() + deleteRrList.size()) {
-			return "redirect:rvpdetail.ad?pdNo=" + rp.getPdNo() + "&page=" + page;
-		} else {
-			throw new AdminException("예약 자산 수정에 실패하였습니다.");
-		}
+		if(result > 0) {
 		
+			ArrayList<Integer> originRrList = aService.getOriginRvRangeList(rp.getPdNo());
+			ArrayList<Integer> insertRrNoList = new ArrayList<Integer>(); // 받아온 목록 - DB에 저장된 목록 (차집합)
+			insertRrNoList.addAll(editRrList); 
+			ArrayList<Integer> deleteRrNoList = new ArrayList<Integer>(); // DB에 저장된 목록 - 받아온 목록 (차집합)
+			deleteRrNoList.addAll(originRrList);
+			
+			for(int i : originRrList) {
+				for(int j : editRrList) {
+					if(i == j) {
+						insertRrNoList.remove((Integer)j);
+						deleteRrNoList.remove((Integer)j);
+					}
+				}
+			}
+			
+			ArrayList<RvRange> insertRrList = new ArrayList<RvRange>();
+			ArrayList<RvRange> deleteRrList = new ArrayList<RvRange>();
+			
+			for(int pdDNo : insertRrNoList) {
+				RvRange rr = new RvRange();
+				rr.setPdDNo(pdDNo);
+				rr.setPdNo(rp.getPdNo());
+				
+				insertRrList.add(rr);
+			}
+			
+			for(int pdDNo : deleteRrNoList) {
+				RvRange rr = new RvRange();
+				rr.setPdDNo(pdDNo);
+				rr.setPdNo(rp.getPdNo());
+				
+				deleteRrList.add(rr);
+			}
+	
+			result += aService.updateRvRange(insertRrList);
+			result += aService.deleteRvRange(deleteRrList);
+			
+			if (result >= insertRrList.size() + deleteRrList.size() + 1) {
+				return "redirect:rvpdetail.ad?pdNo=" + rp.getPdNo() + "&page=" + page;
+			} 
+		} 
+		
+		throw new AdminException("예약 자산 수정에 실패하였습니다.");
 	}
 	
 	@RequestMapping("rvProductDelete.ad")

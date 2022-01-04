@@ -1,6 +1,7 @@
 package com.groupware.worktech.adbook.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,21 @@ public class AdbookService {
 	@Autowired
 	private AdbookDAO abDAO;
 
-	public int getAdbookListCount() {
-		return abDAO.getAdbookListCount(sqlSession);
+	public int getAdbookListCount(HashMap<String, String> selectMap) {
+		return abDAO.getAdbookListCount(sqlSession, selectMap);
 	}
 
-	public ArrayList<Member> selectAdbookList(PageInfo pi) {
-		return abDAO.selectAdbookList(sqlSession, pi);
+	public ArrayList<Member> selectAdbookList(PageInfo pi, HashMap<String, String> selectMap) {
+		return abDAO.selectAdbookList(sqlSession, pi, selectMap);
 	}
+	
+	public int getSearchAdbookListCount(String searchValue) {
+		return abDAO.getSearchAdbookListCount(sqlSession, searchValue);
+	}
+
+	public ArrayList<Member> selectSearchAdbookList(PageInfo pi, String searchValue) {
+		return abDAO.selectSearchAdbookList(sqlSession, pi, searchValue);
+	}
+
+	
 }

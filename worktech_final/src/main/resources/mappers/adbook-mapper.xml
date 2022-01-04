@@ -5,14 +5,28 @@
 	<select id="getAdbookListCount" resultType="_int">
 		select count(*)
 		from member
+			 join department using(d_no)
 		where m_status = 'Y'
+			<if test='selectCategory == "dept" and selectValue != null and !selectValue.equals("")'>
+				and d_no = #{selectValue}
+			</if>
+			<if test='selectCategory == "job"'>
+				and job_grade = #{selectValue}
+			</if>
 	</select>
 	
 	<select id="selectAdbookList" resultMap="AdbookResultSet">
-		select m_no, email, name, job_grade, phone, d_no, d_name, m_hired
+		select m_no, email, name, job_grade, phone, d_no, d_name, m_hired, p_url
 		from member
 			 join department using(d_no)
+			 left join profile using(m_no)
 		where m_status = 'Y'
+			<if test='selectCategory == "dept"'>
+				and d_no = #{selectValue}
+			</if>
+			<if test='selectCategory == "job"'>
+				and job_grade = #{selectValue}
+			</if>
 		order by m_no
 	</select>
 	
@@ -25,5 +39,29 @@
 		<result column="D_NO" property="dNo"/>
 		<result column="D_NAME" property="dName"/>
 		<result column="M_HIRED" property="hireDate"/>
+		<result column="P_URL" property="pUrl"/>
 	</resultMap>
+	
+	<select id="getSearchAdbookListCount" resultType="_int">
+		select count(*)
+		from member
+			 join department using(d_no)
+			 left join profile using(m_no)
+		where m_status = 'Y'
+			  and (name like '%'||#{value}||'%'
+			  	   or email like '%'||#{value}||'%' 
+			  	   or phone like '%'||#{value}||'%')
+	</select>
+		
+	<select id="selectSearchAdbookList" resultMap="AdbookResultSet">
+		select m_no, email, name, job_grade, phone, d_no, d_name, m_hired, p_url
+		from member
+			 join department using(d_no)
+			 left join profile using(m_no)
+		where m_status = 'Y'
+			  and (name like '%'||#{value}||'%'
+			  	   or email like '%'||#{value}||'%' 
+			  	   or phone like '%'||#{value}||'%')
+		order by m_no
+	</select>
 </mapper>

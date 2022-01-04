@@ -243,7 +243,7 @@
                     </ul>
 
                     <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-                        <a href="chatting.ct" class="btn btn-primary btn-lg btn-block btn-icon-split">
+                        <a href="#" onclick="chatOpen();" class="btn btn-primary btn-lg btn-block btn-icon-split">
                             <i class="fas fa-comments"></i>
                             CHAT
                         </a>
@@ -253,23 +253,29 @@
             </div>
             </div>
 
-            <!-- General JS Scripts -->
-            <script src="resources/dist/assets/modules/jquery.min.js"></script>
-            <script src="resources/dist/assets/modules/popper.js"></script>
-            <script src="resources/dist/assets/modules/tooltip.js"></script>
-            <script src="resources/dist/assets/modules/bootstrap/js/bootstrap.min.js"></script>
-            <script src="resources/dist/assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
-            <script src="resources/dist/assets/modules/moment.min.js"></script>
-            <script src="resources/dist/assets/js/stisla.js"></script>
+    <!-- General JS Scripts -->
+    <script src="resources/dist/assets/modules/jquery.min.js"></script>
+    <script src="resources/dist/assets/modules/popper.js"></script>
+    <script src="resources/dist/assets/modules/tooltip.js"></script>
+    <script src="resources/dist/assets/modules/bootstrap/js/bootstrap.min.js"></script>
+    <script src="resources/dist/assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
+    <script src="resources/dist/assets/modules/moment.min.js"></script>
+    <script src="resources/dist/assets/js/stisla.js"></script>
 
-            <!-- JS Libraies -->
+    <!-- JS Libraies -->
 
-            <!-- Page Specific JS File -->
+    <!-- Page Specific JS File -->
 
-            <!-- Template JS File -->
-            <script src="resources/dist/assets/js/scripts.js"></script>
-            <script src="resources/dist/assets/js/custom.js"></script>
+    <!-- Template JS File -->
+    <script src="resources/dist/assets/js/scripts.js"></script>
+    <script src="resources/dist/assets/js/custom.js"></script>
 
+	<script>
+		function chatOpen() {
+			window.open('chatView.ct', '채팅', 'width=500px, height=600px');
+		}
+	
+	</script>
 </body>
 
 </html>

@@ -12,6 +12,8 @@
 		<typeAlias type="com.groupware.worktech.member.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.groupware.worktech.admin.model.vo.RvProduct" alias="RvProduct"/>
 		<typeAlias type="com.groupware.worktech.admin.model.vo.RvRange" alias="RvRange"/>
+		<typeAlias type="com.groupware.worktech.chat.model.vo.ChatRoom" alias="ChatRoom"/>
+		<typeAlias type="com.groupware.worktech.chat.model.vo.GatheringMember" alias="GatheringMember"/>
 		<typeAlias type="com.groupware.worktech.board.model.vo.Reply" alias="Reply"/>
 	</typeAliases>
 	
@@ -19,6 +21,7 @@
 		<mapper resource="mappers/board-mapper.xml"/>
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/admin-mapper.xml"/>
+		<mapper resource="mappers/chat-mapper.xml"/>
 		<mapper resource="mappers/adbook-mapper.xml"/>
 	</mappers>
 	

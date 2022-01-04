@@ -377,6 +377,7 @@
 		from reply
 			 join member on(r_name = m_no)
 		where b_no = #{bNo}
+			  and r_status = 'N'
 		order by r_no
 	</select>
 	
@@ -389,4 +390,10 @@
 		<result column="NAME" property="name"/>
 		<result column="R_STATUS" property="rStatus"/>
 	</resultMap>
+	
+	<update id="deleteCommonReply">
+		update reply
+		set r_status = 'Y'
+		where r_no = #{rNo}
+	</update>
 </mapper>

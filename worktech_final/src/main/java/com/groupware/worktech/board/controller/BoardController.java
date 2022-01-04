@@ -319,7 +319,6 @@ public class BoardController {
 	@ResponseBody
 	public String insertCommonReply(@ModelAttribute Reply r, Model model) {
 		int result = bService.insertCommonReply(r);
-		System.out.println(result);
 		
 		if(result > 0) {
 			return "success";
@@ -328,7 +327,7 @@ public class BoardController {
 		}
 	}
 	
-	@RequestMapping(value="commonReplyList.bo")
+	@RequestMapping("commonReplyList.bo")
 	public void commonReplyList(@RequestParam("bNo") int bNo, HttpServletResponse response) {
 		response.setContentType("application/json; charset=UTF-8");
 		
@@ -344,6 +343,17 @@ public class BoardController {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("deleteCommonReply.bo")
+	public String deleteCommonReply(@RequestParam("bNo") int bNo, @RequestParam("rNo") int rNo, Model model) {
+		int result = bService.deleteCommonReply(rNo);
+		
+		if(result > 0) {
+			return "redirect:cdetail.bo?bNo=" + bNo;
+		} else {
+			throw new BoardException("댓글 삭제에 실패하였습니다.");
 		}
 	}
 }

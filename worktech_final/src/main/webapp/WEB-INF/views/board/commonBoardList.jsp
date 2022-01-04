@@ -287,7 +287,6 @@
 				
 				location.href="cdetail.bo?bNo=" + bNo + "&page=" + ${pi.currentPage} + "&category=" + category
 							  + "&searchCategory=" + searchCategory + "&searchValue=" + searchValue;
-// 				location.href="cdetail.bo?bNo=" + bNo + "&page=" + ${pi.currentPage} + "&category=" + category;
 			});
 		});
 	    

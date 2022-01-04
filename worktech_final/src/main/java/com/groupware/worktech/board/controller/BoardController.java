@@ -71,12 +71,6 @@ public class BoardController {
 		return "commonBoardList";
 	}
 	
-	@RequestMapping("commonCategoryList.bo")
-	public String commonCategoryList() {
-		
-		return null;
-	}
-	
 	@RequestMapping("cinsertView.bo")
 	public String generalBoardInsertView() {
 		return "commonBoardInsertForm";

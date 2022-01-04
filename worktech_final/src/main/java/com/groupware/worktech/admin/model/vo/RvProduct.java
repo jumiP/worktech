@@ -9,20 +9,17 @@ public class RvProduct {
 	private String pdName;
 	private Date pdDate;
 	private int pdCount;
-	private String pdStatus;
 	private ArrayList<RvRange> rvRange;
 	
 	public RvProduct() {}
 	
-	public RvProduct(int pdNo, String pdCategory, String pdName, Date pdDate, int pdCount, String pdStatus,
-			ArrayList<RvRange> rvRange) {
+	public RvProduct(int pdNo, String pdCategory, String pdName, Date pdDate, int pdCount, ArrayList<RvRange> rvRange) {
 		super();
 		this.pdNo = pdNo;
 		this.pdCategory = pdCategory;
 		this.pdName = pdName;
 		this.pdDate = pdDate;
 		this.pdCount = pdCount;
-		this.pdStatus = pdStatus;
 		this.rvRange = rvRange;
 	}
 
@@ -64,14 +61,6 @@ public class RvProduct {
 
 	public void setPdCount(int pdCount) {
 		this.pdCount = pdCount;
-	}
-
-	public String getPdStatus() {
-		return pdStatus;
-	}
-
-	public void setPdStatus(String pdStatus) {
-		this.pdStatus = pdStatus;
 	}
 
 	public ArrayList<RvRange> getRvRange() {

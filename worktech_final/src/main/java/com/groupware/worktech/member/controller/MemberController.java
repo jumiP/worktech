@@ -40,57 +40,6 @@ public class MemberController {
 	@Autowired
 	private BCryptPasswordEncoder bcrypt;
 	
-	@RequestMapping("enrollView.me")
-	public String enrollView(Model model, @ModelAttribute Department d) {
-		
-		// 부서 등록
-		ArrayList<Department> list = aService.getDepartmentList();
-				
-		if(list != null) {
-			model.addAttribute("list", list);
-		}
-		
-		return "adminMemAddForm";
-	}
-	
-	@RequestMapping("minsert.me")
-	public String insertMember(@ModelAttribute Member m) {
-		
-		// 비밀번호 : 등록한 이메일 앞자리
-		// 비밀번호 암호화 => 나중에
-		String pwd = m.getEmail().substring(0, m.getEmail().indexOf("@"));
-		m.setPwd(pwd);
-		
-		
-		
-		System.out.println(m);
-		
-		
-		int result = mService.insertMember(m);
-
-		if(result > 0) {
-			return "redirect:home.do";
-		} else {
-			throw new MemberException("사원 등록에 실패하였습니다.");
-		}
-		
-	}
-	
-	
-	// 사번 중복 확인
-	@RequestMapping("dupId.me")
-	public void duplicateId(@RequestParam("mNo") String mNo, HttpServletResponse response) {
-		
-		// 삼항연산자 사용 : 일치하면(중복되면) Dup / 일치하지 않으면(중복되지 않으면) NoDup
-		String result = mService.duplicateMNo(mNo) == 0 ? "NoDup" : "Dup";
-		
-		try {
-			// 반환값 그대로 void로 하고싶으면 PrintWriter 사용 : HttpServletResponse 추가
-			response.getWriter().println(result);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}	
 	
 	// 로그인(암호화) --> DB에 Spring 콘솔에 입력된 비밀번호(암호화)를 넣고 저장 후 로그인!
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
@@ -119,5 +68,134 @@ public class MemberController {
 	
 	
 	
+
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+// 사원 등록페이지로 이동
+@RequestMapping("enrollView.me")
+public String enrollView(Model model, @ModelAttribute Department d) {
+	
+	// 부서 등록
+	ArrayList<Department> list = aService.selectDepList();
+			
+	if(list != null) {
+		model.addAttribute("list", list);
+	}
+	
+	return "adminMemAddForm";
+}
+
+// 사원 등록
+@RequestMapping("minsert.me")
+public String insertMember(@ModelAttribute Member m) {
+	
+	// 비밀번호 : 등록한 이메일 앞자리
+	// 비밀번호 암호화 => 나중에
+	String pwd = m.getEmail().substring(0, m.getEmail().indexOf("@"));
+	m.setPwd(pwd);
+	
+	System.out.println(m);
+		
+	int result = mService.insertMember(m);
+	
+	if(result > 0) {
+		return "redirect:home.do";
+	} else {
+		throw new MemberException("사원 등록에 실패하였습니다.");
+	}
+	
+}
+	
+	
+// 사번 중복 확인
+@RequestMapping("dupId.me")
+public void duplicateId(@RequestParam("mNo") String mNo, HttpServletResponse response) {
+		
+	// 삼항연산자 사용 : 일치하면(중복되면) Dup / 일치하지 않으면(중복되지 않으면) NoDup
+	String result = mService.duplicateMNo(mNo) == 0 ? "NoDup" : "Dup";
+		
+	try {
+		response.getWriter().println(result);
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+}	
+
+
 }

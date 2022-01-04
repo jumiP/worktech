@@ -126,3 +126,11 @@ target/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,eclipse,java
 
+.project
+worktech_final/.classpath
+worktech_final/src/main/webapp/resources/buploadFiles/Fx20211228121326102uiW.xlsx
+worktech_final/src/main/webapp/resources/buploadFiles/g720211228171633327vQH.pdf
+worktech_final/src/main/webapp/resources/buploadFiles/Pi20211228121326101O8h.xlsx
+worktech_final/src/main/webapp/resources/buploadFiles/sA20211228171853400XBr.pdf
+worktech_final/src/main/webapp/WEB-INF/views/chat/insertChatView.jsp
+worktech_UI/.classpath

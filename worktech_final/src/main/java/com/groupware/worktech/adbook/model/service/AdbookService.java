@@ -53,6 +53,10 @@ public class AdbookService {
 		return abDAO.selectpAdbookDetail(sqlSession, adNo);
 	}
 
+	public int updatepAdbook(Adbook adbook) {
+		return abDAO.updatepAdbook(sqlSession, adbook);
+	}
+
 
 	
 }

@@ -113,7 +113,7 @@ public class AdbookController {
 	
 	@RequestMapping("pAdbookInsert.ab")
 	@ResponseBody
-	public String pAdbookInsert(@ModelAttribute Adbook adbook, HttpServletRequest request, Model model) {
+	public String insertpAdbook(@ModelAttribute Adbook adbook, HttpServletRequest request) {
 		String mNo = ((Member)request.getSession().getAttribute("loginUser")).getmNo();
 		adbook.setAdWriter(mNo);
 		
@@ -137,5 +137,24 @@ public class AdbookController {
 		}
 		
 		return "personalAdbookDetail";
+	}
+	
+	@RequestMapping("pAdbookUpdateView.ab")
+	public String pAdbookUpdateView(@ModelAttribute Adbook adbook, Model model) {
+		model.addAttribute("a", adbook);
+		
+		return "personalAdbookUpdateForm";
+	}
+	
+	@RequestMapping("pAdbookUpdate.ab")
+	@ResponseBody
+	public String updatepAdbook(@ModelAttribute Adbook adbook) {
+		int result = abService.updatepAdbook(adbook);
+		
+		if(result > 0) {
+			return "success";
+		} else {
+			throw new AdbookException("개인 주소록 수정에 실패하였습니다.");
+		}
 	}
 }

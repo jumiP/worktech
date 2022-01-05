@@ -311,7 +311,7 @@ public class BoardController {
 	
 	@RequestMapping("addCommonReply.bo")
 	@ResponseBody
-	public String insertCommonReply(@ModelAttribute Reply r, Model model) {
+	public String insertCommonReply(@ModelAttribute Reply r) {
 		int result = bService.insertCommonReply(r);
 		
 		if(result > 0) {
@@ -342,7 +342,7 @@ public class BoardController {
 	
 	@RequestMapping("deleteCommonReply.bo")
 	@ResponseBody
-	public String deleteCommonReply(@RequestParam("bNo") int bNo, @RequestParam("rNo") int rNo, Model model) {
+	public String deleteCommonReply(@RequestParam("bNo") int bNo, @RequestParam("rNo") int rNo) {
 		int result = bService.deleteCommonReply(rNo);
 		
 		if(result > 0) {

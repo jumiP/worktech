@@ -98,4 +98,15 @@
 		from adbook
 		where ad_no = #{adNo}
 	</select>
+	
+	<update id="updatepAdbook">
+		update adbook
+		set ad_name = #{adName},
+			ad_company = #{adCompany},
+			ad_phone = #{adPhone},
+			ad_email = #{adEmail},
+			ad_dept = #{adDept},
+			ad_job = #{adJob}
+		where ad_no = #{adNo}
+	</update>
 </mapper>

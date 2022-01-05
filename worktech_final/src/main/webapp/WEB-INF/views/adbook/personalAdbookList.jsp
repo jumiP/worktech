@@ -214,11 +214,12 @@ h4.section-title {
 		}
 		
 		// 개인 주소록 수정
-		$('#pAdbookTable tbody td').on('click', function(){
+		$('#pAdbookTable tbody td:not(:first-child)').on('click', function(){
 			var adNo = $(this).parent().children().eq(0).children().eq(0).val();
 			
 			open('pAdbookDetail.ab?adNo=' + adNo, '개인 주소록 상세', 'width=600px, height=630px, top=50px, left=500px');
 		});
+		
 	</script>
 </body>
 </html>

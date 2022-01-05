@@ -72,7 +72,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("cinsertView.bo")
-	public String generalBoardInsertView() {
+	public String commonBoardInsertView() {
 		return "commonBoardInsertForm";
 	}
 	
@@ -341,11 +341,12 @@ public class BoardController {
 	}
 	
 	@RequestMapping("deleteCommonReply.bo")
+	@ResponseBody
 	public String deleteCommonReply(@RequestParam("bNo") int bNo, @RequestParam("rNo") int rNo, Model model) {
 		int result = bService.deleteCommonReply(rNo);
 		
 		if(result > 0) {
-			return "redirect:cdetail.bo?bNo=" + bNo;
+			return "success";
 		} else {
 			throw new BoardException("댓글 삭제에 실패하였습니다.");
 		}

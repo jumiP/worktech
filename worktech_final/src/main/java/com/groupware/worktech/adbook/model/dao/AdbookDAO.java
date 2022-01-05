@@ -58,6 +58,10 @@ public class AdbookDAO {
 		return sqlSession.selectOne("adbookMapper.selectpAdbookDetail", adNo);
 	}
 
+	public int updatepAdbook(SqlSessionTemplate sqlSession, Adbook adbook) {
+		return sqlSession.update("adbookMapper.updatepAdbook", adbook);
+	}
+
 
 	
 

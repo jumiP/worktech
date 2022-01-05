@@ -298,8 +298,9 @@
 				url: 'deleteCommonReply.bo',
 				data: {bNo:bNo, rNo:rNo},
 				success: function(data){
-					console.log(data);
-					getReplyList();
+					if(data.trim() == 'success'){
+						getReplyList();
+					}
 				},
 				error: function(data){
 					console.log(data);

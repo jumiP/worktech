@@ -3,14 +3,19 @@ package com.groupware.worktech.adbook.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.groupware.worktech.adbook.model.exception.AdbookException;
 import com.groupware.worktech.adbook.model.service.AdbookService;
+import com.groupware.worktech.adbook.model.vo.Adbook;
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.common.Pagination;
 import com.groupware.worktech.member.model.vo.Member;
@@ -79,7 +84,58 @@ public class AdbookController {
 	}
 	
 	@RequestMapping("pAdbookList.ab")
-	public String personalAdbookList() {
+	public String personalAdbookList(@RequestParam(value="page", required=false) Integer page, HttpServletRequest request, Model model) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		String mNo = ((Member)request.getSession().getAttribute("loginUser")).getmNo();
+		
+		int listCount = abService.getpAdbookListCount(mNo);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Adbook> list = abService.selectpAdbookList(pi, mNo);
+		
+		if(list != null) {
+			model.addAttribute("list", list);
+			model.addAttribute("pi", pi);
+		}
+		
 		return "personalAdbookList";
+	}
+	
+	@RequestMapping("pAdbookInsertView.ab")
+	public String pAdbookInsertView() {
+		return "personalAdbookForm";
+	}
+	
+	@RequestMapping("pAdbookInsert.ab")
+	@ResponseBody
+	public String pAdbookInsert(@ModelAttribute Adbook adbook, HttpServletRequest request, Model model) {
+		String mNo = ((Member)request.getSession().getAttribute("loginUser")).getmNo();
+		adbook.setAdWriter(mNo);
+		
+		int result = abService.insertpAdbook(adbook);
+		
+		if(result > 0) {
+			return "success";
+		} else {
+			throw new AdbookException("개인 주소록 추가에 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("pAdbookDetail.ab")
+	public String pAdbookDetail(@RequestParam("adNo") int adNo, Model model) {
+		Adbook adbook = abService.selectpAdbookDetail(adNo);
+		
+		if(adbook != null) {
+			model.addAttribute("a", adbook);
+		} else {
+			throw new AdbookException("개인 주소록 상세 조회에 실패하였습니다.");
+		}
+		
+		return "personalAdbookDetail";
 	}
 }

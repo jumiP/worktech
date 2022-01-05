@@ -7,7 +7,7 @@
 		from member
 			 join department using(d_no)
 		where m_status = 'Y'
-			<if test='selectCategory == "dept" and selectValue != null and !selectValue.equals("")'>
+			<if test='selectCategory == "dept"'>
 				and d_no = #{selectValue}
 			</if>
 			<if test='selectCategory == "job"'>
@@ -15,7 +15,7 @@
 			</if>
 	</select>
 	
-	<select id="selectAdbookList" resultMap="AdbookResultSet">
+	<select id="selectAdbookList" resultMap="adbookResultSet">
 		select m_no, email, name, job_grade, phone, d_no, d_name, m_hired, p_url
 		from member
 			 join department using(d_no)
@@ -30,7 +30,7 @@
 		order by m_no
 	</select>
 	
-	<resultMap type="Member" id="AdbookResultSet">
+	<resultMap type="Member" id="adbookResultSet">
 		<id column="M_NO" property="mNo"/>
 		<result column="EMAIL" property="email"/>
 		<result column="NAME" property="name"/>
@@ -53,7 +53,7 @@
 			  	   or phone like '%'||#{value}||'%')
 	</select>
 		
-	<select id="selectSearchAdbookList" resultMap="AdbookResultSet">
+	<select id="selectSearchAdbookList" resultMap="adbookResultSet">
 		select m_no, email, name, job_grade, phone, d_no, d_name, m_hired, p_url
 		from member
 			 join department using(d_no)
@@ -63,5 +63,39 @@
 			  	   or email like '%'||#{value}||'%' 
 			  	   or phone like '%'||#{value}||'%')
 		order by m_no
+	</select>
+	
+	<insert id="insertpAdbook">
+		insert into adbook
+		values(seq_ad.nextval, #{adName}, #{adCompany}, #{adPhone}, #{adEmail}, #{adDept}, #{adJob}, #{adWriter})
+	</insert>
+	
+	<select id="getpAdbookListCount" resultType="_int">
+		select count(*)
+		from adbook
+		where ad_writer = #{mNo}
+	</select>
+	
+	<select id="selectpAdbookList" resultMap="pAdbookResultSet">
+		select *
+		from adbook
+		where ad_writer = #{mNo}
+	</select>
+	
+	<resultMap type="Adbook" id="pAdbookResultSet">
+		<id column="AD_NO" property="adNo"/>
+		<result column="AD_NAME" property="adName"/>
+		<result column="AD_COMPANY" property="adCompany"/>
+		<result column="AD_PHONE" property="adPhone"/>
+		<result column="AD_EMAIL" property="adEmail"/>
+		<result column="AD_DEPT" property="adDept"/>
+		<result column="AD_JOB" property="adJob"/>
+		<result column="AD_WRITER" property="adWriter"/>
+	</resultMap>
+	
+	<select id="selectpAdbookDetail" resultMap="pAdbookResultSet">
+		select *
+		from adbook
+		where ad_no = #{adNo}
 	</select>
 </mapper>

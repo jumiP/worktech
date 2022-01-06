@@ -10,22 +10,22 @@
 	name="viewport">
 <title>사내 주소록</title>
 <style>
-.section-title {
-	display: inline;
-}
-
-h4.section-title {
-	top: -13px;
-}
-
-#searchBtn {
-	height: 100%;
-}
-
-.paging-area {
-            display: flex;
-            justify-content: center;
-    }
+	.section-title {
+		display: inline;
+	}
+	
+	h4.section-title {
+		top: -13px;
+	}
+	
+	#searchBtn {
+		height: 100%;
+	}
+	
+	.paging-area {
+	            display: flex;
+	            justify-content: center;
+	}
 </style>
 </head>
 <body>
@@ -66,11 +66,10 @@ h4.section-title {
 
 							<div class="card-body">
 								<div>
-									<button class="btn btn-icon icon-left btn-primary"
-										onclick="addContact();" type="button">
+									<button class="btn btn-icon icon-left btn-primary" onclick="addContact()">
 										<i class="far fa-edit"></i> 추가
 									</button>
-									<button class="btn btn-icon icon-left btn-danger" type="button">
+									<button class="btn btn-icon icon-left btn-danger" onclick="deleteContact()">
 										<i class="fas fa-times"></i> 삭제
 									</button>
 								</div>
@@ -80,9 +79,8 @@ h4.section-title {
 										<tr>
 											<th scope="col">
 												<div class="custom-checkbox custom-control">
-													<input type="checkbox" class="custom-control-input"
-														id="checkbox-all"> <label for="checkbox-all"
-														class="custom-control-label">&nbsp;</label>
+													<input type="checkbox" class="custom-control-input" id="checkbox-all">
+													<label for="checkbox-all" class="custom-control-label">&nbsp;</label>
 												</div>
 											</th>
 											<th scope="col">이름</th>
@@ -99,9 +97,8 @@ h4.section-title {
 												<td class="p-0 text-center">
 													<input type="hidden" name="adNo" value="${ c.adNo }">
 													<div class="custom-checkbox custom-control">
-														<input type="checkbox" class="custom-control-input"
-															id="checkbox-1"> <label for="checkbox-1"
-															class="custom-control-label">&nbsp;</label>
+														<input type="checkbox" class="custom-control-input" id="${ c.adNo }" name="pAdCheckbox" value="${ c.adNo }">
+														<label for="${ c.adNo }" class="custom-control-label">&nbsp;</label>
 													</div>
 												</td>
 												<td>${ c.adName }</td>
@@ -220,6 +217,21 @@ h4.section-title {
 			open('pAdbookDetail.ab?adNo=' + adNo, '개인 주소록 상세', 'width=600px, height=630px, top=50px, left=500px');
 		});
 		
+		// 개인 주소록 삭제
+		var pAdCheckbox = $('input[name=pAdCheckbox]');
+		
+		function deleteContact() {
+// 			var bool = confirm('정말 삭제하시겠습니까?');
+			
+			// 삭제할 연락처의 adNo를 담을 배열
+			var checkArr = [];
+			$('input[name=pAdCheckbox]:checked').each(function(i){
+				checkArr.push($(this).val());
+				
+			});
+
+			location.href="pAdbookDelete.ab?checked=" + checkArr;
+		}
 	</script>
 </body>
 </html>

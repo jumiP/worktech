@@ -12,11 +12,12 @@ public class Adbook {
 	private String adDept;
 	private String adJob;
 	private String adWriter; // 주소록 작성자(사번)
+	private String adStatus;
 	
 	public Adbook() {}
-	
+
 	public Adbook(int adNo, String adName, String adCompany, String adPhone, String adEmail, String adDept,
-			String adJob, String adWriter) {
+			String adJob, String adWriter, String adStatus) {
 		super();
 		this.adNo = adNo;
 		this.adName = adName;
@@ -26,6 +27,7 @@ public class Adbook {
 		this.adDept = adDept;
 		this.adJob = adJob;
 		this.adWriter = adWriter;
+		this.adStatus = adStatus;
 	}
 
 	public int getAdNo() {
@@ -92,12 +94,19 @@ public class Adbook {
 		this.adWriter = adWriter;
 	}
 
+	public String getAdStatus() {
+		return adStatus;
+	}
+
+	public void setAdStatus(String adStatus) {
+		this.adStatus = adStatus;
+	}
+
 	@Override
 	public String toString() {
 		return "Adbook [adNo=" + adNo + ", adName=" + adName + ", adCompany=" + adCompany + ", adPhone=" + adPhone
-				+ ", adEmail=" + adEmail + ", adDept=" + adDept + ", adJob=" + adJob + ", adWriter=" + adWriter + "]";
+				+ ", adEmail=" + adEmail + ", adDept=" + adDept + ", adJob=" + adJob + ", adWriter=" + adWriter
+				+ ", adStatus=" + adStatus + "]";
 	}
-	
-	
 	
 }

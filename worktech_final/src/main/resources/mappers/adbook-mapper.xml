@@ -67,19 +67,22 @@
 	
 	<insert id="insertpAdbook">
 		insert into adbook
-		values(seq_ad.nextval, #{adName}, #{adCompany}, #{adPhone}, #{adEmail}, #{adDept}, #{adJob}, #{adWriter})
+		values(seq_ad.nextval, #{adName}, #{adCompany}, #{adPhone}, #{adEmail}, #{adDept}, #{adJob}, #{adWriter}, default)
 	</insert>
 	
 	<select id="getpAdbookListCount" resultType="_int">
 		select count(*)
 		from adbook
 		where ad_writer = #{mNo}
+			  and ad_status = 'Y'
 	</select>
 	
 	<select id="selectpAdbookList" resultMap="pAdbookResultSet">
 		select *
 		from adbook
 		where ad_writer = #{mNo}
+			  and ad_status = 'Y'
+		order by ad_no desc
 	</select>
 	
 	<resultMap type="Adbook" id="pAdbookResultSet">
@@ -91,6 +94,7 @@
 		<result column="AD_DEPT" property="adDept"/>
 		<result column="AD_JOB" property="adJob"/>
 		<result column="AD_WRITER" property="adWriter"/>
+		<result column="AD_STATUS" property="adStatus"/>
 	</resultMap>
 	
 	<select id="selectpAdbookDetail" resultMap="pAdbookResultSet">
@@ -107,6 +111,12 @@
 			ad_email = #{adEmail},
 			ad_dept = #{adDept},
 			ad_job = #{adJob}
+		where ad_no = #{adNo}
+	</update>
+	
+	<update id="deletepAdbook">
+		update adbook
+		set ad_status = 'N'
 		where ad_no = #{adNo}
 	</update>
 </mapper>

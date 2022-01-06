@@ -119,4 +119,18 @@
 		set ad_status = 'N'
 		where ad_no = #{adNo}
 	</update>
+	
+	<select id="checkpAdDup" resultType="_int">
+		select count(*)
+		from adbook
+		<where>
+			ad_status = 'Y'
+			<if test="phone != null">
+				and (ad_phone = #{phone}
+			</if>
+			<if test="email != null">
+				or ad_email = #{email})
+			</if>
+		</where>
+	</select>
 </mapper>

@@ -169,4 +169,17 @@ public class AdbookController {
 
 		return "redirect:pAdbookList.ab";
 	}
+	
+	@RequestMapping("checkpAdDup.ab")
+	@ResponseBody
+	public int checkpAdDup(@RequestParam("phone") String phone, @RequestParam("email") String email) {
+		HashMap<String, String> checkMap = new HashMap<String, String>();
+		checkMap.put("phone", phone);
+		checkMap.put("email", email);
+		
+		int count = abService.checkpAdDup(checkMap);
+		System.out.println(count);
+		
+		return count;
+	}
 }

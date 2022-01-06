@@ -67,6 +67,10 @@ public class AdbookService {
 		return result;
 	}
 
+	public int checkpAdDup(HashMap<String, String> checkMap) {
+		return abDAO.checkpAdDup(sqlSession, checkMap);
+	}
+
 
 	
 }

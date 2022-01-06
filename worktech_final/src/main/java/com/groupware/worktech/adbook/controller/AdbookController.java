@@ -2,6 +2,7 @@ package com.groupware.worktech.adbook.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -156,5 +157,16 @@ public class AdbookController {
 		} else {
 			throw new AdbookException("개인 주소록 수정에 실패하였습니다.");
 		}
+	}
+	
+	@RequestMapping("pAdbookDelete.ab")
+	public String deletepAdbook(@RequestParam("checked") int[] checked) {
+		int result = abService.deletepAdbook(checked);
+		
+		if(result < checked.length) {
+			throw new AdbookException("개인 주소록 삭제에 실패하였습니다.");
+		}
+
+		return "redirect:pAdbookList.ab";
 	}
 }

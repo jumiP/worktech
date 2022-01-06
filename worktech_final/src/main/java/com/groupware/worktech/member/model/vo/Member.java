@@ -39,25 +39,6 @@ public class Member {
 		this.pUrl = pUrl;
 		this.mStatus = mStatus;
 	}
-	
-	public Member(String mNo, String email, String name, String pwd, String jobGrade, Date birthDay, String phone,
-			String address, String mGrade, int dNo, String dName, Date hireDate, String pUrl, String mStatus) {
-		super();
-		this.mNo = mNo;
-		this.email = email;
-		this.name = name;
-		this.pwd = pwd;
-		this.jobGrade = jobGrade;
-		this.birthDay = birthDay;
-		this.phone = phone;
-		this.address = address;
-		this.mGrade = mGrade;
-		this.dNo = dNo;
-		this.dName = dName;
-		this.hireDate = hireDate;
-		this.pUrl = pUrl;
-		this.mStatus = mStatus;
-	}
 
 	public String getmNo() {
 		return mNo;

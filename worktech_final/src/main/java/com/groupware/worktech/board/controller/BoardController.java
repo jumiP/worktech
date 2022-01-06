@@ -71,14 +71,8 @@ public class BoardController {
 		return "commonBoardList";
 	}
 	
-	@RequestMapping("commonCategoryList.bo")
-	public String commonCategoryList() {
-		
-		return null;
-	}
-	
 	@RequestMapping("cinsertView.bo")
-	public String generalBoardInsertView() {
+	public String commonBoardInsertView() {
 		return "commonBoardInsertForm";
 	}
 	
@@ -317,7 +311,7 @@ public class BoardController {
 	
 	@RequestMapping("addCommonReply.bo")
 	@ResponseBody
-	public String insertCommonReply(@ModelAttribute Reply r, Model model) {
+	public String insertCommonReply(@ModelAttribute Reply r) {
 		int result = bService.insertCommonReply(r);
 		
 		if(result > 0) {
@@ -347,11 +341,12 @@ public class BoardController {
 	}
 	
 	@RequestMapping("deleteCommonReply.bo")
-	public String deleteCommonReply(@RequestParam("bNo") int bNo, @RequestParam("rNo") int rNo, Model model) {
+	@ResponseBody
+	public String deleteCommonReply(@RequestParam("bNo") int bNo, @RequestParam("rNo") int rNo) {
 		int result = bService.deleteCommonReply(rNo);
 		
 		if(result > 0) {
-			return "redirect:cdetail.bo?bNo=" + bNo;
+			return "success";
 		} else {
 			throw new BoardException("댓글 삭제에 실패하였습니다.");
 		}

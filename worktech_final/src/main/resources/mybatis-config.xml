@@ -16,6 +16,7 @@
 		<typeAlias type="com.groupware.worktech.chat.model.vo.GatheringMember" alias="GatheringMember"/>
 		<typeAlias type="com.groupware.worktech.board.model.vo.Reply" alias="Reply"/>
 		<typeAlias type="com.groupware.worktech.chat.model.vo.ChatMessage" alias="ChatMessage"/>
+		<typeAlias type="com.groupware.worktech.adbook.model.vo.Adbook" alias="Adbook"/>
 	</typeAliases>
 	
 	<mappers>

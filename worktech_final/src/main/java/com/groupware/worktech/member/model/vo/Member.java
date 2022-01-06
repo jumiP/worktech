@@ -22,7 +22,7 @@ public class Member {
 	public Member() {}
 
 	public Member(String mNo, String email, String name, String pwd, String jobGrade, Date birthDay, String phone,
-			String address, String mGrade, int dNo, String dName, Date hireDate, String mStatus) {
+			String address, String mGrade, int dNo, String dName, Date hireDate, String pUrl, String mStatus) {
 		super();
 		this.mNo = mNo;
 		this.email = email;
@@ -36,6 +36,7 @@ public class Member {
 		this.dNo = dNo;
 		this.dName = dName;
 		this.hireDate = hireDate;
+		this.pUrl = pUrl;
 		this.mStatus = mStatus;
 	}
 	

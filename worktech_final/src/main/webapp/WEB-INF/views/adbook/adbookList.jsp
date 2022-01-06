@@ -12,6 +12,10 @@
 		top: -13px;
 	}
 	
+	h4.section-title:hover{
+		cursor: pointer;
+	}
+	
 	#searchBtn{
 		height: 100%;
 	}
@@ -19,6 +23,13 @@
 	.paging-area {
             display: flex;
             justify-content: center;
+    }
+    
+    .select {
+        	border: none;
+        	background: none;
+        	font-weight: bold;
+        	color: #495057;
     }
 </style>
 </head>
@@ -41,19 +52,22 @@
               <div class="col-12">
                 <div class="card">
                   <div class="card-header">
-                    <h4 class="section-title">사내 주소록</h4>
+                    <h4 class="section-title" onclick="location.href='adbookList.ab'">사내 주소록</h4>
                     <div class="card-header-form">
                       
                       <!-- 사내 주소록 검색 -->
-                      <form>
+                      <c:url var="searchAdbook" value="searchAdbook.ab">
+                      	<c:param name="page" value="${ pi.currentPage }"/>
+                      </c:url>
+                      <form action="${ searchAdbook }">
                         <div class="input-group">
-                          <input type="text" class="form-control" placeholder="Search">
+                          <input type="text" class="form-control" name="searchValue" placeholder="이름 · 전화번호 · 이메일">
                           <div class="input-group-btn">
                             <button class="btn btn-primary" id="searchBtn"><i class="fas fa-search"></i></button>
                           </div>
                         </div>
                       </form>
-                      
+
                     </div>
                   </div>
                   <div class="card-body p-0">
@@ -64,15 +78,46 @@
 	                          <th>이름</th>
 	                          <th>전화번호</th>
 	                          <th>이메일</th>
-	                          <th>부서</th>
-	                          <th>직책</th>
+	                          <th>
+	                          	<select class="select" name="dept" id="dept" onchange="selectAdbook(this)">
+	                          		<option selected disabled>부서</option>
+	                          		<option value="200">경영지원부</option>
+	                          		<option value="300">전략기획부</option>
+	                          		<option value="400">인사부</option>
+	                          		<option value="500">기술영업부</option>
+	                          		<option value="600">개발부</option>
+	                          		<option value="700">디자인부</option>
+	                          		<option value="800">고객관리부</option>
+	                          		<option value="900">품질관리부</option>
+	                          	</select>
+	                          </th>
+	                          <th>
+	                          	<select class="select" name="job" id="job" onchange="selectAdbook(this)">
+	                          		<option selected disabled>직책&nbsp;&nbsp;&nbsp;</option>
+	                          		<option>사장</option>
+	                          		<option>팀장</option>
+	                          		<option>부장</option>
+	                          		<option>과장</option>
+	                          		<option>대리</option>
+	                          		<option>주임</option>
+	                          		<option>사원</option>
+	                          	</select>
+	                          </th>
 	                          <th>입사일</th>
 	                        </tr>
                         </thead>
                         <tbody>
                         	<c:forEach var="a" items="${ list }">
                         		<tr>
-                        			<td><img alt="image" src="resources/dist/assets/img/avatar/avatar-5.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Wildan Ahdian">&nbsp;&nbsp;&nbsp;${ a.name }</td>
+                        			<td>
+                        				<c:if test="${ a.pUrl eq null }">
+                        					<img alt="image" src="resources/dist/assets/img/avatar/avatar-5.png" class="rounded-circle" width="35">
+                        				</c:if>
+                        				<c:if test="${ a.pUrl ne null }"> <!-- 사진 경로 후에 수정 -->
+                        					<img alt="image">
+                        				</c:if>
+                        				&nbsp;&nbsp;&nbsp;${ a.name }
+                        			</td>
                         			<td>${ a.phone }</td>
                         			<td>${ a.email }</td>
                         			<td>${ a.dName }</td>
@@ -102,16 +147,22 @@
                       				</c:if>
                       				
                       				<c:if test="${ pi.currentPage > 1 }">
-                      					<c:url var="start" value="adbookList.ab">
+                      					<c:url var="start" value="${ loc }">
                       						<c:param name="page" value="1"/>
+                      						<c:param name="searchValue" value="${ searchValue }"/>
+                      						<c:param name="selectCategory" value="${ selectCategory }"/>
+                      						<c:param name="selectValue" value="${ selectValue }"/>
                       					</c:url>
                       					<li class="page-item">
                       						<a class="page-link" href="${ start }" aria-label="Previous">
                       							<i class="fas fa-angle-double-left"></i>
                       						</a>
                       					</li>
-                      					<c:url var="before" value="adbookList.ab">
+                      					<c:url var="before" value="${ loc }">
                       						<c:param name="page" value="${ pi.currentPage - 1 }"/>
+                      						<c:param name="searchValue" value="${ searchValue }"/>
+                      						<c:param name="selectCategory" value="${ selectCategory }"/>
+                      						<c:param name="selectValue" value="${ selectValue }"/>
                       					</c:url>
                       					<li class="page-item">
                       						<a class="page-link" href="${ before }" aria-label="Previous">
@@ -126,8 +177,11 @@
                       					</c:if>
                       					
                       					<c:if test="${ p ne pi.currentPage }">
-                      						<c:url var="pagination" value="adbookList.ab">
+                      						<c:url var="pagination" value="${ loc }">
                       							<c:param name="page" value="${ p }"/>
+                      							<c:param name="searchValue" value="${ searchValue }"/>
+                      							<c:param name="selectCategory" value="${ selectCategory }"/>
+                      							<c:param name="selectValue" value="${ selectValue }"/>
                       						</c:url>
                       						<li class="page-item">
                       							<a class="page-link" href="${ pagination }">${ p }</a>
@@ -149,16 +203,22 @@
                       				</c:if>
                       				
                       				<c:if test="${ pi.currentPage < pi.maxPage }">
-                      					<c:url var="after" value="adbookList.ab">
+                      					<c:url var="after" value="${ loc }">
                       						<c:param name="page" value="${ pi.currentPage + 1 }"/>
+                      						<c:param name="searchValue" value="${ searchValue }"/>
+                      						<c:param name="selectCategory" value="${ selectCategory }"/>
+                      						<c:param name="selectValue" value="${ selectValue }"/>
                       					</c:url>
                       					<li class="page-item">
                       						<a class="page-link" href="${ after }" aria-label="Next">
                       							<i class="fas fa-angle-right"></i>
                       						</a>
                       					</li>
-                      					<c:url var="end" value="adbookList.ab">
+                      					<c:url var="end" value="${ loc }">
                       						<c:param name="page" value="${ pi.maxPage }"/>
+                      						<c:param name="searchValue" value="${ searchValue }"/>
+                      						<c:param name="selectCategory" value="${ selectCategory }"/>
+                      						<c:param name="selectValue" value="${ selectValue }"/>
                       					</c:url>
                       					<li class="page-item">
                       						<a class="page-link" href="${ end }" aria-label="Next">
@@ -180,5 +240,19 @@
       </div>
       
       <c:import url="../common/footer.jsp" />
+      
+      <script>
+      	function selectAdbook(value){
+      		var type = $(value).attr('id');
+      		var selected = $("#" + type + " option:selected").val();
+      		
+			if(type == 'dept'){
+				location.href = "adbookList.ab?selectCategory=" + type + "&selectValue=" + selected;
+			} else if(type == 'job'){
+				location.href = "adbookList.ab?selectCategory=" + type + "&selectValue=" + selected;
+			}   		
+      		
+      	}
+      </script>
 </body>
 </html>

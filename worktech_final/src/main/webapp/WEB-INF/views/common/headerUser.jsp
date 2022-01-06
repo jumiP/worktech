@@ -174,10 +174,10 @@
                                 <span>주소록</span></a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="nav-link" href="components-article.html">사내 주소록</a>
+                                        <a class="nav-link" href="adbookList.ab">사내 주소록</a>
                                     </li>
                                     <li>
-                                        <a class="nav-link" href="components-avatar.html">개인 주소록</a>
+                                        <a class="nav-link" href="pAdbookList.ab">개인 주소록</a>
                                     </li>
                                 </ul>
                         </li>
@@ -212,7 +212,7 @@
                                     <a class="nav-link" href="noticeList.ad">공지사항 게시판</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="components-avatar.html">일반 게시판</a>
+                                    <a class="nav-link" href="commonList.bo">일반 게시판</a>
                                 </li>
                                 <li>
                                     <a class="nav-link" href="components-chat-box.html">익명 게시판</a>

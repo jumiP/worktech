@@ -18,6 +18,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <!-- General CSS Files -->
+<link rel="stylesheet" href="resources/dist/assets/modules/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="resources/dist/assets/modules/fontawesome/css/all.min.css">
+
+<!-- Template CSS -->
+<link rel="stylesheet" href="resources/dist/assets/css/style.css">
+<link rel="stylesheet" href="resources/dist/assets/css/components.css">
 
   <style>
     body {
@@ -48,6 +55,7 @@
       display: inline-block;
       text-align: right;
       width: 65%;
+      height: 100%;
     }
 
     .headind_srch {
@@ -61,7 +69,6 @@
       color: #666666;
       font-size: 20px;
       margin: auto;
-      transform: translateY(35%);
     }
 
     .srch_bar button {
@@ -135,17 +142,22 @@
     .alarmBadge {
     	display: inline-block;
     	position: relative;
-    	top: 25px;
+    	top: 28px;
     	right: -265px;
     	background: #FF4848;
-    	border-radius: 50%;
+    	border-radius: 100%;
     	width: 20px;
     	height: 20px;
+    	text-align: center;
+    	color: white;
+    	size: 5px;
     }
     
     .btn {
     	display: inline-block;
     	margin: 0px;
+    	padding: 0px;
+    	width: 30px;
     }
     
     button:hover{
@@ -167,17 +179,15 @@
 						<h4>채팅 목록</h4>
 					</div>
 					<div class="srch_bar">
-						<div class="stylish-input-group">
-							<div class="btn">
-								<button type="button">
-									<i class="fas fa-cog"></i>
-								</button>
-							</div>
-							<div class="btn">
-								<button type="button" id="addChat">
-									<i class="fas fa-plus"></i>
-								</button>
-							</div>
+						<div class="btn">
+							<button type="button">
+								<i class="fas fa-cog"></i>
+							</button>
+						</div>
+						<div class="btn">
+							<button type="button" id="addChat">
+								<i class="fas fa-plus"></i>
+							</button>
 						</div>
 					</div>
 				</div>
@@ -195,7 +205,9 @@
 									<div class="chat_ib">
 										<h5>
 											${ ch.chatTitle } 
-											<span class="badge badge-danger alarmBadge">${ ch.notReadCount }</span>
+											<c:if test="${ ch.notReadCount != 0 }">
+												<span class="alarmBadge">${ ch.notReadCount }</span>
+											</c:if>
 											<span class="chat_date">
 												<jsp:useBean id="today" class="java.util.Date" />
 												<fmt:formatDate var="now" value="${today}" pattern="yyyy-MM-dd" />
@@ -226,7 +238,7 @@
 			$('.chat_list').mouseover(function() {
 				$(this).css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
 			}).mouseout(function() {
-				$(this).css({'background':'white', 'font-weight':'normal'});
+				$(this).css({'background':'none', 'font-weight':'normal'});
 			}).click(function() {
 				var chatRoomNo = $(this).find('#chatNo').text();
 				$('#chatRoomNo').val(chatRoomNo);

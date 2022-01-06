@@ -11,8 +11,9 @@ public class ChatRoom {
 	private String recentMsg; // 제일 최신 메시지
 	private Timestamp sendTime; // 최신 메시지의 발송 시간
 	private String time; // 발송 시간 포맷 변경
-	private String date; // 발송 잘짜 포맷 변경
+	private String date; // 발송 날짜 포맷 변경
 	private int notReadCount; // 안 읽은 메시지 수
+	private String chatStatus;
 	private ArrayList<GatheringMember> gatheringList;
 	
 	public ChatRoom() {}
@@ -31,7 +32,8 @@ public class ChatRoom {
 	}
 	
 	public ChatRoom(int chatRoomNo, String chatOpenMem, String chatTitle, int chatType, String recentMsg,
-			Timestamp sendTime, String time, String date, int notReadCount, ArrayList<GatheringMember> gatheringList) {
+			Timestamp sendTime, String time, String date, int notReadCount, String chatStatus,
+			ArrayList<GatheringMember> gatheringList) {
 		super();
 		this.chatRoomNo = chatRoomNo;
 		this.chatOpenMem = chatOpenMem;
@@ -42,6 +44,7 @@ public class ChatRoom {
 		this.time = time;
 		this.date = date;
 		this.notReadCount = notReadCount;
+		this.chatStatus = chatStatus;
 		this.gatheringList = gatheringList;
 	}
 
@@ -124,11 +127,20 @@ public class ChatRoom {
 	public void setNotReadCount(int notReadCount) {
 		this.notReadCount = notReadCount;
 	}
+	
+	public String getChatStatus() {
+		return chatStatus;
+	}
+
+	public void setChatStatus(String chatStatus) {
+		this.chatStatus = chatStatus;
+	}
 
 	@Override
 	public String toString() {
 		return "ChatRoom [chatRoomNo=" + chatRoomNo + ", chatOpenMem=" + chatOpenMem + ", chatTitle=" + chatTitle
-				+ ", chatType=" + chatType + ", recentMsg=" + recentMsg + ", sendTime=" + sendTime + ", notReadCount="
-				+ notReadCount + ", gatheringList=" + gatheringList + "]";
+				+ ", chatType=" + chatType + ", recentMsg=" + recentMsg + ", sendTime=" + sendTime + ", time=" + time
+				+ ", date=" + date + ", notReadCount=" + notReadCount + ", chatStatus=" + chatStatus
+				+ ", gatheringList=" + gatheringList + "]";
 	}
 }

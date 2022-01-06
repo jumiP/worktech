@@ -338,7 +338,7 @@ public class AdminController {
 	}
 	// 관리자 공지사항 게시판 부분 끝
 	
-		// 관리자 예약 자산 추가 부분 시작
+	// 관리자 예약 자산 추가 부분 시작
 	@RequestMapping("addRvView.ad")
 	public String addRvView(Model model) {
 		ArrayList<Department> list = aService.getDepartmentList();

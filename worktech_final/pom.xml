@@ -237,8 +237,27 @@
 		    <artifactId>lombok</artifactId>
 		    <version>1.18.12</version>
 		    <scope>provided</scope>
+
 		</dependency>
 		
+		
+		
+		
+		
+		<!-- QR코드 관련 -->
+		<!-- https://mvnrepository.com/artifact/com.google.zxing/core --> 
+		<!-- 구글바코드 오픈소스 --> 
+		<dependency> 
+			<groupId>com.google.zxing</groupId> 
+			<artifactId>core</artifactId> 
+			<version>3.4.0</version> 
+		</dependency> 
+		<!-- https://mvnrepository.com/artifact/com.google.zxing/javase --> 
+		<dependency> 
+			<groupId>com.google.zxing</groupId> 
+			<artifactId>javase</artifactId> 
+			<version>3.4.0</version> 
+		</dependency>
 		
 	</dependencies>
     <build>

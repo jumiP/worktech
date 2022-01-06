@@ -90,7 +90,7 @@
 											</c:forEach>
 										</div>
 										<div class="form-group">
-											<label>예약 가능 수량</label> <input type="number" name="pdCount" min="1" class="form-control" disabled value="${ rp.pdCount }">
+											<label>예약 가능 수량</label> <input type="number" name="pdCount" min="1" class="form-control" value="${ rp.pdCount }">
 										</div>
 									</div>
 								<div class="card-footer text-right">

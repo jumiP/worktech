@@ -22,85 +22,36 @@ public class AdminService {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// 부서 리스트
+	public ArrayList<Department> selectDepList() {
+		return aDAO.selectDepList(sqlSession);
+	}
+
+	
+	// 부서 구성원 수
+	public ArrayList<Integer> depCountList() {
+		return aDAO.depCountList(sqlSession);
+	}
+	public int depCount(String dNo) {
+		return aDAO.depCount(sqlSession, dNo);
+	}
+	
+	// 부서 등록
+	public int insertDepartment(Department d) {
+		return aDAO.insertDepartment(sqlSession, d);
+	}
+	
+	// 부서 이름 중복 확인
+	public int duplicateDName(String dName) {
+		return aDAO.duplicateDName(sqlSession, dName);
+	}
+	
+	
+	// 부서 삭제
+	public int deleteDep(String dNo) {
+		return aDAO.deleteDep(sqlSession, dNo);
+	}
+
 	public ArrayList<Department> getDepartmentList() {
 		return aDAO.getDepartmentList(sqlSession);
 	}
@@ -154,6 +105,10 @@ public class AdminService {
 		}
 		
 		return result;
+	}
+
+	public int updateRvProduct(RvProduct rp) {
+		return aDAO.updateRvProduct(sqlSession, rp);
 	}
 	
 }

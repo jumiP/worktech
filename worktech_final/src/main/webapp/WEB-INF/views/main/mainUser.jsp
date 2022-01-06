@@ -4,20 +4,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- <!-- plugins:css --> -->
-  <link rel="stylesheet" href="./../../resources/vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="./../../resources/vendors/base/vendor.bundle.base.css">
+  <!-- plugins:css --> 
+  <link rel="stylesheet" href="resources/vendors/ti-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="resources/vendors/base/vendor.bundle.base.css">
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="./../../resources/vendors/css/style.css">
+  <link rel="stylesheet" href="resources/vendors/css/style.css">
   <!-- endinject -->
   
   
-  <link rel="stylesheet" href="./../../assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" />
-    <link rel="stylesheet" href="./../../assets/css/style.css" />
-    <link rel="shortcut icon" href="./../../assets/images/favicon.png" />
+  <link rel="stylesheet" href="resources/dist/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" />
+    <link rel="stylesheet" href="resources/dist/assets/css/style.css" />
+    <link rel="shortcut icon" href="resources/dist/assets/images/favicon.png" />
 
 
 

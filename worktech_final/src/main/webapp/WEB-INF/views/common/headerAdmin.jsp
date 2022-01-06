@@ -67,7 +67,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-title">관리자 님 환영합니다!</div>
-                            <a href="#" class="dropdown-item has-icon text-danger">
+                            <a href="logout.me" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i>
                                 Logout
                             </a>
@@ -127,13 +127,6 @@
                             </ul>
                         </li>
                     </ul>
-
-                    <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-                        <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
-                            <i class="fas fa-comments"></i>
-                            CHAT
-                        </a>
-                    </div>
                 </aside>
             </div>
             

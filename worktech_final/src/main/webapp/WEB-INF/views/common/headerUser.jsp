@@ -272,7 +272,7 @@
 
 	<script>
 		function chatOpen() {
-			window.open('chatView.ct', '채팅', 'width=500px, height=600px');
+			window.open('chatView.ct', '채팅', 'width=500px, height=600px, resizable=no, toolbar=1');
 		}
 	
 	</script>

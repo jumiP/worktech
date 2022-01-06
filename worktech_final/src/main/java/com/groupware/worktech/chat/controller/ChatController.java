@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.groupware.worktech.admin.model.vo.Department;
 import com.groupware.worktech.chat.model.exception.ChatException;
 import com.groupware.worktech.chat.model.service.ChatService;
-import com.groupware.worktech.chat.model.vo.ChatMessage;
 import com.groupware.worktech.chat.model.vo.ChatRoom;
 import com.groupware.worktech.member.model.vo.Member;
 
@@ -120,6 +120,7 @@ public class ChatController {
 		}
 	}
 	
+	// 단체 대화 생성
 	@Transactional
 	@RequestMapping("addGroupChat.ct")
 	public String insertGroupChat(@RequestParam("mNo") ArrayList<String> mNoes, @RequestParam("chatTitle") String chatTitle, 
@@ -169,5 +170,56 @@ public class ChatController {
 		}
 		
 		throw new ChatException("채팅방 생성에 실패하였습니다.");
+	}
+	
+	@RequestMapping("reloadChatList.ct")
+	public void reloadChatList(HttpServletResponse response, HttpSession session) {
+		String mNo = ((Member)session.getAttribute("loginUser")).getmNo();
+		
+		ArrayList<ChatRoom> list = cService.selectChatList(mNo);
+		
+		if(list != null) {
+			response.setContentType("application/json; charset=UTF-8");
+			
+			for(ChatRoom c : list) {
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("chatRoomNo", Integer.toString(c.getChatRoomNo()));
+				map.put("mNo", mNo);
+				
+				int notReadCount = cService.getNotReadCount(map);
+				
+				c.setNotReadCount(notReadCount);
+				
+				if(c.getSendTime() != null) {
+					String date = new SimpleDateFormat("yyyy-MM-dd").format(c.getSendTime());
+					String time = new SimpleDateFormat("HH:mm").format(c.getSendTime());
+					
+					c.setDate(date);
+					c.setTime(time);
+				}
+			}
+			
+			GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss");
+			Gson gson = gb.create();
+
+			try {
+				gson.toJson(list, response.getWriter());
+			} catch (JsonIOException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			throw new ChatException("채팅 목록 재조회에 실패하였습니다.");
+		}
+	}
+	
+	// 개인 대화 생성
+	@RequestMapping("addPersonalChat.ct")
+	public String insertPersonalChat(@RequestParam("selectmNo") String selectmNo, @RequestParam("chatTitle") String chatTitle) {
+		
+		
+		
+		return null;
 	}
 }

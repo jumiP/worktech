@@ -66,6 +66,10 @@ public class AdbookDAO {
 		return sqlSession.update("adbookMapper.deletepAdbook", adNo);
 	}
 
+	public int checkpAdDup(SqlSessionTemplate sqlSession, HashMap<String, String> checkMap) {
+		return sqlSession.selectOne("adbookMapper.checkpAdDup", checkMap);
+	}
+
 
 	
 

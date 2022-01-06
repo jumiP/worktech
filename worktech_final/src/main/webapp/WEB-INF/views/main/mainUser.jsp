@@ -121,14 +121,14 @@
 									<td>==========</td>
 								</tr>
 								<tr>
-									<td>출근 시간</td>
-									<td>09:00</td>
-									<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn">출근하기</button></td>
+									<td>출근 시간</td>		
+									<td><div id="test1" name="goWork"></div></td>							
+									<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="location.href='qrcode.do'">출근하기</button></td>
 								</tr>
 								<tr>
 									<td>퇴근 시간</td>
-									<td>18:00</td>
-									<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn">퇴근하기</button></td>
+									<td><div id="test2" name="leaveWork"></div></td>
+									<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="location.href='leavework.do'">퇴근하기</button></td>
 								</tr>
 							</table>
 						</div>
@@ -414,6 +414,30 @@
 		}
 	</script>
 	 <script src="./../../assets/vendors/js/vendor.bundle.base.js"></script>
+	 
+	 	 <script>
+	 	function nowTime(){
+	 		var today = new Date();
+	 		var h = today.getHours(); // date의 시 추출
+	 		var m = today.getMinutes(); //date의 분 추출
+	 		h = dasi(h);
+	 		m = dasi(m);
+	 		
+	 		document.getElementById('test1').innerHTML = h+":"+m;
+	 		document.getElementById('test2').innerHTML = h+":"+m;
+	 		var t = setTimeout(function(){nowTime()},1000); // 1초마다 페이지 로드
+	 	}
+	 	
+	 	function dasi(i){
+	 		if(i < 10) {
+	 			i = "0" + i;
+	 		};
+	 		return i;
+	 		// 10보다 작으면 앞자리에 0 추가
+	 	}
+	 	
+	 	
+	 </script>
 	
 	<!-- todo js start -->
 <!-- 	<!-- plugins:js --> -->

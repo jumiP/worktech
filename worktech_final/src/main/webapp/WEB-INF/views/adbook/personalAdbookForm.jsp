@@ -89,8 +89,6 @@
 		</div>
 	</div>
 
-	<!-- 연락처 중복 확인 -->
-
 	<!-- General JS Scripts -->
 	<script src="resources/dist/assets/modules/jquery.min.js"></script>
 	<script src="resources/dist/assets/modules/popper.js"></script>
@@ -111,6 +109,7 @@
 	<script src="resources/dist/assets/js/custom.js"></script>
 	
 	<script>
+		// 저장하기 전에 연락처 중복 여부 확인 필요
 		// 개인 주소록 연락처 저장 ajax
 		$('#pAdbookBtn').on('click', function(){
 			var adName = $('input[name=name]').val();

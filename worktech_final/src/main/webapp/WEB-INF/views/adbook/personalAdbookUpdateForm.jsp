@@ -121,7 +121,7 @@
 			$.ajax({
 				url: 'pAdbookUpdate.ab',
 				type: 'POST',
-				data: {adNo:adNo, adName:adName, adPhone:adPhone, adEmail:adEmail, adCompany:adCompany, adDpet:adDept, adJob:adJob},
+				data: {adNo:adNo, adName:adName, adPhone:adPhone, adEmail:adEmail, adCompany:adCompany, adDept:adDept, adJob:adJob},
 				success: function(data){
 					console.log(data);
 					

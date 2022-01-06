@@ -57,6 +57,16 @@ public class AdbookService {
 		return abDAO.updatepAdbook(sqlSession, adbook);
 	}
 
+	public int deletepAdbook(int[] checked) {
+		int result = 0;
+		
+		for(int i = 0; i < checked.length; i++) {
+			result += abDAO.deletepAdbook(sqlSession, checked[i]);
+		}
+		
+		return result;
+	}
+
 
 	
 }

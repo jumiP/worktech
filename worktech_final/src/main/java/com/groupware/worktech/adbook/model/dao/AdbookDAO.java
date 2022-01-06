@@ -62,6 +62,10 @@ public class AdbookDAO {
 		return sqlSession.update("adbookMapper.updatepAdbook", adbook);
 	}
 
+	public int deletepAdbook(SqlSessionTemplate sqlSession, int adNo) {
+		return sqlSession.update("adbookMapper.deletepAdbook", adNo);
+	}
+
 
 	
 

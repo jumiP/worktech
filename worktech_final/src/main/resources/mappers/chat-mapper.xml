@@ -80,7 +80,7 @@
 	
 	<insert id="insertGroupChatroom">
 		insert into chatroom
-		values(SEQ_CHAT.NEXTVAL, #{chatOpen}, #{chatTitle}, DEFAULT, DEFAULT)
+		values(SEQ_CHAT.NEXTVAL, #{chatOpen}, #{chatTitle}, #{chatType}, DEFAULT)
 	</insert>
 	
 	<insert id="insertGroupChatList">
@@ -145,5 +145,68 @@
 			                   where chat_member = #{mNo}
 			                         and chatroom_no = #{chatRoomNo})
 	</select>
+	
+	<select id="getExistChatroom" resultType="_int">
+		<![CDATA[
+			select nvl(min(chatroom_no),0)
+			from (select chatroom_no
+				  from (select *
+						from chat_list left join
+							(select chatroom_no, count(chatroom_no) as member_count
+							 from chat_list
+							 group by chatroom_no) using(chatroom_no)
+						where member_count <= 2
+					      	  and chat_member in (#{selectmNo}, #{mNo}))
+				  group by chatroom_no
+				  having count(chatroom_no) = 2)
+		]]>
+	</select>
+	
+	<insert id="insertPersonalChatroom">
+		insert into chatroom
+		values(SEQ_CHAT.NEXTVAL, #{mNo}, #{chatTitle}, DEFAULT, DEFAULT)
+	</insert>
+	
+	<select id="getGatheringMemberList" resultMap="gatheringMemberResultSet2">
+		select chat_list_no, chatroom_no, chat_member, name as chat_member_name, p_url
+		from chat_list join
+			 member on (m_no = chat_member) left join
+			 profile using(m_no)
+		where chatroom_no = #{chatRoomNo}
+	</select>
+	
+	<select id="getChatRoomInfo" resultMap="selectChatRoomResultSet">
+		select chatroom_no, chat_open, chat_title, chat_type, chat_status
+		from chatroom
+		where chatroom_no = #{chatRoomNo}
+	</select>
+	
+	<resultMap type="ChatRoom" id="selectChatRoomResultSet">
+		<id column="CHATROOM_NO" property="chatRoomNo"/>
+		<result column="CHAT_OPEN" property="chatOpenMem"/>
+		<result column="CHAT_TITLE" property="chatTitle"/>
+		<result column="CHAT_TYPE" property="chatType"/>
+		<result column="CHAT_STATUS" property="chatStatus"/>
+	</resultMap>
+	
+	<select id="getMessageList" resultMap="chatMessageResultSet2">
+		select msg_id, msg_content, send_time, chatroom_no, chat_member, name as chat_member_name, p_url
+		from chat_msg join
+		     member on (m_no = chat_member) left join
+			 profile using(m_no)
+		where chatroom_no = #{chatRoomNo}
+		order by send_time
+	
+	</select>
+	
+	<resultMap type="ChatMessage" id="chatMessageResultSet2">
+		<id column="MSG_ID" property="msgId"/>
+		<result column="MSG_CONTENT" property="msgContent"/>
+		<result column="SEND_TIME" property="sendTime"/>
+		<result column="CHATROOM_NO" property="chatRoomNo"/>
+		<result column="CHAT_MEMBER" property="sendMember"/>
+		<result column="chat_member_name" property="sendMemberName"/>
+		<result column="p_url" property="profileUrl"/>
+	</resultMap>
 	
 </mapper>

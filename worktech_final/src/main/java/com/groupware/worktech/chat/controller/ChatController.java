@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -23,7 +24,9 @@ import com.google.gson.JsonIOException;
 import com.groupware.worktech.admin.model.vo.Department;
 import com.groupware.worktech.chat.model.exception.ChatException;
 import com.groupware.worktech.chat.model.service.ChatService;
+import com.groupware.worktech.chat.model.vo.ChatMessage;
 import com.groupware.worktech.chat.model.vo.ChatRoom;
+import com.groupware.worktech.chat.model.vo.GatheringMember;
 import com.groupware.worktech.member.model.vo.Member;
 
 @Controller
@@ -65,9 +68,37 @@ public class ChatController {
 	}
 	
 	@RequestMapping("chatDetail.ct")
-	public String chatDetail(Model model) {
+	public String chatDetail(@RequestParam("chatRoomNo") int chatRoomNo, Model model) {
+		// 해당 채팅방 정보 가져오기
+		ChatRoom cr = cService.getChatRoomInfo(chatRoomNo);
 		
-		return "chatMessage";
+		if(cr != null) {
+			// 해당 채팅방 인원 목록 가져오기
+			ArrayList<GatheringMember> memberList = cService.getGatheringMemberList(chatRoomNo);
+			
+			if(memberList != null) {
+				// 해당 채팅방 메시지 가져오기
+				ArrayList<ChatMessage> messageList = cService.getMessageList(chatRoomNo);
+				
+				for(ChatMessage cm : messageList) {
+					if(cm.getSendTime() != null) {
+						String date = new SimpleDateFormat("yyyy-MM-dd").format(cm.getSendTime());
+						String time = new SimpleDateFormat("HH:mm").format(cm.getSendTime());
+						
+						cm.setDate(date);
+						cm.setTime(time);
+					}
+				}
+				
+				model.addAttribute("cr", cr);
+				model.addAttribute("memberList", memberList);
+				model.addAttribute("messageList", messageList);
+				
+				return "chatMessage";
+			}
+		}
+		
+		throw new ChatException("채팅방 입장에 실패하였습니다.");
 	}
 	
 	@RequestMapping("addChatView.ct")
@@ -123,26 +154,30 @@ public class ChatController {
 	// 단체 대화 생성
 	@Transactional
 	@RequestMapping("addGroupChat.ct")
-	public String insertGroupChat(@RequestParam("mNo") ArrayList<String> mNoes, @RequestParam("chatTitle") String chatTitle, 
-								  HttpSession session, Model model) {
+	public String insertGroupChat(@RequestParam("mNo") ArrayList<String> mNoes, @RequestParam(value = "chatTitle", required = false) String chatTitle,
+								  @RequestParam("chatType") int chatType, HttpSession session, Model model) {
 		// 채팅방 이름이 없는 경우 멤버 이름으로 채팅방 이름 생성
-		if(chatTitle.equals("")) {
-			ArrayList<String> mNames = cService.selectMemberName(mNoes); 
-			
-			for(int i = 0; i < mNames.size(); i++) {
-				chatTitle += mNames.get(i);
+		if(chatType == 0) {
+			if(chatTitle.equals("")) {
+				ArrayList<String> mNames = cService.selectMemberName(mNoes); 
 				
-				// 너무 길면 자르기
-				if(chatTitle.length() > 18) {
-					chatTitle.substring(0, 16);
-					chatTitle += "...";
-					break;
-				}
-				
-				if(i != mNames.size() - 1) {
-					chatTitle += ", ";
+				for(int i = 0; i < mNames.size(); i++) {
+					chatTitle += mNames.get(i);
+					
+					// 너무 길면 자르기
+					if(chatTitle.length() > 18) {
+						chatTitle.substring(0, 16);
+						chatTitle += "...";
+						break;
+					}
+					
+					if(i != mNames.size() - 1) {
+						chatTitle += ", ";
+					}
 				}
 			}
+		} else if(chatType == 1) {
+			chatTitle = "공지사항 채팅";
 		}
 		
 		String chatOpen = ((Member)session.getAttribute("loginUser")).getmNo();
@@ -150,6 +185,7 @@ public class ChatController {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("chatTitle", chatTitle);
 		map.put("chatOpen", chatOpen);
+		map.put("chatType", Integer.toString(chatType));
 		
 		int creatChatroom = cService.insertGroupChatroom(map);
 		
@@ -215,11 +251,53 @@ public class ChatController {
 	}
 	
 	// 개인 대화 생성
+	@Transactional
 	@RequestMapping("addPersonalChat.ct")
-	public String insertPersonalChat(@RequestParam("selectmNo") String selectmNo, @RequestParam("chatTitle") String chatTitle) {
+	public String insertPersonalChat(@RequestParam("selectmNo") String selectmNo, @RequestParam("chatTitle") String chatTitle,
+									HttpSession session, Model model) {
+		String mNo = ((Member)session.getAttribute("loginUser")).getmNo();
+		HashMap<String, String> chatroomInfo = new HashMap<String, String>();
+		chatroomInfo.put("chatTitle", chatTitle);
+		chatroomInfo.put("selectmNo", selectmNo);
+		chatroomInfo.put("mNo", mNo);
 		
+		// 개인 대화가 없다면 CHATROOM 테이블에 INSERT하기 위해 채팅방 번호가 있는지 확인
+		int existChatroomNo = cService.getExistChatroom(chatroomInfo);
 		
+		if(existChatroomNo == 0) {
+			// 채팅방 테이블 INSERT
+			int creatChatroom = cService.insertPersonalChatroom(chatroomInfo);
+			
+			if(creatChatroom > 0) {
+				int createChatList = 0;
+				createChatList += cService.insertPersonalChatList(selectmNo);
+				createChatList += cService.insertPersonalChatList(mNo);
+				
+				if(createChatList >= 2) {
+					ChatRoom cr = cService.selectCreateChatRoom();
+					
+					if(cr != null) {
+						model.addAttribute("cr", cr);
+						
+						return "chatMessage";
+					}
+				}
+			}
+			
+			throw new ChatException("1:1 채팅 생성에 실패하였습니다.");
+			
+		} else {
+			model.addAttribute("chatRoomNo", existChatroomNo);
+			
+			return "redirect:chatDetail.ct";
+		}
 		
-		return null;
 	}
+	
+	// 메시지 보내는 부분
+//	@MessageMapping("/chat.register")
+//	@SendTo("/topic/public")
+	
+	
+	
 }

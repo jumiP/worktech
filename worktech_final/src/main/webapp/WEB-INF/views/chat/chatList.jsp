@@ -250,17 +250,21 @@
 	
 	<script>
     	// 게시글 목록 마우스오버 이벤트
-	    $(function() {
-			$('.chat_list').mouseover(function() {
-				$(this).css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
-			}).mouseout(function() {
-				$(this).css({'background':'none', 'font-weight':'normal'});
-			}).click(function() {
-				var chatRoomNo = $(this).find('.chatNo').text();
-				$('#chatRoomNo').val(chatRoomNo);
-				$('#goDetail').submit();
-			});
-		
+	    $(document).on('mouseover', '.chat_list', function() {
+	    	$(this).css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
+		});
+    	
+	    $(document).on('mouseout', '.chat_list', function() {
+	    	$(this).css({'background':'none', 'font-weight':'normal'});
+		});
+	    
+	    $(document).on('click', '.chat_list', function() {
+	    	var chatRoomNo = $(this).find('.chatNo').text();
+			$('#chatRoomNo').val(chatRoomNo);
+			$('#goDetail').submit();
+		});
+    	
+    	$(function() {
 	    	$('#addChat').click(function() {
 	    		location.href='addChatView.ct';
 			});

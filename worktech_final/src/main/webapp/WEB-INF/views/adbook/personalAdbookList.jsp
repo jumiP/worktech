@@ -205,32 +205,36 @@
 	<c:import url="../common/footer.jsp" />
 
 	<script>
+		window.name = 'pAdParent';
+		
 		// 개인 주소록 추가
 		function addContact() {
-			open('pAdbookInsertView.ab', '개인 주소록 추가', 'width=600px, height=630px, top=50px, left=500px');
+			open('pAdbookInsertView.ab', '개인 주소록 추가', 'width=600px, height=650px, top=50px, left=400px');
 		}
 		
 		// 개인 주소록 수정
 		$('#pAdbookTable tbody td:not(:first-child)').on('click', function(){
 			var adNo = $(this).parent().children().eq(0).children().eq(0).val();
 			
-			open('pAdbookDetail.ab?adNo=' + adNo, '개인 주소록 상세', 'width=600px, height=670px');
+			open('pAdbookDetail.ab?adNo=' + adNo, '개인 주소록 상세', 'width=600px, height=650px, top=50px, left=400px');
 		});
 		
 		// 개인 주소록 삭제
 		var pAdCheckbox = $('input[name=pAdCheckbox]');
 		
 		function deleteContact() {
-// 			var bool = confirm('정말 삭제하시겠습니까?');
+			var bool = confirm('정말 삭제하시겠습니까?');
 			
-			// 삭제할 연락처의 adNo를 담을 배열
-			var checkArr = [];
-			$('input[name=pAdCheckbox]:checked').each(function(i){
-				checkArr.push($(this).val());
-				
-			});
+			if(bool){
+				// 삭제할 연락처의 adNo를 담을 배열
+				var checkArr = [];
+				$('input[name=pAdCheckbox]:checked').each(function(i){
+					checkArr.push($(this).val());
+					
+				});
 
-			location.href="pAdbookDelete.ab?checked=" + checkArr;
+				location.href="pAdbookDelete.ab?checked=" + checkArr;
+			}
 		}
 	</script>
 </body>

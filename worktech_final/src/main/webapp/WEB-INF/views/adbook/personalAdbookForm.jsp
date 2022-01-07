@@ -62,19 +62,19 @@
 				<div class="form-group row">
 					<label for="name" class="col-sm-3 col-form-label">이름 <span class="required">*</span></label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" name="adName" placeholder="이름">
+						<input type="text" class="form-control" name="adName" placeholder="이름" required>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="phone" class="col-sm-3 col-form-label">전화번호 <span class="required">*</span></label>
 					<div class="col-sm-9">
-						<input type="tel" class="form-control" name="adPhone" placeholder="전화번호" onblur="checkDup()">
+						<input type="tel" class="form-control" name="adPhone" placeholder="전화번호" onblur="checkDup()" required>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="inputPassword3" class="col-sm-3 col-form-label">이메일 <span class="required">*</span></label>
 					<div class="col-sm-9">
-						<input type="email" class="form-control" name="adEmail" placeholder="이메일" onblur="checkDup()">
+						<input type="email" class="form-control" name="adEmail" placeholder="이메일" onblur="checkDup()" required>
 					</div>
 				</div>
 				<div class="form-group row">
@@ -127,6 +127,7 @@
 	
 	<script>
 		var noDup = false;
+		var filled = false;
 		var form = $('#pAdForm');
 		
 		// 전화번호/이메일 중복 여부 확인
@@ -155,12 +156,20 @@
 		}
 		
 		function insertpAd(){
+			var adName = $('input[name=adName]').val();
+			var adPhone = $('input[name=adPhone]').val();
+			var adEmail = $('input[name=adEmail]').val();
 			
+			if(adName != '' && adPhone != '' && adEmail != ''){
+				filled = true;
+			} else {
+				alert('이름, 전화번호, 이메일을 입력하세요');
+			}
 			
-			
-			if(noDup == true){
+			if(noDup == true && filled == true){
 				document.form.target = "pAdParent";
 				document.form.action = "pAdbookInsert.ab";
+				document.form.method = "POST";
 				document.form.submit();
 				
 				self.close();

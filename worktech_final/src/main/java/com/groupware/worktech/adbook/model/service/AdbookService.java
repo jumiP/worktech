@@ -71,6 +71,14 @@ public class AdbookService {
 		return abDAO.checkpAdDup(sqlSession, checkMap);
 	}
 
+	public int getSearchpAdbookListCount(HashMap<String, String> searchMap) {
+		return abDAO.getSearchpAdbookListCount(sqlSession, searchMap);
+	}
+
+	public ArrayList<Adbook> selectSearchpAdbookList(PageInfo pi, HashMap<String, String> searchMap) {
+		return abDAO.selectSearchpAdbookList(sqlSession, pi, searchMap);
+	}
+
 
 	
 }

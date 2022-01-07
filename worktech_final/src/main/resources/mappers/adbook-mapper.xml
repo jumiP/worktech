@@ -125,6 +125,7 @@
 		from adbook
 		<where>
 			ad_status = 'Y'
+			and ad_writer = #{adWriter}
 			<if test="phone != null">
 				and (ad_phone = #{phone}
 			</if>
@@ -132,5 +133,32 @@
 				or ad_email = #{email})
 			</if>
 		</where>
+	</select>
+	
+	<select id="getSearchpAdbookListCount" resultType="_int">
+		select count(*)
+		from adbook
+		where ad_status = 'Y'
+			  and ad_writer = #{adWriter}
+			  and (ad_name like '%'||#{searchValue}||'%'
+			  or ad_company like '%'||#{searchValue}||'%'
+			  or ad_phone like '%'||#{searchValue}||'%'
+			  or ad_email like '%'||#{searchValue}||'%'
+			  or ad_dept like '%'||#{searchValue}||'%'
+			  or ad_job like '%'||#{searchValue}||'%')
+	</select>
+	
+	<select id="selectSearchpAdbookList" resultMap="pAdbookResultSet">
+		select *
+		from adbook
+		where ad_status = 'Y'
+			  and ad_writer = #{adWriter}
+			  and (ad_name like '%'||#{searchValue}||'%'
+			  or ad_company like '%'||#{searchValue}||'%'
+			  or ad_phone like '%'||#{searchValue}||'%'
+			  or ad_email like '%'||#{searchValue}||'%'
+			  or ad_dept like '%'||#{searchValue}||'%'
+			  or ad_job like '%'||#{searchValue}||'%')
+		order by ad_no desc
 	</select>
 </mapper>

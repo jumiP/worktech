@@ -70,6 +70,18 @@ public class AdbookDAO {
 		return sqlSession.selectOne("adbookMapper.checkpAdDup", checkMap);
 	}
 
+	public int getSearchpAdbookListCount(SqlSessionTemplate sqlSession, HashMap<String, String> searchMap) {
+		return sqlSession.selectOne("adbookMapper.getSearchpAdbookListCount", searchMap);
+	}
+
+	public ArrayList<Adbook> selectSearchpAdbookList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> searchMap) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("adbookMapper.selectSearchpAdbookList", searchMap, rowBounds);
+	}
+
 
 	
 

@@ -11,6 +11,7 @@ import com.groupware.worktech.admin.model.vo.Department;
 import com.groupware.worktech.chat.model.dao.ChatDAO;
 import com.groupware.worktech.chat.model.vo.ChatMessage;
 import com.groupware.worktech.chat.model.vo.ChatRoom;
+import com.groupware.worktech.chat.model.vo.GatheringMember;
 import com.groupware.worktech.member.model.vo.Member;
 
 @Service("cService")
@@ -62,5 +63,29 @@ public class ChatService {
 
 	public int getNotReadCount(HashMap<String, String> map) {
 		return cDAO.getNotReadCount(sqlSession, map);
+	}
+
+	public int getExistChatroom(HashMap<String, String> chatroomInfo) {
+		return cDAO.getExistChatroom(sqlSession, chatroomInfo);
+	}
+
+	public int insertPersonalChatroom(HashMap<String, String> chatroomInfo) {
+		return cDAO.insertPersonalChatroom(sqlSession, chatroomInfo);
+	}
+
+	public int insertPersonalChatList(String mNo) {
+		return cDAO.insertPersonalChatList(sqlSession, mNo);
+	}
+
+	public ArrayList<GatheringMember> getGatheringMemberList(int chatRoomNo) {
+		return cDAO.getGatheringMemberList(sqlSession, chatRoomNo);
+	}
+
+	public ChatRoom getChatRoomInfo(int chatRoomNo) {
+		return cDAO.getChatRoomInfo(sqlSession, chatRoomNo);
+	}
+
+	public ArrayList<ChatMessage> getMessageList(int chatRoomNo) {
+		return cDAO.getMessageList(sqlSession, chatRoomNo);
 	}
 }

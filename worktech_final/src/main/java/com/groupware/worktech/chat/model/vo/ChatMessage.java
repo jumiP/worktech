@@ -2,6 +2,10 @@ package com.groupware.worktech.chat.model.vo;
 
 import java.sql.Timestamp;
 
+/**
+ * @author na
+ *
+ */
 public class ChatMessage {
 	private int msgId;
 	private String msgContent;
@@ -12,6 +16,7 @@ public class ChatMessage {
 	private int chatRoomNo;
 	private String sendMember; // 보낸 사람 사번
 	private String sendMemberName; // 보낸 사람 이름
+	private String profileUrl;
 	
 	public ChatMessage() {}
 
@@ -27,6 +32,21 @@ public class ChatMessage {
 		this.chatRoomNo = chatRoomNo;
 		this.sendMember = sendMember;
 		this.sendMemberName = sendMemberName;
+	}
+	
+	public ChatMessage(int msgId, String msgContent, Timestamp sendTime, String time, String date, String readYN,
+			int chatRoomNo, String sendMember, String sendMemberName, String profileUrl) {
+		super();
+		this.msgId = msgId;
+		this.msgContent = msgContent;
+		this.sendTime = sendTime;
+		this.time = time;
+		this.date = date;
+		this.readYN = readYN;
+		this.chatRoomNo = chatRoomNo;
+		this.sendMember = sendMember;
+		this.sendMemberName = sendMemberName;
+		this.profileUrl = profileUrl;
 	}
 
 	public int getMsgId() {
@@ -101,11 +121,19 @@ public class ChatMessage {
 		this.sendMemberName = sendMemberName;
 	}
 
+	public String getProfileUrl() {
+		return profileUrl;
+	}
+
+	public void setProfileUrl(String profileUrl) {
+		this.profileUrl = profileUrl;
+	}
+
 	@Override
 	public String toString() {
 		return "ChatMessage [msgId=" + msgId + ", msgContent=" + msgContent + ", sendTime=" + sendTime + ", time="
 				+ time + ", date=" + date + ", readYN=" + readYN + ", chatRoomNo=" + chatRoomNo + ", sendMember="
-				+ sendMember + ", sendMemberName=" + sendMemberName + "]";
+				+ sendMember + ", sendMemberName=" + sendMemberName + ", profileUrl=" + profileUrl + "]";
 	}
 
 }

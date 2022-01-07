@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>jsQR 테스트</title>
-<script type="text/javascript" src="../resources/lib/jsQR.js"></script>
+<script type="text/javascript" src="resources/lib/jsQR.js"></script>
 <style type="text/css">
 
 	main {

@@ -113,7 +113,6 @@ public class AdbookController {
 	}
 	
 	@RequestMapping("pAdbookInsert.ab")
-	@ResponseBody
 	public String insertpAdbook(@ModelAttribute Adbook adbook, HttpServletRequest request) {
 		String mNo = ((Member)request.getSession().getAttribute("loginUser")).getmNo();
 		adbook.setAdWriter(mNo);
@@ -121,7 +120,7 @@ public class AdbookController {
 		int result = abService.insertpAdbook(adbook);
 		
 		if(result > 0) {
-			return "success";
+			return "redirect:pAdbookList.ab";
 		} else {
 			throw new AdbookException("개인 주소록 추가에 실패하였습니다.");
 		}
@@ -168,5 +167,17 @@ public class AdbookController {
 		}
 
 		return "redirect:pAdbookList.ab";
+	}
+	
+	@RequestMapping("checkpAdDup.ab")
+	@ResponseBody
+	public int checkpAdDup(@RequestParam("phone") String phone, @RequestParam("email") String email) {
+		HashMap<String, String> checkMap = new HashMap<String, String>();
+		checkMap.put("phone", phone);
+		checkMap.put("email", email);
+		
+		int count = abService.checkpAdDup(checkMap);
+		
+		return count;
 	}
 }

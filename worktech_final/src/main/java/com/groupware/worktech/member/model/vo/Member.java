@@ -155,10 +155,9 @@ public class Member {
 	@Override
 	public String toString() {
 		return "Member [mNo=" + mNo + ", email=" + email + ", name=" + name + ", pwd=" + pwd + ", jobGrade=" + jobGrade
-				+ ", birthDay=" + birthDay + ", phone=" + phone + ", Address=" + address + ", mGrade=" + mGrade
+				+ ", birthDay=" + birthDay + ", phone=" + phone + ", address=" + address + ", mGrade=" + mGrade
 				+ ", dNo=" + dNo + ", dName=" + dName + ", hireDate=" + hireDate + ", pUrl=" + pUrl + ", mStatus="
 				+ mStatus + "]";
 	}
 
-	
 }

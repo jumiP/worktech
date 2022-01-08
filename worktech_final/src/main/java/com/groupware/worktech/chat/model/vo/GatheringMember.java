@@ -6,6 +6,10 @@ import java.sql.Timestamp;
  * @author na
  *
  */
+/**
+ * @author na
+ *
+ */
 public class GatheringMember {
 	private int gatheringNo; // 참여자 리스트 번호
 	private int chatRoomNo; // 채팅방 번호
@@ -13,6 +17,8 @@ public class GatheringMember {
 	private String gatheringMemberName; // 참여자 이름
 	private Timestamp chatReadtime; // 해당 채팅방 읽은 시간
 	private String profileUrl; // 프로필 사진 경로
+	private String gatheringMemberJobGrade;
+	private String gatheringMemberDName;
 	
 	public GatheringMember() {}
 	
@@ -43,6 +49,19 @@ public class GatheringMember {
 		this.gatheringMemberName = gatheringMemberName;
 		this.chatReadtime = chatReadtime;
 		this.profileUrl = profileUrl;
+	}
+	
+	public GatheringMember(int gatheringNo, int chatRoomNo, String gatheringMember, String gatheringMemberName,
+			Timestamp chatReadtime, String profileUrl, String gatheringMemberJobGrade, String gatheringMemberDName) {
+		super();
+		this.gatheringNo = gatheringNo;
+		this.chatRoomNo = chatRoomNo;
+		this.gatheringMember = gatheringMember;
+		this.gatheringMemberName = gatheringMemberName;
+		this.chatReadtime = chatReadtime;
+		this.profileUrl = profileUrl;
+		this.gatheringMemberJobGrade = gatheringMemberJobGrade;
+		this.gatheringMemberDName = gatheringMemberDName;
 	}
 
 	public int getGatheringNo() {
@@ -92,12 +111,29 @@ public class GatheringMember {
 	public void setProfileUrl(String profileUrl) {
 		this.profileUrl = profileUrl;
 	}
+	
+	public String getGatheringMemberJobGrade() {
+		return gatheringMemberJobGrade;
+	}
+
+	public void setGatheringMemberJobGrade(String gatheringMemberJobGrade) {
+		this.gatheringMemberJobGrade = gatheringMemberJobGrade;
+	}
+
+	public String getGatheringMemberDName() {
+		return gatheringMemberDName;
+	}
+
+	public void setGatheringMemberDName(String gatheringMemberDName) {
+		this.gatheringMemberDName = gatheringMemberDName;
+	}
 
 	@Override
 	public String toString() {
 		return "GatheringMember [gatheringNo=" + gatheringNo + ", chatRoomNo=" + chatRoomNo + ", gatheringMember="
 				+ gatheringMember + ", gatheringMemberName=" + gatheringMemberName + ", chatReadtime=" + chatReadtime
-				+ ", profileUrl=" + profileUrl + "]";
+				+ ", profileUrl=" + profileUrl + ", gatheringMemberJobGrade=" + gatheringMemberJobGrade
+				+ ", gatheringMemberDName=" + gatheringMemberDName + "]";
 	}
 
 }

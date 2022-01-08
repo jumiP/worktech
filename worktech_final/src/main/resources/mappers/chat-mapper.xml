@@ -2,17 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="chatMapper">
 	<select id="selectChatList" resultMap="chatRoomResultSet">
-		SELECT CHATROOM_NO, CHAT_OPEN, CHAT_TITLE, CHAT_TYPE, P_URL, MSG_CONTENT, SEND_TIME, CHAT_LIST_NO, CHAT_MEMBER, CHAT_STATUS
+		SELECT CHATROOM_NO, CHAT_OPEN, CHAT_TITLE, CHAT_TYPE, P_URL, MSG_CONTENT, SEND_TIME, CHAT_LIST_NO, CHAT_MEMBER, CHAT_STATUS, D_NAME, NAME, JOB_GRADE
 		FROM CHATROOM
      		 LEFT JOIN CHAT_LIST USING(CHATROOM_NO)
-     		 LEFT JOIN PROFILE ON (CHAT_MEMBER = M_NO)
-    		 LEFT JOIN (SELECT *
+             LEFT JOIN MEMBER M ON(CHAT_MEMBER = M.M_NO)
+     		 LEFT JOIN PROFILE P ON (CHAT_MEMBER = P.M_NO)
+    		 LEFT JOIN DEPARTMENT USING(D_NO)
+             LEFT JOIN (SELECT *
        			  		FROM (SELECT MSG_CONTENT, SEND_TIME, CHATROOM_NO, ROW_NUMBER() OVER (PARTITION BY CHATROOM_NO ORDER BY SEND_TIME DESC, MSG_ID DESC) AS RECENT
          					  FROM CHAT_MSG CM)
        					WHERE RECENT = 1) USING(CHATROOM_NO)	 
     	WHERE CHATROOM_NO IN (SELECT CHATROOM_NO
                     		  FROM CHAT_LIST
-							  WHERE CHAT_MEMBER = '100000')
+							  WHERE CHAT_MEMBER = #{mNo})
 			  AND CHAT_STATUS = 'Y'
 		ORDER BY SEND_TIME DESC
 	</select>
@@ -32,7 +34,10 @@
 		<id column="CHAT_LIST_NO" property="gatheringNo"/>
 		<result column="CHATROOM_NO" property="chatRoomNo"/>
 		<result column="CHAT_MEMBER" property="gatheringMember"/>
+		<result column="NAME" property="gatheringMemberName"/>
 		<result column="P_URL" property="profileUrl"/>
+		<result column="JOB_GRADE" property="gatheringMemberJobGrade"/>
+		<result column="D_NAME" property="gatheringMemberDName"/>
 	</resultMap>
 	
 	<select id="getChatDepartmentList" resultMap="departmentResultSet">
@@ -167,11 +172,12 @@
 		values(SEQ_CHAT.NEXTVAL, #{mNo}, #{chatTitle}, DEFAULT, DEFAULT)
 	</insert>
 	
-	<select id="getGatheringMemberList" resultMap="gatheringMemberResultSet2">
-		select chat_list_no, chatroom_no, chat_member, name as chat_member_name, p_url
+	<select id="getGatheringMemberList" resultMap="gatheringMemberResultSet">
+		select chat_list_no, chatroom_no, chat_member, name as chat_member_name, p_url, d_name, name, job_grade
 		from chat_list join
 			 member on (m_no = chat_member) left join
-			 profile using(m_no)
+			 profile using(m_no) left join
+             department using(d_no)
 		where chatroom_no = #{chatRoomNo}
 	</select>
 	
@@ -208,5 +214,10 @@
 		<result column="chat_member_name" property="sendMemberName"/>
 		<result column="p_url" property="profileUrl"/>
 	</resultMap>
+	
+	<insert id="insertMessage">
+		insert into chat_msg
+		values(SEQ_MSG.NEXTVAL, #{msgContent}, sysdate, default, #{chatRoomNo}, #{sendMember})
+	</insert>
 	
 </mapper>

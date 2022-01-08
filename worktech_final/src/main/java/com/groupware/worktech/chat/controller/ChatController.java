@@ -11,10 +11,10 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -253,10 +253,11 @@ public class ChatController {
 	// 개인 대화 생성
 	@Transactional
 	@RequestMapping("addPersonalChat.ct")
-	public String insertPersonalChat(@RequestParam("selectmNo") String selectmNo, @RequestParam("chatTitle") String chatTitle,
+	public String insertPersonalChat(@RequestParam("selectmNo") String selectmNo,
 									HttpSession session, Model model) {
 		String mNo = ((Member)session.getAttribute("loginUser")).getmNo();
 		HashMap<String, String> chatroomInfo = new HashMap<String, String>();
+		String chatTitle = "Personal";
 		chatroomInfo.put("chatTitle", chatTitle);
 		chatroomInfo.put("selectmNo", selectmNo);
 		chatroomInfo.put("mNo", mNo);
@@ -294,10 +295,12 @@ public class ChatController {
 		
 	}
 	
-	// 메시지 보내는 부분
-//	@MessageMapping("/chat.register")
-//	@SendTo("/topic/public")
-	
+	@GetMapping("/chat")
+	public void chat(Model model) {
+		
+		System.out.println("123");
+		
+	}
 	
 	
 }

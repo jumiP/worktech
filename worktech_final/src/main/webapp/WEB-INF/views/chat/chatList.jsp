@@ -12,7 +12,7 @@
   <title>채팅 목록</title>
 
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<!--   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link rel="stylesheet" href="resources/dist/assets/modules/prism/prism.css">
   <link rel="stylesheet" href="resources/dist/assets/modules/fontawesome/css/all.min.css">
@@ -221,7 +221,16 @@
 									</div>
 									<div class="chat_ib">
 										<h5>
-											${ ch.chatTitle } 
+											<c:if test="${ ch.chatTitle eq 'Personal' }">
+												<c:forEach var="gl" items="${ ch.gatheringList }">
+													<c:if test="${ gl.gatheringMember != loginUser.mNo }">
+														${ gl.gatheringMemberDName } ${ gl.gatheringMemberName } ${ gl.gatheringMemberJobGrade }
+													</c:if>
+												</c:forEach>
+											</c:if>
+											<c:if test="${ ch.chatTitle ne 'Personal' }">
+												${ ch.chatTitle } <b>(${ fn:length(ch.gatheringList) })</b>
+											</c:if>
 											<c:if test="${ ch.notReadCount != 0 }">
 												<span class="alarmBadge">${ ch.notReadCount }</span>
 											</c:if>
@@ -302,7 +311,17 @@
 						
 						innerDiv += '</div>'
 									+ '<div class="chat_ib">'
-									+ '<h5>' + data[i].chatTitle;
+									+ '<h5>';
+									
+						if(data[i].chatTitle == 'Personal'){
+							for(var g in data[i].gatheringList){
+								if(data[i].gatheringList[g].gatheringMember != loginmNo){
+									innerDiv += data[i].gatheringList[g].gatheringMemberDName + ' ' + data[i].gatheringList[g].gatheringMemberName + ' ' + data[i].gatheringList[g].gatheringMemberJobGrade;
+								}
+							}
+						} else {
+							innerDiv += data[i].chatTitle + ' <b>(' + data[i].gatheringList.length + ')</b>';
+						}
 						
 						if(data[i].notReadCount != 0){
 							innerDiv += '<span class="alarmBadge">' + data[i].notReadCount + '</span>';
@@ -350,23 +369,23 @@
 	</script>
 	
 	<!-- General JS Scripts -->
-	<script src="assets/modules/jquery.min.js"></script>
-	<script src="assets/modules/popper.js"></script>
-	<script src="assets/modules/tooltip.js"></script>
-	<script src="assets/modules/bootstrap/js/bootstrap.min.js"></script>
-	<script src="assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
-	<script src="assets/modules/moment.min.js"></script>
-	<script src="assets/js/stisla.js"></script>
+<!-- 	<script src="resource/dist/assets/modules/jquery.min.js"></script> -->
+<!-- 	<script src="resource/dist/assets/modules/popper.js"></script> -->
+<!-- 	<script src="resource/dist/assets/modules/tooltip.js"></script> -->
+<!-- 	<script src="resource/dist/assets/modules/bootstrap/js/bootstrap.min.js"></script> -->
+<!-- 	<script src="resource/dist/assets/modules/nicescroll/jquery.nicescroll.min.js"></script> -->
+<!-- 	<script src="resource/dist/assets/modules/moment.min.js"></script> -->
+<!-- 	<script src="resource/dist/assets/js/stisla.js"></script> -->
 	
 	<!-- JS Libraies -->
-	<script src="assets/modules/prism/prism.js"></script>
+<!-- 	<script src="resource/dist/assets/modules/prism/prism.js"></script> -->
 	
 	<!-- Page Specific JS File -->
-	<script src="assets/js/page/bootstrap-modal.js"></script>
+<!-- 	<script src="resource/dist/assets/js/page/bootstrap-modal.js"></script> -->
 	
 	<!-- Template JS File -->
-	<script src="assets/js/scripts.js"></script>
-	<script src="assets/js/custom.js"></script>
+<!-- 	<script src="resource/dist/assets/js/scripts.js"></script> -->
+<!-- 	<script src="resource/dist/assets/js/custom.js"></script> -->
 </body>
 
 

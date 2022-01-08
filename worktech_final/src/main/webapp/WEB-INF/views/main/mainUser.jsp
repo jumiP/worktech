@@ -4,25 +4,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- plugins:css --> 
-  <link rel="stylesheet" href="resources/vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="resources/vendors/base/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- plugin css for this page -->
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
-  <link rel="stylesheet" href="resources/vendors/css/style.css">
-  <!-- endinject -->
-  
-  
-  <link rel="stylesheet" href="resources/dist/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" />
-    <link rel="stylesheet" href="resources/dist/assets/css/style.css" />
-    <link rel="shortcut icon" href="resources/dist/assets/images/favicon.png" />
-
-
 
 <meta charset="UTF-8">
 <title>main</title>
+
 <style>
 	.memCard{
 		display: flex;
@@ -81,8 +66,13 @@
 		background: none;
 	}
 	
+	#searchIcon {
+		padding: 15px;
+	}
 	
-	<!-- todo 추가 -->
+	#searchItem {
+		margin-top: 12px;
+	}
 	
 </style>
 
@@ -413,7 +403,7 @@
 			}
 		}
 	</script>
-	 <script src="./../../assets/vendors/js/vendor.bundle.base.js"></script>
+	 <script src="resources/dist/assets/vendors/js/vendor.bundle.base.js"></script>
 	 
 	 	 <script>
 	 	function nowTime(){
@@ -439,27 +429,17 @@
 	 	
 	 </script>
 	
-	<!-- todo js start -->
-<!-- 	<!-- plugins:js --> -->
-<!-- <!--   <script src="./../../resources/vendors/base/vendor.bundle.base.js"></script> --> -->
-<!--   <!-- endinject --> -->
-<!-- <!--   Plugin js for this page --> -->
-<!--   <script src="./../../resources/vendors/chart.js/Chart.min.js"></script> -->
-<!-- <!--   End plugin js for this page --> -->
-<!--   <!-- inject:js --> -->
-<!--   <script src="./../../resources/vendors/js/off-canvas.js"></script> -->
-<!--   <script src="./../../resources/vendors/js/hoverable-collapse.js"></script> -->
-<!--   <script src="./../../resources/vendors/js/template.js"></script> -->
-<!--   <script src="./../resources/vendors/js/todolist.js"></script> -->
-<!--   <!-- endinject --> -->
-<!--   <!-- Custom js for this page--> -->
-<!--   <script src="./../../resources/vendors/js/dashboard.js"></script> -->
-  <!-- End custom js for this page-->
-  
-  
- <!-- calendar js -->
 
- 
+
+  <script src="resources/vendors/chart.js/Chart.min.js"></script>
+
+  <script src="resources/vendors/js/off-canvas.js"></script>
+  <script src="resources/vendors/js/hoverable-collapse.js"></script>
+  <script src="resources/vendors/js/template.js"></script>
+  <script src="resources/vendors/js/todolist.js"></script>
+
+  <script src="resources/vendors/js/dashboard.js"></script>
+
  
 	<c:import url="common/footer.jsp" />
 </body>

@@ -29,7 +29,7 @@ import com.groupware.worktech.member.model.vo.Member;
 @Controller
 public class MemberController {
 	
-	private Logger logger = LoggerFactory.getLogger(MemberController.class);
+//	private Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
 	@Autowired
 	private MemberService mService; 
@@ -51,7 +51,7 @@ public class MemberController {
 		
 		if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
 			model.addAttribute("loginUser", loginMember);
-			logger.info(loginMember.getmNo());
+//			logger.info(loginMember.getmNo());
 			return "redirect:home.do";
 		} else {
 			throw new MemberException("로그인에 실패하였습니다.");

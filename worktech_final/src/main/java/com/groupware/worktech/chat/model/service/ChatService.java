@@ -24,11 +24,6 @@ public class ChatService {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-	@Bean
-	public ChatDAO cDAO() {
-		return new ChatDAO();
-	}
-
 	public ArrayList<ChatRoom> selectChatList(String mNo) {
 		return cDAO.selectChatList(sqlSession, mNo);
 	}
@@ -96,6 +91,22 @@ public class ChatService {
 	}
 
 	public int insertMessage(ChatMessage chatRoom) {
-		return cDAO().insertMessage(sqlSession, chatRoom);
+		return cDAO.insertMessage(sqlSession, chatRoom);
+	}
+
+	public int updateChatRoomReadTime(HashMap<String, Object> map) {
+		return cDAO.updateChatRoomReadTime(sqlSession, map);
+	}
+
+	public int updateChatRoomTitle(ChatRoom cr) {
+		return cDAO.updateChatRoomTitle(sqlSession, cr);
+	}
+
+	public int deleteGatheringMember(GatheringMember gm) {
+		return cDAO.deleteGatheringMember(sqlSession, gm);
+	}
+
+	public int deleteChatRoom(int chatRoomNo) {
+		return cDAO.deleteChatRoom(sqlSession, chatRoomNo);
 	}
 }

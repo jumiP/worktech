@@ -2,14 +2,6 @@ package com.groupware.worktech.chat.model.vo;
 
 import java.sql.Timestamp;
 
-/**
- * @author na
- *
- */
-/**
- * @author na
- *
- */
 public class GatheringMember {
 	private int gatheringNo; // 참여자 리스트 번호
 	private int chatRoomNo; // 채팅방 번호

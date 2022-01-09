@@ -144,7 +144,7 @@
     	display: inline-block;
     	position: relative;
     	top: 28px;
-    	right: -265px;
+    	right: -240px;
     	background: #FF4848;
     	border-radius: 100%;
     	width: 20px;

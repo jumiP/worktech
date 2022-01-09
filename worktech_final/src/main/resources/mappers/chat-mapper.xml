@@ -196,13 +196,14 @@
 	</resultMap>
 	
 	<select id="getMessageList" resultMap="chatMessageResultSet2">
-		select msg_id, msg_content, send_time, chatroom_no, chat_member, name as chat_member_name, p_url
+		select msg_id, msg_content, send_time, chatroom_no, chat_member, name as chat_member_name, p_url,
+			   d_name || ' ' || name || ' ' || job_grade as send_member_full_name
 		from chat_msg join
 		     member on (m_no = chat_member) left join
-			 profile using(m_no)
+			 profile using(m_no) left join
+             department using(d_no)
 		where chatroom_no = #{chatRoomNo}
 		order by send_time
-	
 	</select>
 	
 	<resultMap type="ChatMessage" id="chatMessageResultSet2">
@@ -212,6 +213,7 @@
 		<result column="CHATROOM_NO" property="chatRoomNo"/>
 		<result column="CHAT_MEMBER" property="sendMember"/>
 		<result column="chat_member_name" property="sendMemberName"/>
+		<result column="send_member_full_name" property="sendMemberFullName"/>
 		<result column="p_url" property="profileUrl"/>
 	</resultMap>
 	
@@ -220,4 +222,23 @@
 		values(SEQ_MSG.NEXTVAL, #{msgContent}, sysdate, default, #{chatRoomNo}, #{sendMember})
 	</insert>
 	
+	<update id="updateChatRoomReadTime">
+		update chat_list set chat_readtime = sysdate
+		where chat_member = #{mNo} and chatroom_no = #{chatRoomNo}
+	</update>
+	
+	<update id="updateChatRoomTitle">
+		update chatroom set chat_title = #{chatTitle}
+		where chatroom_no = #{chatRoomNo}
+	</update>
+	
+	<delete id="deleteGatheringMember">
+		delete from chat_list
+		where chatroom_no = #{chatRoomNo} and chat_member = #{gatheringMember}
+	</delete>
+	
+	<update id="deleteChatRoom">
+		update chatroom set chat_status = 'N'
+		where chatroom_no = #{chatRoomNo}
+	</update>
 </mapper>

@@ -2,10 +2,6 @@ package com.groupware.worktech.chat.model.vo;
 
 import java.sql.Timestamp;
 
-/**
- * @author na
- *
- */
 public class ChatMessage {
 	private int msgId;
 	private String msgContent;
@@ -16,6 +12,7 @@ public class ChatMessage {
 	private int chatRoomNo;
 	private String sendMember; // 보낸 사람 사번
 	private String sendMemberName; // 보낸 사람 이름
+	private String sendMemberFullName; // 보낸 사람 풀네임
 	private String profileUrl;
 	
 	public ChatMessage() {}
@@ -46,6 +43,22 @@ public class ChatMessage {
 		this.chatRoomNo = chatRoomNo;
 		this.sendMember = sendMember;
 		this.sendMemberName = sendMemberName;
+		this.profileUrl = profileUrl;
+	}
+
+	public ChatMessage(int msgId, String msgContent, Timestamp sendTime, String time, String date, String readYN,
+			int chatRoomNo, String sendMember, String sendMemberName, String sendMemberFullName, String profileUrl) {
+		super();
+		this.msgId = msgId;
+		this.msgContent = msgContent;
+		this.sendTime = sendTime;
+		this.time = time;
+		this.date = date;
+		this.readYN = readYN;
+		this.chatRoomNo = chatRoomNo;
+		this.sendMember = sendMember;
+		this.sendMemberName = sendMemberName;
+		this.sendMemberFullName = sendMemberFullName;
 		this.profileUrl = profileUrl;
 	}
 
@@ -121,6 +134,14 @@ public class ChatMessage {
 		this.sendMemberName = sendMemberName;
 	}
 
+	public String getSendMemberFullName() {
+		return sendMemberFullName;
+	}
+
+	public void setSendMemberFullName(String sendMemberFullName) {
+		this.sendMemberFullName = sendMemberFullName;
+	}
+
 	public String getProfileUrl() {
 		return profileUrl;
 	}
@@ -133,7 +154,8 @@ public class ChatMessage {
 	public String toString() {
 		return "ChatMessage [msgId=" + msgId + ", msgContent=" + msgContent + ", sendTime=" + sendTime + ", time="
 				+ time + ", date=" + date + ", readYN=" + readYN + ", chatRoomNo=" + chatRoomNo + ", sendMember="
-				+ sendMember + ", sendMemberName=" + sendMemberName + ", profileUrl=" + profileUrl + "]";
+				+ sendMember + ", sendMemberName=" + sendMemberName + ", sendMemberFullName=" + sendMemberFullName
+				+ ", profileUrl=" + profileUrl + "]";
 	}
 
 }

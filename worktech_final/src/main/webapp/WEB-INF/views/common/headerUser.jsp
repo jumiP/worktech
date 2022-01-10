@@ -31,6 +31,8 @@
         gtag('config', 'UA-94034622-3');
     </script>
     <!-- /END GA -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 </head>
 
 <body>
@@ -270,11 +272,46 @@
     <script src="resources/dist/assets/js/scripts.js"></script>
     <script src="resources/dist/assets/js/custom.js"></script>
 
+
+	
 	<script>
 		function chatOpen() {
 			window.open('chatView.ct', '채팅', 'width=500px, height=600px, resizable=no, toolbar=1');
 		}
 	
+		// 알림 관련
+		var socket = null;
+		
+		function connectWs() {
+			// SockJS 라이브러리를 이용하여 서버에 연결
+			var sock = new SockJS('http://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/alarm');
+			socket = sock;
+			// 이벤트 리스터(커넥션이 연결되었을 때 서버 호출된다)
+			sock.onopen = function() {
+				console.log('info: connection opened.');
+			}
+			
+			// 서버에 메시지를 보내주며 함수가 호출된다.
+			// 메세지를 보냈을 때 호출
+			sock.onmessage = function(evt){
+				console.log('info: connection onmessage');
+			}
+			
+			// 서버가 끊겼을 때 호출
+			sock.onclose = function(){
+				console.log('info: connect close');
+			};
+			
+			// 에러가 발생했을 때 호출
+			sock.onerror = function(err){
+				console.log('Errors : ', err);
+			}
+		}
+		
+		$(document).ready(function(){
+			connectWs();
+		});
+		
 	</script>
 </body>
 

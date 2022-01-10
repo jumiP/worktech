@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="approvalMapper">
+	<select id="selectApproval" resultMap="approvalResultSet">
+	select *
+	from(
+		select app_title, name, app_date, d_name, job_grade
+		from approval
+			 join member on (app_writer = m_no)
+			 join department using (d_no)
+		order by app_no desc)
+	<![CDATA[where rownum <= 3]]>
+	</select>
+	
+	<resultMap type="Approval" id="approvalResultSet">
+		<id column="APP_NO" property="appNo"/>
+		<result column="APP_TITLE" property="appTitle"/>
+		<result column="APP_CONTENT" property="appContent"/>
+		<result column="APP_WRITER" property="appWriter"/>
+		<result column="NAME" property="mName"/>	
+		<result column="D_NAME" property="dName"/>
+		<result column="JOB_GRADE" property="jobGrade"/>
+		<result column="APP_RESULT" property="appResult"/>	
+		<result column="APP_DELETE" property="appDelete"/>	
+		<result column="APP_DATE" property="appDate"/>	
+		<result column="FORM_NO" property="formNo"/>	
+	</resultMap>
+	
+	<select id="approvallinelist" resultType="Department">
+	
+	</select>
+</mapper>

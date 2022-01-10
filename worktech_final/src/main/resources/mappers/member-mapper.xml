@@ -21,7 +21,7 @@
 	<select id="memberLogin" resultMap="memberResultSet">
 		select *
 		from member m join
-			 department using(d_no)
+			department using (d_no)
 		where m_no=#{mNo} and m_status='Y'
 	</select>
 		
@@ -40,5 +40,94 @@
 		<result column="M_HIRED" property="hireDate"/>
 		<result column="M_STATUS" property="mStatus"/>
 	</resultMap>
+	
+	<!-- 사원 목록 : 관리자 제외 -->
+	<select id="selectMemList" resultMap="memberResultSet">
+		select m_no, email, name, pwd, job_grade, birthday, phone, address, m_grade,
+				d_no, d_name, m_hired, m_status
+		from member
+		    join department using (d_no)
+		where m_status='Y' and m_grade='USER'
+		order by m_no desc
+	</select>
+	
+	<!-- 관리자 목록 -->
+	<select id="selectAdminList" resultMap="memberResultSet">
+		select m_no, email, name, pwd, job_grade, birthday, phone, address, m_grade,
+				d_no, d_name, m_hired, m_status
+		from member
+		    join department using (d_no)
+		where m_status='Y' and m_grade='ADMIN'
+		order by m_no desc
+	</select>
+	
+	<!-- listCount -->
+	<select id="getMemListCount" resultType="_int">
+		select count(*)
+		from member
+		where m_status='Y'
+	</select>
+	
+	
+	<!-- 사원 수 -->
+	<select id="countMember" resultType="_int">
+		select count(*)
+		from member
+		where m_status='Y' and m_grade='USER'
+	</select>
+	
+	<!-- 사원 검색 : 사원 수 (사원 명 / 부서 명 / 직급 명 ) -->
+	<select id="getSearchResultListCount" resultType="_int">
+			select count(*)
+			from member
+			    join department using(d_no)
+			where m_status='Y'
+	 		<if test="condition == 'name'"> 
+		 		and name like '%' || #{value} || '%'
+		 	</if>
+		 	<if test="condition == 'department'">
+		 		and d_name like '%' || #{value} || '%'
+		 	</if>
+		 	<if test="condition == 'grade'">
+		 		and job_grade like '%' || #{value} || '%'
+		 	</if>
+	</select>
+	
+	<!-- 사원 검색 : 검색 결과  -->
+	<select id="selectSearchResultList" parameterType="hashmap" resultMap="memberResultSet">
+		select m_no, email, name, pwd, job_grade, birthday, phone, address, m_grade,
+				d_no, d_name, m_hired, m_status
+		from member
+		    join department using (d_no)
+		where m_status='Y'
+		 		<choose>
+		 			<when test="condition == 'name'">
+		 				and name like '%' || #{value} || '%'
+		 			</when>
+		 			<when test="condition == 'department'">
+		 				and d_name like '%' || #{value} || '%'
+		 			</when>
+		 			<otherwise> <!-- switch에서의 default : 조건X -->
+		 				and job_grade like '%' || #{value} || '%'
+		 			</otherwise>
+		 		</choose>
+		 		order by m_no desc
+	</select>
+	
+	<!-- 사원 삭제 -->
+	<update id="deleteMember">
+		update member
+		set m_status='N'
+		where m_No=#{mNo}
+	</update>
+
+
+	<!-- 사원 개별 삭제 -->
+<!-- 	<update id="deleteSelectMember"> -->
+<!-- 		update member -->
+<!-- 		set m_status='N' -->
+<!-- 		where m_No=#{string} -->
+<!-- 	</update> -->
+
 
 </mapper>

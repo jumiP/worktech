@@ -187,7 +187,7 @@
                                 <span>예약</span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="nav-link" href="components-article.html">회의실 예약</a>
+                                    <a class="nav-link" href="rvMeetingRoomView.rv">회의실 예약</a>
                                 </li>
                                 <li class="dropdown">
                                     <a class="nav-link has-dropdown" href="components-avatar.html">

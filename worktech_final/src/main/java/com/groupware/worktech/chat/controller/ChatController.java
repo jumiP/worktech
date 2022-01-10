@@ -11,10 +11,10 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -198,7 +198,10 @@ public class ChatController {
 				ChatRoom chatroomInfo = cService.selectCreateChatRoom();
 				
 				if(chatroomInfo != null) {
+					ArrayList<GatheringMember> memberList = cService.getGatheringMemberList(chatroomInfo.getChatRoomNo());
+
 					model.addAttribute("cr", chatroomInfo);
+					model.addAttribute("memberList", memberList);
 					
 					return "chatMessage";
 				}
@@ -253,10 +256,11 @@ public class ChatController {
 	// 개인 대화 생성
 	@Transactional
 	@RequestMapping("addPersonalChat.ct")
-	public String insertPersonalChat(@RequestParam("selectmNo") String selectmNo, @RequestParam("chatTitle") String chatTitle,
+	public String insertPersonalChat(@RequestParam("selectmNo") String selectmNo,
 									HttpSession session, Model model) {
 		String mNo = ((Member)session.getAttribute("loginUser")).getmNo();
 		HashMap<String, String> chatroomInfo = new HashMap<String, String>();
+		String chatTitle = "Personal";
 		chatroomInfo.put("chatTitle", chatTitle);
 		chatroomInfo.put("selectmNo", selectmNo);
 		chatroomInfo.put("mNo", mNo);
@@ -294,10 +298,56 @@ public class ChatController {
 		
 	}
 	
-	// 메시지 보내는 부분
-//	@MessageMapping("/chat.register")
-//	@SendTo("/topic/public")
+	@RequestMapping("updateTime.ct")
+	public void updateChatRoomReadTime(@RequestParam("mNo") String mNo, @RequestParam("chatRoomNo") int chatRoomNo, HttpServletResponse response) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("mNo", mNo);
+		map.put("chatRoomNo", chatRoomNo);
+		
+		String result = cService.updateChatRoomReadTime(map) == 0 ? "fail" : "success";
+		
+		try {
+			response.getWriter().println(result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
+	@RequestMapping("renameChatTitle.ct")
+	public String renameChatRoomTitle(@ModelAttribute ChatRoom cr, Model model) {
+		int result = cService.updateChatRoomTitle(cr);
+		
+		if(result > 0) {
+			model.addAttribute("chatRoomNo", cr.getChatRoomNo());
+			
+			return "redirect:chatDetail.ct";
+		} else {
+			throw new ChatException("채팅방 제목 변경에 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("quitChatRoom.ct")
+	public String quitChatRoom(@ModelAttribute GatheringMember gm) {
+		int result = cService.deleteGatheringMember(gm);
+		
+		if(result > 0) {
+			return "redirect:chatView.ct";
+		} else {
+			throw new ChatException("채팅방 나가기에 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("deleteChatRoom.ct")
+	public String deleteChatRoom(@RequestParam("chatRoomNo") int chatRoomNo) {
+		int result = cService.deleteChatRoom(chatRoomNo);
+		
+		if(result > 0) {
+			return "redirect:chatView.ct";
+		} else {
+			throw new ChatException("채팅방 삭제에 실패하였습니다.");
+		}
+	}
 	
 	
 }

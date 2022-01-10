@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import com.groupware.worktech.admin.model.vo.Department;
@@ -22,7 +23,7 @@ public class ChatService {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-
+	
 	public ArrayList<ChatRoom> selectChatList(String mNo) {
 		return cDAO.selectChatList(sqlSession, mNo);
 	}
@@ -87,5 +88,25 @@ public class ChatService {
 
 	public ArrayList<ChatMessage> getMessageList(int chatRoomNo) {
 		return cDAO.getMessageList(sqlSession, chatRoomNo);
+	}
+
+	public int insertMessage(ChatMessage chatRoom) {
+		return cDAO.insertMessage(sqlSession, chatRoom);
+	}
+
+	public int updateChatRoomReadTime(HashMap<String, Object> map) {
+		return cDAO.updateChatRoomReadTime(sqlSession, map);
+	}
+
+	public int updateChatRoomTitle(ChatRoom cr) {
+		return cDAO.updateChatRoomTitle(sqlSession, cr);
+	}
+
+	public int deleteGatheringMember(GatheringMember gm) {
+		return cDAO.deleteGatheringMember(sqlSession, gm);
+	}
+
+	public int deleteChatRoom(int chatRoomNo) {
+		return cDAO.deleteChatRoom(sqlSession, chatRoomNo);
 	}
 }

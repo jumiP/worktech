@@ -4,25 +4,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- <!-- plugins:css --> -->
-  <link rel="stylesheet" href="./../../resources/vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="./../../resources/vendors/base/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- plugin css for this page -->
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
-  <link rel="stylesheet" href="./../../resources/vendors/css/style.css">
-  <!-- endinject -->
-  
-  
-  <link rel="stylesheet" href="./../../assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" />
-    <link rel="stylesheet" href="./../../assets/css/style.css" />
-    <link rel="shortcut icon" href="./../../assets/images/favicon.png" />
-
-
 
 <meta charset="UTF-8">
 <title>main</title>
+
 <style>
 	.memCard{
 		display: flex;
@@ -81,8 +66,13 @@
 		background: none;
 	}
 	
+	#searchIcon {
+		padding: 15px;
+	}
 	
-	<!-- todo 추가 -->
+	#searchItem {
+		margin-top: 12px;
+	}
 	
 </style>
 
@@ -121,14 +111,14 @@
 									<td>==========</td>
 								</tr>
 								<tr>
-									<td>출근 시간</td>
-									<td>09:00</td>
-									<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn">출근하기</button></td>
+									<td>출근 시간</td>		
+									<td><div id="test1" name="goWork"></div></td>							
+									<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="location.href='qrcode.do'">출근하기</button></td>
 								</tr>
 								<tr>
 									<td>퇴근 시간</td>
-									<td>18:00</td>
-									<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn">퇴근하기</button></td>
+									<td><div id="test2" name="leaveWork"></div></td>
+									<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="location.href='leavework.do'">퇴근하기</button></td>
 								</tr>
 							</table>
 						</div>
@@ -413,29 +403,43 @@
 			}
 		}
 	</script>
-	 <script src="./../../assets/vendors/js/vendor.bundle.base.js"></script>
+	 <script src="resources/dist/assets/vendors/js/vendor.bundle.base.js"></script>
+	 
+	 	 <script>
+	 	function nowTime(){
+	 		var today = new Date();
+	 		var h = today.getHours(); // date의 시 추출
+	 		var m = today.getMinutes(); //date의 분 추출
+	 		h = dasi(h);
+	 		m = dasi(m);
+	 		
+	 		document.getElementById('test1').innerHTML = h+":"+m;
+	 		document.getElementById('test2').innerHTML = h+":"+m;
+	 		var t = setTimeout(function(){nowTime()},1000); // 1초마다 페이지 로드
+	 	}
+	 	
+	 	function dasi(i){
+	 		if(i < 10) {
+	 			i = "0" + i;
+	 		};
+	 		return i;
+	 		// 10보다 작으면 앞자리에 0 추가
+	 	}
+	 	
+	 	
+	 </script>
 	
-	<!-- todo js start -->
-<!-- 	<!-- plugins:js --> -->
-<!-- <!--   <script src="./../../resources/vendors/base/vendor.bundle.base.js"></script> --> -->
-<!--   <!-- endinject --> -->
-<!-- <!--   Plugin js for this page --> -->
-<!--   <script src="./../../resources/vendors/chart.js/Chart.min.js"></script> -->
-<!-- <!--   End plugin js for this page --> -->
-<!--   <!-- inject:js --> -->
-<!--   <script src="./../../resources/vendors/js/off-canvas.js"></script> -->
-<!--   <script src="./../../resources/vendors/js/hoverable-collapse.js"></script> -->
-<!--   <script src="./../../resources/vendors/js/template.js"></script> -->
-<!--   <script src="./../resources/vendors/js/todolist.js"></script> -->
-<!--   <!-- endinject --> -->
-<!--   <!-- Custom js for this page--> -->
-<!--   <script src="./../../resources/vendors/js/dashboard.js"></script> -->
-  <!-- End custom js for this page-->
-  
-  
- <!-- calendar js -->
 
- 
+
+  <script src="resources/vendors/chart.js/Chart.min.js"></script>
+
+  <script src="resources/vendors/js/off-canvas.js"></script>
+  <script src="resources/vendors/js/hoverable-collapse.js"></script>
+  <script src="resources/vendors/js/template.js"></script>
+  <script src="resources/vendors/js/todolist.js"></script>
+
+  <script src="resources/vendors/js/dashboard.js"></script>
+
  
 	<c:import url="common/footer.jsp" />
 </body>

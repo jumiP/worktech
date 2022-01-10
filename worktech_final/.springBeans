@@ -11,8 +11,11 @@
 		<config>src/main/resources/spring-security.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/admin-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/calendar-context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/adbook-context.xml</config>
 	</configs>
 	<autoconfigs>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/aspect-context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/member-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/board-context.xml</config>
 	</autoconfigs>

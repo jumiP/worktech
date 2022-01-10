@@ -128,133 +128,6 @@
 		order by b_no desc
 	</select>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	<insert id="insertCommonBoard">
 		insert into board
 		values(SEQ_BOARD.NEXTVAL, #{bTitle}, #{bContent}, #{bDate}, DEFAULT, 'COMMON', NULL, #{bWriter}, #{categoryNo}, DEFAULT)
@@ -416,4 +289,33 @@
 	
 	
 	
+	<insert id="insertCommonReply">
+		insert into reply
+		values(seq_reply.nextval, #{rContent}, sysdate, #{bNo}, #{rName}, default)
+	</insert>
+	
+	<select id="selectCommonReplyList" resultMap="replyResultSet">
+		select r_no, r_content, r_date, b_no, r_name, name, r_status
+		from reply
+			 join member on(r_name = m_no)
+		where b_no = #{bNo}
+			  and r_status = 'N'
+		order by r_no
+	</select>
+	
+	<resultMap type="Reply" id="replyResultSet">
+		<id column="R_NO" property="rNo"/>
+		<result column="R_CONTENT" property="rContent"/>
+		<result column="R_DATE" property="rDate"/>
+		<result column="B_NO" property="bNo"/>
+		<result column="R_NAME" property="rName"/>
+		<result column="NAME" property="name"/>
+		<result column="R_STATUS" property="rStatus"/>
+	</resultMap>
+	
+	<update id="deleteCommonReply">
+		update reply
+		set r_status = 'Y'
+		where r_no = #{rNo}
+	</update>
 </mapper>

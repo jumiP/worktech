@@ -26,10 +26,26 @@
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
 	</servlet>
 		
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>mainServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/main-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>mainServlet</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 	
@@ -80,6 +96,21 @@
 		<url-pattern>*.bo</url-pattern>
 	</servlet-mapping>
 	
+	<!-- 채팅 관련 -->
+	<servlet>
+		<servlet-name>chatServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/chat-context.xml</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>chatServlet</servlet-name>
+		<url-pattern>*.ct</url-pattern>
+	</servlet-mapping>
+	
 	<!-- 공용 에러 페이지 -->
 	<error-page>
 		<exception-type>java.lang.Exception</exception-type>
@@ -99,6 +130,21 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<!-- 전자결재 관련 -->
+	<servlet>
+		<servlet-name>approvalServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/approval-context.xml</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>approvalServlet</servlet-name>
+		<url-pattern>*.ap</url-pattern>
+	</servlet-mapping>
 	
 	
 	
@@ -137,6 +183,20 @@
 	<servlet-mapping>
 		<servlet-name>ScheduleServlet</servlet-name>
 		<url-pattern>*.cr</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 주소록 관련 -->
+	<servlet>
+		<servlet-name>adbookServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/adbook-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>adbookServlet</servlet-name>
+		<url-pattern>*.ab</url-pattern>
 	</servlet-mapping>
 	
 </web-app>

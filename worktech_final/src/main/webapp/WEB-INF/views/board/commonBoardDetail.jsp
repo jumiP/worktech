@@ -51,6 +51,25 @@
         	margin-right: 10px;
         	margin-left: 5px;
         }
+
+        #replyBox{
+        	resize: none;
+        }
+        
+        #rTable{
+        	width: 100%;
+        	border-collapse: collapse;
+        }
+        
+        #rTable td{
+        	padding: 12px;
+        	border-top: 1px solid #dff5fa;
+        	border-bottom: 1px solid #dff5fa;
+        }
+        
+        i[name='rDeleteBtn']:hover{
+        	cursor: pointer;
+        }
     </style>
 </head>
 
@@ -155,6 +174,15 @@
 								</c:if>
                                 <button class="btn btn-secondary" type="button" onclick="location.href='${ clist }'">목록으로</button>
                             </div>
+                            <div class="card-footer form-group">
+                            	<label id="rCount"></label>
+                           		<table id="rTable" width="100%"></table>
+                           		<br>
+                            	<div class="text-right">
+	                            	<textarea class="form-control" id="replyBox"></textarea><br>
+	                            	<button class="btn btn-primary mr-1" id="replyBtn">등록</button>
+                            	</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -168,6 +196,7 @@
     <script src="resources/dist/assets/modules/jquery-selectric/jquery.selectric.min.js"></script>
 
 	<script>
+		// 게시글 삭제 확인
 		function deleteCommonBoard() {
 			var result = confirm('정말 삭제하시겠습니까?');
 			
@@ -176,7 +205,109 @@
 			}
 			
 		}
+		
+		// 댓글 등록 ajax
+		$('#replyBtn').on('click', function(){
+			var rContent = $('#replyBox').val();
+			var rName = '${ loginUser.mNo}';
+			var bNo = '${ b.bNo }';
+			
+			$.ajax({
+				url: 'addCommonReply.bo',
+				data: {rName:rName, rContent:rContent, bNo:bNo},
+				success: function(data){
+					console.log(data);
+					
+					if(data.trim() == 'success'){
+						getReplyList();
+						$('#replyBox').val('');
+					}
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+		});
+		
+		// 댓글 목록 불러오기 ajax
+		function getReplyList() {
+			var bNo = ${b.bNo};
+			
+			$.ajax({
+				url: 'commonReplyList.bo',
+				data: {bNo:bNo},
+				dataType: 'json',
+				success: function(data){
+					var $rTable  = $('#rTable');
+					$rTable.html('');
+					
+					$('#rCount').text('댓글 (' + data.length + '개)');
+					
+					var $tr;
+					var $name;
+					var $content;
+					var $date;
+					
+					if(data.length > 0){
+						for(var i in data){
+							$tr = $('<tr>');
+							$rNo = $('<td>').html('<input type="hidden" name="rNo" value="' + data[i].rNo + '">');
+							$name = $('<td width="15%" style="text-align: center;">').html('<b>' + data[i].name + '</b>');
+							$content = $('<td width="65%">').text(data[i].rContent);
+							$date = $('<td width="15%" style="text-align: center;">').text(data[i].rDate);
+							$deleteBtn = $('<td width="5%">').html('<i class="fas fa-times" name="rDeleteBtn"></i>');
+							
+							$tr.append($rNo);
+							$tr.append($name);
+							$tr.append($content);
+							$tr.append($date);
+							$tr.append($deleteBtn);
+							
+							$rTable.append($tr);
+						}
+					} else {
+						$tr = $('<tr>');
+						$content = $('<td colspan="3" style="border: none;">').text("댓글이 없습니다.");
+						
+						$tr.append($content);
+						$rTable.append($tr);
+					}
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+		}
+		
+		// 화면 로드 시 댓글 목록 불러오기 ajax
+		$(function(){
+			getReplyList();
+			
+// 			setInterval(function(){
+// 				getReplyList();
+// 			}, 7000);
+		});
+		
+		var bNo = '${ b.bNo }';
+		
+		// 댓글 삭제 ajax
+		$(document).on("click", "i[name='rDeleteBtn']", function(){
+			var rNo = $(this).parent().parent().children().eq(0).children().val();
+			
+			$.ajax({
+				url: 'deleteCommonReply.bo',
+				data: {bNo:bNo, rNo:rNo},
+				success: function(data){
+					if(data.trim() == 'success'){
+						getReplyList();
+					}
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+// 			location.href="deleteCommonReply.bo?bNo=" + bNo + "&rNo=" + rNo;
+		});
 	</script>
 </body>
-
 </html>

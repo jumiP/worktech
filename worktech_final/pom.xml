@@ -239,6 +239,28 @@
 		    <scope>provided</scope>
 		</dependency>
 		
+		<!-- messaging 라이브러리 -->
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-messaging -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-messaging</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- QR코드 관련 -->
+		<!-- https://mvnrepository.com/artifact/com.google.zxing/core --> 
+		<!-- 구글바코드 오픈소스 --> 
+		<dependency> 
+			<groupId>com.google.zxing</groupId> 
+			<artifactId>core</artifactId> 
+			<version>3.4.0</version> 
+		</dependency> 
+		<!-- https://mvnrepository.com/artifact/com.google.zxing/javase --> 
+		<dependency> 
+			<groupId>com.google.zxing</groupId> 
+			<artifactId>javase</artifactId> 
+			<version>3.4.0</version> 
+		</dependency>
 		
 	</dependencies>
     <build>
@@ -262,8 +284,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>

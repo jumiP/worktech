@@ -16,7 +16,7 @@
 </head>
 
 <body>
-	<c:import url="common/header.jsp" />
+	<c:import url="../common/headerUser.jsp" />
 	<!-- Main Content -->
 	<div class="main-content">
 		<section class="section">
@@ -32,7 +32,7 @@
 			
 			<div class="col-12 col-md-12 col-lg-12">
                 <div class="card">
-                  <form method="post" class="needs-validation" novalidate="">
+                  <form method="post" class="needs-validation" >
                     <div class="card-header">
                       <h4>검색창</h4>
                     </div>
@@ -40,14 +40,14 @@
                         <div class="row">                               
                           <div class="form-group col-md-6 col-12">
                             <label>문서 제목</label>
-                            <input type="text" class="form-control" required="">
+                            <input type="text" class="form-control" >
                             <div class="invalid-feedback">
                               Please fill in the first name
                             </div>
                           </div>
                           <div class="form-group col-md-6 col-12">
                             <label>문서 </label>
-                            <input type="text" class="form-control" required="">
+                            <input type="text" class="form-control" >
                             <div class="invalid-feedback">
                               Please fill in the last name
                             </div>
@@ -160,10 +160,8 @@
 					</div>
 				</div>
 			</div>
+			</section>
 				</div>
-			</div>
-		</section>
-	</div>
 	<c:import url="common/footer.jsp" />
 	
 	<script src="resources/dist/assets/assets/modules/jquery.min.js"></script>

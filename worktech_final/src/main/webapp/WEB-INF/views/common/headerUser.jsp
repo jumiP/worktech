@@ -12,11 +12,17 @@
     <link rel="stylesheet" href="resources/dist/assets/modules/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="resources/dist/assets/modules/fontawesome/css/all.min.css">
 
+    <!-- jstree -->
+	<link rel="stylesheet" href="resources/dist/themes/default/style.min.css" />
     <!-- CSS Libraries -->
-
+	<link rel="stylesheet" href="resources/dist/assets/modules/summernote/summernote-bs4.css">
+	<link rel="stylesheet" href="resources/dist/assets/modules/codemirror/lib/codemirror.css">
+	<link rel="stylesheet" href="resources/dist/assets/modules/codemirror/theme/duotone-dark.css">
+	<link rel="stylesheet" href="resources/dist/assets/modules/jquery-selectric/selectric.css">
     <!-- Template CSS -->
     <link rel="stylesheet" href="resources/dist/assets/css/style.css">
     <link rel="stylesheet" href="resources/dist/assets/css/components.css">
+    
     <!-- Start GA -->
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
     <script src="resources/js/jquery-3.6.0.min.js"></script>
@@ -121,7 +127,7 @@
                                 전자결재
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item has-icon text-danger">
+                            <a href="logout.me" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i>
                                 Logout
                             </a>
@@ -132,23 +138,23 @@
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="index.html"><img src="resources/dist/assets/img/logo.png" width="60%" height="auto"></a>
+                        <a href="home.do"><img src="resources/dist/assets/img/logo.png" width="60%" height="auto"></a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
-                        <a href="index.html"><img src="resources/dist/assets/img/logo_small.png" width="45%" height="auto" style="padding-top: 30%;"></a>
+                        <a href="home.do"><img src="resources/dist/assets/img/logo_small.png" width="45%" height="auto" style="padding-top: 30%;"></a>
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">User Menu</li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link has-dropdown">
+                            <a href="approvalmain.ap" class="nav-link has-dropdown">
                                 <i class="fas fa-user-friends"></i>
                                 <span>전자 결재</span></a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="nav-link" href="bootstrap-breadcrumb.html">새 결재 진행</a>
+                                        <a class="nav-link" href="approvalWrite.ap">새 결재 진행</a>
                                     </li>
                                     <li>
-                                        <a class="nav-link" href="bootstrap-alert.html">결재 대기함</a>
+                                        <a class="nav-link" href="approvalWait.ap">결재 대기함</a>
                                     </li>
                                     <li>
                                         <a class="nav-link" href="bootstrap-badge.html">결재 진행함</a>
@@ -174,10 +180,10 @@
                                 <span>주소록</span></a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="nav-link" href="components-article.html">사내 주소록</a>
+                                        <a class="nav-link" href="adbookList.ab">사내 주소록</a>
                                     </li>
                                     <li>
-                                        <a class="nav-link" href="components-avatar.html">개인 주소록</a>
+                                        <a class="nav-link" href="pAdbookList.ab">개인 주소록</a>
                                     </li>
                                 </ul>
                         </li>
@@ -212,7 +218,7 @@
                                     <a class="nav-link" href="noticeList.ad">공지사항 게시판</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="components-avatar.html">일반 게시판</a>
+                                    <a class="nav-link" href="commonList.bo">일반 게시판</a>
                                 </li>
                                 <li>
                                     <a class="nav-link" href="components-chat-box.html">익명 게시판</a>
@@ -243,7 +249,7 @@
                     </ul>
 
                     <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-                        <a href="chatting.ct" class="btn btn-primary btn-lg btn-block btn-icon-split">
+                        <a href="#" onclick="chatOpen();" class="btn btn-primary btn-lg btn-block btn-icon-split">
                             <i class="fas fa-comments"></i>
                             CHAT
                         </a>
@@ -253,23 +259,37 @@
             </div>
             </div>
 
-            <!-- General JS Scripts -->
-            <script src="resources/dist/assets/modules/jquery.min.js"></script>
-            <script src="resources/dist/assets/modules/popper.js"></script>
-            <script src="resources/dist/assets/modules/tooltip.js"></script>
-            <script src="resources/dist/assets/modules/bootstrap/js/bootstrap.min.js"></script>
-            <script src="resources/dist/assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
-            <script src="resources/dist/assets/modules/moment.min.js"></script>
-            <script src="resources/dist/assets/js/stisla.js"></script>
+    <!-- General JS Scripts -->
+    <script src="resources/dist/assets/modules/jquery.min.js"></script>
+    <script src="resources/dist/assets/modules/popper.js"></script>
+    <script src="resources/dist/assets/modules/tooltip.js"></script>
+    <script src="resources/dist/assets/modules/bootstrap/js/bootstrap.min.js"></script>
+    <script src="resources/dist/assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
+    <script src="resources/dist/assets/modules/moment.min.js"></script>
+    <script src="resources/dist/assets/js/stisla.js"></script>
 
-            <!-- JS Libraies -->
+	<!-- jstree -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+	<script src="resources/dist/jstree.min.js"></script>
+    <!-- JS Libraies -->
+	<script src="resources/dist/assets/modules/summernote/summernote-bs4.js"></script>
+	<script src="resources/dist/assets/modules/codemirror/lib/codemirror.js"></script>
+	<script src="resources/dist/assets/modules/codemirror/mode/javascript/javascript.js"></script>
+	<script src="resources/dist/assets/modules/jquery-selectric/jquery.selectric.min.js"></script>
+			
 
-            <!-- Page Specific JS File -->
+    <!-- Page Specific JS File -->
 
-            <!-- Template JS File -->
-            <script src="resources/dist/assets/js/scripts.js"></script>
-            <script src="resources/dist/assets/js/custom.js"></script>
+    <!-- Template JS File -->
+    <script src="resources/dist/assets/js/scripts.js"></script>
+    <script src="resources/dist/assets/js/custom.js"></script>
 
+	<script>
+		function chatOpen() {
+			window.open('chatView.ct', '채팅', 'width=500px, height=600px, resizable=no, toolbar=1');
+		}
+	
+	</script>
 </body>
 
 </html>

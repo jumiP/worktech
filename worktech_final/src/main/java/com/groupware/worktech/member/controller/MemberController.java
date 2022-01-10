@@ -64,6 +64,7 @@ public class MemberController {
 		
 		
 		System.out.println(m);
+		System.out.println(bcrypt);
 		
 		
 		int result = mService.insertMember(m);
@@ -96,7 +97,7 @@ public class MemberController {
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
 	public String login(Member m, Model model) {	
 		
-//		System.out.println(bcrypt.encode(m.getPwd()));
+		System.out.println(bcrypt.encode(m.getPwd()));
 		
 		Member loginMember = mService.memberLogin(m);
 		

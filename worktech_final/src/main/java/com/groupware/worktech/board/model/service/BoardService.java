@@ -200,6 +200,113 @@ public class BoardService {
 		return bDAO.selectCommonSearchList(sqlSession, searchListMap);
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 화상 회의
+	public int getZListCount() {
+		return bDAO.getZListCount(sqlSession);
+	}
+
+	public ArrayList<Board> selectZList(PageInfo pi) {
+		return bDAO.selectZList(sqlSession, pi);
+	}
+
 
 
 

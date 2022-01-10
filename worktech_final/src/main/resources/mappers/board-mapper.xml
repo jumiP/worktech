@@ -366,4 +366,54 @@
 		</where>	  
 		order by b_no desc
 	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="getZListCount" resultType="_int">
+		select count(*)
+		from board
+		where b_status = 'Y'
+	</select>
+	
+	<select id="selectZList" resultMap="noticeResultSet">
+		select * 
+		from board
+			join member on(b_writer = email)
+		where b_status='Y'
+		order by b_no desc
+	</select>
+	
+	
+	
+	
+	
+	
 </mapper>

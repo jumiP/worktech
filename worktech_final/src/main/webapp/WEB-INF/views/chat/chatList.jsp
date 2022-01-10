@@ -142,16 +142,15 @@
     
     .alarmBadge {
     	display: inline-block;
-    	position: relative;
-    	top: 28px;
-    	right: -240px;
     	background: #FF4848;
     	border-radius: 100%;
-    	width: 20px;
-    	height: 20px;
+    	width: 18px;
+    	height: 18px;
     	text-align: center;
     	color: white;
-    	size: 5px;
+    	font-size: 12px;
+    	margin-left: 5px;
+    	position: absolute;
     }
     
     .btn {
@@ -204,7 +203,7 @@
 											<img src="resources/dist/assets/img/avatar/avatar-group.png" class="mr-3 rounded-circle" width="50"
 												alt="image">
 										</c:if>
-										<c:if test="${ fn:length(ch.gatheringList) <= 2 }">
+										<c:if test="${ fn:length(ch.gatheringList) == 2 }">
 											<c:forEach var="gl" items="${ ch.gatheringList }">
 												<c:if test="${ gl.gatheringMember != loginUser.mNo }">
 													<c:if test="${ gl.profileUrl != null }">
@@ -218,18 +217,27 @@
 												</c:if>
 											</c:forEach>
 										</c:if>
+										<c:if test="${ fn:length(ch.gatheringList) < 2 }">
+											<img src="resources/dist/assets/img/avatar/avatar-4.png" class="mr-3 rounded-circle" width="50"
+												alt="image">
+										</c:if>
 									</div>
 									<div class="chat_ib">
 										<h5>
-											<c:if test="${ ch.chatTitle eq 'Personal' }">
-												<c:forEach var="gl" items="${ ch.gatheringList }">
-													<c:if test="${ gl.gatheringMember != loginUser.mNo }">
-														${ gl.gatheringMemberDName } ${ gl.gatheringMemberName } ${ gl.gatheringMemberJobGrade }
-													</c:if>
-												</c:forEach>
+											<c:if test="${ fn:length(ch.gatheringList) >= 2 }">
+												<c:if test="${ ch.chatTitle eq 'Personal' }">
+													<c:forEach var="gl" items="${ ch.gatheringList }">
+														<c:if test="${ gl.gatheringMember != loginUser.mNo }">
+															${ gl.gatheringMemberDName } ${ gl.gatheringMemberName } ${ gl.gatheringMemberJobGrade }
+														</c:if>
+													</c:forEach>
+												</c:if>
+												<c:if test="${ ch.chatTitle ne 'Personal' }">
+													${ ch.chatTitle } <b>(${ fn:length(ch.gatheringList) })</b>
+												</c:if>
 											</c:if>
-											<c:if test="${ ch.chatTitle ne 'Personal' }">
-												${ ch.chatTitle } <b>(${ fn:length(ch.gatheringList) })</b>
+											<c:if test="${ fn:length(ch.gatheringList) < 2 }">
+												대화 상대 없음
 											</c:if>
 											<c:if test="${ ch.notReadCount != 0 }">
 												<span class="alarmBadge">${ ch.notReadCount }</span>
@@ -297,7 +305,7 @@
 									
 						if(data[i].gatheringList.length > 2){
 							innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-group.png" class="mr-3 rounded-circle" width="50" alt="image">';
-						} else {
+						} else if (data[i].gatheringList.length == 2) {
 							for(var g in data[i].gatheringList){
 								if(data[i].gatheringList[g].gatheringMember != loginmNo){
 									if(data[i].gatheringList[g].profileUrl != null){
@@ -307,20 +315,26 @@
 									}
 								}
 							}
+						} else {
+							innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-4.png" class="mr-3 rounded-circle" width="50" alt="image">';
 						}
 						
 						innerDiv += '</div>'
 									+ '<div class="chat_ib">'
 									+ '<h5>';
-									
-						if(data[i].chatTitle == 'Personal'){
-							for(var g in data[i].gatheringList){
-								if(data[i].gatheringList[g].gatheringMember != loginmNo){
-									innerDiv += data[i].gatheringList[g].gatheringMemberDName + ' ' + data[i].gatheringList[g].gatheringMemberName + ' ' + data[i].gatheringList[g].gatheringMemberJobGrade;
+						
+						if(data[i].gatheringList.length >= 2){
+							if(data[i].chatTitle == 'Personal'){
+								for(var g in data[i].gatheringList){
+									if(data[i].gatheringList[g].gatheringMember != loginmNo){
+										innerDiv += data[i].gatheringList[g].gatheringMemberDName + ' ' + data[i].gatheringList[g].gatheringMemberName + ' ' + data[i].gatheringList[g].gatheringMemberJobGrade;
+									}
 								}
+							} else {
+								innerDiv += data[i].chatTitle + ' <b>(' + data[i].gatheringList.length + ')</b>';
 							}
-						} else {
-							innerDiv += data[i].chatTitle + ' <b>(' + data[i].gatheringList.length + ')</b>';
+						} else{
+							innerDiv += '대화 상대 없음';
 						}
 						
 						if(data[i].notReadCount != 0){

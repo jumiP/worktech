@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="reservationMapper">
+	<select id="getRvMeetingRoomList" resultMap="rvMeetingRoomResultSet">
+		select rv_no, rv_type, rv_name, rv_date, rv_start_time, rv_end_time, rv_usage, rv_member, rv_status, 
+			   d_name || ' ' || name || ' ' || job_grade as rv_member_full_name
+		from reservation join 
+			 member on (rv_member = m_no) left join
+			 department using(d_no)
+		where rv_type = 'MEETING'
+	</select>
+	
+	<resultMap type="Reservation" id="rvMeetingRoomResultSet">
+		<id column="rv_no" property="rvNo"/>
+		<result column="rv_type" property="rvType"/>
+		<result column="rv_name" property="rvName"/>
+		<result column="rv_date" property="rvDate"/>
+		<result column="rv_start_time" property="rvStartTime"/>
+		<result column="rv_end_time" property="rvEndTime"/>
+		<result column="rv_usage" property="rvUsage"/>
+		<result column="rv_member" property="rvMember"/>
+		<result column="rv_member_full_name" property="rvMemberFullName"/>
+		<result column="rv_status" property="rvStatus"/>
+	</resultMap>
+
+	<insert id="insertReservation">
+		insert into reservation
+		values (SEQ_RV.NEXTVAL, #{rvType}, #{rvpNo}, #{rvName}, #{rvCount}, #{rvDate}, #{rvStartTime}, #{rvEndTime}, #{rvUsage}, #{rvMember}, DEFAULT)
+	</insert>
+	
+</mapper>

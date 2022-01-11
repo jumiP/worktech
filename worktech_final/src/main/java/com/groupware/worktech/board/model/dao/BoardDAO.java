@@ -188,6 +188,131 @@ public class BoardDAO {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonSearchList", searchListMap, rowBounds);
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public int getZListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("boardMapper.getZListCount");
+	}
+
+	public ArrayList<Board> selectZList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() - 1)*pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.selectZList", null, rowBounds);
+	}
+
+	
 	public int insertCommonReply(SqlSessionTemplate sqlSession, Reply r) {
 		return sqlSession.insert("boardMapper.insertCommonReply", r);
 	}

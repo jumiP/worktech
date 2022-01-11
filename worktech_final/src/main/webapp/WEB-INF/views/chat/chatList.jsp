@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 
@@ -11,7 +12,7 @@
   <title>채팅 목록</title>
 
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<!--   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link rel="stylesheet" href="resources/dist/assets/modules/prism/prism.css">
   <link rel="stylesheet" href="resources/dist/assets/modules/fontawesome/css/all.min.css">
@@ -141,16 +142,15 @@
     
     .alarmBadge {
     	display: inline-block;
-    	position: relative;
-    	top: 28px;
-    	right: -265px;
     	background: #FF4848;
     	border-radius: 100%;
-    	width: 20px;
-    	height: 20px;
+    	width: 18px;
+    	height: 18px;
     	text-align: center;
     	color: white;
-    	size: 5px;
+    	font-size: 12px;
+    	margin-left: 5px;
+    	position: absolute;
     }
     
     .btn {
@@ -164,7 +164,7 @@
     	cursor: pointer;
     }
     
-    #chatNo {
+    .chatNo {
     	display: none;
     }
   </style>
@@ -193,18 +193,52 @@
 				</div>
 				<form action="chatDetail.ct" method="post" id="goDetail">
 					<input type="hidden" name="chatRoomNo" id="chatRoomNo">
-					<div>
+					<div id="chatBody">
 						<c:forEach var="ch" items="${ list }">
 							<div class="chat_list">
-								<div id="chatNo">${ ch.chatRoomNo }</div>
+								<div class="chatNo">${ ch.chatRoomNo }</div>
 								<div class="chat_people">
 									<div class="chat_img">
-										<img src="resources/dist/assets/img/avatar/avatar-1.png" class="mr-3 rounded-circle" width="50"
-											alt="image">
+										<c:if test="${ fn:length(ch.gatheringList) > 2 }">
+											<img src="resources/dist/assets/img/avatar/avatar-group.png" class="mr-3 rounded-circle" width="50"
+												alt="image">
+										</c:if>
+										<c:if test="${ fn:length(ch.gatheringList) == 2 }">
+											<c:forEach var="gl" items="${ ch.gatheringList }">
+												<c:if test="${ gl.gatheringMember != loginUser.mNo }">
+													<c:if test="${ gl.profileUrl != null }">
+														<img src="${ ch.gatheringList.profileUrl }" class="mr-3 rounded-circle" width="50"
+															alt="image">
+													</c:if>
+													<c:if test="${ gl.profileUrl == null }">
+														<img src="resources/dist/assets/img/avatar/avatar-1.png" class="mr-3 rounded-circle" width="50"
+															alt="image">
+													</c:if>
+												</c:if>
+											</c:forEach>
+										</c:if>
+										<c:if test="${ fn:length(ch.gatheringList) < 2 }">
+											<img src="resources/dist/assets/img/avatar/avatar-4.png" class="mr-3 rounded-circle" width="50"
+												alt="image">
+										</c:if>
 									</div>
 									<div class="chat_ib">
 										<h5>
-											${ ch.chatTitle } 
+											<c:if test="${ fn:length(ch.gatheringList) >= 2 }">
+												<c:if test="${ ch.chatTitle eq 'Personal' }">
+													<c:forEach var="gl" items="${ ch.gatheringList }">
+														<c:if test="${ gl.gatheringMember != loginUser.mNo }">
+															${ gl.gatheringMemberDName } ${ gl.gatheringMemberName } ${ gl.gatheringMemberJobGrade }
+														</c:if>
+													</c:forEach>
+												</c:if>
+												<c:if test="${ ch.chatTitle ne 'Personal' }">
+													${ ch.chatTitle } <b>(${ fn:length(ch.gatheringList) })</b>
+												</c:if>
+											</c:if>
+											<c:if test="${ fn:length(ch.gatheringList) < 2 }">
+												대화 상대 없음
+											</c:if>
 											<c:if test="${ ch.notReadCount != 0 }">
 												<span class="alarmBadge">${ ch.notReadCount }</span>
 											</c:if>
@@ -219,7 +253,6 @@
 													${ ch.date }
 												</c:if>
 											</span>
-											
 										</h5>
 										<p>${ ch.recentMsg }</p>
 									</div>
@@ -234,42 +267,139 @@
 	
 	<script>
     	// 게시글 목록 마우스오버 이벤트
-	    $(function() {
-			$('.chat_list').mouseover(function() {
-				$(this).css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
-			}).mouseout(function() {
-				$(this).css({'background':'none', 'font-weight':'normal'});
-			}).click(function() {
-				var chatRoomNo = $(this).find('#chatNo').text();
-				$('#chatRoomNo').val(chatRoomNo);
-				$('#goDetail').submit();
-			});
-		
+	    $(document).on('mouseover', '.chat_list', function() {
+	    	$(this).css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
+		});
+    	
+	    $(document).on('mouseout', '.chat_list', function() {
+	    	$(this).css({'background':'none', 'font-weight':'normal'});
+		});
+	    
+	    $(document).on('click', '.chat_list', function() {
+	    	var chatRoomNo = $(this).find('.chatNo').text();
+			$('#chatRoomNo').val(chatRoomNo);
+			$('#goDetail').submit();
+		});
+    	
+    	$(function() {
 	    	$('#addChat').click(function() {
 	    		location.href='addChatView.ct';
 			});
 	    });
+    	
+    	function chatListReload() {
+			$.ajax({
+				url: 'reloadChatList.ct',
+				success: function(data) {
+					var chatBody = $('#chatBody');
+					var loginmNo = ${ loginUser.mNo };
+					var innerDiv = '';
+					
+					chatBody.html('');
+					
+					for(var i in data){
+						innerDiv += '<div class="chat_list">'
+									+ '<div class="chatNo">' + data[i].chatRoomNo + '</div>'
+									+ '<div class="chat_people">'
+									+ '<div class="chat_img">';
+									
+						if(data[i].gatheringList.length > 2){
+							innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-group.png" class="mr-3 rounded-circle" width="50" alt="image">';
+						} else if (data[i].gatheringList.length == 2) {
+							for(var g in data[i].gatheringList){
+								if(data[i].gatheringList[g].gatheringMember != loginmNo){
+									if(data[i].gatheringList[g].profileUrl != null){
+										innerDiv += '<img src="' + data[i].gatheringList[g].profileUrl + '" class="mr-3 rounded-circle" width="50" alt="image">';
+									} else {
+										innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png" class="mr-3 rounded-circle" width="50" alt="image">';
+									}
+								}
+							}
+						} else {
+							innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-4.png" class="mr-3 rounded-circle" width="50" alt="image">';
+						}
+						
+						innerDiv += '</div>'
+									+ '<div class="chat_ib">'
+									+ '<h5>';
+						
+						if(data[i].gatheringList.length >= 2){
+							if(data[i].chatTitle == 'Personal'){
+								for(var g in data[i].gatheringList){
+									if(data[i].gatheringList[g].gatheringMember != loginmNo){
+										innerDiv += data[i].gatheringList[g].gatheringMemberDName + ' ' + data[i].gatheringList[g].gatheringMemberName + ' ' + data[i].gatheringList[g].gatheringMemberJobGrade;
+									}
+								}
+							} else {
+								innerDiv += data[i].chatTitle + ' <b>(' + data[i].gatheringList.length + ')</b>';
+							}
+						} else{
+							innerDiv += '대화 상대 없음';
+						}
+						
+						if(data[i].notReadCount != 0){
+							innerDiv += '<span class="alarmBadge">' + data[i].notReadCount + '</span>';
+						}
+						
+						innerDiv += '<span class="chat_date">';
+						
+						// 오늘 날짜
+						var today = new Date(); 
+						var year = today.getFullYear(); 
+						var month = ('0' + (today.getMonth() + 1)).slice(-2);
+						var day = ('0' + today.getDate()).slice(-2);
+						
+						var now = year + '-' + month + '-' + day;
+						
+						if(now == data[i].date){
+							innerDiv += data[i].time;
+						} else{
+							innerDiv += data[i].date;
+						}
+						
+						innerDiv += '</span></h5>'
+									+ '<p>' + data[i].recentMsg + '</p>'
+									+ '</div></div></div>';
+					}
+					
+					chatBody.html(innerDiv);
+				},
+				error: function(data) {
+					console.log(data);
+					console.log("error");
+				}
+			});
+		}
+    	
+    	// 5초마다 채팅방 업데이트
+    	$(function() {
+    		chatListReload();
+			
+			setInterval(function() {
+				chatListReload();
+			}, 5000);
+		});
 	    
 	</script>
 	
 	<!-- General JS Scripts -->
-	<script src="assets/modules/jquery.min.js"></script>
-	<script src="assets/modules/popper.js"></script>
-	<script src="assets/modules/tooltip.js"></script>
-	<script src="assets/modules/bootstrap/js/bootstrap.min.js"></script>
-	<script src="assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
-	<script src="assets/modules/moment.min.js"></script>
-	<script src="assets/js/stisla.js"></script>
+<!-- 	<script src="resource/dist/assets/modules/jquery.min.js"></script> -->
+<!-- 	<script src="resource/dist/assets/modules/popper.js"></script> -->
+<!-- 	<script src="resource/dist/assets/modules/tooltip.js"></script> -->
+<!-- 	<script src="resource/dist/assets/modules/bootstrap/js/bootstrap.min.js"></script> -->
+<!-- 	<script src="resource/dist/assets/modules/nicescroll/jquery.nicescroll.min.js"></script> -->
+<!-- 	<script src="resource/dist/assets/modules/moment.min.js"></script> -->
+<!-- 	<script src="resource/dist/assets/js/stisla.js"></script> -->
 	
 	<!-- JS Libraies -->
-	<script src="assets/modules/prism/prism.js"></script>
+<!-- 	<script src="resource/dist/assets/modules/prism/prism.js"></script> -->
 	
 	<!-- Page Specific JS File -->
-	<script src="assets/js/page/bootstrap-modal.js"></script>
+<!-- 	<script src="resource/dist/assets/js/page/bootstrap-modal.js"></script> -->
 	
 	<!-- Template JS File -->
-	<script src="assets/js/scripts.js"></script>
-	<script src="assets/js/custom.js"></script>
+<!-- 	<script src="resource/dist/assets/js/scripts.js"></script> -->
+<!-- 	<script src="resource/dist/assets/js/custom.js"></script> -->
 </body>
 
 

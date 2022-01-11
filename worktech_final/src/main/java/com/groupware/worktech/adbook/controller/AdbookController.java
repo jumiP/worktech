@@ -113,7 +113,6 @@ public class AdbookController {
 	}
 	
 	@RequestMapping("pAdbookInsert.ab")
-	@ResponseBody
 	public String insertpAdbook(@ModelAttribute Adbook adbook, HttpServletRequest request) {
 		String mNo = ((Member)request.getSession().getAttribute("loginUser")).getmNo();
 		adbook.setAdWriter(mNo);
@@ -121,7 +120,7 @@ public class AdbookController {
 		int result = abService.insertpAdbook(adbook);
 		
 		if(result > 0) {
-			return "success";
+			return "redirect:pAdbookList.ab";
 		} else {
 			throw new AdbookException("개인 주소록 추가에 실패하였습니다.");
 		}
@@ -168,5 +167,51 @@ public class AdbookController {
 		}
 
 		return "redirect:pAdbookList.ab";
+	}
+	
+	@RequestMapping("checkpAdDup.ab")
+	@ResponseBody
+	public int checkpAdDup(@RequestParam("phone") String phone, @RequestParam("email") String email, HttpServletRequest request) {
+		HashMap<String, String> checkMap = new HashMap<String, String>();
+		checkMap.put("phone", phone);
+		checkMap.put("email", email);
+		
+		String adWriter = ((Member)request.getSession().getAttribute("loginUser")).getmNo();
+		checkMap.put("adWriter", adWriter);
+		
+		int count = abService.checkpAdDup(checkMap);
+		
+		return count;
+	}
+	
+	@RequestMapping("searchpAdbook.ab")
+	public String searchpAdbook(@RequestParam("searchValue") String searchValue, @RequestParam(value="page", required=false) Integer page,
+								HttpServletRequest request, Model model) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		String adWriter = ((Member)request.getSession().getAttribute("loginUser")).getmNo();
+		
+		HashMap<String, String> searchMap = new HashMap<String, String>();
+		searchMap.put("adWriter", adWriter);
+		searchMap.put("searchValue", searchValue);
+		
+		int listCount = abService.getSearchpAdbookListCount(searchMap);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Adbook> list = abService.selectSearchpAdbookList(pi, searchMap);
+		
+		if(list != null) {
+			model.addAttribute("list", list);
+			model.addAttribute("pi", pi);
+			model.addAttribute("searchValue", searchValue);
+		} else {
+			throw new AdbookException("개인 주소록 검색에 실패하였습니다.");
+		}
+		
+		return "personalAdbookList";
 	}
 }

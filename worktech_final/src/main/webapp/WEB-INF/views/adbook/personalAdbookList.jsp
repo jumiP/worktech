@@ -8,14 +8,16 @@
 <meta
 	content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
 	name="viewport">
-<title>사내 주소록</title>
+<title>개인 주소록</title>
 <style>
-	.section-title {
+	h4.section-title {
+		top: -13px;
 		display: inline;
 	}
 	
-	h4.section-title {
-		top: -13px;
+	h4.section-title:hover{
+		cursor: pointer;
+		color: #67d4ef;
 	}
 	
 	#searchBtn {
@@ -23,8 +25,8 @@
 	}
 	
 	.paging-area {
-	            display: flex;
-	            justify-content: center;
+        display: flex;
+        justify-content: center;
 	}
 </style>
 </head>
@@ -37,11 +39,9 @@
 			<div class="section-header">
 				<h1>주소록</h1>
 				<div class="section-header-breadcrumb">
-					<div class="breadcrumb-item active">
-						<a href="#">주소록</a>
-					</div>
-					<div class="breadcrumb-item">개인 주소록</div>
-				</div>
+              <div class="breadcrumb-item active"><a href="#">주소록</a></div>
+              <div class="breadcrumb-item">개인 주소록</div>
+            </div>
 			</div>
 
 			<div class="section-body">
@@ -49,11 +49,17 @@
 					<div class="col-12">
 						<div class="card">
 							<div class="card-header">
-								<h4 class="section-title">개인 주소록</h4>
+								<c:url var="pAdbookList" value="pAdbookList.ab"/>
+								<h4 class="section-title" onclick="location.href='${ pAdbookList }'">개인 주소록</h4>
 								<div class="card-header-form">
-									<form>
+									
+									<!-- 개인 주소록 검색 -->
+									<c:url var="searchpAdbook" value="searchpAdbook.ab">
+										<c:param name="page" value="${ pi.currentPage }"/>
+									</c:url>
+									<form action="${ searchpAdbook }">
 										<div class="input-group">
-											<input type="text" class="form-control" placeholder="Search">
+											<input type="text" class="form-control" name="searchValue" placeholder="Search">
 											<div class="input-group-btn">
 												<button class="btn btn-primary" id="searchBtn">
 													<i class="fas fa-search"></i>
@@ -205,32 +211,36 @@
 	<c:import url="../common/footer.jsp" />
 
 	<script>
+		window.name = 'pAdParent';
+		
 		// 개인 주소록 추가
 		function addContact() {
-			open('pAdbookInsertView.ab', '개인 주소록 추가', 'width=600px, height=630px, top=50px, left=500px');
+			open('pAdbookInsertView.ab', '개인 주소록 추가', 'width=600px, height=650px, top=50px, left=400px');
 		}
 		
 		// 개인 주소록 수정
 		$('#pAdbookTable tbody td:not(:first-child)').on('click', function(){
 			var adNo = $(this).parent().children().eq(0).children().eq(0).val();
 			
-			open('pAdbookDetail.ab?adNo=' + adNo, '개인 주소록 상세', 'width=600px, height=630px, top=50px, left=500px');
+			open('pAdbookDetail.ab?adNo=' + adNo, '개인 주소록 상세', 'width=600px, height=650px, top=50px, left=400px');
 		});
 		
 		// 개인 주소록 삭제
 		var pAdCheckbox = $('input[name=pAdCheckbox]');
 		
 		function deleteContact() {
-// 			var bool = confirm('정말 삭제하시겠습니까?');
+			var bool = confirm('정말 삭제하시겠습니까?');
 			
-			// 삭제할 연락처의 adNo를 담을 배열
-			var checkArr = [];
-			$('input[name=pAdCheckbox]:checked').each(function(i){
-				checkArr.push($(this).val());
-				
-			});
+			if(bool){
+				// 삭제할 연락처의 adNo를 담을 배열
+				var checkArr = [];
+				$('input[name=pAdCheckbox]:checked').each(function(i){
+					checkArr.push($(this).val());
+					
+				});
 
-			location.href="pAdbookDelete.ab?checked=" + checkArr;
+				location.href="pAdbookDelete.ab?checked=" + checkArr;
+			}
 		}
 	</script>
 </body>

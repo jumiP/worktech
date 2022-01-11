@@ -67,7 +67,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-title">관리자 님 환영합니다!</div>
-                            <a href="logout.me" class="dropdown-item has-icon text-danger">
+                            <a href="#" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i>
                                 Logout
                             </a>
@@ -86,7 +86,7 @@
                     <ul class="sidebar-menu">
                         <li class="menu-header">Admin Menu</li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link">
+                            <a href="mList.me" class="nav-link">
                                 <i class="fas fa-user-friends"></i>
                                 <span>사원 관리</span></a>
                         </li>
@@ -96,7 +96,7 @@
                                 <span>연장 근무 관리</span></a>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link">
+                            <a href="dList.ad" class="nav-link">
                                 <i class="fas fa-object-ungroup"></i>
                                 <span>부서 관리</span></a>
                         </li>
@@ -127,6 +127,13 @@
                             </ul>
                         </li>
                     </ul>
+
+                    <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
+                        <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
+                            <i class="fas fa-comments"></i>
+                            CHAT
+                        </a>
+                    </div>
                 </aside>
             </div>
             

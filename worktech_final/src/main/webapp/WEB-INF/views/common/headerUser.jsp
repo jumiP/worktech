@@ -17,6 +17,10 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="resources/dist/assets/css/style.css">
     <link rel="stylesheet" href="resources/dist/assets/css/components.css">
+    
+    <!-- jstree -->
+<!-- 	<link rel="stylesheet" href="resources/dist/themes/default/style.min.css" /> -->
+    
     <!-- Start GA -->
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
     <script src="resources/js/jquery-3.6.0.min.js"></script>
@@ -31,6 +35,8 @@
         gtag('config', 'UA-94034622-3');
     </script>
     <!-- /END GA -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 </head>
 
 <body>
@@ -132,10 +138,10 @@
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="index.html"><img src="resources/dist/assets/img/logo.png" width="60%" height="auto"></a>
+                        <a href="home.do"><img src="resources/dist/assets/img/logo.png" width="60%" height="auto"></a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
-                        <a href="index.html"><img src="resources/dist/assets/img/logo_small.png" width="45%" height="auto" style="padding-top: 30%;"></a>
+                        <a href="home.do"><img src="resources/dist/assets/img/logo_small.png" width="45%" height="auto" style="padding-top: 30%;"></a>
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">User Menu</li>
@@ -164,7 +170,7 @@
                                 <span>근태 관리</span></a>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link">
+                            <a href="alllist.mail" class="nav-link">
                                 <i class="fas fa-envelope-open-text"></i>
                                 <span>메일</span></a>
                         </li>
@@ -187,7 +193,7 @@
                                 <span>예약</span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="nav-link" href="components-article.html">회의실 예약</a>
+                                    <a class="nav-link" href="rvMeetingRoomView.rv">회의실 예약</a>
                                 </li>
                                 <li class="dropdown">
                                     <a class="nav-link has-dropdown" href="components-avatar.html">
@@ -269,12 +275,51 @@
     <!-- Template JS File -->
     <script src="resources/dist/assets/js/scripts.js"></script>
     <script src="resources/dist/assets/js/custom.js"></script>
+    
+    <!-- jstree -->
+<!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script> -->
+<!-- 	<script src="resources/dist/jstree.min.js"></script> -->
 
+
+	
 	<script>
 		function chatOpen() {
-			window.open('chatView.ct', '채팅', 'width=500px, height=600px');
+			window.open('chatView.ct', '채팅', 'width=500px, height=600px, resizable=no, toolbar=1');
 		}
 	
+		// 알림 관련
+		var socket = null;
+		
+		function connectWs() {
+			// SockJS 라이브러리를 이용하여 서버에 연결
+			var sock = new SockJS('http://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/alarm');
+			socket = sock;
+			// 이벤트 리스터(커넥션이 연결되었을 때 서버 호출된다)
+			sock.onopen = function() {
+				console.log('info: connection opened.');
+			}
+			
+			// 서버에 메시지를 보내주며 함수가 호출된다.
+			// 메세지를 보냈을 때 호출
+			sock.onmessage = function(evt){
+				console.log('info: connection onmessage');
+			}
+			
+			// 서버가 끊겼을 때 호출
+			sock.onclose = function(){
+				console.log('info: connect close');
+			};
+			
+			// 에러가 발생했을 때 호출
+			sock.onerror = function(err){
+				console.log('Errors : ', err);
+			}
+		}
+		
+		$(document).ready(function(){
+			connectWs();
+		});
+		
 	</script>
 </body>
 

@@ -67,11 +67,18 @@ public class MemberService {
 	}
 
 	// 사원 삭제 개별
-//	public void deleteSelectMember(String string) {
-//		 mDAO.deleteSelectMember(sqlSession, string);
-//		
-//	}
+	public int deleteSelectMember(String selectList) {
+		return mDAO.deleteSelectMember(sqlSession, selectList);
+	}
 
+	// 사원 상세보기
+	public Member selectMember(String mNo) {
+		return mDAO.selectMember(sqlSession, mNo);
+	}
+
+
+	
+	
 
 
 }

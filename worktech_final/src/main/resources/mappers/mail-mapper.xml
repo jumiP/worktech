@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="mailMapper">
+	
+	<select id="getMailListCount" resultType="_int">
+		select count(*)
+		from EML
+		where EML_STATUS = 1
+	</select>
+	
+	<select id="getSendMailListCount" resultType="_int">
+		select count(*)
+		from EML
+		where EML_STATUS = 2
+	</select>
+	
+	
+	<select id="getImportantMailListCount" resultType="_int">
+		select count(*)
+		from EML
+		where EML_STATUS = 3
+	</select>
+	
+	<select id="getJunkMailListCount" resultType="_int">
+		select count(*)
+		from EML
+		where EML_STATUS = 4
+	</select>
+	
+	
+	<resultMap type="Mail" id="mailResultSet">
+  		<id column="EML_NO" property="emlNo"/>
+  		<result column="EML_NM" property="emlNM"/>
+  		<result column="EML_CNT" property="emlCNT"/>
+  		<result column="EML_FL_NM" property="emlFLNM"/>
+  		<result column="EML_FL_RNM" property="emlFLRNM"/>
+  		<result column="EML_PL_CRS" property="emlPLCRS"/>
+  		<result column="EML_TIME" property="emlTime"/>
+  		<result column="EML_SND" property="emlSnd"/>
+  		<result column="EML_MEM" property="emlMem"/>
+  		<result column="EML_STATUS" property="emlStatus"/>
+  	</resultMap>
+
+	<!-- 수신 메일함 리스트-->
+	<select id="selectMailList" resultMap="mailResultSet">
+  		select *
+  		from EML
+  			join member on(EML_MEM = mNo)
+  		where EML_STATUS = 1
+  		order by eNo desc
+  	</select>	
+  	
+  	<!-- 발신 메일함  리스트-->
+	<select id="selectMailList" resultMap="mailResultSet">
+  		select *
+  		from EML
+  			join member on(EML_MEM = mNo)
+  		where EML_STATUS = 2
+  		order by eNo desc
+  	</select>
+  	
+  	<!-- 중요 메일함 리스트 -->
+	<select id="selectMailList" resultMap="mailResultSet">
+  		select *
+  		from EML
+  			join member on(EML_MEM = mNo)
+  		where EML_STATUS = 3
+  		order by eNo desc
+  	</select>
+  	
+  	<!-- 휴지통 메일함 리스트 -->
+	<select id="selectMailList" resultMap="mailResultSet">
+  		select *
+  		from EML
+  			join member on(EML_MEM = mNo)
+  		where EML_STATUS = 4
+  		order by eNo desc
+  	</select>
+  	
+  	<!-- 발신 메일함  -->
+	<select id="selectMailList" resultMap="mailResultSet">
+  		select *
+  		from EML
+  			join member on(EML_MEM = mNo)
+  		where EML_STATUS = 2
+  		order by eNo desc
+  	</select>	
+  	
+	<insert id="sendmail">
+		insert into EML
+		value(seq_mid.nextval, #{emlNM}, #{emlCNT}, #{emlFLNM}, #{emlFLRNM}, #{emlPLCRS}, #{emlNM},
+			  sysdate, #{emlSnd}, #{emlMem}, 2)
+	</insert>
+	
+	<select id="selectMail" resultMap="mailResultSet">
+		select * 
+		from EML
+			join MEMBER on(eNo = EML_MEM)
+		where EML_NO  = #{mId} and EML_STATUS != 0
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--     <sql id="includeMail"> -->
+<!--         WHERE EM.DELETEFLAG='N' AND EMTYPE=#{searchExt1} -->
+<!--         <if test="searchKeyword!=null and searchKeyword!='' and searchType!=''"> -->
+<!--             <foreach item="item" index="index" collection="searchTypeArr" separator=" OR " open="AND (" close=")"> -->
+<!--                  ${item} LIKE CONCAT('%', #{searchKeyword},'%' ) -->
+<!--             </foreach> -->
+<!--         </if>                -->
+<!--     </sql> -->
+
+<!--     <select id="selectReceiveMailCount" resultType="_int" parameterType=""> -->
+<!--         SELECT COUNT(*) -->
+<!--           FROM EML_MAIL EM -->
+<!--          <include refid="includeMail"/> -->
+<!--     </select>  -->
+    
+<!--     <select id="selectReceiveMailList" resultType="gu.mail.MailVO" parameterType="gu.common.SearchVO"> -->
+<!--         SELECT EMNO, EMTYPE, EMSUBJECT, EMFROM, DATE_FORMAT(ENTRYDATE,'%y-%m-%d %h:%s') ENTRYDATE, EM.USERNO, USERNM -->
+<!--         	 ,(SELECT EAADDRESS FROM EML_ADDRESS WHERE EMNO=EM.EMNO AND EATYPE='T' ORDER BY EASEQ LIMIT 1) STRTO -->
+<!--          FROM EML_MAIL EM -->
+<!--          INNER JOIN COM_USER CU ON EM.USERNO=CU.USERNO -->
+<!--          <include refid="includeMail"/>  -->
+<!--          ORDER BY EMNO DESC  -->
+<!--          <if test="rowStart != null"> -->
+<!--              LIMIT ${rowStart-1}, 10 -->
+<!--          </if> -->
+<!--     </select>  -->
+        
+<!--     <insert id="insertMail" parameterType="gu.mail.MailVO" useGeneratedKeys="true" keyProperty="emno"> -->
+<!--         INSERT INTO EML_MAIL(EMTYPE, EMSUBJECT, EMFROM, EMCONTENTS, USERNO, EMINO, DELETEFLAG, ENTRYDATE)  -->
+<!--         VALUES (#{emtype}, #{emsubject}, #{emfrom}, #{emcontents}, #{userno}, #{emino}, 'N', -->
+<!--         		<if test="entrydate!=null">#{entrydate}</if><if test="entrydate==null">now()</if>) -->
+<!--     </insert> -->
+
+<!--     <update id="updateMail" parameterType="gu.mail.MailVO"> -->
+<!--         UPDATE EML_MAIL -->
+<!--            SET EMSUBJECT=#{emsubject}, EMCONTENTS=#{emcontents} -->
+<!--          WHERE EMNO=#{emno}  -->
+<!--     </update>  -->
+        
+
+<!--     <insert id="insertMailAddress" parameterType="gu.mail.MailAddressVO" > -->
+<!--         INSERT INTO EML_ADDRESS(EMNO, EATYPE, EASEQ, EAADDRESS) -->
+<!--         VALUES (#{emno}, #{eatype}, #{easeq}, #{eaaddress}) -->
+<!--     </insert> -->
+
+<!--     <select id="selectLastMail" parameterType="String" resultType="String"> -->
+<!--     	SELECT MAX(ENTRYDATE) -->
+<!--     	  FROM EML_MAIL -->
+<!--     	 WHERE EMINO=#{emino} AND EMTYPE='R' -->
+<!-- 	</select> -->
+
+<!--     <insert id="insertMailFile" parameterType="gu.common.FileVO" > -->
+<!--         INSERT INTO EML_MAILFILE (EMNO, FILENAME, REALNAME, FILESIZE) -->
+<!--         VALUES (#{parentPK}, #{filename}, #{realname}, #{filesize}) -->
+<!--     </insert> -->
+            
+<!--     <select id="selectReceiveMailOne" parameterType="gu.mail.MailVO" resultType="gu.mail.MailVO"> -->
+<!--         SELECT EMNO, EMTYPE, EMSUBJECT, EMFROM, EMCONTENTS, DATE_FORMAT(ENTRYDATE,'%y-%m-%d %h:%s') ENTRYDATE, EM.USERNO, USERNM  -->
+<!--           FROM EML_MAIL EM -->
+<!--          INNER JOIN COM_USER CU ON EM.USERNO=CU.USERNO -->
+<!--          WHERE EM.DELETEFLAG='N' AND EMNO=#{emno} -->
+<!--     </select>  -->
+
+<!--     <select id="selectMailAddressList" parameterType="gu.mail.MailAddressVO" resultType="gu.mail.MailAddressVO"> -->
+<!--         SELECT EAADDRESS -->
+<!--           FROM EML_ADDRESS -->
+<!--          WHERE EMNO=#{emno} AND EATYPE=#{eatype} -->
+<!--          ORDER BY EASEQ -->
+<!--     </select>  -->
+    
+<!--     <select id="selectMailFileList" parameterType="String" resultType="gu.common.FileVO"> -->
+<!--         SELECT FILENO, FILENAME, REALNAME, FILESIZE -->
+<!--           FROM EML_MAILFILE -->
+<!--          WHERE EMNO=#{emno} -->
+<!--          ORDER BY FILENO DESC  -->
+<!--     </select>  -->
+            
+<!--     <delete id="deleteMail" parameterType="gu.mail.MailVO"> -->
+<!--         UPDATE EML_MAIL -->
+<!--            SET DELETEFLAG='Y' -->
+<!--          WHERE EMNO=#{emno}  -->
+<!--     </delete>   -->
+
+<!--     <delete id="deleteMails" parameterType="java.util.Map"> -->
+<!--         UPDATE EML_MAIL -->
+<!--            SET DELETEFLAG='Y' -->
+<!--          WHERE EMNO IN  -->
+<!-- 		    <foreach collection="list" item="item" index="index" separator="," open="(" close=")"> -->
+<!-- 		        #{item} -->
+<!-- 		    </foreach>          -->
+<!--     </delete> -->
+               
+</mapper>

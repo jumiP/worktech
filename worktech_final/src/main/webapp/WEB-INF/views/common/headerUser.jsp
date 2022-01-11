@@ -12,16 +12,14 @@
     <link rel="stylesheet" href="resources/dist/assets/modules/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="resources/dist/assets/modules/fontawesome/css/all.min.css">
 
-    <!-- jstree -->
-	<link rel="stylesheet" href="resources/dist/themes/default/style.min.css" />
     <!-- CSS Libraries -->
-	<link rel="stylesheet" href="resources/dist/assets/modules/summernote/summernote-bs4.css">
-	<link rel="stylesheet" href="resources/dist/assets/modules/codemirror/lib/codemirror.css">
-	<link rel="stylesheet" href="resources/dist/assets/modules/codemirror/theme/duotone-dark.css">
-	<link rel="stylesheet" href="resources/dist/assets/modules/jquery-selectric/selectric.css">
+
     <!-- Template CSS -->
     <link rel="stylesheet" href="resources/dist/assets/css/style.css">
     <link rel="stylesheet" href="resources/dist/assets/css/components.css">
+    
+    <!-- jstree -->
+<!-- 	<link rel="stylesheet" href="resources/dist/themes/default/style.min.css" /> -->
     
     <!-- Start GA -->
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
@@ -148,15 +146,15 @@
                     <ul class="sidebar-menu">
                         <li class="menu-header">User Menu</li>
                         <li class="dropdown">
-                            <a href="approvalmain.ap" class="nav-link has-dropdown">
+                            <a href="#" class="nav-link has-dropdown">
                                 <i class="fas fa-user-friends"></i>
                                 <span>전자 결재</span></a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="nav-link" href="approvalWrite.ap">새 결재 진행</a>
+                                        <a class="nav-link" href="bootstrap-breadcrumb.html">새 결재 진행</a>
                                     </li>
                                     <li>
-                                        <a class="nav-link" href="approvalWait.ap">결재 대기함</a>
+                                        <a class="nav-link" href="bootstrap-alert.html">결재 대기함</a>
                                     </li>
                                     <li>
                                         <a class="nav-link" href="bootstrap-badge.html">결재 진행함</a>
@@ -172,7 +170,7 @@
                                 <span>근태 관리</span></a>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link">
+                            <a href="alllist.mail" class="nav-link">
                                 <i class="fas fa-envelope-open-text"></i>
                                 <span>메일</span></a>
                         </li>
@@ -270,21 +268,17 @@
     <script src="resources/dist/assets/modules/moment.min.js"></script>
     <script src="resources/dist/assets/js/stisla.js"></script>
 
-	<!-- jstree -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
-	<script src="resources/dist/jstree.min.js"></script>
     <!-- JS Libraies -->
-	<script src="resources/dist/assets/modules/summernote/summernote-bs4.js"></script>
-	<script src="resources/dist/assets/modules/codemirror/lib/codemirror.js"></script>
-	<script src="resources/dist/assets/modules/codemirror/mode/javascript/javascript.js"></script>
-	<script src="resources/dist/assets/modules/jquery-selectric/jquery.selectric.min.js"></script>
-			
 
     <!-- Page Specific JS File -->
 
     <!-- Template JS File -->
     <script src="resources/dist/assets/js/scripts.js"></script>
     <script src="resources/dist/assets/js/custom.js"></script>
+    
+    <!-- jstree -->
+<!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script> -->
+<!-- 	<script src="resources/dist/jstree.min.js"></script> -->
 
 
 	

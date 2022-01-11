@@ -311,48 +311,48 @@ public class BoardController {
 		
 	}
 	
+	@RequestMapping("addCommonReply.bo")
+	@ResponseBody
+	public String insertCommonReply(@ModelAttribute Reply r) {
+		int result = bService.insertCommonReply(r);
+		
+		if(result > 0) {
+			return "success";
+		} else {
+			throw new BoardException("댓글 등록에 실패하였습니다.");
+		}
+	}
 	
+	@RequestMapping("commonReplyList.bo")
+	public void commonReplyList(@RequestParam("bNo") int bNo, HttpServletResponse response) {
+		response.setContentType("application/json; charset=UTF-8");
+		
+		ArrayList<Reply> list = bService.selectCommonReplyList(bNo);
+		
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+		
+		Gson gson = gb.create();
+		
+		try {
+			gson.toJson(list, response.getWriter());
+		} catch (JsonIOException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@RequestMapping("deleteCommonReply.bo")
+	@ResponseBody
+	public String deleteCommonReply(@RequestParam("bNo") int bNo, @RequestParam("rNo") int rNo) {
+		int result = bService.deleteCommonReply(rNo);
+		
+		if(result > 0) {
+			return "success";
+		} else {
+			throw new BoardException("댓글 삭제에 실패하였습니다.");
+		}
+	}
 	
 	
 	
@@ -529,46 +529,5 @@ public /*String*/ModelAndView zBoardList(@RequestParam(value="page", required=fa
 		return "zoomInsertForm";
 	}
 	
-	@RequestMapping("addCommonReply.bo")
-	@ResponseBody
-	public String insertCommonReply(@ModelAttribute Reply r) {
-		int result = bService.insertCommonReply(r);
-		
-		if(result > 0) {
-			return "success";
-		} else {
-			throw new BoardException("댓글 등록에 실패하였습니다.");
-		}
-	}
 	
-	@RequestMapping("commonReplyList.bo")
-	public void commonReplyList(@RequestParam("bNo") int bNo, HttpServletResponse response) {
-		response.setContentType("application/json; charset=UTF-8");
-		
-		ArrayList<Reply> list = bService.selectCommonReplyList(bNo);
-		
-		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
-		
-		Gson gson = gb.create();
-		
-		try {
-			gson.toJson(list, response.getWriter());
-		} catch (JsonIOException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@RequestMapping("deleteCommonReply.bo")
-	@ResponseBody
-	public String deleteCommonReply(@RequestParam("bNo") int bNo, @RequestParam("rNo") int rNo) {
-		int result = bService.deleteCommonReply(rNo);
-		
-		if(result > 0) {
-			return "success";
-		} else {
-			throw new BoardException("댓글 삭제에 실패하였습니다.");
-		}
-	}
 }

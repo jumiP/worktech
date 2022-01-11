@@ -33,7 +33,7 @@
 		<result column="JOB_GRADE" property="jobGrade"/>
 		<result column="BIRTHDAY" property="birthDay"/>
 		<result column="PHONE" property="phone"/>
-		<result column="ADDRESS" property="Address"/>
+		<result column="ADDRESS" property="address"/>
 		<result column="M_GRADE" property="mGrade"/>
 		<result column="D_NO" property="dNo"/>
 		<result column="D_NAME" property="dName"/>

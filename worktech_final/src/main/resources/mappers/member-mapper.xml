@@ -33,13 +33,15 @@
 		<result column="JOB_GRADE" property="jobGrade"/>
 		<result column="BIRTHDAY" property="birthDay"/>
 		<result column="PHONE" property="phone"/>
-		<result column="ADDRESS" property="address"/>
+		<result column="ADDRESS" property="Address"/>
 		<result column="M_GRADE" property="mGrade"/>
 		<result column="D_NO" property="dNo"/>
 		<result column="D_NAME" property="dName"/>
 		<result column="M_HIRED" property="hireDate"/>
+		<result column="P_URL" property="pUrl"/>
 		<result column="M_STATUS" property="mStatus"/>
 	</resultMap>
+	<!-- pUrl : 프로필테이블과 조인 -->
 	
 	<!-- 사원 목록 : 관리자 제외 -->
 	<select id="selectMemList" resultMap="memberResultSet">
@@ -123,11 +125,25 @@
 
 
 	<!-- 사원 개별 삭제 -->
-<!-- 	<update id="deleteSelectMember"> -->
-<!-- 		update member -->
-<!-- 		set m_status='N' -->
-<!-- 		where m_No=#{string} -->
-<!-- 	</update> -->
+	<update id="deleteSelectMember">
+		update member
+		set m_status='N'
+		where m_No=#{selectList}
+	</update>
 
-
+	<!-- 사원 상세보기 -->
+	<select id="selectMember" resultMap="memberResultSet">
+		select m_no, name, d_name, job_grade, email, p_url
+		from member
+		    join department using (d_no)
+		    left join profile using (m_no)
+		where m_no = #{ m_no }
+	</select>
+	
+	
+	
+	
+	
+	
+	
 </mapper>

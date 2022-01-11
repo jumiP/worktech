@@ -107,6 +107,9 @@
 									<i class="fas fa-bars"></i>
 		                        </a>
 								<div class="dropdown-menu dropdown-menu-right">
+		                            <a href="chatView.ct" class="dropdown-item">
+		                               <i class="fas fa-arrow-alt-circle-left"></i> &nbsp;&nbsp;목록으로
+		                            </a>
 									<c:if test="${ fn:length(memberList) > 2 }">
 			                            <a href="#" onclick="renameChatRoom();" class="dropdown-item has-icon">
 			                                <i class="fas fa-user-edit"></i> 채팅방 이름 변경
@@ -180,7 +183,7 @@
 		                    <input type="text" id="msg" class="form-control" placeholder="더이상 메시지를 보낼 수 없는 채팅방입니다." readonly="readonly">
 	                    </c:if>
 	                    <c:if test="${ fn:length(memberList) > 1 }">
-	                    	<input type="text" id="msg" class="form-control" placeholder="메시지를 입력하세요">
+	                    	<input type="text" id="msg" class="form-control" onkeyup="enterkey()" placeholder="메시지를 입력하세요">
 	                    </c:if>
 	                    <button class="btn btn-primary" id="button-send">
 	                        <i class="far fa-paper-plane"></i>
@@ -192,56 +195,64 @@
     </div>
     
     <script type="text/javascript">
-		var sock = new SockJS("http://localhost:8081/worktech/chat");
+		var sock = new SockJS("http://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/chat");
 		
 		sock.onmessage = onMessage;
 		sock.onclose = onClose;
 		sock.onopen = onOpen;
 	
 		function sendMessage() {
-			// 내 메시지 서버로 보내기
-			var message = $("#msg").val();
-			
-			var sendMemberFullName = "${ loginUser.dName } ${ loginUser.name } ${ loginUser.jobGrade }";
-			
-			var data = {
-					"msgContent" : message,
-					"chatRoomNo" : "${ cr.chatRoomNo }",
-	                "sendMember" : "${ loginUser.mNo }",
-	                "sendMemberFullName" : sendMemberFullName,
-	                "profileUrl" : "${ loginUser.pUrl }"
-	            };
-			
-	        var jsonData = JSON.stringify(data);
-	        
-	        // 보낸 메시지 추가
-	        var chatMsgBody = $('#chatMsgBody');
-	        var innerDiv = '';
-	        
-	        innerDiv += '<div class="chat-item chat-right">';
-	        
-	        if("${ loginUser.pUrl }" != '' && "${ loginUser.pUrl }" != null ){
-	        	innerDiv += '<img src="' + ${ loginUser.pUrl } + '">';	
-	        } else {
-	        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
-	        }
-	        
-	        // 현재 시간 구하기
-	        var today = new Date();   
-
-	        var hours = today.getHours(); // 시
-	        var minutes = today.getMinutes();  // 분
-	        
-	        var now = hours + ":" + minutes;
-	        
-	        innerDiv += '<div class="chat-details">'
-	        			+ '<div class="chat-text">' + message + '</div>'
-	        			+ '<div class="chat-time">' + now + '</div></div></div>';
-	        
-	        chatMsgBody.append(innerDiv);
-	        
-	        updateTime();
-	        sock.send(jsonData);
+			// 메시지 부분이 비어 있지 않으면
+			if($('#msg').val() != ''){
+				// 내 메시지 서버로 보내기
+				var message = $("#msg").val();
+				
+				var sendMemberFullName = "${ loginUser.dName } ${ loginUser.name } ${ loginUser.jobGrade }";
+				
+				var data = {
+						"msgContent" : message,
+						"chatRoomNo" : "${ cr.chatRoomNo }",
+		                "sendMember" : "${ loginUser.mNo }",
+		                "sendMemberFullName" : sendMemberFullName,
+		                "profileUrl" : "${ loginUser.pUrl }"
+		            };
+				
+		        var jsonData = JSON.stringify(data);
+		        
+		        // 보낸 메시지 추가
+		        var chatMsgBody = $('#chatMsgBody');
+		        var innerDiv = '';
+		        
+		        innerDiv += '<div class="chat-item chat-right">';
+		        
+		        if("${ loginUser.pUrl }" != '' && "${ loginUser.pUrl }" != null ){
+		        	innerDiv += '<img src="' + ${ loginUser.pUrl } + '">';	
+		        } else {
+		        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
+		        }
+		        
+		        // 현재 시간 구하기
+		        var today = new Date();   
+	
+		        var hours = today.getHours(); // 시
+		        var minutes = today.getMinutes();  // 분
+		        
+		        var now = hours + ":" + minutes;
+		        
+		        innerDiv += '<div class="chat-details">'
+		        			+ '<div class="chat-text">' + message + '</div>'
+		        			+ '<div class="chat-time">' + now + '</div></div></div>';
+		        
+		        chatMsgBody.append(innerDiv);
+		        
+		        updateTime();
+		        sock.send(jsonData);
+		        
+		        $('#msg').val('');
+			} else {
+				alert("메시지를 입력하세요.");
+				$('#msg').focus();
+			}
 		}
 		
 		//서버에서 메시지를 받았을 때
@@ -303,7 +314,6 @@
 		// 채팅 전송
 		$('#button-send').on('click', function(e) {
 			sendMessage();
-			$('#msg').val('');
 			updateScroll();
 		});
 		
@@ -387,6 +397,13 @@
 			
 			newForm.appendTo('body'); 
 			newForm.submit();
+		}
+		
+		// 엔터키로 전송하기
+		function enterkey() {
+			if (window.event.keyCode == 13) {
+				sendMessage();
+			}
 		}
 		
 	</script>

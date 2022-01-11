@@ -16,6 +16,7 @@
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/aspect-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/member-context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/chat-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/board-context.xml</config>
 	</autoconfigs>

@@ -81,33 +81,30 @@
                                     <a href="#">5개</a>
                                 </div>
                             </div>
-                            <div class="dropdown-list-content dropdown-list-icons">
-                                    <a href="#" class="dropdown-item dropdown-item-unread">
-                                        <div class="dropdown-item-icon bg-primary text-white">
-                                        </div>
-                                        <div class="dropdown-item-desc">
-                                            캘린더 알림
-                                            <div class="time text-primary">2 Min Ago</div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <div class="dropdown-item-icon bg-info text-white">
-                                        </div>
-                                        <div class="dropdown-item-desc">
-                                            게시판 알림
-                                            <div class="time">10 Hours Ago</div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <div class="dropdown-item-icon bg-success text-white">
-                                        </div>
-                                        <div class="dropdown-item-desc">
-                                            전자결재 알림
-                                            <div class="time">12 Hours Ago</div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="dropdown-footer text-center">
+							<div class="dropdown-list-content dropdown-list-icons" id="notiDiv">
+								<a href="#" class="dropdown-item dropdown-item-unread">
+									<div class="dropdown-item-icon bg-primary text-white"></div>
+									<div class="dropdown-item-desc">
+										캘린더 알림
+										<div class="time text-primary">2 Min Ago</div>
+									</div>
+								</a>
+								<a href="#" class="dropdown-item">
+									<div class="dropdown-item-icon bg-info text-white"></div>
+									<div class="dropdown-item-desc">
+										게시판 알림
+										<div class="time">10 Hours Ago</div>
+									</div>
+								</a>
+								<a href="#" class="dropdown-item">
+									<div class="dropdown-item-icon bg-success text-white"></div>
+									<div class="dropdown-item-desc">
+										전자결재 알림
+										<div class="time">12 Hours Ago</div>
+									</div>
+								</a>
+							</div>
+							<div class="dropdown-footer text-center">
                             </div>
                         </div>
                     </li>
@@ -294,6 +291,7 @@
 			// SockJS 라이브러리를 이용하여 서버에 연결
 			var sock = new SockJS('http://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/alarm');
 			socket = sock;
+			console.log("연결");
 			// 이벤트 리스터(커넥션이 연결되었을 때 서버 호출된다)
 			sock.onopen = function() {
 				console.log('info: connection opened.');
@@ -303,6 +301,20 @@
 			// 메세지를 보냈을 때 호출
 			sock.onmessage = function(evt){
 				console.log('info: connection onmessage');
+				var data = evt.data;
+				console.log("ReceiveMessage: " + data + "\n");
+				
+				const arr = data.split(",");
+				
+				var $a = $('<a class="dropdown-item">');
+				var $icon = $('<div class="dropdown-item-icon bg-info text-white">');
+				var $desc = $('<div class="dropdown-item-desc">')
+							.html(arr[1] + " 님이 " + "<a href='cdetail.bo?bNo=" + arr[3] + "'>[" + arr[4] + "]</a> 게시글에 댓글을 남겼습니다.");
+				
+				$a.append($icon);
+				$a.append($desc);
+				
+				$($a).appendTo('#notiDiv');
 			}
 			
 			// 서버가 끊겼을 때 호출

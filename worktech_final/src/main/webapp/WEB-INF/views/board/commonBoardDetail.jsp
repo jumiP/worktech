@@ -209,18 +209,26 @@
 		// 댓글 등록 ajax
 		$('#replyBtn').on('click', function(){
 			var rContent = $('#replyBox').val();
-			var rName = '${ loginUser.mNo}';
+			var rWriter = '${ loginUser.mNo}'; // 댓글 작성자의 사번
 			var bNo = '${ b.bNo }';
+			
+			var rName = '${ loginUser.name }'; // 알림으로 보내기 위한 댓글 작성자의 이름
+			var bWriter = '${ b.bWriter }';
+			var bTitle = '${ b.bTitle}';
 			
 			$.ajax({
 				url: 'addCommonReply.bo',
-				data: {rName:rName, rContent:rContent, bNo:bNo},
+				data: {rName:rWriter, rContent:rContent, bNo:bNo},
 				success: function(data){
 					console.log(data);
 					
 					if(data.trim() == 'success'){
 						getReplyList();
 						$('#replyBox').val('');
+						
+						let socketMsg = "cReply," + rName + "," + bWriter + "," + bNo + "," + bTitle;
+						console.log("msg: " + socketMsg);
+						socket.send(socketMsg);
 					}
 				},
 				error: function(data){

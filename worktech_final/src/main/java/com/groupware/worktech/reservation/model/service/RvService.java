@@ -26,5 +26,13 @@ public class RvService {
 		return rvDAO.insertReservation(sqlSession, r);
 	}
 
+	public Reservation selectReservation(int rvNo) {
+		return rvDAO.selectReservation(sqlSession, rvNo);
+	}
+
+	public int deleteReservation(int rvNo) {
+		return rvDAO.deleteReservation(sqlSession, rvNo);
+	}
+
 	
 }

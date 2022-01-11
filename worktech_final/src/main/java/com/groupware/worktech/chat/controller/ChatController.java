@@ -281,8 +281,10 @@ public class ChatController {
 					ChatRoom cr = cService.selectCreateChatRoom();
 					
 					if(cr != null) {
+						ArrayList<GatheringMember> memberList = cService.getGatheringMemberList(cr.getChatRoomNo());
+
 						model.addAttribute("cr", cr);
-						
+						model.addAttribute("memberList", memberList);
 						return "chatMessage";
 					}
 				}

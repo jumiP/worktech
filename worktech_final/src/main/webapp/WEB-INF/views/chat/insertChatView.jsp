@@ -18,7 +18,6 @@
 <link rel="stylesheet" href="resources/dist/assets/css/style.css">
 <link rel="stylesheet" href="resources/dist/assets/css/components.css">
 <script>
-	
 	$(document).ready(function() {
 
 		var zNodes = ${jsonArray};

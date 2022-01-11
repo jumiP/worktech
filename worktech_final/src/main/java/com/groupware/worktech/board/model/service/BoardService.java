@@ -201,17 +201,17 @@ public class BoardService {
 		return bDAO.selectCommonSearchList(sqlSession, searchListMap);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public int insertCommonReply(Reply r) {
+		return bDAO.insertCommonReply(sqlSession, r);
+	}
+
+	public ArrayList<Reply> selectCommonReplyList(int bNo) {
+		return bDAO.selectCommonReplyList(sqlSession, bNo);
+	}
+
+	public int deleteCommonReply(int rNo) {
+		return bDAO.deleteCommonReply(sqlSession, rNo);
+	}
 	
 	
 	
@@ -308,17 +308,6 @@ public class BoardService {
 		return bDAO.selectZList(sqlSession, pi);
 	}
 	
-	public int insertCommonReply(Reply r) {
-		return bDAO.insertCommonReply(sqlSession, r);
-	}
-
-	public ArrayList<Reply> selectCommonReplyList(int bNo) {
-		return bDAO.selectCommonReplyList(sqlSession, bNo);
-	}
-
-	public int deleteCommonReply(int rNo) {
-		return bDAO.deleteCommonReply(sqlSession, rNo);
-	}
 
 
 

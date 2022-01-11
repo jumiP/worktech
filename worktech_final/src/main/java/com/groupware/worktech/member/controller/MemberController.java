@@ -49,7 +49,7 @@ public class MemberController {
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
 	public String login(Member m, Model model) {	
 		
-		System.out.println(bcrypt.encode(m.getPwd()));
+//		System.out.println(bcrypt.encode(m.getPwd()));
 		
 		Member loginMember = mService.memberLogin(m);
 		
@@ -307,33 +307,52 @@ public class MemberController {
 		
 		int result = mService.deleteMember(mNo);
 		
-//		if( result > 0 ) {
-//			
-//		} else {
-//			throw new MemberException("사원 삭제를 실패하였습니다.");
-//		}
-		
-//		return null;
 	}
 
 	
 	// 사원 삭제(선택)
 	@RequestMapping("selectDelete.me")
 	@ResponseBody
-	public void deleteSelectMember(HttpServletRequest request, 
-									@RequestParam(value="valueArr", required=false) String[] valueArr ) {
-		
-//		String[] ajaxMsg = request.getParameterValues("valueArr");
-//		int size = ajaxMsg.length; // NullPointerException
-//		for(int i = 0; i < size; i++) {
-//			mService.deleteSelectMember(ajaxMsg[i]);
-//		}
-		
-		
-//		int size = valueArr.length;
+	public void deleteSelectMember(@RequestParam(value="valueArr") String valueArr ) {
+
+		// valueArr값 받아온것 확인
 		System.out.println(valueArr);
-		
+		// 여러개의 값들이 하나의 String으로 들어옴 → split을 이용해서 나누기
+		String[] selectList = valueArr.split(" ");
+		for(int i = 0; i < selectList.length; i++) {
+			int result = mService.deleteSelectMember(selectList[i]);
+		}
+
 	}
 
+	
+	// 사원정보 상세보기 페이지로 이동
+	@RequestMapping("mdetail.me")
+	public String detailMemView(@RequestParam("mNo") String mNo, @RequestParam("page") int page, Model model) {
+		
+		Member m = mService.selectMember(mNo);
+		
+		if(m != null) {
+			model.addAttribute("member", m);
+			model.addAttribute("page", page);
+		} else {
+			throw new MemberException("사원 정보 상세보기에 실패하였습니다.");
+		}
+		
+		return "adminMemView";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

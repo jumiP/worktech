@@ -115,7 +115,7 @@
 		                          <td></td>
 		                          <td class="p-0 text-center" onclick="event.cancelBubble=true;">
 		                          	   <div class="custom-checkbox custom-control">
-			                              <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="${ m.mNo }" name="checkB"  onclick="selectOne();">
+			                              <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="${ m.mNo }" value ="${ m.mNo }" name="checkB"  onclick="selectOne();">
 			                              <label for="${ m.mNo }" class="custom-control-label">&nbsp;</label>
 			                           </div>
 		                          </td>
@@ -348,21 +348,21 @@
 	
 	$('#selectDelete').click(function(){
 		
-		var valueArr = new Array();
-		var list = $("input[name='checkB']"); // 개수만 나옴
-// 		var list =   $("input[name='checkB']").parent().parent().parent().children().eq(2).text(); // 무조건 맨 마지막에 들어간 값으로 됨
-// 		var list =  $('#oneDelete').parent().parent().children().eq(2).text();  // 인식을 못함. 빈 배열로 들어감
+// 		var valueArr = [];
+		var values = '';
+		var list = $("input[name='checkB']"); // checkbox에 value를 mNo로 넣어주기
 		
 		// checkB(개별 체크박스)가 선택되어 있을 시 배열에 값을 저장
 		for(var i = 0; i < list.length; i++){
 			if(list[i].checked){
-				valueArr.push(list[i].value);
+// 				valueArr.push(list[i].value);
 				// push : 배열의 마지막에 새로운 요소를 추가한 후, 변경된 배열의 길이를 반환
+				values += list[i].value + " "
 			}
 		}
-		console.log(valueArr);
 		
-		if(valueArr.length == 0){
+// 		if(valueArr.length == 0){
+		if(values.length == 0){
 			alert("선택된 사원이 없습니다.");
 		} else {
 			var bool = confirm("정말 삭제하시겠습니까?");
@@ -370,7 +370,9 @@
 				// ajax
 				$.ajax({
 					url : 'selectDelete.me',
-					data : {valueArr:valueArr},
+// 					data : {'valueArr':valueArr},
+					data : {'valueArr':values},
+					type: 'post',
 					success : function(data){
 						console.log(data);
 						location.reload();

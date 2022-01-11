@@ -75,8 +75,16 @@ public class MemberDAO {
 	}
 
 	// 사원 개별 삭제
-//	public Object deleteSelectMember(SqlSessionTemplate sqlSession, String string) {
-//		return sqlSession.update("memberMapper.deleteSelectMember", string);
-//	}
+	public int deleteSelectMember(SqlSessionTemplate sqlSession, String selectList) {
+		return sqlSession.update("memberMapper.deleteSelectMember", selectList);
+	}
+
+	// 사원 상세보기
+	public Member selectMember(SqlSessionTemplate sqlSession, String mNo) {
+		return sqlSession.selectOne("memberMapper.selectMember", mNo);
+	}
+
+	
+	
 
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.groupware.worktech.board.model.vo.Board;
 import com.groupware.worktech.board.model.vo.BoardFile;
+import com.groupware.worktech.board.model.vo.Reply;
 import com.groupware.worktech.common.PageInfo;
 
 @Repository("bDAO")
@@ -144,6 +145,59 @@ public class BoardDAO {
 
 	
 
+	public ArrayList<Board> selectCommonList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonList", null, rowBounds);
+	}
 	
+	public ArrayList<Board> selectCommonList(SqlSessionTemplate sqlSession, PageInfo pi, int category) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.selectCategoryList", category, rowBounds);
+	}
+
+	public int getCategoryListCount(SqlSessionTemplate sqlSession, Integer category) {
+		return sqlSession.selectOne("boardMapper.getCategoryListCount", category);
+	}
+
+	public Board selectCommonBoard(SqlSessionTemplate sqlSession, int bNo) {
+		return sqlSession.selectOne("boardMapper.selectCommonBoard", bNo);
+	}
+
+	public int updateCommonBoard(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.update("boardMapper.updateCommonBoard", b);
+	}
+
+	public int getCommonSearchListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> searchMap) {
+		return sqlSession.selectOne("boardMapper.getCommonSearchListCount", searchMap);
+	}
+
+	public ArrayList<Board> selectCommonSearchList(SqlSessionTemplate sqlSession,
+			HashMap<String, Object> searchListMap) {
+		PageInfo pi = (PageInfo)searchListMap.get("pi");
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonSearchList", searchListMap, rowBounds);
+	}
+
+	public int insertCommonReply(SqlSessionTemplate sqlSession, Reply r) {
+		return sqlSession.insert("boardMapper.insertCommonReply", r);
+	}
+
+	public ArrayList<Reply> selectCommonReplyList(SqlSessionTemplate sqlSession, int bNo) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonReplyList", bNo);
+	}
+
+	public int deleteCommonReply(SqlSessionTemplate sqlSession, int rNo) {
+		return sqlSession.update("boardMapper.deleteCommonReply", rNo);
+	}
 	
 }

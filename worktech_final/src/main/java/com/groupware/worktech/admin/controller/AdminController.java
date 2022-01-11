@@ -9,10 +9,11 @@ import java.util.HashMap;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.groupware.worktech.admin.model.exception.AdminException;
 import com.groupware.worktech.admin.model.service.AdminService;
+import com.groupware.worktech.admin.model.vo.Department;
+import com.groupware.worktech.admin.model.vo.RvProduct;
+import com.groupware.worktech.admin.model.vo.RvRange;
 import com.groupware.worktech.board.model.exception.BoardException;
 import com.groupware.worktech.board.model.service.BoardService;
 import com.groupware.worktech.board.model.vo.Board;
@@ -38,6 +43,7 @@ public class AdminController {
 	@Autowired
 	private BoardService bService;
 	
+	// 관리자 공지사항 게시판 부분 시작
 	@RequestMapping("noticeList.ad")
 	public String noticeList(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="boardLimit", required = false) Integer boardLimit,
 							 Model model) {
@@ -330,5 +336,244 @@ public class AdminController {
 		
 		return "adminNoticeList";
 	}
+	// 관리자 공지사항 게시판 부분 끝
+	
+	// 관리자 예약 자산 추가 부분 시작
+	@RequestMapping("addRvView.ad")
+	public String addRvView(Model model) {
+		ArrayList<Department> list = aService.getDepartmentList();
+
+		if (list != null) {
+			model.addAttribute("list", list);
+		}
+
+		return "adminRvAddForm";
+	}
+
+	@RequestMapping("rvProductList.ad")
+	public String rvpList(@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "boardLimit", required = false) Integer boardLimit, Model model) {
+		int currentPage = 1;
+
+		if (page != null) {
+			currentPage = page;
+		}
+
+		int listCount = aService.getRvListCount();
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+
+		ArrayList<RvProduct> list = aService.selectRvProductList(pi);
+		if (list != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("list", list);
+
+		} else {
+			throw new AdminException("예약 자산 목록 조회에 실패하였습니다.");
+		}
+
+		return "adminRvProductList";
+	}
+	
+	@RequestMapping("addRvProduct.ad")
+	public String addRvProduct(@ModelAttribute RvProduct rp, @RequestParam(value = "department", required = false) int[] dNoes) {
+		ArrayList<RvRange> rrList = new ArrayList<RvRange>();
+
+		for (int i = 0; i < dNoes.length; i++) {
+			RvRange r = new RvRange();
+			r.setPdDNo(dNoes[i]);
+			rrList.add(r);
+		}
+
+		rp.setRvRange(rrList);
+
+		int result = aService.insertRvProduct(rp);
+
+		if (result >= rrList.size() + 1) {
+			return "redirect:rvProductList.ad";
+		} else {
+			throw new AdminException("예약 자산 등록에 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("rvpdetail.ad")
+	public String rvDetail(@RequestParam("page") int page, @RequestParam("pdNo") int pdNo, Model model) {
+		RvProduct rp = aService.selectRvProduct(pdNo);
+		
+		if(rp != null) {
+			model.addAttribute("rp", rp);
+			model.addAttribute("page", page);
+			return "adminRvDetail";
+		} else {
+			throw new AdminException("예약 자산 상세 조회에 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("rvupdateView.ad")
+	public String updateRvPView(@RequestParam("page") int page, @RequestParam("pdNo") int pdNo, Model model) {
+		RvProduct rp = aService.selectRvProduct(pdNo);
+		ArrayList<Department> list = aService.getDepartmentList();
+
+		model.addAttribute("rp", rp).addAttribute("page", page).addAttribute("list", list);
+
+		return "adminRvUpdate";
+	}
+	
+	@Transactional
+	@RequestMapping("rvupdate.ad")
+	public String updateRvProduct(@ModelAttribute RvProduct rp, @RequestParam(value = "department", required = false) ArrayList<Integer> editRrList,
+								  @RequestParam("page") int page) {
+		int result = 0;
+		
+		result = aService.updateRvProduct(rp);
+		
+		if(result > 0) {
+		
+			ArrayList<Integer> originRrList = aService.getOriginRvRangeList(rp.getPdNo());
+			ArrayList<Integer> insertRrNoList = new ArrayList<Integer>(); // 받아온 목록 - DB에 저장된 목록 (차집합)
+			insertRrNoList.addAll(editRrList); 
+			ArrayList<Integer> deleteRrNoList = new ArrayList<Integer>(); // DB에 저장된 목록 - 받아온 목록 (차집합)
+			deleteRrNoList.addAll(originRrList);
+			
+			for(int i : originRrList) {
+				for(int j : editRrList) {
+					if(i == j) {
+						insertRrNoList.remove((Integer)j);
+						deleteRrNoList.remove((Integer)j);
+					}
+				}
+			}
+			
+			ArrayList<RvRange> insertRrList = new ArrayList<RvRange>();
+			ArrayList<RvRange> deleteRrList = new ArrayList<RvRange>();
+			
+			for(int pdDNo : insertRrNoList) {
+				RvRange rr = new RvRange();
+				rr.setPdDNo(pdDNo);
+				rr.setPdNo(rp.getPdNo());
+				
+				insertRrList.add(rr);
+			}
+			
+			for(int pdDNo : deleteRrNoList) {
+				RvRange rr = new RvRange();
+				rr.setPdDNo(pdDNo);
+				rr.setPdNo(rp.getPdNo());
+				
+				deleteRrList.add(rr);
+			}
+	
+			result += aService.updateRvRange(insertRrList);
+			result += aService.deleteRvRange(deleteRrList);
+			
+			if (result >= insertRrList.size() + deleteRrList.size() + 1) {
+				return "redirect:rvpdetail.ad?pdNo=" + rp.getPdNo() + "&page=" + page;
+			} 
+		} 
+		
+		throw new AdminException("예약 자산 수정에 실패하였습니다.");
+	}
+	
+	@RequestMapping("rvProductDelete.ad")
+	public String rvpDelete(@RequestParam("pdNo") int pdNo) {
+		int result = aService.deleteRvProduct(pdNo); // status만 변경하므로 range는 삭제하지 않음
+		
+		if(result > 0) {
+			return "redirect:rvProductList.ad";
+		} else {
+			throw new AdminException("예약 자산 삭제에 실패하였습니다.");
+		}
+	}
+	
+	// 관리자 예약 자산 추가 부분 끝
+	
+	@RequestMapping("mainPage.do")
+	public String mainView() {
+		return "main";
+	}
+	
+	// 부서 목록
+	@RequestMapping("dList.ad")
+	public String departmentList(Model model) {
+		
+		ArrayList<Department> list = aService.selectDepList();
+		
+		// 부서 구성원 수	
+		ArrayList<Integer> countList = aService.depCountList();
+		
+		if(list != null) {
+			model.addAttribute("list", list);
+			model.addAttribute("countList", countList);
+
+		}
+		
+		return "adminDepartment";
+	}
+
+	
+	// 부서 등록 페이지로 이동 => department list 같이 보내기
+	@RequestMapping("addDep.ad")
+	public String insertDepView(Model model) {
+		
+		ArrayList<Department> list = aService.selectDepList();
+		
+		if(list != null) {
+			model.addAttribute("list", list);
+		}
+		
+		return "adminInsertDep";
+	}
+	
+	// 부서 등록
+	@RequestMapping("dInsert.ad")
+	public String insertDepartment(@ModelAttribute Department d, Model model) {
+			
+		System.out.println(d);
+		
+		// 등록
+		int result = aService.insertDepartment(d);
+		
+		// 부서 목록
+		ArrayList<Department> list = aService.selectDepList();
+		
+		// 부서 구성원 수	
+		ArrayList<Integer> countList = aService.depCountList();
+			
+		if( result > 0 ) {
+			model.addAttribute("list", list);
+			model.addAttribute("countList", countList);
+			return "adminDepartment";
+		} else {
+			throw new AdminException("부서 등록에 실패했습니다.");
+		}
+			
+	}
+	
+	
+	// 부서 이름 중복 확인 (ajax)
+	@RequestMapping("dupDName.ad")
+	public void duplicatedDName(@RequestParam("dName") String dName, HttpServletResponse response) {
+			
+		String result = aService.duplicateDName(dName) == 0 ? "NoDup" : "Dup";
+		
+		try {
+			response.getWriter().println(result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+		
+	
+	// 부서 삭제
+	@RequestMapping("deleteDep.ad")
+	@ResponseBody
+	public void deleteDepartment(@RequestParam("dNo") String dNo) {
+		
+		System.out.println(dNo);
+		
+		int result = aService.deleteDep(dNo);
+		
+//		return null;
+	}
+		
 	
 }

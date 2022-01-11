@@ -1,0 +1,173 @@
+package com.groupware.worktech.chat.controller;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.groupware.worktech.admin.model.vo.Department;
+import com.groupware.worktech.chat.model.exception.ChatException;
+import com.groupware.worktech.chat.model.service.ChatService;
+import com.groupware.worktech.chat.model.vo.ChatMessage;
+import com.groupware.worktech.chat.model.vo.ChatRoom;
+import com.groupware.worktech.member.model.vo.Member;
+
+@Controller
+public class ChatController {
+	
+	@Autowired
+	private ChatService cService;
+	
+	@RequestMapping("chatView.ct")
+	public String chatListView(Model model, HttpSession session) {
+		String mNo = ((Member)session.getAttribute("loginUser")).getmNo();
+		
+		ArrayList<ChatRoom> list = cService.selectChatList(mNo);
+		
+		if(list != null) {
+			for(ChatRoom c : list) {
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("chatRoomNo", Integer.toString(c.getChatRoomNo()));
+				map.put("mNo", mNo);
+				
+				int notReadCount = cService.getNotReadCount(map);
+				
+				c.setNotReadCount(notReadCount);
+				
+				if(c.getSendTime() != null) {
+					String date = new SimpleDateFormat("yyyy-MM-dd").format(c.getSendTime());
+					String time = new SimpleDateFormat("HH:mm").format(c.getSendTime());
+					
+					c.setDate(date);
+					c.setTime(time);
+				}
+			}
+			
+			model.addAttribute("list", list);
+			return "chatList";
+		} else {
+			throw new ChatException("채팅 목록 조회에 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("chatDetail.ct")
+	public String chatDetail(Model model) {
+		
+		return "chatMessage";
+	}
+	
+	@RequestMapping("addChatView.ct")
+	public String addChatView(Model model) {
+		ArrayList<Department> list = cService.getChatDepartmentList();
+		
+		if(list != null) {
+			JSONArray jArr = new JSONArray();
+			
+			for(Department d : list) {
+				JSONObject jo = new JSONObject();
+				jo.put("id", d.getdNo());
+				jo.put("pId", d.getdParent());
+				jo.put("name", d.getdName());
+				
+				jArr.add(jo);
+			}
+			
+			model.addAttribute("jsonArray", jArr);
+			return "insertChatView";
+		} else {
+			throw new ChatException("채팅방 생성 화면 조회에 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("deptSelect.ct")
+	public void selectDeptMember(@RequestParam("dNo") int dNo, HttpServletResponse response, HttpSession session) {
+		String mNo = ((Member)session.getAttribute("loginUser")).getmNo();
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("mNo", mNo);
+		map.put("dNo", Integer.toString(dNo));
+		
+		ArrayList<Member> list = cService.selectDeptMember(map);
+		
+		if(list != null) {
+			response.setContentType("application/json; charset=UTF-8");
+			
+			Gson gson = new Gson();
+			
+			try {
+				gson.toJson(list, response.getWriter());
+			} catch (JsonIOException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			throw new ChatException("부서원 목록 조회에 실패하였습니다.");
+		}
+	}
+	
+	@Transactional
+	@RequestMapping("addGroupChat.ct")
+	public String insertGroupChat(@RequestParam("mNo") ArrayList<String> mNoes, @RequestParam("chatTitle") String chatTitle, 
+								  HttpSession session, Model model) {
+		// 채팅방 이름이 없는 경우 멤버 이름으로 채팅방 이름 생성
+		if(chatTitle.equals("")) {
+			ArrayList<String> mNames = cService.selectMemberName(mNoes); 
+			
+			for(int i = 0; i < mNames.size(); i++) {
+				chatTitle += mNames.get(i);
+				
+				// 너무 길면 자르기
+				if(chatTitle.length() > 18) {
+					chatTitle.substring(0, 16);
+					chatTitle += "...";
+					break;
+				}
+				
+				if(i != mNames.size() - 1) {
+					chatTitle += ", ";
+				}
+			}
+		}
+		
+		String chatOpen = ((Member)session.getAttribute("loginUser")).getmNo();
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("chatTitle", chatTitle);
+		map.put("chatOpen", chatOpen);
+		
+		int creatChatroom = cService.insertGroupChatroom(map);
+		
+		if(creatChatroom > 0) {
+			mNoes.add(chatOpen);
+			
+			int createChatList = cService.insertGroupChatList(mNoes);
+			
+			if(createChatList >= mNoes.size()) {
+				ChatRoom chatroomInfo = cService.selectCreateChatRoom();
+				
+				if(chatroomInfo != null) {
+					model.addAttribute("cr", chatroomInfo);
+					
+					return "chatMessage";
+				}
+			}
+		}
+		
+		throw new ChatException("채팅방 생성에 실패하였습니다.");
+	}
+}

@@ -128,135 +128,145 @@
 		order by b_no desc
 	</select>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	<insert id="insertCommonBoard">
 		insert into board
-		values(SEQ_BOARD.NEXTVAL, #{bTitle}, #{bContent}, #{bDate}, DEFAULT, 'COMMON', NULL, #{bWriter}, null, DEFAULT)
+		values(SEQ_BOARD.NEXTVAL, #{bTitle}, #{bContent}, #{bDate}, DEFAULT, 'COMMON', NULL, #{bWriter}, #{categoryNo}, DEFAULT)
 	</insert>
+	
+	<select id="selectCommonList" parameterType="_int" resultMap="commonBoardResultSet">
+		select b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, category_no, category_name, b_status,
+			   f_no, f_url, f_name, f_rname
+		from board
+			 join member on(b_writer = m_no)
+			 join category using(category_no)
+			 left join board_file using(b_no)
+		where b_type = 'COMMON'
+			  and b_status = 'N'
+		order by b_no desc
+	</select>
+	
+	<resultMap type="Board" id="commonBoardResultSet">
+		<id column="B_NO" property="bNo"/>
+		<result column="B_TITLE" property="bTitle"/>
+		<result column="B_CONTENT" property="bContent"/>
+		<result column="B_DATE" property="bDate"/>
+		<result column="B_COUNT" property="bCount"/>
+		<result column="B_TYPE" property="bType"/>
+		<result column="B_WRITER" property="bWriter"/>
+		<result column="NAME" property="name"/>
+		<result column="CATEGORY_NO" property="categoryNo"/>
+		<result column="CATEGORY_NAME" property="categoryName"/>
+		<result column="B_STATUS" property="bStatus"/>
+		<collection property="fileList" resultMap="fileResultSet" javaType="arrayList"/>
+	</resultMap>
+	
+	<select id="getCategoryListCount" resultType="_int">
+		select count(*)
+		from board
+		where b_type = 'COMMON'
+			  and b_status = 'N'
+			  and category_no = #{category}
+	</select>
+	
+	<select id="selectCategoryList" resultMap="commonBoardResultSet">
+		select b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, category_no, category_name, b_status,
+			   f_no, f_url, f_name, f_rname
+		from board
+			 join member on(b_writer = m_no)
+			 join category using(category_no)
+			 left join board_file using(b_no)
+		where b_type = 'COMMON'
+			  and b_status = 'N'
+			  and category_no = #{category}
+		order by b_no desc
+	</select>
+	
+	<select id="selectCommonBoard" resultMap="commonBoardResultSet">
+		select b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, category_no, category_name, b_status,
+			   f_no, f_url, f_name, f_rname
+		from board
+			 join member on(b_writer = m_no)
+			 join category using(category_no)
+			 left join board_file using(b_no)
+		where b_status = 'N'
+			  and b_no = #{bNo}
+	</select>
+	
+	<update id="updateCommonBoard">
+		update board
+		set b_title = #{bTitle}, b_date = #{bDate}, b_content = #{bContent}, category_no = #{categoryNo}
+		where b_no = #{bNo}
+	</update>
+	
+	<select id="getCommonSearchListCount" resultType="_int">
+		select count(*)
+		from board
+		<where>
+			<if test="searchCategory == 'title'">
+				b_title like '%' || #{searchValue} || '%'
+			</if>
+			<if test="searchCategory == 'content'">
+				and b_content like '%' || #{searchValue} || '%'
+			</if>
+			<if test="category != null">
+				and category_no = #{category}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectCommonSearchList" resultMap="commonBoardResultSet">
+		select b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, category_no, category_name, b_status,
+			   f_no, f_url, f_name, f_rname
+		from board
+			 join member on(b_writer = m_no)
+			 join category using(category_no)
+			 left join board_file using(b_no)
+		<where>
+			b_type = 'COMMON'
+			and b_status = 'N'
+			<if test="searchCategory == 'title'">
+				and b_title like '%' || #{searchValue} || '%'
+			</if>
+			<if test="searchCategory == 'content'">
+				and b_content like '%' || #{searchValue} || '%'
+			</if>
+			<if test="searchCategory == 'writer'">
+				and name like '%' || #{searchValue} || '%'
+			</if>
+			<if test="category != null">
+				and category_no = #{category}
+			</if>
+		</where>	  
+		order by b_no desc
+	</select>
+	
+	<insert id="insertCommonReply">
+		insert into reply
+		values(seq_reply.nextval, #{rContent}, sysdate, #{bNo}, #{rName}, default)
+	</insert>
+	
+	<select id="selectCommonReplyList" resultMap="replyResultSet">
+		select r_no, r_content, r_date, b_no, r_name, name, r_status
+		from reply
+			 join member on(r_name = m_no)
+		where b_no = #{bNo}
+			  and r_status = 'N'
+		order by r_no
+	</select>
+	
+	<resultMap type="Reply" id="replyResultSet">
+		<id column="R_NO" property="rNo"/>
+		<result column="R_CONTENT" property="rContent"/>
+		<result column="R_DATE" property="rDate"/>
+		<result column="B_NO" property="bNo"/>
+		<result column="R_NAME" property="rName"/>
+		<result column="NAME" property="name"/>
+		<result column="R_STATUS" property="rStatus"/>
+	</resultMap>
+	
+	<update id="deleteCommonReply">
+		update reply
+		set r_status = 'Y'
+		where r_no = #{rNo}
+	</update>
 </mapper>

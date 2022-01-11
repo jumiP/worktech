@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="resources/dist/assets/css/components.css">
     <!-- Start GA -->
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+    <script src="resources/js/jquery-3.6.0.min.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -66,7 +67,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-title">관리자 님 환영합니다!</div>
-                            <a href="#" class="dropdown-item has-icon text-danger">
+                            <a href="logout.me" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i>
                                 Logout
                             </a>
@@ -105,13 +106,7 @@
                                 <span>예약 관리</span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="nav-link" href="bootstrap-breadcrumb.html">예약 자산 목록</a>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="bootstrap-alert.html">예약 자산 추가</a>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="bootstrap-badge.html">예약 자산 수정</a>
+                                    <a class="nav-link" href="rvProductList.ad">예약 자산 목록</a>
                                 </li>
                             </ul>
                         </li>
@@ -121,10 +116,10 @@
                                 <span>게시판 관리</span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="nav-link" href="components-article.html">공지사항 게시판</a>
+                                    <a class="nav-link" href="noticeList.ad">공지사항 게시판</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="components-avatar.html">일반 게시판</a>
+                                    <a class="nav-link" href="commonList.bo">일반 게시판</a>
                                 </li>
                                 <li>
                                     <a class="nav-link" href="components-chat-box.html">익명 게시판</a>
@@ -132,13 +127,6 @@
                             </ul>
                         </li>
                     </ul>
-
-                    <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-                        <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
-                            <i class="fas fa-comments"></i>
-                            CHAT
-                        </a>
-                    </div>
                 </aside>
             </div>
             

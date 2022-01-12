@@ -8,7 +8,7 @@ public class ChatMessage {
 	private Timestamp sendTime;
 	private String time; // 발송 시간 포맷 변경
 	private String date; // 발송 날짜 포맷 변경
-	private String readYN;
+	private String readYN; // 시스템 메시지, 일반 메시지 구분
 	private int chatRoomNo;
 	private String sendMember; // 보낸 사람 사번
 	private String sendMemberName; // 보낸 사람 이름

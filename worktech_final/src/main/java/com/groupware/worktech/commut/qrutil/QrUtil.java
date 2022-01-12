@@ -16,6 +16,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 public class QrUtil {
 	
+	//	public static void makeQR(String url, String id, int width, int height, String file_path, String file_name) {
 	public static void makeQR(String url, int width, int height, String file_path, String file_name) {
 		
 		try {
@@ -24,7 +25,7 @@ public class QrUtil {
 			
 			file = new File(file_path);
 			if(!file.exists()) {
-				file.mkdirs();
+				file.mkdirs(); 
 			}
 			QRCodeWriter writer = new QRCodeWriter();
 			
@@ -37,7 +38,7 @@ public class QrUtil {
 			MatrixToImageConfig config = new MatrixToImageConfig(qrColor, 0xFFFFFFFF);
 			BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(matrix, config);
 			
-			ImageIO.write(qrImage, "png", new File(file_path+file_name));
+			ImageIO.write(qrImage, "png", new File(file_path + "/" + file_name));
 			
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

@@ -121,7 +121,8 @@
 				}
 			},
 			select: function(arg) { 
-				console.log(arg);
+				var today = new Date();
+				
 				var syear = arg.start.getFullYear();
 				var smonth = arg.start.getMonth()+1;
 				var sday = arg.start.getDate();
@@ -132,33 +133,38 @@
 
 				var start = [syear, smonth, sday].join('-');
 				var end = [eyear, emonth, eday].join('-');
-				
-				if(start != end){
-					alert('회의실 예약은 하루 단위로만 가능합니다.');
-				} else {
-					var rvUsage = prompt('사용 용도를 입력하세요', '사용 인원(또는 부서) : \n사용 목적 : ');
-					
-					if(rvUsage == ''){
-						alert('사용 목적이 입력되지 않았습니다.');
-					} else if (rvUsage != null){
-						$.ajax({
-							url: 'insertSelectRvMeetingRoom.rv',
-			                dataType: 'json',
-			                data: {startTime:arg.start, endTime:arg.end, date:start, rvUsage:rvUsage},
-			                success: function(data) {
-			                	if(data > 0){
-			                		location.href = 'rvMeetingRoomView.rv';
-			                	} else {
-			                		alert('예약에 실패하였습니다.');
-			                	}
-			                },
-			                error: function (data) {
-								console.log(data);
+				  
+				  if(arg.start < today) {
+					  // 지난 날짜 선택하면 예약할 수 없도록
+					  alert("현재 시간보다 이전 시간으로 예약할 수 없습니다.");
+				  } else {
+						
+						if(start != end){
+							alert('회의실 예약은 하루 단위로만 가능합니다.');
+						} else {
+							var rvUsage = prompt('사용 용도를 입력하세요', '사용 인원(또는 부서) : \n사용 목적 : ');
+							
+							if(rvUsage == ''){
+								alert('사용 목적이 입력되지 않았습니다.');
+							} else if (rvUsage != null){
+								$.ajax({
+									url: 'insertSelectRvMeetingRoom.rv',
+					                dataType: 'json',
+					                data: {startTime:arg.start, endTime:arg.end, date:start, rvUsage:rvUsage},
+					                success: function(data) {
+					                	if(data > 0){
+					                		location.href = 'rvMeetingRoomView.rv';
+					                	} else {
+					                		alert('예약에 실패하였습니다.');
+					                	}
+					                },
+					                error: function (data) {
+										console.log(data);
+									}
+								});
 							}
-						});
-					}
-				}
-				
+						}
+				    }
 			}			
 		});
 

@@ -76,6 +76,21 @@ public class MemberService {
 		return mDAO.selectMember(sqlSession, mNo);
 	}
 
+	// 사원정보 상세보기 페이지에서 사원 삭제
+	public int deleteDetailMem(String mNo) {
+		return mDAO.deleteDetailMem(sqlSession, mNo);
+	}
+
+	// 관리자 : 사원 정보 수정 
+	public int adminUpdateMem(Member m) {
+		return mDAO.adminUpdateMem(sqlSession, m);
+	}
+
+	// 비밀번호 변경
+	public int updatePassword(HashMap<String, String> map) {
+		return mDAO.updatePassword(sqlSession, map);
+	}
+
 
 	
 	

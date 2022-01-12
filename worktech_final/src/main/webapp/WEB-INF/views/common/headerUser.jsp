@@ -49,6 +49,36 @@
  		align-self: center;
 		font-size: 18px;
 	}
+	
+	.aContainer{
+ 		position: fixed;
+		right: 29px; bottom: 50px;
+		width: 270px; height: 70px;
+		background-color: white;
+		display: flex;
+ 		visibility: hidden;
+		z-index: 99;
+		box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+		padding: 15px;
+	}
+	
+	.iconDiv{
+		width: 40px;
+		height: 40px;
+		border-radius: 20px;
+	}
+	
+	.aItem{
+		align-self: center;
+		margin: 5px;
+	}
+	
+	@keyframes slidein{
+		0% {visibility: visible; bottom : 0; right: 29px;}
+		30% {bottom : 50px; right: 29px;}
+		70% {bottom : 50px; right: 29px;}
+		100% {visibility: hidden; bottom: 0px; right: 29px;}
+	}
 </style>
 <body>
     <div id="app">
@@ -270,6 +300,9 @@
                     </div>
                 </aside>
             </div>
+            
+            <div class="alarmArea"></div>
+            
             </div>
             </div>
 
@@ -336,7 +369,7 @@
 				var $a = $('<a class="dropdown-item">');
 				var $icon = $('<div class="dropdown-item-icon bg-info text-white"><i class="fas fa-clipboard-list alarmIcon"></i>');
 				var $desc = $('<div class="dropdown-item-desc">')
-							.html(arr[1] + " 님이 " + "<a href='cdetail.bo?bNo=" + arr[3] + "'>[" + arr[4] + "]</a> 게시글에 댓글을 남겼습니다.");
+							.html(arr[1] + " 님이 " + "<a href='cdetail.bo?bNo=" + arr[3] + "'>[" + arr[4] + "]</a> 글에 댓글을 남겼습니다.");
 				var $time = $('<div class="time">')
 							.html(month + "월 " + day + "일 " + hours + ":" + minutes);
 				
@@ -345,6 +378,18 @@
 				$a.append($desc);
 				
 				$($a).prependTo('#notiDiv');
+				
+				$aContainer = $('<div class="aContainer">');
+				$iconDiv = $('<div class="dropdown-item-icon bg-primary text-white iconDiv aItem">').html('<i class="fas fa-bell alarmIcon aItem"></i>');
+				$msg = $('<div class="aItem">').html('새로운 알림이 도착했습니다.');
+				
+				$aContainer.append($iconDiv);
+				$aContainer.append($msg);
+				
+				$('.alarmArea').html('');
+				$('.alarmArea').append($aContainer);
+				
+				$('.aContainer').css({'animation-duration':'4s', 'animation-name':'slidein'});
 			}
 			
 			// 서버가 끊겼을 때 호출
@@ -370,7 +415,7 @@
 						var $a = $('<a class="dropdown-item">');
 						var $icon = $('<div class="dropdown-item-icon bg-info text-white"><i class="fas fa-clipboard-list alarmIcon"></i>');
 						var $desc = $('<div class="dropdown-item-desc">')
-									.html(data[i].senderName + " 님이 " + "<a href='cdetail.bo?bNo=" + data[i].bNo + "'>[" + data[i].bTitle + "]</a> 게시글에 댓글을 남겼습니다.");
+									.html(data[i].senderName + " 님이 " + "<a href='cdetail.bo?bNo=" + data[i].bNo + "'>[" + data[i].bTitle + "]</a> 글에 댓글을 남겼습니다.");
 						var $time = $('<div class="time">').html(data[i].alarmDate);
 						
 						$desc.append($time);
@@ -385,7 +430,6 @@
 				}
 			});
 		}
-		
 	</script>
 </body>
 

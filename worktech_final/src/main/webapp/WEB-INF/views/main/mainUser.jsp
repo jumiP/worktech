@@ -78,6 +78,7 @@
 
 </head>
 <body>
+
    <c:import url="common/headerUser.jsp" />
    
    <!-- Main Content -->
@@ -373,8 +374,7 @@
                 <!--datepicker ends-->
               </div>
          <!-- calendar end -->
-            
-              
+
    </div>
    
    
@@ -452,7 +452,6 @@
 //        		location.href='qrcode.co';
 		}
     </script>
-   
 
 
   <script src="resources/vendors/chart.js/Chart.min.js"></script>

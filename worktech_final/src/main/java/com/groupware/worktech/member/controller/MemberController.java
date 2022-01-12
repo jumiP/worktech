@@ -52,7 +52,7 @@ public class MemberController {
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
 	public String login(Member m, Model model) {	
 		
-//		System.out.println(bcrypt.encode(m.getPwd()));
+		System.out.println(bcrypt.encode(m.getPwd()));
 		
 		Member loginMember = mService.memberLogin(m);
 		
@@ -350,17 +350,157 @@ public class MemberController {
 		return "adminMemView";
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// 사원정보 상세보기 페이지에서 사원 삭제
+	@RequestMapping("delete.me")
+	public String deleteDetailMember(@RequestParam("mNo" ) String mNo) {
+		
+//		System.out.println(mNo);
+		
+		int result = mService.deleteDetailMem(mNo);
+		
+		if(result > 0) {
+			return "redirect:mList.me";
+		} else {
+			throw new MemberException("사원 삭제에 실패하였습니다.");
+		}
 
+	}
+	
+	// 관리자 사원 정보 수정 페이지로 이동
+	@RequestMapping("adminUpdateMem.me")
+	public String adminUpdateMemview(@RequestParam("mNo") String mNo, @RequestParam("page") int page, Model model){
+		Member m = mService.selectMember(mNo);
+		model.addAttribute("member", m).addAttribute("page", page);
+		
+		// 부서 목록
+		ArrayList<Department> list = aService.selectDepList();
+		if(list != null) {
+			model.addAttribute("list", list);
+		}
+		
+		return "adminUpdateMem";
+	}
+	
+	
+	// 관리자 : 사원 정보 수정 
+	@RequestMapping("AdminUdateMem.me")
+	public String adminUpdateMem(@ModelAttribute Member m, @RequestParam("page") int page, Model model) {
+		int result = mService.adminUpdateMem(m);
+		
+		if(result > 0) {
+			model.addAttribute("page", page);
+		} else {
+			throw new MemberException("사원 정보 수정에 실패하였습니다.");
+		}
+		return "redirect:mdetail.me?mNo=" + m.getmNo();
+	}
+	
+	
+	// 관리자 : 사원 비밀번호 수정페이지로 이동
+	@RequestMapping("updateMemPwdView.me")
+	public String updateMemberPwdView(@ModelAttribute Member m) {
+		return "adminUpdateMemPwd";
+	}
+	
+	
+	// 관리자 비밀번호 페이지로 이동
+	@RequestMapping("adminPwdView.me")
+	public String adminPwdView(@RequestParam("adminMNo") String mNo, @RequestParam("adminName") String name, Model model) {
+//		System.out.println(mNo);
+//		System.out.println(name);
+		
+		model.addAttribute("mNo", mNo);
+		model.addAttribute("name", name);
+		return "adminUpdatePwd";
+	}
+	
+	// 관리자 비밀번호 변경
+	@RequestMapping("adminPwd.me")
+	public String adminPwd(@RequestParam("pwd") String oldPwd, @RequestParam("newPwd") String Pwd, Model model) {
+		// 비밀번호 받아오기
+//		System.out.println(oldPwd); // 기존 비밀번호
+//		System.out.println(Pwd); // 새로운 비밀번호 리스트
+		String[] pwdList = Pwd.split(",");
+		String newPwd = pwdList[1]; // 새로운 비밀번호
+		
+		// 아이디 받아오기 
+		Member m = (Member)model.getAttribute("loginUser");
+//		System.out.println(m); 
+		Member dbMember = mService.memberLogin(m);
+		
+		int result = 0;
+		
+		if(bcrypt.matches(oldPwd, dbMember.getPwd())) {
+			HashMap<String, String> map = new HashMap<String, String> ();
+			map.put("mNo", m.getmNo());
+			map.put("newPwd", bcrypt.encode(newPwd));
+			
+			result = mService.updatePassword(map);
+		}
+		
+		if(result > 0) {
+			return "redirect:mList.me";
+		} else {
+			throw new MemberException("비밀번호 수정에 실패하였습니다.");
+		}
+	}
+
+	// 마이페이지로 이동
+	@RequestMapping("myPage.me")
+	public String myPageView() {
+		return "mypage";
+	}
+	
+	// 마이페이지 : 비밀번호 변경 페이지로 이동
+	@RequestMapping("updatePwdView.me")
+	public String myPagePwdView() {
+		return "updatePwd";
+	}
+
+	
+	// 관리자 비밀번호 변경
+		@RequestMapping("updatePwd.me")
+		public String memPwd(@RequestParam("pwd") String oldPwd, @RequestParam("newPwd") String Pwd, Model model) {
+			// 비밀번호 받아오기
+//			System.out.println(oldPwd); // 기존 비밀번호
+//			System.out.println(Pwd); // 새로운 비밀번호 리스트
+			String[] pwdList = Pwd.split(",");
+			String newPwd = pwdList[1]; // 새로운 비밀번호
+			
+			// 아이디 받아오기 
+			Member m = (Member)model.getAttribute("loginUser");
+//			System.out.println(m); 
+			Member dbMember = mService.memberLogin(m);
+			
+			int result = 0;
+			
+			if(bcrypt.matches(oldPwd, dbMember.getPwd())) {
+				HashMap<String, String> map = new HashMap<String, String> ();
+				map.put("mNo", m.getmNo());
+				map.put("newPwd", bcrypt.encode(newPwd));
+				
+				result = mService.updatePassword(map);
+			}
+			
+			if(result > 0) {
+				return "redirect:myPage.me";
+			} else {
+				throw new MemberException("비밀번호 수정에 실패하였습니다.");
+			}
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

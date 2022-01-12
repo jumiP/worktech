@@ -57,7 +57,7 @@
         	margin-bottom: 5px;
         }
         
-        .chatRoomOpen {
+        .chatRoomOpen, .sysMsg {
         	text-align: center;
         	margin-bottom: 15px;
         	font-size: 12px;
@@ -74,6 +74,11 @@
         
         a:hover{
         	cursor: pointer;
+        }
+        
+        .myInfo:hover{
+        	cursor: default !important;
+        	background: none;
         }
     </style>
 </head>
@@ -101,7 +106,58 @@
 								대화 상대 없음
 							</c:if>
                     	</h4>
-                    	<ul class="navbar-nav navbar-right" style="width: 10%; text-align: right;">
+                    	<c:if test="${ fn:length(memberList) > 2 }">
+	                    	<ul class="navbar-nav navbar-right" style="width: 5%; text-align: right;">
+		                    	<li class="dropdown" >
+			                        <a data-toggle="dropdown" class="nav-link-lg nav-link-user">
+										<i class="fas fa-users"></i>
+			                        </a>
+									<div class="dropdown-menu dropdown-menu-right">
+			                            <a onclick="inviteChat()" class="dropdown-item has-icon">
+			                                <i class="fas fa-user-plus"></i> 채팅방 초대
+			                            </a>
+			                            <c:forEach var="gl" items="${ memberList }">
+											<c:if test="${ gl.gatheringMember != loginUser.mNo }">
+												<c:url value='addPersonalChat.ct' var="personalChat">
+													<c:param name="selectmNo" value="${ gl.gatheringMember }"/>
+												</c:url>
+					                            <a href="${ personalChat }" class="dropdown-item">
+													<c:if test="${ gl.profileUrl != null }">
+														<img src="${ ch.gatheringList.profileUrl }" class="mr-3 rounded-circle" width="20"
+															alt="image">
+													</c:if>
+													<c:if test="${ gl.profileUrl == null }">
+														<img src="resources/dist/assets/img/avatar/avatar-1.png" class="mr-1 rounded-circle" width="20"
+															alt="image">
+													</c:if>
+						                               ${ gl.gatheringMemberName } ${ gl.gatheringMemberJobGrade }
+						                            <c:if test="${ gl.gatheringMember == cr.chatOpenMem }">
+						                            	<i class="fas fa-crown" style="color: #FFBB00;"></i>
+						                            </c:if>
+					                            </a>
+											</c:if>
+											<c:if test="${ gl.gatheringMember == loginUser.mNo }">
+												<a class="dropdown-item myInfo">
+													<c:if test="${ gl.profileUrl != null }">
+														<img src="${ ch.gatheringList.profileUrl }" class="mr-3 rounded-circle" width="20"
+															alt="image">
+													</c:if>
+													<c:if test="${ gl.profileUrl == null }">
+														<img src="resources/dist/assets/img/avatar/avatar-1.png" class="mr-1 rounded-circle" width="20"
+															alt="image">
+													</c:if>
+													 <span style="color: #67d4ef;">${ gl.gatheringMemberName } ${ gl.gatheringMemberJobGrade }</span> 
+													 <c:if test="${ gl.gatheringMember == cr.chatOpenMem }">
+						                            	<i class="fas fa-crown" style="color: #FFBB00;"></i>
+						                            </c:if>
+												</a>
+											</c:if>
+										</c:forEach>
+			                        </div>
+		                        </li>
+	                        </ul>
+                        </c:if>
+                    	<ul class="navbar-nav navbar-right" style="width: 5%; text-align: right;">
 	                    	<li class="dropdown" >
 		                        <a data-toggle="dropdown" class="nav-link-lg nav-link-user">
 									<i class="fas fa-bars"></i>
@@ -132,7 +188,7 @@
                     <div class="card-body chat-content" tabindex="1" style="overflow: hidden; outline: none;" id="chatMsgBody">
 	                    <div class="chatRoomOpen">채팅방이 생성되었습니다.</div>
 	                    <c:forEach var="msg" items="${ messageList }">
-	                    	<c:if test="${ loginUser.mNo != msg.sendMember }">
+	                    	<c:if test="${ msg.readYN ne 'Y' && loginUser.mNo != msg.sendMember }">
 	                    		<div class="chat-item chat-left">
 	                    			<div class="senderName">${ msg.sendMemberFullName }</div>
 	                    			<c:if test="${ msg.profileUrl != null }">
@@ -154,7 +210,7 @@
 	                                </div>
 	                    		</div>
 	                    	</c:if>
-	                    	<c:if test="${ loginUser.mNo == msg.sendMember }">
+	                    	<c:if test="${ msg.readYN ne 'Y' && loginUser.mNo == msg.sendMember }">
 	                    		<div class="chat-item chat-right">
 	                    			<c:if test="${ msg.profileUrl != null }">
 	                    				<img src="${ msg.profileUrl }">
@@ -174,6 +230,9 @@
 	                                	</div>
                                 	</div>
 	                    		</div>
+	                    	</c:if>
+	                    	<c:if test="${ msg.readYN eq 'Y' }">
+	                    		<div class="sysMsg">${ msg.msgContent }</div>
 	                    	</c:if>
 	                    </c:forEach>
 	                    <div id="endChat"></div>
@@ -200,7 +259,8 @@
 		sock.onmessage = onMessage;
 		sock.onclose = onClose;
 		sock.onopen = onOpen;
-	
+		
+		// 일반 메시지
 		function sendMessage() {
 			// 메시지 부분이 비어 있지 않으면
 			if($('#msg').val() != ''){
@@ -265,36 +325,44 @@
 			var sendMember = msgData.sendMember;
 			var sendMemberFullName = msgData.sendMemberFullName;
 			var pUrl = msgData.profileUrl;
+			var readYN = msgData.readYN;
 			
 			// 받은 메시지 추가
 			
 			// 보낸 사람이 내가 아닐 경우에만 추가해야 함
 			if(sendMember != "${ loginUser.mNo }"){
-		        var chatMsgBody = $('#chatMsgBody');
+				var chatMsgBody = $('#chatMsgBody');
 		        var innerDiv = '';
-		        
-				innerDiv += '<div class="chat-item chat-left">'
-							+ '<div class="senderName">' + sendMemberFullName + '</div>';
-		        
-		        if(pUrl != '' && pUrl != null ){
-		        	innerDiv += '<img src="' + pUrl + '">';	
-		        } else {
-		        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
-		        }
-		        
-		        // 현재 시간 구하기
-		        var today = new Date();   
-	
-		        var hours = today.getHours(); // 시
-		        var minutes = today.getMinutes();  // 분
-		        
-		        var now = hours + ":" + minutes;
-		        
-		        innerDiv += '<div class="chat-details">'
-		        			+ '<div class="chat-text">' + msgContent + '</div>'
-		        			+ '<div class="chat-time">' + now + '</div></div></div>';
-		        
-		        chatMsgBody.append(innerDiv);
+
+		        if(readYN != 'Y'){
+			        // 일반 메시지
+					innerDiv += '<div class="chat-item chat-left">'
+								+ '<div class="senderName">' + sendMemberFullName + '</div>';
+			        
+			        if(pUrl != '' && pUrl != null ){
+			        	innerDiv += '<img src="' + pUrl + '">';	
+			        } else {
+			        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
+			        }
+			        
+			        // 현재 시간 구하기
+			        var today = new Date();   
+		
+			        var hours = today.getHours(); // 시
+			        var minutes = today.getMinutes();  // 분
+			        
+			        var now = hours + ":" + minutes;
+			        
+			        innerDiv += '<div class="chat-details">'
+			        			+ '<div class="chat-text">' + msgContent + '</div>'
+			        			+ '<div class="chat-time">' + now + '</div></div></div>';
+			        
+			        chatMsgBody.append(innerDiv);
+				} else {
+					// 시스템 메시지
+					innerDiv += '<div class="sysMsg">' + msgContent + '</div>';
+				    chatMsgBody.append(innerDiv);
+				}
 			}
 			
 			updateScroll();
@@ -308,6 +376,15 @@
 		
 		//채팅창에 들어왔을 때
 		function onOpen(evt) {
+			var names = '${names}';
+			
+			if(names != ''){
+				names = names.replace("[", '');
+				names = names.replace("]", '');
+				
+				var nameArr = names.split(", ");
+				sendSystemMessage(nameArr);
+			}
 			updateTime();
 		}
 	
@@ -405,7 +482,48 @@
 				sendMessage();
 			}
 		}
+
+		// 시스템 메시지
+		function sendSystemMessage(nameArr) {
+			// 내 메시지 서버로 보내기
+			var message = '';
+			var count = nameArr.length - 1;
+			
+			if(nameArr.length > 1){
+				message = "${ loginUser.name } 님이 [" + nameArr[0] + "] 님 외 " + count + "명을 초대하였습니다.";
+			} else{
+				message = "${ loginUser.name } 님이 [" + nameArr[0] + "] 님을 초대하였습니다.";
+			}
+			
+			var sendMemberFullName = "${ loginUser.dName } ${ loginUser.name } ${ loginUser.jobGrade }";
+			
+			var data = {
+					"msgContent" : message,
+					"chatRoomNo" : "${ cr.chatRoomNo }",
+	                "sendMember" : "${ loginUser.mNo }",
+	                "sendMemberFullName" : sendMemberFullName,
+	                "readYN" : "Y"
+	        };
+			
+	        var jsonData = JSON.stringify(data);
+	        
+	        // 시스템 메시지 추가
+	        var chatMsgBody = $('#chatMsgBody');
+	        var innerDiv = '';
+	        
+	        innerDiv += '<div class="sysMsg">' + message + '</div>';
+	        
+	        chatMsgBody.append(innerDiv);
+	        
+	        updateTime();
+	        sock.send(jsonData);
+		        
+		}
 		
+		// 채팅방 초대
+		function inviteChat() {
+			location.href = 'inviteChatMemberView.ct?chatRoomNo=' + ${ cr.chatRoomNo };
+		}
 	</script>
 
     <!-- General JS Scripts -->

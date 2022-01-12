@@ -197,7 +197,7 @@
 	
 	<select id="getMessageList" resultMap="chatMessageResultSet2">
 		select msg_id, msg_content, send_time, chatroom_no, chat_member, name as chat_member_name, p_url,
-			   d_name || ' ' || name || ' ' || job_grade as send_member_full_name
+			   d_name || ' ' || name || ' ' || job_grade as send_member_full_name, read_yn
 		from chat_msg join
 		     member on (m_no = chat_member) left join
 			 profile using(m_no) left join
@@ -212,6 +212,7 @@
 		<result column="SEND_TIME" property="sendTime"/>
 		<result column="CHATROOM_NO" property="chatRoomNo"/>
 		<result column="CHAT_MEMBER" property="sendMember"/>
+		<result column="READ_YN" property="readYN"/>
 		<result column="chat_member_name" property="sendMemberName"/>
 		<result column="send_member_full_name" property="sendMemberFullName"/>
 		<result column="p_url" property="profileUrl"/>
@@ -241,4 +242,45 @@
 		update chatroom set chat_status = 'N'
 		where chatroom_no = #{chatRoomNo}
 	</update>
+	
+	<select id="getGatheringMNoList" resultType="string">
+		select chat_member
+		from chat_list
+		where chatroom_no = #{chatRoomNo}
+	</select>
+	
+	<select id="selectInviteDeptMember" resultMap="memberResultSet">
+		select m_no, name, job_grade, d_name
+		from member
+			 join department using(d_no)
+		where m_no not in
+			<foreach item="item" index="index" collection="mNoList" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			  and (d_no = #{dNo}
+			  or d_no in (select d_no
+			  			  from department
+			  			  start with d_parent = #{dNo}
+                          connect by prior d_no = d_parent))
+		order by name
+	</select>
+	
+	<insert id="insertMoreMember">
+		insert into chat_list
+		values(SEQ_LIST.NEXTVAL, #{chatRoomNo}, #{mNo}, DEFAULT)
+	</insert>
+	
+	<select id="selectNames" resultType="string">
+		select name
+		from member
+		where m_no in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+				#{item}
+		</foreach>
+	</select>
+	
+	<insert id="insertSystemMessage">
+		insert into chat_msg
+		values(SEQ_MSG.NEXTVAL, #{msgContent}, sysdate, #{readYN}, #{chatRoomNo}, #{sendMember})
+	</insert>
 </mapper>

@@ -68,7 +68,8 @@ public class ChatController {
 	}
 	
 	@RequestMapping("chatDetail.ct")
-	public String chatDetail(@RequestParam("chatRoomNo") int chatRoomNo, Model model) {
+	public String chatDetail(@RequestParam("chatRoomNo") int chatRoomNo, Model model,
+							@RequestParam(value="names", required = false) ArrayList<String> names) {
 		// 해당 채팅방 정보 가져오기
 		ChatRoom cr = cService.getChatRoomInfo(chatRoomNo);
 		
@@ -88,6 +89,10 @@ public class ChatController {
 						cm.setDate(date);
 						cm.setTime(time);
 					}
+				}
+				
+				if(names != null) {
+					model.addAttribute("names", names);
 				}
 				
 				model.addAttribute("cr", cr);
@@ -351,5 +356,94 @@ public class ChatController {
 		}
 	}
 	
+	@RequestMapping("inviteChatMemberView.ct")
+	public String addInviteView(Model model, @RequestParam("chatRoomNo") int chatRoomNo) {
+		ArrayList<Department> list = cService.getChatDepartmentList();
+		
+		if(list != null) {
+			JSONArray jArr = new JSONArray();
+			
+			for(Department d : list) {
+				JSONObject jo = new JSONObject();
+				jo.put("id", d.getdNo());
+				jo.put("pId", d.getdParent());
+				jo.put("name", d.getdName());
+				
+				jArr.add(jo);
+			}
+			
+			model.addAttribute("jsonArray", jArr);
+			model.addAttribute("chatRoomNo", chatRoomNo);
+			return "inviteChatView";
+		} else {
+			throw new ChatException("채팅방 초대 화면 조회에 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("deptInviteSelect.ct")
+	public void selectInviteDeptMember(@RequestParam("dNo") int dNo, @RequestParam("chatRoomNo") int chatRoomNo, 
+										HttpServletResponse response, HttpSession session) {
+		
+		ArrayList<String> mNoList = cService.getGatheringMNoList(chatRoomNo);
+		
+		if(mNoList != null) {
+			String myMNo = ((Member)session.getAttribute("loginUser")).getmNo();
+			mNoList.add(myMNo);
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("mNoList", mNoList);
+			map.put("dNo", dNo);
+			
+			ArrayList<Member> list = cService.selectInviteDeptMember(map);
+			
+			if(list != null) {
+				response.setContentType("application/json; charset=UTF-8");
+				
+				Gson gson = new Gson();
+				
+				try {
+					gson.toJson(list, response.getWriter());
+				} catch (JsonIOException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				throw new ChatException("초대할 부서원 목록 조회에 실패하였습니다.");
+			}
+		} else {
+			throw new ChatException("초대할 부서원 목록 조회에 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("addMoreMember.ct")
+	public String insertMoreMember(@RequestParam("mNo") ArrayList<String> mNoes, @RequestParam("chatRoomNo") int chatRoomNo, 
+									HttpSession session, Model model) {
+		int result = 0;
+		
+		for(String mNo : mNoes) {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("mNo", mNo);
+			map.put("chatRoomNo", chatRoomNo);
+			
+			result += cService.insertMoreMember(map);
+		}
+		
+		
+		if(result >= mNoes.size()) {
+			ArrayList<String> names = cService.selectNames(mNoes);
+			if(names != null) {
+				model.addAttribute("names", names);
+			}
+			model.addAttribute("chatRoomNo", chatRoomNo);
+			
+			return "redirect:chatDetail.ct";
+		} else {
+			throw new ChatException("멤버 초대에 실패하였습니다.");
+		}
+		
+
+	}
 	
 }

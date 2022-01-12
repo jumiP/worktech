@@ -140,10 +140,18 @@
 		where m_no = #{ m_no }
 	</select>
 	
+	<!-- 관리자 : 사원 정보 수정  -->
+	<update id="adminUpdateMem">
+		update member
+		set name=#{name}, job_grade=#{jobGrade}, d_no=#{dNo}
+		where m_No = #{mNo}
+	</update>
 	
-	
-	
-	
-	
+	<!-- 비밀번호 변경 -->
+	<update id="updatePassword">
+		update member
+		set pwd=#{newPwd}
+		where m_no = #{mNo}
+	</update>
 	
 </mapper>

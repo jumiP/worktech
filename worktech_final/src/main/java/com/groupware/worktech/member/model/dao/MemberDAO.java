@@ -84,6 +84,21 @@ public class MemberDAO {
 		return sqlSession.selectOne("memberMapper.selectMember", mNo);
 	}
 
+	// 사원정보 상세보기 페이지에서 사원 삭제
+	public int deleteDetailMem(SqlSessionTemplate sqlSession, String mNo) {
+		return sqlSession.update("memberMapper.deleteMember", mNo);
+	}
+
+	// 관리자 : 사원 정보 수정 
+	public int adminUpdateMem(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("memberMapper.adminUpdateMem", m);
+	}
+
+	// 비밀번호 변경
+	public int updatePassword(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.update("memberMapper.updatePassword", map);
+	}
+
 	
 	
 

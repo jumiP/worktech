@@ -185,8 +185,8 @@
 		                            </tbody>
 		                        </table>
 	                        </div>
-	                        <div id="generalBoard">
-								<table class="boardTable">
+	                        <div id="commonBoard">
+								<table class="boardTable" id="commonTable">
 		                            <thead>
 		                                <tr>
 		                                    <th style="width: 150px;">글 번호</th>
@@ -196,42 +196,7 @@
 		                                    <th style="width: 100px;">조회수</th>
 		                                </tr>
 		                            </thead>
-		                            <tbody>
-		                                <tr>
-		                                    <td>1</td>
-		                                    <td>업무 관련 자료 공유합니다</td>
-		                                    <td>관리자</td>
-		                                    <td>2021-12-19</td>
-		                                    <td>1</td>
-		                                </tr>
-		                                <tr>
-		                                    <td>2</td>
-		                                    <td>월요일 출근은 정말 지옥 같네요</td>
-		                                    <td>관리자</td>
-		                                    <td>2021-12-19</td>
-		                                    <td>1</td>
-		                                </tr>
-		                                <tr>
-		                                    <td>3</td>
-		                                    <td>게시판 작성</td>
-		                                    <td>관리자</td>
-		                                    <td>2021-12-19</td>
-		                                    <td>1</td>
-		                                </tr>
-		                                <tr>
-		                                    <td>4</td>
-		                                    <td>게시판 작성</td>
-		                                    <td>관리자</td>
-		                                    <td>2021-12-19</td>
-		                                    <td>1</td>
-		                                </tr>
-		                                <tr>
-		                                    <td>5</td>
-		                                    <td>게시판 작성</td>
-		                                    <td>관리자</td>
-		                                    <td>2021-12-19</td>
-		                                    <td>1</td>
-		                                </tr>
+		                            <tbody id="commonBody">
 		                            </tbody>
 		                        </table>
 	                        </div>
@@ -374,7 +339,7 @@
 	
 	<script>
 		$(function(){
-			$('#generalBoard').css('display', 'none');
+			$('#commonBoard').css('display', 'none');
 			$('#anonymousBoard').css('display', 'none');
 		});
 		
@@ -384,24 +349,58 @@
 				$('#generalBtn').html('일반 게시판');
 				$('#anonymousBtn').html('익명 게시판');
 				$('#noticeBoard').css('display', 'block');
-				$('#generalBoard').css('display', 'none');
+				$('#commonBoard').css('display', 'none');
 				$('#anonymousBoard').css('display', 'none');
 			} else if(btn.id == 'generalBtn'){
 				$(btn).html('<b>일반 게시판</b>');
 				$('#noticeBtn').html('공지사항');
 				$('#anonymousBtn').html('익명 게시판');
 				$('#noticeBoard').css('display', 'none');
-				$('#generalBoard').css('display', 'block');
+				$('#commonBoard').css('display', 'block');
 				$('#anonymousBoard').css('display', 'none');
 			} else if(btn.id == 'anonymousBtn'){
 				$(btn).html('<b>익명 게시판</b>');
 				$('#noticeBtn').html('공지사항');
 				$('#generalBtn').html('일반 게시판');
 				$('#noticeBoard').css('display', 'none');
-				$('#generalBoard').css('display', 'none');
+				$('#commonBoard').css('display', 'none');
 				$('#anonymousBoard').css('display', 'block');
 			}
 		}
+		
+		$(function(){
+			$.ajax({
+				url: 'commonTopList.bo',
+				dataType: 'json',
+				success: function(data){
+					console.log(data);
+					
+					$cTable = $('#commonBody');
+					$cTable.html('');
+					
+					for(var i in data){
+						$tr = $('<tr>');
+						$bNo = $('<td>').html(data[i].bNo);
+						$bTitle = $('<td>').html("[ " + data[i].categoryName + " ] " + data[i].bTitle);
+						$bWriter = $('<td>').html(data[i].name);
+						$bDate = $('<td>').html(data[i].bDate);
+						$bCount = $('<td>').html(data[i].bCount);
+						
+						$tr.append($bNo);
+						$tr.append($bTitle);
+						$tr.append($bWriter);
+						$tr.append($bDate);
+						$tr.append($bCount);
+						
+						$cTable.append($tr);
+					}
+					
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+		});
 	</script>
 	 <script src="resources/dist/assets/vendors/js/vendor.bundle.base.js"></script>
 	 

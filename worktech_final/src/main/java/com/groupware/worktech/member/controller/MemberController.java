@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -25,11 +24,13 @@ import com.groupware.worktech.admin.model.service.AdminService;
 import com.groupware.worktech.admin.model.vo.Department;
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.common.Pagination;
+import com.groupware.worktech.commut.model.service.CommutService;
+import com.groupware.worktech.commut.model.vo.QRCode;
 import com.groupware.worktech.member.model.exception.MemberException;
 import com.groupware.worktech.member.model.service.MemberService;
 import com.groupware.worktech.member.model.vo.Member;
 
-@SessionAttributes("loginUser")
+@SessionAttributes({"loginUser", "qr"})
 @Controller
 public class MemberController {
 	
@@ -42,8 +43,10 @@ public class MemberController {
 	private AdminService aService;
 	
 	@Autowired
-	private BCryptPasswordEncoder bcrypt;
+	private CommutService coService;
 	
+	@Autowired
+	private BCryptPasswordEncoder bcrypt;
 	
 	// 로그인(암호화) --> DB에 Spring 콘솔에 입력된 비밀번호(암호화)를 넣고 저장 후 로그인!
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
@@ -55,7 +58,12 @@ public class MemberController {
 		
 		if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
 			model.addAttribute("loginUser", loginMember);
-			logger.info(loginMember.getmNo());
+			
+			QRCode qr = coService.getinfo(loginMember.getmNo());
+			if(qr != null) {
+				model.addAttribute("qr", qr);
+			}
+//			logger.info(loginMember.getmNo());
 			return "redirect:home.do";
 		} else {
 			throw new MemberException("로그인에 실패하였습니다.");

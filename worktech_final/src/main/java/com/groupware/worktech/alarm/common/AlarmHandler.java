@@ -29,13 +29,11 @@ public class AlarmHandler extends TextWebSocketHandler {
 		sessionList.add(session);
 		
 		String mNo = getmNo(session);
-		System.out.println(mNo);
 		userSessionsMap.put(mNo, session);
 	}
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		System.out.println("받음: " + message);
 		String sender = getmNo(session);
 		
 		String msg = message.getPayload();
@@ -52,9 +50,6 @@ public class AlarmHandler extends TextWebSocketHandler {
 			
 			// 일반 게시판 글 작성자가 로그인 중이라면
 			if("cReply".equals(type) && bWriterSession != null) {
-//				TextMessage tmpMsg = new TextMessage(rName + " 님이 " 
-//						+ "<a href='cdetail.bo?bNo=" + bNo + "'>[" + bTitle + "]</a>" + "번 게시글에 댓글을 남겼습니다.");
-//				bWriterSession.sendMessage(tmpMsg);
 				
 				TextMessage tmpMsg = new TextMessage(msg);
 				bWriterSession.sendMessage(tmpMsg);

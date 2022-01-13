@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 import com.groupware.worktech.admin.model.exception.AdminException;
 import com.groupware.worktech.admin.model.service.AdminService;
 import com.groupware.worktech.admin.model.vo.Department;
@@ -164,11 +167,20 @@ public class AdminController {
 	}
 	
 	@RequestMapping("ndetail.ad")
-	public String noticeDetail(@RequestParam("page") int page, @RequestParam("bNo") int bNo, @RequestParam(value = "upd", required = false) String upd,
-								Model model) {
+	public String noticeDetail(@RequestParam("page") int page, @RequestParam("bNo") int bNo,
+			@RequestParam(value = "upd", required = false) String upd, @RequestParam(value = "boardLimit", required = false) Integer boardLimit, 
+			@RequestParam(value ="searchCondition", required = false) String condition, @RequestParam(value = "searchValue", required = false) String value, Model model) {
 		Board b = bService.selectNotice(bNo, upd);
+
+		model.addAttribute("b", b).addAttribute("page", page);
 		
-		model.addAttribute("b", b).addAttribute("page", page); 
+		if(boardLimit != null) {
+			model.addAttribute("boardLimit", boardLimit);
+		}
+		
+		if(value != null) {
+			model.addAttribute("searchCondition", condition).addAttribute("searchValue", value);
+		}
 		
 		return "adminNoticeDetail";
 	}
@@ -574,6 +586,26 @@ public class AdminController {
 		
 //		return null;
 	}
+	
+	// 관리자 메인 공지사항 리스트
+	@RequestMapping("noticeRecentList.ad")
+	public void noticeRecentList(HttpServletResponse response) {
+		response.setContentType("application/json; charset=UTF-8");
 		
+		ArrayList<Board> list = bService.selectNoticeRecentList();
+		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+		Gson gson = gb.create();
+		
+		if(list != null) {
+			try {
+				gson.toJson(list, response.getWriter());
+			} catch (JsonIOException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	
 }

@@ -359,7 +359,6 @@ public class BoardController {
 		response.setContentType("application/json; charset=UTF-8");
 		
 		ArrayList<Board> list = bService.selectCommonTopList();
-		System.out.println(list);
 		
 		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
 		

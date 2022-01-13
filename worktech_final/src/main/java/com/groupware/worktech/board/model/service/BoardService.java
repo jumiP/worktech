@@ -217,7 +217,9 @@ public class BoardService {
 		return bDAO.selectCommonTopList(sqlSession);
 	}
 	
-	
+	public ArrayList<Board> selectNoticeRecentList() {
+		return bDAO.selectNoticeRecentList(sqlSession);
+	}
 	
 	
 	
@@ -307,7 +309,8 @@ public class BoardService {
 	public ArrayList<Board> selectZList(PageInfo pi) {
 		return bDAO.selectZList(sqlSession, pi);
 	}
-
+	
+	
 	
 
 

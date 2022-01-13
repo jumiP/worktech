@@ -174,18 +174,22 @@
                                                 	</li>
 	                                            </c:if>
                                             	<c:if test="${ pi.currentPage > 1 }">
-                                            		<c:url var="start" value="commonList.bo">
+                                            		<c:url var="start" value="${ loc }">
 														<c:param name="page" value="1"/>
 														<c:param name="category" value="${ category }"/>
+														<c:param name="searchCategory" value="${ searchCategory }"/>
+														<c:param name="searchValue" value="${ searchValue }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ start }" aria-label="Previous">
 	                                                        <i class="fas fa-angle-double-left"></i>
 	                                                    </a>
 	                                                </li>
-													<c:url var="before" value="commonList.bo">
+													<c:url var="before" value="${ loc }">
 														<c:param name="page" value="${ pi.currentPage - 1 }"/>
 														<c:param name="category" value="${ category }"/>
+														<c:param name="searchCategory" value="${ searchCategory }"/>
+														<c:param name="searchValue" value="${ searchValue }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ before }" aria-label="Previous">
@@ -200,9 +204,11 @@
 	                                            	</c:if>
 	                                            
 	                                            	<c:if test="${ p ne pi.currentPage }">
-		                                            	<c:url var="pagination" value="commonList.bo">
+		                                            	<c:url var="pagination" value="${ loc }">
 															<c:param name="page" value="${ p }"/>
 															<c:param name="category" value="${ category }"/>
+															<c:param name="searchCategory" value="${ searchCategory }"/>
+															<c:param name="searchValue" value="${ searchValue }"/>
 														</c:url>
 	                                            		<li class="page-item">
 	                                            			<a class="page-link" href="${ pagination }">${ p }</a>
@@ -225,9 +231,11 @@
 												</c:if>
 
 												<c:if test="${ pi.currentPage < pi.maxPage }">
-													<c:url var="after" value="commonList.bo">
+													<c:url var="after" value="${ loc }">
 														<c:param name="page" value="${ pi.currentPage + 1 }"/>
 														<c:param name="category" value="${ category }"/>
+														<c:param name="searchCategory" value="${ searchCategory }"/>
+														<c:param name="searchValue" value="${ searchValue }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ after }" aria-label="Next">
@@ -235,9 +243,11 @@
 	                                                    </a>
 	                                                </li>
 													
-													<c:url var="end" value="commonList.bo">
+													<c:url var="end" value="${ loc }">
 														<c:param name="page" value="${ pi.maxPage }"/>
 														<c:param name="category" value="${ category }"/>
+														<c:param name="searchCategory" value="${ searchCategory }"/>
+														<c:param name="searchValue" value="${ searchValue }"/>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ end }" aria-label="Next">
@@ -252,7 +262,6 @@
                                 <div class="search">
                                 	<c:url var="search" value="searchCommon.bo"/>
                                 	<form action="${ search }">
-                                		<input type="hidden" name="page" value="${ pi.currentPage }">
                                 		<input type="hidden" name="category" value="${ category }">
 	                                    <select name="searchCategory" style="height: 30px; width: 80px; border: 1px solid #e3e3e3;">
 	                                        <option value="title">제목</option>

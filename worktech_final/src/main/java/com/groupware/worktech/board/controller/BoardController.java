@@ -18,6 +18,7 @@ import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.groupware.worktech.alarm.model.service.AlarmService;
 import com.groupware.worktech.board.model.exception.BoardException;
 import com.groupware.worktech.board.model.service.BoardService;
 import com.groupware.worktech.board.model.vo.Board;
@@ -42,6 +44,9 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService bService;
+	
+	@Autowired
+	private AlarmService alService;
 	
 	@RequestMapping("commonList.bo")
 	public String commonBoardList(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="category", required=false) Integer category, Model model) {
@@ -188,73 +193,84 @@ public class BoardController {
 		
 		return "commonBoardUpdate";
 	}
+
 	
+	@Transactional
 	@RequestMapping("cupdate.bo")
-	public String commonBoardUpdate(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile, 
-									@RequestParam(value="fNo", required=false) ArrayList<Integer> fNoes, @RequestParam("upd") String upd, 
-									@RequestParam("flag") int flag,HttpServletRequest request, Model model) {
+	public String commonBoardUpdate(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile,
+									@RequestParam(value = "fNo", required = false) ArrayList<Integer> fNoes, @RequestParam("upd") String upd,
+									@RequestParam("flag") int flag, HttpServletRequest request, Model model) {
 		
 		ArrayList<BoardFile> oldFileList = bService.selectCommonBoard(b.getbNo(), upd).getFileList();
 
-		if(fNoes != null && !fNoes.isEmpty()) {
-			for(int i = 0; i < oldFileList.size(); i++) {
+		// 저장되어 있는 파일 삭제
+		if (fNoes != null && !fNoes.isEmpty()) {
+
+			for (int i = 0; i < oldFileList.size(); i++) {
 				int fNo = oldFileList.get(i).getfNo();
-				
-				if(!fNoes.contains(fNo)) {
+
+				if (!fNoes.contains(fNo)) {
 					deleteFile(oldFileList.get(i).getfRname(), request);
-					
+
 					int result = bService.deleteNoticeFile(fNo);
-					
-					if(result <= 0) {
+
+					if (result <= 0) {
 						throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
 					}
 				}
+
 			}
-		} else if(flag == 1) {
-			for(int i = 0; i < oldFileList.size(); i++) {
+		} else if (flag == 1) {
+			for (int i = 0; i < oldFileList.size(); i++) {
 				int fNo = oldFileList.get(i).getfNo();
-				
+
 				deleteFile(oldFileList.get(i).getfRname(), request);
-				
+
 				int result = bService.deleteNoticeFile(fNo);
-				
-				if(result <= 0) {
+
+				if (result <= 0) {
 					throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
 				}
 			}
 		}
-		
+
+		// 새로 추가한 파일 등록
 		ArrayList<BoardFile> fileList = null;
-		if(reloadFile != null && !reloadFile[0].isEmpty()) {
+
+		if (reloadFile != null && !reloadFile[0].getOriginalFilename().trim().equals("")) {
 			fileList = new ArrayList<BoardFile>();
-			for(int i = 0; i < reloadFile.length; i++) {
+			for (int i = 0; i < reloadFile.length; i++) {
 				HashMap<String, String> fileInfo = saveFile(reloadFile[i], request);
-				
-				if(fileInfo.get("renameFileName") != null) {
+
+				if (fileInfo.get("renameFileName") != null) {
 					BoardFile f = new BoardFile();
 					f.setfName(reloadFile[i].getOriginalFilename());
 					f.setfRname(fileInfo.get("renameFileName"));
 					f.setfURL(fileInfo.get("renamePath"));
 					f.setRefBNo(b.getbNo());
-					
+
 					fileList.add(f);
 				}
 			}
 		}
-		
+
 		b.setFileList(fileList);
-		
+
 		int result = bService.updateCommonBoard(b);
-		
-		if(result > 0) {
-			Board updateBoard = bService.selectCommonBoard(b.getbNo(), upd);
-			model.addAttribute("b", updateBoard);
-			
+
+		int length = 0;
+
+		if (fileList != null) {
+			length = fileList.size();
+		}
+
+		if (result >= length + 1) {
 			return "redirect:cdetail.bo?bNo=" + b.getbNo() + "&upd=Y";
 		} else {
 			throw new BoardException("게시글 수정에 실패하였습니다.");
 		}
 	}
+
 	
 	public void deleteFile(String fRname, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
@@ -333,11 +349,12 @@ public class BoardController {
 	
 	@RequestMapping("addCommonReply.bo")
 	@ResponseBody
-	public String insertCommonReply(@ModelAttribute Reply r) {
+	public int insertCommonReply(@ModelAttribute Reply r) {
 		int result = bService.insertCommonReply(r);
+		int alarmNo = alService.selectAlarmNo() - 1;
 		
 		if(result > 0) {
-			return "success";
+			return alarmNo;
 		} else {
 			throw new BoardException("댓글 등록에 실패하였습니다.");
 		}
@@ -430,6 +447,7 @@ public class BoardController {
 		
 		return jsonObject.toString();
 	}
+	
 	
 	
 	

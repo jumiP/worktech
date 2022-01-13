@@ -21,4 +21,12 @@ public class AlarmService {
 	public ArrayList<Alarm> selectAlarmList(String mNo) {
 		return alDAO.selectAlarmList(sqlSession, mNo);
 	}
+
+	public int selectAlarmNo() {
+		return alDAO.selectAlarmNo(sqlSession);
+	}
+
+	public int checkAlarm(int alarmNo) {
+		return alDAO.checkAlarm(sqlSession, alarmNo);
+	}
 }

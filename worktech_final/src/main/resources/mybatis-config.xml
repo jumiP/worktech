@@ -21,6 +21,7 @@
 		<typeAlias type="com.groupware.worktech.reservation.model.vo.Reservation" alias="Reservation"/>
 		<typeAlias type="com.groupware.worktech.alarm.model.vo.Alarm" alias="Alarm"/>
 		<typeAlias type="com.groupware.worktech.commut.model.vo.QRCode" alias="QRCode"/>
+		<typeAlias type="com.groupware.worktech.member.model.vo.Profile" alias="Profile"/>
 	</typeAliases>
 	
 	<mappers>

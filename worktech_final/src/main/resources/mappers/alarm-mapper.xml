@@ -7,8 +7,8 @@
 		from alarm
 			 join member on(alarm_sender = m_no)
 			 join board using(b_no)
-		where alarm_check = 'N'
-			  and alarm_receiver = #{mNo}
+		where alarm_receiver = #{mNo}
+			  and alarm_date >= to_char(sysdate-7, 'yyyymmdd')
 		order by alarm_no desc
 	</select>
 	
@@ -23,4 +23,16 @@
 		<result column="B_NO" property="bNo"/>
 		<result column="B_TITLE" property="bTitle"/>
 	</resultMap>
+	
+	<select id="selectAlarmNo" resultType="_int">
+		select last_number
+		from all_sequences
+		where sequence_name = 'SEQ_ALARM'
+	</select>
+	
+	<update id="checkAlarm">
+		update alarm
+		set alarm_check = 'Y'
+		where alarm_no = #{alarmNo}
+	</update>
 </mapper>

@@ -129,7 +129,7 @@
                                 		<c:if test="${ !empty b.fileList.get(0).getfName() }">
 		                                    <c:forEach var="f" items="${ b.fileList }">
 		                                    	<i class="fas fa-save"></i>
-		                                    	<a href="/resources/buploadFiles/${ f.getfRname() }" download="${ f.getfName() }">
+		                                    	<a href="resources/buploadFiles/${ f.getfRname() }" download="${ f.getfName() }">
 													${ f.getfName() }
 												</a>
 												<br>
@@ -222,14 +222,12 @@
 				success: function(data){
 					console.log(data);
 					
-					if(data.trim() == 'success'){
-						getReplyList();
-						$('#replyBox').val('');
-						
-						let socketMsg = "cReply," + rName + "," + bWriter + "," + bNo + "," + bTitle;
-						console.log("msg: " + socketMsg);
-						socket.send(socketMsg);
-					}
+					getReplyList();
+					$('#replyBox').val('');
+					
+					let socketMsg = "cReply," + bWriter + "," + data + "," + rName + "," + bNo + "," + bTitle;
+					console.log("msg: " + socketMsg);
+					socket.send(socketMsg);
 				},
 				error: function(data){
 					console.log(data);

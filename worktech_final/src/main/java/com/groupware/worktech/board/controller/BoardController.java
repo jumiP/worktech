@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.groupware.worktech.alarm.model.service.AlarmService;
 import com.groupware.worktech.board.model.exception.BoardException;
 import com.groupware.worktech.board.model.service.BoardService;
 import com.groupware.worktech.board.model.vo.Board;
@@ -37,6 +38,9 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService bService;
+	
+	@Autowired
+	private AlarmService alService;
 	
 	@RequestMapping("commonList.bo")
 	public String commonBoardList(@RequestParam(value="page", required=false) Integer page, @RequestParam(value="category", required=false) Integer category, Model model) {
@@ -313,11 +317,12 @@ public class BoardController {
 	
 	@RequestMapping("addCommonReply.bo")
 	@ResponseBody
-	public String insertCommonReply(@ModelAttribute Reply r) {
+	public int insertCommonReply(@ModelAttribute Reply r) {
 		int result = bService.insertCommonReply(r);
+		int alarmNo = alService.selectAlarmNo() - 1;
 		
 		if(result > 0) {
-			return "success";
+			return alarmNo;
 		} else {
 			throw new BoardException("댓글 등록에 실패하였습니다.");
 		}
@@ -359,7 +364,6 @@ public class BoardController {
 		response.setContentType("application/json; charset=UTF-8");
 		
 		ArrayList<Board> list = bService.selectCommonTopList();
-		System.out.println(list);
 		
 		GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
 		
@@ -375,6 +379,7 @@ public class BoardController {
 			}
 		}
 	}
+	
 	
 	
 	

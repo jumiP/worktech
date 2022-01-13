@@ -160,6 +160,10 @@
 		text-align: right;
 		margin-right: 10px;
 	}
+	
+	.goList {
+		float: right;
+	}
 </style>
 
 </head>
@@ -167,7 +171,11 @@
 	<div class="main-content">
 		<section class="section">
 			<div class="section-body">
-				<h2 class="section-title">부서 선택</h2>
+				<h2 class="section-title">부서 선택
+					<a href="chatView.ct" class="btn btn-primary btn-sm goList">
+			        	<i class="fas fa-arrow-alt-circle-left"></i> &nbsp;&nbsp;목록으로
+			        </a>
+				</h2>
 			</div>
 		</section>
 		<div class="deptListDiv">

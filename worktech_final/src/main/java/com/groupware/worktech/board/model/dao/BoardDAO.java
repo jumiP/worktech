@@ -188,23 +188,25 @@ public class BoardDAO {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonSearchList", searchListMap, rowBounds);
 	}
 
+	public int insertCommonReply(SqlSessionTemplate sqlSession, Reply r) {
+		return sqlSession.insert("boardMapper.insertCommonReply", r);
+	}
+
+	public ArrayList<Reply> selectCommonReplyList(SqlSessionTemplate sqlSession, int bNo) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonReplyList", bNo);
+	}
+
+	public int deleteCommonReply(SqlSessionTemplate sqlSession, int rNo) {
+		return sqlSession.update("boardMapper.deleteCommonReply", rNo);
+	}
+
+	public ArrayList<Board> selectCommonTopList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonTopList");
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public ArrayList<Board> selectNoticeRecentList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectNoticeRecentList");
+	}
 	
 	
 	
@@ -313,16 +315,8 @@ public class BoardDAO {
 	}
 
 	
-	public int insertCommonReply(SqlSessionTemplate sqlSession, Reply r) {
-		return sqlSession.insert("boardMapper.insertCommonReply", r);
-	}
 
-	public ArrayList<Reply> selectCommonReplyList(SqlSessionTemplate sqlSession, int bNo) {
-		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonReplyList", bNo);
-	}
-
-	public int deleteCommonReply(SqlSessionTemplate sqlSession, int rNo) {
-		return sqlSession.update("boardMapper.deleteCommonReply", rNo);
-	}
+	
+	
 	
 }

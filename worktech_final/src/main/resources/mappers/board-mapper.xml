@@ -130,7 +130,7 @@
 	
 	<insert id="insertCommonBoard">
 		insert into board
-		values(SEQ_BOARD.NEXTVAL, #{bTitle}, #{bContent}, #{bDate}, DEFAULT, 'COMMON', NULL, #{bWriter}, #{categoryNo}, DEFAULT)
+		values(SEQ_BOARD.NEXTVAL, #{bTitle}, #{bContent}, SYSDATE, DEFAULT, 'COMMON', NULL, #{bWriter}, #{categoryNo}, DEFAULT)
 	</insert>
 	
 	<select id="selectCommonList" parameterType="_int" resultMap="commonBoardResultSet">
@@ -194,7 +194,7 @@
 	
 	<update id="updateCommonBoard">
 		update board
-		set b_title = #{bTitle}, b_date = #{bDate}, b_content = #{bContent}, category_no = #{categoryNo}
+		set b_title = #{bTitle}, b_content = #{bContent}, category_no = #{categoryNo}
 		where b_no = #{bNo}
 	</update>
 	
@@ -240,55 +240,6 @@
 		order by b_no desc
 	</select>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<select id="getZListCount" resultType="_int">
-		select count(*)
-		from board
-		where b_status = 'Y'
-	</select>
-	
-	<select id="selectZList" resultMap="noticeResultSet">
-		select * 
-		from board
-			join member on(b_writer = email)
-		where b_status='Y'
-		order by b_no desc
-	</select>
-	
-	
-	
-	
-	
-	
 	<insert id="insertCommonReply">
 		insert into reply
 		values(seq_reply.nextval, #{rContent}, sysdate, #{bNo}, #{rName}, default)
@@ -318,4 +269,84 @@
 		set r_status = 'Y'
 		where r_no = #{rNo}
 	</update>
+	
+	<select id="selectCommonTopList" resultMap="commonTopResultSet">
+		<![CDATA[
+			select *
+			from(select rownum, b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, category_no, category_name, b_status
+				 from board
+					  join member on(b_writer = m_no)
+					  join category using(category_no)
+				 where b_type = 'COMMON'
+					   and b_status = 'N'
+				 order by b_count desc)
+			where rownum <= 5
+		]]>
+	</select>
+	
+	<select id="selectNoticeRecentList" resultMap="mainListResultSet">
+		select *
+		from (select B_NO, B_TITLE, B_CONTENT, B_DATE, B_COUNT, B_TYPE, B_CRITICAL, B_WRITER,
+	       		   NAME, B_STATUS
+				from board
+			 		 join member on (b_writer = m_no)
+				where b_status = 'N'
+		      	  and b_type = 'NOTICE'
+				order by b_no desc) 
+		where rownum <![CDATA[<=]]> 5
+	</select>
+	
+	<resultMap type="Board" id="mainListResultSet">
+		<id column="B_NO" property="bNo"/>
+		<result column="B_TITLE" property="bTitle"/>
+		<result column="B_CONTENT" property="bContent"/>
+		<result column="B_DATE" property="bDate"/>
+		<result column="B_COUNT" property="bCount"/>
+		<result column="B_TYPE" property="bType"/>
+		<result column="B_CRITICAL" property="bCritical"/>
+		<result column="B_WRITER" property="bWriter"/>
+		<result column="NAME" property="name"/>
+		<result column="B_STATUS" property="bStatus"/>
+	</resultMap>
+	
+	<resultMap type="Board" id="commonTopResultSet">
+		<id column="B_NO" property="bNo"/>
+		<result column="B_TITLE" property="bTitle"/>
+		<result column="B_CONTENT" property="bContent"/>
+		<result column="B_DATE" property="bDate"/>
+		<result column="B_COUNT" property="bCount"/>
+		<result column="B_TYPE" property="bType"/>
+		<result column="B_WRITER" property="bWriter"/>
+		<result column="NAME" property="name"/>
+		<result column="CATEGORY_NO" property="categoryNo"/>
+		<result column="CATEGORY_NAME" property="categoryName"/>
+		<result column="B_STATUS" property="bStatus"/>
+	</resultMap>
+	
+	
+	
+	
+	
+	
+	
+	<select id="getZListCount" resultType="_int">
+		select count(*)
+		from board
+		where b_status = 'Y'
+	</select>
+	
+	<select id="selectZList" resultMap="noticeResultSet">
+		select * 
+		from board
+			join member on(b_writer = email)
+		where b_status='Y'
+		order by b_no desc
+	</select>
+	
+	
+	
+	
+	
+	
+	
 </mapper>

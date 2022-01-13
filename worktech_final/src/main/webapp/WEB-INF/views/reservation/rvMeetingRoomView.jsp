@@ -30,6 +30,8 @@
 <script src='resources/fullcalendar/lib/main.js'></script>
 <script src="resources/fullcalendar/lib/locales-all.js"></script>
 <script>
+	var rvUsage = '';
+
 	document.addEventListener('DOMContentLoaded', function() {
 		var calendarEl = document.getElementById('calendar');
 
@@ -47,6 +49,8 @@
 			editable : true,
 			selectable : true,
 			selectMirror : true,
+			selectOverlap: false,
+			editable: false,
 			dayMaxEvents : true, // allow "more" link when too many events
 			slotMinTime : "09:00:00", // 시작 시간
 			slotMaxTime: "19:00:00", // 종료 시간
@@ -103,12 +107,65 @@
 										    }); 
 	                                    }
 	                               }); 
-	                               console.log(events);
 	                           }                        
 	                          successCallback(events);                               
 	                       }                     
 	            }); 
 	        }, 
+	        eventClick: function(info) {
+				info.jsEvent.preventDefault();
+				
+				if(info.event.url){
+					window.open(info.event.url, '회의실 예약 상세', 'width=500, height=550');
+
+				}
+			},
+			select: function(arg) { 
+				var today = new Date();
+				
+				var syear = arg.start.getFullYear();
+				var smonth = arg.start.getMonth()+1;
+				var sday = arg.start.getDate();
+				
+				var eyear = arg.end.getFullYear();
+				var emonth = arg.end.getMonth()+1;
+				var eday = arg.end.getDate();
+
+				var start = [syear, smonth, sday].join('-');
+				var end = [eyear, emonth, eday].join('-');
+				  
+				  if(arg.start < today) {
+					  // 지난 날짜 선택하면 예약할 수 없도록
+					  alert("현재 시간보다 이전 시간으로 예약할 수 없습니다.");
+				  } else {
+						
+						if(start != end){
+							alert('회의실 예약은 하루 단위로만 가능합니다.');
+						} else {
+							var rvUsage = prompt('사용 용도를 입력하세요', '사용 인원(또는 부서) : \n사용 목적 : ');
+							
+							if(rvUsage == ''){
+								alert('사용 목적이 입력되지 않았습니다.');
+							} else if (rvUsage != null){
+								$.ajax({
+									url: 'insertSelectRvMeetingRoom.rv',
+					                dataType: 'json',
+					                data: {startTime:arg.start, endTime:arg.end, date:start, rvUsage:rvUsage},
+					                success: function(data) {
+					                	if(data > 0){
+					                		location.href = 'rvMeetingRoomView.rv';
+					                	} else {
+					                		alert('예약에 실패하였습니다.');
+					                	}
+					                },
+					                error: function (data) {
+										console.log(data);
+									}
+								});
+							}
+						}
+				    }
+			}			
 		});
 
 		calendar.render();

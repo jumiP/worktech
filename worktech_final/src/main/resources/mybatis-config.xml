@@ -19,6 +19,8 @@
 		<typeAlias type="com.groupware.worktech.adbook.model.vo.Adbook" alias="Adbook"/>
 		<typeAlias type="com.groupware.worktech.approval.model.vo.Approval" alias="Approval"/>
 		<typeAlias type="com.groupware.worktech.reservation.model.vo.Reservation" alias="Reservation"/>
+		<typeAlias type="com.groupware.worktech.alarm.model.vo.Alarm" alias="Alarm"/>
+		<typeAlias type="com.groupware.worktech.commut.model.vo.QRCode" alias="QRCode"/>
 	</typeAliases>
 	
 	<mappers>
@@ -29,6 +31,8 @@
 		<mapper resource="mappers/adbook-mapper.xml"/>
 		<mapper resource="mappers/approval-mapper.xml"/>
 		<mapper resource="mappers/reservation-mapper.xml"/>
+		<mapper resource="mappers/alarm-mapper.xml"/>
+		<mapper resource="mappers/commut-mapper.xml"/>
 	</mappers>
 	
 </configuration>

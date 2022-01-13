@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -187,58 +188,84 @@ public class BoardController {
 		
 		return "commonBoardUpdate";
 	}
+
 	
+	@Transactional
 	@RequestMapping("cupdate.bo")
-	public String commonBoardUpdate(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile, @RequestParam(value="fNo", required=false) ArrayList<Integer> fNoes, @RequestParam("upd") String upd, HttpServletRequest request, Model model) {
-		if(fNoes != null && !fNoes.isEmpty()) {
-			ArrayList<BoardFile> fileList = bService.selectCommonBoard(b.getbNo(), upd).getFileList();
-			
-			for(int i = 0; i < fileList.size(); i++) {
-				int fNo = fileList.get(i).getfNo();
-				
-				if(!fNoes.contains(fNo)) {
-					deleteFile(fileList.get(i).getfRname(), request);
-					
+	public String commonBoardUpdate(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile,
+									@RequestParam(value = "fNo", required = false) ArrayList<Integer> fNoes, @RequestParam("upd") String upd,
+									@RequestParam("flag") int flag, HttpServletRequest request, Model model) {
+		
+		ArrayList<BoardFile> oldFileList = bService.selectCommonBoard(b.getbNo(), upd).getFileList();
+
+		// 저장되어 있는 파일 삭제
+		if (fNoes != null && !fNoes.isEmpty()) {
+
+			for (int i = 0; i < oldFileList.size(); i++) {
+				int fNo = oldFileList.get(i).getfNo();
+
+				if (!fNoes.contains(fNo)) {
+					deleteFile(oldFileList.get(i).getfRname(), request);
+
 					int result = bService.deleteNoticeFile(fNo);
-					
-					if(result <= 0) {
+
+					if (result <= 0) {
 						throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
 					}
-				};
+				}
+
+			}
+		} else if (flag == 1) {
+			for (int i = 0; i < oldFileList.size(); i++) {
+				int fNo = oldFileList.get(i).getfNo();
+
+				deleteFile(oldFileList.get(i).getfRname(), request);
+
+				int result = bService.deleteNoticeFile(fNo);
+
+				if (result <= 0) {
+					throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
+				}
 			}
 		}
-		
-		ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
-		
-		if(reloadFile != null && !reloadFile[0].isEmpty()) {
-			for(int i = 0; i < reloadFile.length; i++) {
+
+		// 새로 추가한 파일 등록
+		ArrayList<BoardFile> fileList = null;
+
+		if (reloadFile != null && !reloadFile[0].getOriginalFilename().trim().equals("")) {
+			fileList = new ArrayList<BoardFile>();
+			for (int i = 0; i < reloadFile.length; i++) {
 				HashMap<String, String> fileInfo = saveFile(reloadFile[i], request);
-				
-				if(fileInfo.get("renameFileName") != null) {
+
+				if (fileInfo.get("renameFileName") != null) {
 					BoardFile f = new BoardFile();
 					f.setfName(reloadFile[i].getOriginalFilename());
 					f.setfRname(fileInfo.get("renameFileName"));
 					f.setfURL(fileInfo.get("renamePath"));
 					f.setRefBNo(b.getbNo());
-					
+
 					fileList.add(f);
 				}
 			}
 		}
-		
+
 		b.setFileList(fileList);
-		
+
 		int result = bService.updateCommonBoard(b);
-		
-		if(result > 0) {
-			Board updateBoard = bService.selectCommonBoard(b.getbNo(), upd);
-			model.addAttribute("b", updateBoard);
-			
+
+		int length = 0;
+
+		if (fileList != null) {
+			length = fileList.size();
+		}
+
+		if (result >= length + 1) {
 			return "redirect:cdetail.bo?bNo=" + b.getbNo() + "&upd=Y";
 		} else {
 			throw new BoardException("게시글 수정에 실패하였습니다.");
 		}
 	}
+
 	
 	public void deleteFile(String fRname, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");

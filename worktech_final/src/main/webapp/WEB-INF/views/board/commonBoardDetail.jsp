@@ -129,7 +129,7 @@
                                 		<c:if test="${ !empty b.fileList.get(0).getfName() }">
 		                                    <c:forEach var="f" items="${ b.fileList }">
 		                                    	<i class="fas fa-save"></i>
-		                                    	<a href="/resources/buploadFiles/${ f.getfRname() }" download="${ f.getfName() }">
+		                                    	<a href="resources/buploadFiles/${ f.getfRname() }" download="${ f.getfName() }">
 													${ f.getfName() }
 												</a>
 												<br>

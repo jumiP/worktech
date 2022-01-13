@@ -184,7 +184,7 @@ public class BoardService {
 	public int updateCommonBoard(Board b) {
 		int result = bDAO.updateCommonBoard(sqlSession, b);
 		
-		if(result > 0 && !b.getFileList().isEmpty()) {
+		if(result > 0 && b.getFileList() != null) {
 			for(int i = 0; i < b.getFileList().size(); i++) {
 				result += bDAO.updateNoticeFile(sqlSession, b.getFileList().get(i));
 			}

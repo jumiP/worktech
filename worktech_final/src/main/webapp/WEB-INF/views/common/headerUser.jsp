@@ -84,8 +84,8 @@
 		cursor: pointer;
 	}
 	
-	#alarmBtn{
-		
+	#alarmListDiv::-webkit-scrollbar{
+		display: none;
 	}
 </style>
 <body>
@@ -121,13 +121,13 @@
                         </a> <!-- href에 메일 url 삽입 -->
                     </li>
                     <li class="dropdown dropdown-list-toggle">
-                        <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep" id="alarmBtn">
+                        <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg" id="alarmBtn">
                             <i class="far fa-bell"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                            <div class="dropdown-header">Notifications
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right" id="alarmListArea">
+                            <div class="dropdown-header">알림
                                 <div class="float-right">
-                                    <a href="#">5개</a>
+                                    <a id="alarmCount"></a>
                                 </div>
                             </div>
 							<div class="dropdown-list-content dropdown-list-icons" id="alarmListDiv">
@@ -335,7 +335,7 @@
 <!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script> -->
 <!-- 	<script src="resources/dist/jstree.min.js"></script> -->
 
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
 	
 	<script>
 		function chatOpen() {
@@ -400,6 +400,8 @@
 				$('.alarmDiv').append($aContainer);
 				
 				$('.aContainer').css({'animation-duration':'4s', 'animation-name':'slidein'});
+				
+				$('#alarmBtn').addClass("beep");
 			}
 			
 			// 서버가 끊겼을 때 호출
@@ -413,7 +415,16 @@
 			}
 		}
 		
+		$('#alarmListDiv').mouseover(function(){
+			$('#alarmListDiv').getNiceScroll().resize();
+		});
+		
+		
 		function alarmList() {
+			$('#alarmListDiv').css({overflow:'auto'});
+			$('#alarmListDiv').getNiceScroll().resize();
+// 			$('#alarmListDiv').niceScroll();
+
 			var mNo = '${ loginUser.mNo }';
 			
 			$.ajax({
@@ -421,8 +432,23 @@
 				data: {mNo:mNo},
 				dataType: 'json',
 				success: function(data){
+					console.log(data);
+					var count = 0;
+					
+						
 					for(var i in data){
-						var $a = $('<a class="dropdown-item alarmArea">');
+						
+						
+						if(data[i].alarmCheck == 'N'){
+							count += 1;
+						}
+						
+						if(data[i].alarmCheck == 'Y') {
+							var $a = $('<a class="dropdown-item dropdown-item-unread alarmArea">');
+						} else {
+							var $a = $('<a class="dropdown-item alarmArea">');
+						}
+						
 						var $icon = $('<div class="dropdown-item-icon bg-info text-white"><i class="fas fa-clipboard-list alarmIcon"></i>');
 						var $desc = $('<div class="dropdown-item-desc">')
 									.html(data[i].senderName + " 님이 " + "<a href='cdetail.bo?bNo=" + data[i].bNo + "'>[" + data[i].bTitle + "]</a> 글에 댓글을 남겼습니다.");
@@ -436,35 +462,43 @@
 						
 						$($a).appendTo('#alarmListDiv');
 					}
+					
+					if(count > 0){
+						$('#alarmBtn').addClass("beep");
+					} else {
+						$('#alarmBtn').removeClass("beep");
+					}
 				},
 				error: function(data){
-					console.log(data);
+					console.log("error");
 				}
 			});
+		
+			
 		}
 		
-		$('#alarmBtn').click(function(){
-			$('#alarmListDiv').css('display', 'block');
-		});
-		
 		$(document).on("click", ".alarmArea", function(){
+			var alarmArea = $(this);
 			var alarmNo = $(this).children().eq(2).val();
 			
-			$('#alarmListDiv').css('display', 'block');
 			
 			$.ajax({
 				url: 'checkAlarm.al',
 				data: {alarmNo:alarmNo},
 				success: function(data){
 					console.log(data);
-					
+
 					$('#alarmListDiv').html('');
 					alarmList();
+					
+// 					alarmArea.addClass("dropdown-item-unread");
 				},
 				error: function(data){
 					console.log(data);
 				}
 			});
+			
+			
 		});
 	</script>
 </body>

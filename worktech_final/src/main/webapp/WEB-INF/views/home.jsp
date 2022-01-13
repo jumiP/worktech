@@ -9,7 +9,7 @@
 		<c:import url="../views/main/mainUser.jsp" />
 	</c:if>
     <c:if test="${ loginUser.mGrade eq 'ADMIN' }">
-    	<c:import url="../views/common/headerAdmin.jsp" />
+    	<c:import url="../views/main/mainAdmin.jsp" />
     </c:if>
 	
 </body>

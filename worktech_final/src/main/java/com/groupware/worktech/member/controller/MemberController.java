@@ -62,9 +62,7 @@ public class MemberController {
 		System.out.println(bcrypt.encode(m.getPwd()));
 		
 		Member loginMember = mService.memberLogin(m);
-		System.out.println(m);
-		System.out.println(loginMember);
-		
+
 		if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
 			model.addAttribute("loginUser", loginMember);
 			logger.info(loginMember.getmNo());

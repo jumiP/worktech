@@ -4399,29 +4399,7 @@ var Editor = /** @class */ (function () {
             this.afterCommand();
         }
     };
-    /**
-     * @param {Position} pos
-     * @param {jQuery} $target - target element
-     * @param {Boolean} [bKeepRatio] - keep ratio
-     */
-    Editor.prototype.resizeTo = function (pos, $target, bKeepRatio) {
-        var imageSize;
-        if (bKeepRatio) {
-            var newRatio = pos.y / pos.x;
-            var ratio = $target.data('ratio');
-            imageSize = {
-                width: ratio > newRatio ? pos.x : pos.y / ratio,
-                height: ratio > newRatio ? pos.x * ratio : pos.y
-            };
-        }
-        else {
-            imageSize = {
-                width: pos.x,
-                height: pos.y
-            };
-        }
-        $target.css(imageSize);
-    };
+
     /**
      * returns whether editable area has focus or not.
      */
@@ -7077,37 +7055,12 @@ $$1.summernote = $$1.extend($$1.summernote, {
         followingToolbar: true,
         otherStaticBar: '',
         // toolbar
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'underline', 'clear']],
-            ['fontname', ['fontname']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph', 'height']],
-            ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']],
-            ['view', ['fullscreen', 'codeview', 'help']]
-        ],
+       
         // popover
         popatmouse: true,
         popover: {
-            image: [
-                ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
-                ['float', ['floatLeft', 'floatRight', 'floatNone']],
-                ['remove', ['removeMedia']]
-            ],
             link: [
                 ['link', ['linkDialogShow', 'unlink']]
-            ],
-            table: [
-                ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
-                ['delete', ['deleteRow', 'deleteCol', 'deleteTable']]
-            ],
-            air: [
-                ['color', ['color']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['para', ['ul', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture']]
             ]
         },
         // air mode: inline editor
@@ -7164,21 +7117,8 @@ $$1.summernote = $$1.extend($$1.summernote, {
             onEnter: null,
             onKeyup: null,
             onKeydown: null,
-            onImageUpload: function(files) {
-				uploadSummernoteImageFile(files[0],this);
-			},
-            onImageUploadError: function() {
-				console.log("이미지 추가 오류");
-			},
-			onPaste: function (e) {
-				var clipboardData = e.originalEvent.clipboardData;
-				if (clipboardData && clipboardData.items && clipboardData.items.length) {
-					var item = clipboardData.items[0];
-					if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
-						e.preventDefault();
-					}
-				}
-			}
+            onImageUpload: null,
+            onImageUploadError: null
         },
         codemirror: {
             mode: 'text/html',
@@ -7296,21 +7236,4 @@ $$1.summernote = $$1.extend($$1.summernote, {
 
 })));
 
-function uploadSummernoteImageFile(file, editor) {
-	var data = new FormData();
-	data.append("file", file);
-	$.ajax({
-		data : data,
-		type : "POST",
-		url : "uploadSummernoteImageFile",
-		contentType : false,
-		enctype : 'multipart/form-data',
-		processData : false,
-		success : function(data) {
-			var obj = JSON.parse(data);
-        	//항상 업로드된 파일의 url이 있어야 한다.
-			$(editor).summernote('editor.insertImage', obj.url);
-		}
-	});
-}
 //# sourceMappingURL=summernote-bs4.js.map

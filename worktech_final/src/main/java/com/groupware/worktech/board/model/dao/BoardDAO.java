@@ -204,7 +204,9 @@ public class BoardDAO {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectCommonTopList");
 	}
 	
-	
+	public ArrayList<Board> selectNoticeRecentList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectNoticeRecentList");
+	}
 	
 	
 	
@@ -311,6 +313,8 @@ public class BoardDAO {
 		
 		return (ArrayList)sqlSession.selectList("boardMapper.selectZList", null, rowBounds);
 	}
+
+	
 
 	
 	

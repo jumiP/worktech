@@ -132,15 +132,15 @@
 										<input type="hidden" name="bNo" value="${ b.bNo }">
 	                                	<button class="btn btn-danger" type="submit" onclick="return deleteNotice();">삭제</button>
 	                                </form>
-	                                <c:if test="${ !empty searchValue }">
-		                                <c:url var="nlist" value="searchNotice.ad">
-		                                	<c:param name="page" value="${ page }"/>
-		                                	<c:param name="searchCondition" value="${ searchCondition }"/>
-											<c:param name="searchValue" value="${ searchValue }"/>
-											<c:param name="boardLimit" value="${ boardLimit }"/>
-										</c:url>
-	                                </c:if>
 	                            </c:if>
+                                <c:if test="${ !empty searchValue }">
+	                                <c:url var="nlist" value="searchNotice.ad">
+	                                	<c:param name="page" value="${ page }"/>
+	                                	<c:param name="searchCondition" value="${ searchCondition }"/>
+										<c:param name="searchValue" value="${ searchValue }"/>
+										<c:param name="boardLimit" value="${ boardLimit }"/>
+									</c:url>
+                                </c:if>
                                 <c:if test="${ empty searchValue }">
 	                                <c:url var="nlist" value="noticeList.ad">
 										<c:param name="page" value="${ page }"/>

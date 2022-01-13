@@ -130,7 +130,7 @@
 	
 	<insert id="insertCommonBoard">
 		insert into board
-		values(SEQ_BOARD.NEXTVAL, #{bTitle}, #{bContent}, #{bDate}, DEFAULT, 'COMMON', NULL, #{bWriter}, #{categoryNo}, DEFAULT)
+		values(SEQ_BOARD.NEXTVAL, #{bTitle}, #{bContent}, SYSDATE, DEFAULT, 'COMMON', NULL, #{bWriter}, #{categoryNo}, DEFAULT)
 	</insert>
 	
 	<select id="selectCommonList" parameterType="_int" resultMap="commonBoardResultSet">
@@ -194,7 +194,7 @@
 	
 	<update id="updateCommonBoard">
 		update board
-		set b_title = #{bTitle}, b_date = #{bDate}, b_content = #{bContent}, category_no = #{categoryNo}
+		set b_title = #{bTitle}, b_content = #{bContent}, category_no = #{categoryNo}
 		where b_no = #{bNo}
 	</update>
 	
@@ -270,15 +270,13 @@
 		where r_no = #{rNo}
 	</update>
 	
-	<select id="selectCommonTopList" resultMap="commonBoardResultSet">
+	<select id="selectCommonTopList" resultMap="commonTopResultSet">
 		<![CDATA[
 			select *
-			from(select rownum, b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, category_no, category_name, b_status,
-						   f_no, f_url, f_name, f_rname
+			from(select rownum, b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, category_no, category_name, b_status
 				 from board
 					  join member on(b_writer = m_no)
 					  join category using(category_no)
-					  left join board_file using(b_no)
 				 where b_type = 'COMMON'
 					   and b_status = 'N'
 				 order by b_count desc)
@@ -311,7 +309,19 @@
 		<result column="B_STATUS" property="bStatus"/>
 	</resultMap>
 	
-	
+	<resultMap type="Board" id="commonTopResultSet">
+		<id column="B_NO" property="bNo"/>
+		<result column="B_TITLE" property="bTitle"/>
+		<result column="B_CONTENT" property="bContent"/>
+		<result column="B_DATE" property="bDate"/>
+		<result column="B_COUNT" property="bCount"/>
+		<result column="B_TYPE" property="bType"/>
+		<result column="B_WRITER" property="bWriter"/>
+		<result column="NAME" property="name"/>
+		<result column="CATEGORY_NO" property="categoryNo"/>
+		<result column="CATEGORY_NAME" property="categoryName"/>
+		<result column="B_STATUS" property="bStatus"/>
+	</resultMap>
 	
 	
 	

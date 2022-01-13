@@ -23,4 +23,16 @@
 		<result column="B_NO" property="bNo"/>
 		<result column="B_TITLE" property="bTitle"/>
 	</resultMap>
+	
+	<select id="selectAlarmNo" resultType="_int">
+		select last_number
+		from all_sequences
+		where sequence_name = 'SEQ_ALARM'
+	</select>
+	
+	<update id="checkAlarm">
+		update alarm
+		set alarm_check = 'Y'
+		where alarm_no = #{alarmNo}
+	</update>
 </mapper>

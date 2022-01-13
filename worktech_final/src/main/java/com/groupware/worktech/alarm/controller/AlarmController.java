@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.groupware.worktech.alarm.model.exception.AlarmException;
 import com.groupware.worktech.alarm.model.service.AlarmService;
 import com.groupware.worktech.alarm.model.vo.Alarm;
 
@@ -40,6 +42,18 @@ public class AlarmController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	@RequestMapping("checkAlarm.al")
+	@ResponseBody
+	public String checkAlarm(@RequestParam("alarmNo") int alarmNo) {
+		int result = alService.checkAlarm(alarmNo);
+		
+		if(result > 0) {
+			return "success";
+		} else {
+			throw new AlarmException("알림 확인에 실패하였습니다.");
 		}
 	}
 }

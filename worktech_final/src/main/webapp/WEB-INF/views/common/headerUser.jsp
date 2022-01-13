@@ -79,6 +79,14 @@
 		70% {bottom : 50px; right: 29px;}
 		100% {visibility: hidden; bottom: 0px; right: 29px;}
 	}
+	
+	.alarmArea:hover{
+		cursor: pointer;
+	}
+	
+	#alarmBtn{
+		
+	}
 </style>
 <body>
     <div id="app">
@@ -113,7 +121,7 @@
                         </a> <!-- href에 메일 url 삽입 -->
                     </li>
                     <li class="dropdown dropdown-list-toggle">
-                        <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep">
+                        <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep" id="alarmBtn">
                             <i class="far fa-bell"></i>
                         </a>
                         <div class="dropdown-menu dropdown-list dropdown-menu-right">
@@ -122,7 +130,7 @@
                                     <a href="#">5개</a>
                                 </div>
                             </div>
-							<div class="dropdown-list-content dropdown-list-icons" id="notiDiv">
+							<div class="dropdown-list-content dropdown-list-icons" id="alarmListDiv">
 <!-- 								<a href="#" class="dropdown-item dropdown-item-unread"> -->
 <!-- 									<div class="dropdown-item-icon bg-primary text-white"> -->
 <!-- 										<i class="far fa-calendar-alt alarmIcon"></i> -->
@@ -301,7 +309,7 @@
                 </aside>
             </div>
             
-            <div class="alarmArea"></div>
+            <div class="alarmDiv"></div>
             
             </div>
             </div>
@@ -366,18 +374,20 @@
 				var hours = ('0' + today.getHours()).slice(-2);
 				var minutes = ('0' + today.getMinutes()).slice(-2);
 				
-				var $a = $('<a class="dropdown-item">');
+				var $a = $('<a class="dropdown-item alarmArea">');
 				var $icon = $('<div class="dropdown-item-icon bg-info text-white"><i class="fas fa-clipboard-list alarmIcon"></i>');
 				var $desc = $('<div class="dropdown-item-desc">')
-							.html(arr[1] + " 님이 " + "<a href='cdetail.bo?bNo=" + arr[3] + "'>[" + arr[4] + "]</a> 글에 댓글을 남겼습니다.");
+							.html(arr[3] + " 님이 " + "<a href='cdetail.bo?bNo=" + arr[4] + "'>[" + arr[5] + "]</a> 글에 댓글을 남겼습니다.");
 				var $time = $('<div class="time">')
 							.html(month + "월 " + day + "일 " + hours + ":" + minutes);
+				var $alarmNo = $('<input type="hidden" name="alarmNo" value="' + arr[2] + '">');
 				
 				$desc.append($time);
 				$a.append($icon);
 				$a.append($desc);
+				$a.append($alarmNo);
 				
-				$($a).prependTo('#notiDiv');
+				$($a).prependTo('#alarmListDiv');
 				
 				$aContainer = $('<div class="aContainer">');
 				$iconDiv = $('<div class="dropdown-item-icon bg-primary text-white iconDiv aItem">').html('<i class="fas fa-bell alarmIcon aItem"></i>');
@@ -386,8 +396,8 @@
 				$aContainer.append($iconDiv);
 				$aContainer.append($msg);
 				
-				$('.alarmArea').html('');
-				$('.alarmArea').append($aContainer);
+				$('.alarmDiv').html('');
+				$('.alarmDiv').append($aContainer);
 				
 				$('.aContainer').css({'animation-duration':'4s', 'animation-name':'slidein'});
 			}
@@ -412,17 +422,19 @@
 				dataType: 'json',
 				success: function(data){
 					for(var i in data){
-						var $a = $('<a class="dropdown-item">');
+						var $a = $('<a class="dropdown-item alarmArea">');
 						var $icon = $('<div class="dropdown-item-icon bg-info text-white"><i class="fas fa-clipboard-list alarmIcon"></i>');
 						var $desc = $('<div class="dropdown-item-desc">')
 									.html(data[i].senderName + " 님이 " + "<a href='cdetail.bo?bNo=" + data[i].bNo + "'>[" + data[i].bTitle + "]</a> 글에 댓글을 남겼습니다.");
 						var $time = $('<div class="time">').html(data[i].alarmDate);
+						var $alarmNo = $('<input type="hidden" name="alarmNo" value="' + data[i].alarmNo + '">');
 						
 						$desc.append($time);
 						$a.append($icon);
 						$a.append($desc);
+						$a.append($alarmNo);
 						
-						$($a).appendTo('#notiDiv');
+						$($a).appendTo('#alarmListDiv');
 					}
 				},
 				error: function(data){
@@ -430,6 +442,30 @@
 				}
 			});
 		}
+		
+		$('#alarmBtn').click(function(){
+			$('#alarmListDiv').css('display', 'block');
+		});
+		
+		$(document).on("click", ".alarmArea", function(){
+			var alarmNo = $(this).children().eq(2).val();
+			
+			$('#alarmListDiv').css('display', 'block');
+			
+			$.ajax({
+				url: 'checkAlarm.al',
+				data: {alarmNo:alarmNo},
+				success: function(data){
+					console.log(data);
+					
+					$('#alarmListDiv').html('');
+					alarmList();
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+		});
 	</script>
 </body>
 

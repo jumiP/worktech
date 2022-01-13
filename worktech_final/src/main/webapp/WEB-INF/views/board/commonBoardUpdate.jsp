@@ -142,7 +142,7 @@
 	                                </div>
 	                                <div class="form-group half-col">
 	                                    <label>작성일</label>
-	                                    <input type="date" class="form-control" name="bDate" value="${ b.bDate }">
+	                                    <input type="text" class="form-control" name="bDate" value="${ b.bDate }" disabled>
 	                                </div>
 	                                <div class="form-group">
 	                                	<label>파일 첨부</label>

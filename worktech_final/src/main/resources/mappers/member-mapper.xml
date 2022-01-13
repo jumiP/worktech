@@ -20,7 +20,7 @@
 	<!-- 로그인 -->
 	<select id="memberLogin" resultMap="memberResultSet">
 		select *
-		from member m join
+		from member m left join
 			department using (d_no)
 		where m_no=#{mNo} and m_status='Y'
 	</select>

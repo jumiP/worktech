@@ -364,6 +364,38 @@
 				$('#anonymousBoard').css('display', 'none');
 
 			} else if(btn.id == 'generalBtn'){
+				$.ajax({
+					url: 'commonTopList.bo',
+					dataType: 'json',
+					success: function(data){
+						console.log(data);
+						
+						$cTable = $('#commonBody');
+						$cTable.html('');
+						
+						for(var i in data){
+							$tr = $('<tr>');
+							$bNo = $('<td>').html(data[i].bNo);
+							$bTitle = $('<td>').html("[ " + data[i].categoryName + " ] " + data[i].bTitle);
+							$bWriter = $('<td>').html(data[i].name);
+							$bDate = $('<td>').html(data[i].bDate);
+							$bCount = $('<td>').html(data[i].bCount);
+							
+							$tr.append($bNo);
+							$tr.append($bTitle);
+							$tr.append($bWriter);
+							$tr.append($bDate);
+							$tr.append($bCount);
+							
+							$cTable.append($tr);
+						}
+						
+					},
+					error: function(data){
+						console.log(data);
+					}
+				});
+				
 				$(btn).html('<b>일반 게시판</b>');
 				$('#noticeBtn').html('공지사항');
 				$('#anonymousBtn').html('익명 게시판');
@@ -410,39 +442,6 @@
 					console.log(data);
 				}
 			});
-			
-			$.ajax({
-				url: 'commonTopList.bo',
-				dataType: 'json',
-				success: function(data){
-					console.log(data);
-					
-					$cTable = $('#commonBody');
-					$cTable.html('');
-					
-					for(var i in data){
-						$tr = $('<tr>');
-						$bNo = $('<td>').html(data[i].bNo);
-						$bTitle = $('<td>').html("[ " + data[i].categoryName + " ] " + data[i].bTitle);
-						$bWriter = $('<td>').html(data[i].name);
-						$bDate = $('<td>').html(data[i].bDate);
-						$bCount = $('<td>').html(data[i].bCount);
-						
-						$tr.append($bNo);
-						$tr.append($bTitle);
-						$tr.append($bWriter);
-						$tr.append($bDate);
-						$tr.append($bCount);
-						
-						$cTable.append($tr);
-					}
-					
-				},
-				error: function(data){
-					console.log(data);
-				}
-			});
-		
 		});
 		
 		// 게시글 목록 마우스오버, 클릭 이벤트
@@ -461,6 +460,7 @@
 					location.href= "ndetail.ad?bNo=" + bNo + '&page=1';
 				} else if (tableID == 'commonTable'){
 					// 일반 게시판 디테일 이동 작성
+					location.href= "cdetail.bo?bNo=" + bNo;
 				}
 				
 			}

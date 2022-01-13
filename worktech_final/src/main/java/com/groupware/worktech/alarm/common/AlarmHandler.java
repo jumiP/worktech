@@ -25,7 +25,7 @@ public class AlarmHandler extends TextWebSocketHandler {
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		logger.info("Socket 연결");
+//		logger.info("Socket 연결");
 		sessionList.add(session);
 		
 		String mNo = getmNo(session);
@@ -55,7 +55,7 @@ public class AlarmHandler extends TextWebSocketHandler {
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		logger.info("Socket 끊김");
+//		logger.info("Socket 끊김");
 		sessionList.remove(session);
 	}
 

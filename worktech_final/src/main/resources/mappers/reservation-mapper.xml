@@ -28,4 +28,91 @@
 		values (SEQ_RV.NEXTVAL, #{rvType}, #{rvpNo}, #{rvName}, #{rvCount}, #{rvDate}, #{rvStartTime}, #{rvEndTime}, #{rvUsage}, #{rvMember}, DEFAULT)
 	</insert>
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="selectOrvList" resultMap="orvResultSet">
+		select *
+		from rv_product
+		where pd_status = 'Y'
+	</select>
+	
+	<resultMap type="RvProduct" id="orvResultSet">
+		<id column="PD_NO" property="pdNo"/>
+		<result column="PD_CATEGORY" property="pdCategory"/>
+		<result column="PD_NAME" property="pdName"/>
+		<result column="PD_DATE" property="pdDate"/>
+		<result column="PD_COUNT" property="pdCount"/>
+		<result column="PD_STATUS" property="pdStatus"/>
+	</resultMap>
+	
 </mapper>

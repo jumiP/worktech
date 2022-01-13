@@ -14,13 +14,16 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.groupware.worktech.admin.model.vo.RvProduct;
 import com.groupware.worktech.member.model.vo.Member;
 import com.groupware.worktech.reservation.model.exception.RvException;
 import com.groupware.worktech.reservation.model.service.RvService;
@@ -142,4 +145,195 @@ public class ReservationController {
 			}
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	@RequestMapping("orvList.rv")
+//	public ModelAndView orvList(ModelAndView mv) {
+//		
+//		ArrayList<RvProduct> list = rvService.orvList();
+//		
+//		System.out.println(list);
+//
+//		if(list != null) {
+//			mv.addObject("list", list);
+//			mv.setViewName("otherResevationList");
+//		} else {
+//			throw new RvException("기타 예약 목록 조회에 실패하였습니다.");
+//		}
+//		
+//		
+//		return mv;
+//		
+//	}
+	@RequestMapping("orvList.rv")
+	public String orvList(Model model) {
+		
+		ArrayList<RvProduct> list = rvService.selectOrvList();
+		
+		// System.out.println(list);
+
+		if(list != null) {
+			model.addAttribute("list", list);
+		} else {
+			throw new RvException("기타 예약 목록 조회에 실패하였습니다.");
+		}
+		
+		
+		return "otherResevationList";
+		
+	}
+	
 }

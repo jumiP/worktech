@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.groupware.worktech.admin.model.vo.RvProduct;
 import com.groupware.worktech.reservation.model.dao.RvDAO;
 import com.groupware.worktech.reservation.model.vo.Reservation;
 
@@ -24,6 +25,66 @@ public class RvService {
 	
 	public int insertReservation(Reservation r) {
 		return rvDAO.insertReservation(sqlSession, r);
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+	public ArrayList<RvProduct> selectOrvList() {
+		return rvDAO.selectOrvList(sqlSession);
 	}
 
 	

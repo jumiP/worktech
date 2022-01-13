@@ -119,7 +119,7 @@
 	                                <div class="form-group half-col left-item">
 	                                    <label>작성자</label>
 	                                    <input type="text" class="form-control" disabled value="${ loginUser.name }">
-	                                    <input type="hidden" name="bWriter" value="000000">
+	                                    <input type="hidden" name="bWriter" value="${ loginUser.mNo }">
 	                                </div>
 	                                <div class="form-group half-col">
 	                                    <label>작성일</label>

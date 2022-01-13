@@ -53,7 +53,7 @@
 	                    <div class="card-header-form">
 	                     
 	                     <!-- 검색 : 이름 / 부서 / 직급 -->
-	                      <form>
+<!-- 	                      <form action="memList.me" method="post" id="listForm"> -->
 	                        <div class="input-group">
 		                        
 		                        <select id="searchCondition" name="searchCondition"  class="btn btn-primary dropdown-toggle">
@@ -70,7 +70,7 @@
 	                            <button class="btn btn-primary" type="button" onclick="searchBoard();"><i class="fas fa-search"></i></button>
 	                          </div>
 	                        </div>
-	                      </form>
+<!-- 	                      </form> -->
 	                      
 	                    </div>
 	                  </div>
@@ -92,26 +92,34 @@
 	                          <th>직급</th>
 	                          <th></th>
 	                        </tr>
-	                        <c:forEach var="a" items="${ aList }">
-		                        <tr>
-		                          <td></td>
-		                          <td class="p-0 text-center">
-			                           <!-- 체크박스 -->
-	<!-- 	                          	   <div class="custom-checkbox custom-control"> -->
-	<!-- 		                              <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1" name="checkB"> -->
-	<!-- 		                              <label for="checkbox-1" class="custom-control-label">&nbsp;</label> -->
-	<!-- 		                           </div> -->
-		                          </td>
-		                          <td id="adminMNo"><b>${ a.mNo }</b></td>
-		                          <td class="align-middle" id="adminName"><b>${ a.name }</b></td>
-		                          <td><b> - </b></td>
-		                          <td><b> - </b></td>
-		                          <td><a href="#" class="btn btn-secondary">비밀번호 변경</a></td>
-		                        </tr>
-	                        </c:forEach>
+							<form action="memList.me" method="post" id="listForm">
+		                        <c:forEach var="a" items="${ aList }">
+			                        <tr class="cls">
+			                          <td></td>
+			                          <td class="p-0 text-center"  onclick="event.cancelBubble=true;">
+				                           <!-- 체크박스 -->
+		<!-- 	                          	   <div class="custom-checkbox custom-control"> -->
+		<!-- 		                              <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1" name="checkB"> -->
+		<!-- 		                              <label for="checkbox-1" class="custom-control-label">&nbsp;</label> -->
+		<!-- 		                           </div> -->
+			                          </td>
+			                          <td onclick="event.cancelBubble=true;">
+			                          		<b>${ a.mNo }</b>
+			                          		<input type="hidden" id="adminMNo" name="adminMNo" value="${ a.mNo }">
+			                          </td>
+			                          <td class="align-middle" onclick="event.cancelBubble=true;">
+			                          		<b>${ a.name }</b>
+			                          		<input type="hidden" id="adminName" name="adminName" value="${ a.name }">
+			                          </td>
+			                          <td  onclick="event.cancelBubble=true;"><b> - </b></td>
+			                          <td  onclick="event.cancelBubble=true;"><b> - </b></td>
+			                          <td  onclick="event.cancelBubble=true;"><button class="btn btn-secondary" id="updatePwd">비밀번호 변경</button></td>
+			                        </tr>
+		                        </c:forEach>
+							</form>
 	                        <!-- 사원 목록 : 관리자 제외-->
 	                        <c:forEach var="m" items="${ mList }">
-		                        <tr>
+		                        <tr class="cls">
 		                          <td></td>
 		                          <td class="p-0 text-center" onclick="event.cancelBubble=true;">
 		                          	   <div class="custom-checkbox custom-control">
@@ -310,7 +318,7 @@
 	/*--------------------- 상세 페이지로 이동 : 클릭할수 있도록 만들기 ---------------------*/
 	$(function(){
 		//table id = memberTable
-		$('#memberTable tr').mouseenter(function(){
+		$('#memberTable tr.cls').mouseenter(function(){
 			$(this).children().css({'color':'#6ED7F9', 'font-weight':'bold', 'cursor':'pointer'});
 		}).mouseout(function(){
 			$(this).children().css({'color':'#656D73', 'font-weight':'normal'});
@@ -385,7 +393,14 @@
 		}
 	});
 	
-	
+	/*------------------------------ 관리자 비밀번호 변경 페이지로 이동 ------------------------------*/
+	$('#updatePwd').click(function(){
+// 			var mNo =  $(this).parent().parent().children().eq(2).text(); // 사번이 찍히는것 확인했음
+// 			console.log(mNo);
+				
+			$('#listForm').attr('action', 'adminPwdView.me');
+			$('#listForm').submit();
+	});
 	
 	</script>
 	

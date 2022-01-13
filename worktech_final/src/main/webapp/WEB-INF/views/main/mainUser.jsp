@@ -66,6 +66,14 @@
       background: none;
    }
    
+   .boardBtn:focus{
+		outline: none;
+   }
+   
+   .boardBtn:hover{
+		cursor: pointer;
+   }
+   
    #searchIcon {
       padding: 15px;
    }
@@ -144,7 +152,7 @@
                      </div>
                      <br>
                      <div id="noticeBoard">
-                        <table class="boardTable">
+                        <table class="boardTable" id="noticeTable">
                                   <thead>
                                       <tr>
                                           <th style="width: 150px;">글 번호</th>
@@ -154,95 +162,25 @@
                                           <th style="width: 100px;">조회수</th>
                                       </tr>
                                   </thead>
-                                  <tbody>
-                                      <tr>
-                                          <td>1</td>
-                                          <td>오늘 카페 커피 진짜 맛있어요</td>
-                                          <td>관리자</td>
-                                          <td>2021-12-19</td>
-                                          <td>1</td>
-                                      </tr>
-                                      <tr>
-                                          <td>2</td>
-                                          <td>월요일 출근은 정말 지옥 같네요</td>
-                                          <td>관리자</td>
-                                          <td>2021-12-19</td>
-                                          <td>1</td>
-                                      </tr>
-                                      <tr>
-                                          <td>3</td>
-                                          <td>게시판 작성</td>
-                                          <td>관리자</td>
-                                          <td>2021-12-19</td>
-                                          <td>1</td>
-                                      </tr>
-                                      <tr>
-                                          <td>4</td>
-                                          <td>게시판 작성</td>
-                                          <td>관리자</td>
-                                          <td>2021-12-19</td>
-                                          <td>1</td>
-                                      </tr>
-                                      <tr>
-                                          <td>5</td>
-                                          <td>게시판 작성</td>
-                                          <td>관리자</td>
-                                          <td>2021-12-19</td>
-                                          <td>1</td>
-                                      </tr>
+                                  <tbody id="noticeBody">
                                   </tbody>
                               </table>
                            </div>
-                           <div id="generalBoard">
-                        <table class="boardTable">
-                                  <thead>
-                                      <tr>
-                                          <th style="width: 150px;">글 번호</th>
-                                          <th style="width: 450px;">글 제목</th>
-                                          <th style="width: 110px;">작성자</th>
-                                          <th style="width: 170px;">작성일</th>
-                                          <th style="width: 100px;">조회수</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                      <tr>
-                                          <td>1</td>
-                                          <td>업무 관련 자료 공유합니다</td>
-                                          <td>관리자</td>
-                                          <td>2021-12-19</td>
-                                          <td>1</td>
-                                      </tr>
-                                      <tr>
-                                          <td>2</td>
-                                          <td>월요일 출근은 정말 지옥 같네요</td>
-                                          <td>관리자</td>
-                                          <td>2021-12-19</td>
-                                          <td>1</td>
-                                      </tr>
-                                      <tr>
-                                          <td>3</td>
-                                          <td>게시판 작성</td>
-                                          <td>관리자</td>
-                                          <td>2021-12-19</td>
-                                          <td>1</td>
-                                      </tr>
-                                      <tr>
-                                          <td>4</td>
-                                          <td>게시판 작성</td>
-                                          <td>관리자</td>
-                                          <td>2021-12-19</td>
-                                          <td>1</td>
-                                      </tr>
-                                      <tr>
-                                          <td>5</td>
-                                          <td>게시판 작성</td>
-                                          <td>관리자</td>
-                                          <td>2021-12-19</td>
-                                          <td>1</td>
-                                      </tr>
-                                  </tbody>
-                              </table>
-                           </div>
+                           <div id="commonBoard">
+							<table class="boardTable" id="commonTable">
+	                            <thead>
+	                                <tr>
+	                                    <th style="width: 150px;">글 번호</th>
+	                                    <th style="width: 450px;">글 제목</th>
+	                                    <th style="width: 110px;">작성자</th>
+	                                    <th style="width: 170px;">작성일</th>
+	                                    <th style="width: 100px;">조회수</th>
+	                                </tr>
+	                            </thead>
+	                            <tbody id="commonBody">
+	                            </tbody>
+	                        </table>
+                        </div>
                            <div id="anonymousBoard">
                         <table class="boardTable">
                                   <thead>
@@ -379,37 +317,156 @@
    
    
    
-   <script>
-      $(function(){
-         $('#generalBoard').css('display', 'none');
-         $('#anonymousBoard').css('display', 'none');
-      });
-      
-      function clickBtn(btn) {
-         if(btn.id == 'noticeBtn'){
-            $(btn).html('<b>공지사항</b>');
-            $('#generalBtn').html('일반 게시판');
-            $('#anonymousBtn').html('익명 게시판');
-            $('#noticeBoard').css('display', 'block');
-            $('#generalBoard').css('display', 'none');
-            $('#anonymousBoard').css('display', 'none');
-         } else if(btn.id == 'generalBtn'){
-            $(btn).html('<b>일반 게시판</b>');
-            $('#noticeBtn').html('공지사항');
-            $('#anonymousBtn').html('익명 게시판');
-            $('#noticeBoard').css('display', 'none');
-            $('#generalBoard').css('display', 'block');
-            $('#anonymousBoard').css('display', 'none');
-         } else if(btn.id == 'anonymousBtn'){
-            $(btn).html('<b>익명 게시판</b>');
-            $('#noticeBtn').html('공지사항');
-            $('#generalBtn').html('일반 게시판');
-            $('#noticeBoard').css('display', 'none');
-            $('#generalBoard').css('display', 'none');
-            $('#anonymousBoard').css('display', 'block');
-         }
-      }
-   </script>
+<script>
+		$(function(){
+			$('#commonBoard').css('display', 'none');
+			$('#anonymousBoard').css('display', 'none');
+		});
+		
+		function clickBtn(btn) {
+			if(btn.id == 'noticeBtn'){
+				
+				$.ajax({
+					url: 'noticeRecentList.ad',
+					dataType: 'json',
+					success: function(data){
+						$nTable = $('#noticeBody');
+						$nTable.html('');
+						console.log(data);
+						for(var i in data){
+							$tr = $('<tr>');
+							$bNo = $('<td>').html(data[i].bNo);
+							$bTitle = $('<td>').html(data[i].bTitle);
+							$bWriter = $('<td>').html(data[i].name);
+							$bDate = $('<td>').html(data[i].bDate);
+							$bCount = $('<td>').html(data[i].bCount);
+							
+							$tr.append($bNo);
+							$tr.append($bTitle);
+							$tr.append($bWriter);
+							$tr.append($bDate);
+							$tr.append($bCount);
+							
+							$nTable.append($tr);
+						}
+						
+					},
+					error: function(data){
+						console.log(data);
+					}
+				});
+				
+				$(btn).html('<b>공지사항</b>');
+				$('#generalBtn').html('일반 게시판');
+				$('#anonymousBtn').html('익명 게시판');
+				$('#noticeBoard').css('display', 'block');
+				$('#commonBoard').css('display', 'none');
+				$('#anonymousBoard').css('display', 'none');
+
+			} else if(btn.id == 'generalBtn'){
+				$(btn).html('<b>일반 게시판</b>');
+				$('#noticeBtn').html('공지사항');
+				$('#anonymousBtn').html('익명 게시판');
+				$('#noticeBoard').css('display', 'none');
+				$('#commonBoard').css('display', 'block');
+				$('#anonymousBoard').css('display', 'none');
+			} else if(btn.id == 'anonymousBtn'){
+				$(btn).html('<b>익명 게시판</b>');
+				$('#noticeBtn').html('공지사항');
+				$('#generalBtn').html('일반 게시판');
+				$('#noticeBoard').css('display', 'none');
+				$('#commonBoard').css('display', 'none');
+				$('#anonymousBoard').css('display', 'block');
+			}
+		}
+		
+		$(function(){
+			$.ajax({
+				url: 'noticeRecentList.ad',
+				dataType: 'json',
+				success: function(data){
+					$nTable = $('#noticeBody');
+					$nTable.html('');
+					console.log(data);
+					for(var i in data){
+						$tr = $('<tr>');
+						$bNo = $('<td>').html(data[i].bNo);
+						$bTitle = $('<td>').html(data[i].bTitle);
+						$bWriter = $('<td>').html(data[i].name);
+						$bDate = $('<td>').html(data[i].bDate);
+						$bCount = $('<td>').html(data[i].bCount);
+						
+						$tr.append($bNo);
+						$tr.append($bTitle);
+						$tr.append($bWriter);
+						$tr.append($bDate);
+						$tr.append($bCount);
+						
+						$nTable.append($tr);
+					}
+					
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+			
+			$.ajax({
+				url: 'commonTopList.bo',
+				dataType: 'json',
+				success: function(data){
+					console.log(data);
+					
+					$cTable = $('#commonBody');
+					$cTable.html('');
+					
+					for(var i in data){
+						$tr = $('<tr>');
+						$bNo = $('<td>').html(data[i].bNo);
+						$bTitle = $('<td>').html("[ " + data[i].categoryName + " ] " + data[i].bTitle);
+						$bWriter = $('<td>').html(data[i].name);
+						$bDate = $('<td>').html(data[i].bDate);
+						$bCount = $('<td>').html(data[i].bCount);
+						
+						$tr.append($bNo);
+						$tr.append($bTitle);
+						$tr.append($bWriter);
+						$tr.append($bDate);
+						$tr.append($bCount);
+						
+						$cTable.append($tr);
+					}
+					
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+		
+		});
+		
+		// 게시글 목록 마우스오버, 클릭 이벤트
+		$(document).on({
+			mouseenter: function() {
+				$(this).parent().css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
+			},
+			mouseout: function() {
+				$(this).parent().css({'background':'white', 'font-weight':'normal'});
+			},
+			click: function() {
+				var bNo = $(this).parent().children().eq(0).text();
+				var tableID = $(this).closest('table').attr('id');
+				
+				if(tableID == 'noticeTable'){
+					location.href= "ndetail.ad?bNo=" + bNo + '&page=1';
+				} else if (tableID == 'commonTable'){
+					// 일반 게시판 디테일 이동 작성
+				}
+				
+			}
+		}, '.boardTable tbody td');
+		
+	</script>
     <script src="resources/dist/assets/vendors/js/vendor.bundle.base.js"></script>
     
         <script>

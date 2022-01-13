@@ -286,9 +286,30 @@
 		]]>
 	</select>
 	
+	<select id="selectNoticeRecentList" resultMap="mainListResultSet">
+		select *
+		from (select B_NO, B_TITLE, B_CONTENT, B_DATE, B_COUNT, B_TYPE, B_CRITICAL, B_WRITER,
+	       		   NAME, B_STATUS
+				from board
+			 		 join member on (b_writer = m_no)
+				where b_status = 'N'
+		      	  and b_type = 'NOTICE'
+				order by b_no desc) 
+		where rownum <![CDATA[<=]]> 5
+	</select>
 	
-	
-	
+	<resultMap type="Board" id="mainListResultSet">
+		<id column="B_NO" property="bNo"/>
+		<result column="B_TITLE" property="bTitle"/>
+		<result column="B_CONTENT" property="bContent"/>
+		<result column="B_DATE" property="bDate"/>
+		<result column="B_COUNT" property="bCount"/>
+		<result column="B_TYPE" property="bType"/>
+		<result column="B_CRITICAL" property="bCritical"/>
+		<result column="B_WRITER" property="bWriter"/>
+		<result column="NAME" property="name"/>
+		<result column="B_STATUS" property="bStatus"/>
+	</resultMap>
 	
 	
 	

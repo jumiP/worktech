@@ -140,6 +140,4 @@
 		where d_No=#{dNo}
 	</update>
 	
-	
-	
 </mapper>

@@ -98,7 +98,7 @@
                   <div class="card-body text-center memCard">
                      <div class="memItem">
                      	<c:if test="${ loginUser.profile.pUrl eq null }">
-	                        <img alt="image" src="resources/dist/assets/img/avatar/avatar-5.png" class="rounded-circle" id="memImg">
+	                        <img alt="image" src="resources/dist/assets/img/avatar/avatar-4.png" class="rounded-circle" id="memImg">
                      	</c:if>
                      	<c:if test="${ loginUser.profile.pUrl ne null }">
 	                        <img alt="image" src="resources/profileUploadFiles/${ loginUser.profile.pReName }" class="rounded-circle" id="memImg" width="90" height="90">

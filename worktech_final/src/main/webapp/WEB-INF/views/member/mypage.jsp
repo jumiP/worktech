@@ -49,11 +49,11 @@
 						             <figure class="avatar avatar-xl" id="titleImgArea">
 										<!-- pUrl이 비어있을때는 기본이미지 출력 -->
 										<c:choose>									
-		   									<c:when test="${ empty loginUser.profile.get(0).getpName() }" >
-		   										<img id="titleImg" src="./resources/assets/img/avatar/avatar-3.png" >
+		   									<c:when test="${ loginUser.profile.pReName eq null }" >
+		   										<img id="titleImg" src="resources/dist/assets/img/avatar/avatar-3.png" >
 		   									</c:when>
 		   									<c:otherwise>
-		   										<img id="titleImg" src="./resources/profileUploadFiles/${ loginUser.profile.get(0).getpReName() }" >
+		   										<img id="titleImg" src="resources/profileUploadFiles/${ loginUser.profile.pReName }" >
 		   									</c:otherwise>
 										</c:choose>
 									</figure>
@@ -108,7 +108,7 @@
 				                   
 				                   <div class="card-footer text-right">
 				                    <button class="btn btn-primary mr-1" id="updatePwd">비밀번호 변경</button>
-				                    <button class="btn btn-primary mr-1" onclick="location.href=''">내 정보 변경</button>
+				                    <button class="btn btn-primary mr-1" onclick="location.href='detailMyPage.me'">내 정보 변경</button>
 				                  </div>
 								</form>					
 							</div>

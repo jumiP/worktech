@@ -8,6 +8,7 @@
 <style>
  	table { text-align : center; width : 100%;} 
  	#titleImgArea{width:100px; height: 100px;}
+ 	#titleImg:hover {cursor: pointer;}
 </style>
 
 <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -60,11 +61,11 @@
 						             <figure class="avatar avatar-xl" id="titleImgArea">
 										<!-- pUrl이 비어있을때는 기본이미지 출력 -->
 										<c:choose>									
-		   									<c:when test="${ empty loginUser.profile.get(0).getpName() }" >
-		   										<img id="titleImg" src="./resources/assets/img/avatar/avatar-3.png" >
+		   									<c:when test="${ loginUser.profile.pReName eq null }" >
+		   										<img id="titleImg" src="resources/dist/assets/img/avatar/avatar-3.png" >
 		   									</c:when>
 		   									<c:otherwise>
-		   										<img id="titleImg" src="./resources/profileUploadFiles/${ loginUser.profile.get(0).getpReName() }" >
+		   										<img id="titleImg" src="resources/profileUploadFiles/${ loginUser.profile.pReName }" >
 		   									</c:otherwise>
 										</c:choose>
 									</figure>
@@ -126,7 +127,7 @@
  													<c:if test="${ fn:substring(loginUser.birthDay, 0, 4) == i }"> 
  														<option value="${ i }" selected >${ i }</option>
  													</c:if>
-													선택한 값이 i와 같지 않다면 : i만 출력
+<!-- 													선택한 값이 i와 같지 않다면 : i만 출력 -->
  													<c:if test="${ fn:substring(loginUser.birthDay, 0, 4) != i }"> 
  														<option value="${ i }" >${ i }</option> 
  													</c:if> 

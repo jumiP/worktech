@@ -59,13 +59,13 @@ public class MemberController {
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
 	public String login(Member m, Model model) {	
 		
-		System.out.println(bcrypt.encode(m.getPwd()));
+//		System.out.println(bcrypt.encode(m.getPwd()));
 		
 		Member loginMember = mService.memberLogin(m);
 
 		if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
 			model.addAttribute("loginUser", loginMember);
-			logger.info(loginMember.getmNo());
+//			logger.info(loginMember.getmNo());
 			return "redirect:home.do";
 		} else {
 			throw new MemberException("로그인에 실패하였습니다.");
@@ -516,27 +516,20 @@ public class MemberController {
 		m.setBirthDay(birthDay);
 		
 		/*------------------------------ 프로필 사진------------------------------*/
-//		System.out.println(proImg);  
-//		System.out.println(proImg.getOriginalFilename()); 
-		
-		ArrayList<Profile> profile = new ArrayList<Profile> ();
-//		Profile profile = new Profile();
+		Profile profile = new Profile();
 		
 		if( proImg != null && !proImg.isEmpty() ) {
 		
 			HashMap<String, String> profileInfo = saveFile(proImg, request); 
 			
 			if(profileInfo.get("renameFileName") != null) {
-				Profile p = new Profile();
-				p.setpName(proImg.getOriginalFilename());
-				p.setpReName(profileInfo.get("renameFileName"));
-				p.setpUrl(profileInfo.get("renamePath"));
-				p.setmNo(m.getmNo());
-				
-				profile.add(p);
+				profile.setpName(proImg.getOriginalFilename());
+				profile.setpReName(profileInfo.get("renameFileName"));
+				profile.setpUrl(profileInfo.get("renamePath"));
+				profile.setmNo(m.getmNo());
 				
 				// 프로필 insert 및 update
-				int result = mService.updateProfile(p);
+				int result = mService.updateProfile(profile);
 				if(result > 0) {
 //					System.out.println("프로필 사진 등록 성공");
 				} else {
@@ -567,6 +560,7 @@ public class MemberController {
 	public HashMap<String, String> saveFile(MultipartFile file, HttpServletRequest request) {
 		// 저장경로 : profileUploadFiles
 		String root = request.getSession().getServletContext().getRealPath("resources"); // 작은 resources
+		System.out.println(root);
 		String savePath = root + "/profileUploadFiles";
 		
 		File folder = new File(savePath);

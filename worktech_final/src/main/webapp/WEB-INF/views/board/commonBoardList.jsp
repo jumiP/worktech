@@ -101,7 +101,7 @@
 	                            	<i class="fas fa-chevron-circle-down"></i>
 	                            	<select class="select" name="categoryNo" onchange="selectCategory(this)">
 	                            		<option selected disabled>카테고리</option>
-	                            		<option value="all">전체</option>
+	                            		<option value="0">전체</option>
 	                            		<option value="100" <c:if test="${ category == 100 }">selected</c:if>>회의</option>
 	                            		<option value="200" <c:if test="${ category == 200 }">selected</c:if>>출장</option>
 	                            		<option value="300" <c:if test="${ category == 300 }">selected</c:if>>홍보</option>
@@ -139,8 +139,6 @@
                                 </table>
                                 <button class="btn btn-primary push" onclick="location.href='cinsertView.bo';">글쓰기</button>
                                 <br clear="all">
-                                
-                                <!-- 페이징 처리 -->
                                 <div class="card-body paging-area">
                                     <div class="buttons">
                                         <nav aria-label="Page navigation example">
@@ -165,7 +163,7 @@
 														<c:if test="${ category ne null }">
 															<c:param name="category" value="${ category }"/>
 														</c:if>
-														<c:if test="${ searchCatagory ne null }">
+														<c:if test="${ searchCategory ne null }">
 															<c:param name="searchCategory" value="${ searchCategory }"/>
 															<c:param name="searchValue" value="${ searchValue }"/>
 														</c:if>
@@ -180,7 +178,7 @@
 														<c:if test="${ category ne null }">
 															<c:param name="category" value="${ category }"/>
 														</c:if>
-														<c:if test="${ searchCatagory ne null }">
+														<c:if test="${ searchCategory ne null }">
 															<c:param name="searchCategory" value="${ searchCategory }"/>
 															<c:param name="searchValue" value="${ searchValue }"/>
 														</c:if>
@@ -203,7 +201,7 @@
 															<c:if test="${ category ne null }">
 																<c:param name="category" value="${ category }"/>
 															</c:if>
-															<c:if test="${ searchCatagory ne null }">
+															<c:if test="${ searchCategory ne null }">
 																<c:param name="searchCategory" value="${ searchCategory }"/>
 																<c:param name="searchValue" value="${ searchValue }"/>
 															</c:if>
@@ -234,7 +232,7 @@
 														<c:if test="${ category ne null }">
 															<c:param name="category" value="${ category }"/>
 														</c:if>
-														<c:if test="${ searchCatagory ne null }">
+														<c:if test="${ searchCategory ne null }">
 															<c:param name="searchCategory" value="${ searchCategory }"/>
 															<c:param name="searchValue" value="${ searchValue }"/>
 														</c:if>
@@ -250,7 +248,7 @@
 														<c:if test="${ category ne null }">
 															<c:param name="category" value="${ category }"/>
 														</c:if>
-														<c:if test="${ searchCatagory ne null }">
+														<c:if test="${ searchCategory ne null }">
 															<c:param name="searchCategory" value="${ searchCategory }"/>
 															<c:param name="searchValue" value="${ searchValue }"/>
 														</c:if>
@@ -268,7 +266,9 @@
                                 <div class="search">
                                 	<c:url var="search" value="searchCommon.bo"/>
                                 	<form action="${ search }">
-                                		<input type="hidden" name="category" value="${ category }">
+                                		<c:if test="${ category ne null }">
+                                			<input type="hidden" name="category" value="${ category }">
+                                		</c:if>
 	                                    <select name="searchCategory" style="height: 30px; width: 80px; border: 1px solid #e3e3e3;">
 	                                        <option value="title">제목</option>
 	                                        <option value="content">내용</option>
@@ -288,9 +288,9 @@
     <c:import url="../common/footer.jsp" />
     
     <script>
-    	var category = '${category}';
-    	var searchCategory = '${searchCategory}';
-    	var searchValue = '${searchValue}';
+//     	var category = '${category}';
+//     	var searchCategory = '${searchCategory}';
+//     	var searchValue = '${searchValue}';
     	
 	    $(function() {
 			$('#tb tbody td').mouseenter(function() {
@@ -300,22 +300,38 @@
 			}).click(function() {
 				var bNo = $(this).parent().children().eq(0).text();
 				
-				location.href="cdetail.bo?bNo=" + bNo + "&page=" + ${pi.currentPage} + "&category=" + category
-							  + "&searchCategory=" + searchCategory + "&searchValue=" + searchValue;
+// 				location.href="cdetail.bo?bNo=" + bNo + "&page=" + ${pi.currentPage} + "&category=" + category
+// 							  + "&searchCategory=" + searchCategory + "&searchValue=" + searchValue;
+				
+				<c:url var="commonDetail" value="cdetail.bo">
+					<c:param name="page" value="${ pi.currentPage }"/>
+					<c:if test="${ category ne null }">
+						<c:param name="category" value="${ category }"/>
+					</c:if>
+					<c:if test="${ searchCategory ne null }">
+						<c:param name="searchCategory" value="${ searchCategory }"/>
+						<c:param name="searchValue" value="${ searchValue }"/>
+					</c:if>
+				</c:url>
+				
+				location.href = "${ commonDetail }" + "&bNo=" + bNo;
 			});
 		});
 	    
-	    // 카테고리 선택 시
+		// 카테고리 선택 시
 	    function selectCategory(value){
-	    	var category = $('option:selected').val();
+	    	var categoryNo = $('option:selected').val();
 			
-	    	if(category == 'all'){
+	    	if(categoryNo == '0'){
 	    		location.href = "commonList.bo";
 	    	} else {
-	    		location.href = "commonList.bo?category=" + category;
+	    		location.href = "commonList.bo?category=" + categoryNo;
 	    	}
 	    }
 	    
     </script>
+
+
 </body>
+
 </html>

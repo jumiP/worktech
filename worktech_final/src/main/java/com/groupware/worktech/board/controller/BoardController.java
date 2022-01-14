@@ -59,13 +59,8 @@ public class BoardController {
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
-		ArrayList<Board> list = null;
-		if(category != null) {
-			list = bService.selectCommonList(pi, category);
-		} else {
-			list = bService.selectCommonList(pi);
-		}
-		
+		ArrayList<Board> list = bService.selectCommonList(pi, category);
+//		
 		if(list != null) {
 			model.addAttribute("pi", pi);
 			model.addAttribute("list", list);

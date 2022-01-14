@@ -213,12 +213,12 @@
 	<script>
 		window.name = 'pAdParent';
 		
-		// 개인 주소록 추가
+		// 개인 주소록 추가 팝업
 		function addContact() {
 			open('pAdbookInsertView.ab', '개인 주소록 추가', 'width=600px, height=650px, top=50px, left=400px');
 		}
 		
-		// 개인 주소록 수정
+		// 개인 주소록 수정 팝업
 		$('#pAdbookTable tbody td:not(:first-child)').on('click', function(){
 			var adNo = $(this).parent().children().eq(0).children().eq(0).val();
 			

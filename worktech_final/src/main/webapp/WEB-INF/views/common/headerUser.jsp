@@ -294,7 +294,7 @@
                                 </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link">
+                            <a href="myPage.me" class="nav-link">
                                 <i class="fas fa-user-lock"></i>
                                 <span>마이 페이지</span></a>
                         </li>

@@ -85,7 +85,7 @@
 										<tr>
 											<th scope="col">
 												<div class="custom-checkbox custom-control">
-													<input type="checkbox" class="custom-control-input" id="checkbox-all">
+													<input type="checkbox" class="custom-control-input" id="checkbox-all" onclick="clickAll();">
 													<label for="checkbox-all" class="custom-control-label">&nbsp;</label>
 												</div>
 											</th>
@@ -103,7 +103,7 @@
 												<td class="p-0 text-center">
 													<input type="hidden" name="adNo" value="${ c.adNo }">
 													<div class="custom-checkbox custom-control">
-														<input type="checkbox" class="custom-control-input" id="${ c.adNo }" name="pAdCheckbox" value="${ c.adNo }">
+														<input type="checkbox" class="custom-control-input" id="${ c.adNo }" name="pAdCheckbox" value="${ c.adNo }" onclick="clickpAd(this);">
 														<label for="${ c.adNo }" class="custom-control-label">&nbsp;</label>
 													</div>
 												</td>
@@ -240,6 +240,39 @@
 				});
 
 				location.href="pAdbookDelete.ab?checked=" + checkArr;
+			}
+		}
+		
+		// 체크박스 전체 선택
+		var pAd = document.getElementsByName('pAdCheckbox');
+		var all = document.getElementById('checkbox-all');
+		var count = 0;
+		
+		function clickpAd(pAd){
+			if(pAd.checked == true){
+				count++;
+			} else {
+				count--;
+			}
+			
+			if(count == 10){
+				all.checked = true;
+			} else {
+				all.checked = false;
+			}
+		}
+		
+		function clickAll(){
+			if(all.checked == true){
+				for(var i = 0; i < pAd.length; i++){
+					pAd[i].checked = true;
+					count = 10;
+				}
+			} else {
+				for(var i = 0; i < pAd.length; i++){
+					pAd[i].checked = false;
+					count = 0;
+				}
 			}
 		}
 	</script>

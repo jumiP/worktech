@@ -59,11 +59,11 @@ public class MemberController {
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
 	public String login(Member m, Model model) {	
 		
-		System.out.println(bcrypt.encode(m.getPwd()));
+//		System.out.println(bcrypt.encode(m.getPwd()));
 		
 		Member loginMember = mService.memberLogin(m);
-		System.out.println(m);
-		System.out.println(loginMember);
+//		System.out.println(m);
+//		System.out.println(loginMember);
 		
 		if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
 			model.addAttribute("loginUser", loginMember);

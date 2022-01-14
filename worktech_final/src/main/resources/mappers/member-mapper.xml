@@ -48,7 +48,7 @@
 		<result column="D_NAME" property="dName"/>
 		<result column="M_HIRED" property="hireDate"/>
 		<result column="M_STATUS" property="mStatus"/>
-		<collection property="profile" resultMap="profileResultSet" javaType="arrayList"/>
+		<collection property="profile" resultMap="profileResultSet" javaType="Profile"/>
 	</resultMap>
 	
 	<!-- 사원 목록 : 관리자 제외 -->

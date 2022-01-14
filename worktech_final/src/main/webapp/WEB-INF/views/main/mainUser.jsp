@@ -97,11 +97,16 @@
                <div class="card">
                   <div class="card-body text-center memCard">
                      <div class="memItem">
-                        <img alt="image" src="resources/dist/assets/img/avatar/avatar-5.png" class="rounded-circle" id="memImg">
+                     	<c:if test="${ loginUser.profile.pUrl eq null }">
+	                        <img alt="image" src="resources/dist/assets/img/avatar/avatar-5.png" class="rounded-circle" id="memImg">
+                     	</c:if>
+                     	<c:if test="${ loginUser.profile.pUrl ne null }">
+	                        <img alt="image" src="resources/profileUploadFiles/${ loginUser.profile.pReName }" class="rounded-circle" id="memImg" width="90" height="90">
+                     	</c:if>
                      </div>
                      <div class="memItem">
                         <h5>${ loginUser.name }</h5>
-                        <label>영업부 사원</label>
+                        <label>${ loginUser.dName } ${ loginUser.jobGrade }</label>
                      </div>
                      <div class="memItem">
                         <h5>결재 대기 문서</h5>

@@ -166,7 +166,13 @@
                     </li>
                     <li class="dropdown">
                         <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                            <img alt="image" src="resources/profileUploadFiles/${ loginUser.profile.pReName }" width="30" height="30" class="rounded-circle mr-1">
+                            <c:if test="${ loginUser.profile.pReName == null }">
+                            	<img alt="image" src="resources/dist/assets/img/avatar/avatar-4.png" width="30" height="30" class="rounded-circle mr-1">
+                            </c:if>
+                            <c:if test="${ loginUser.profile.pReName != null }">
+                            	<img alt="image" src="resources/profileUploadFiles/${ loginUser.profile.pReName }" width="30" height="30" class="rounded-circle mr-1">
+                            </c:if>
+                            
                             <div class="d-sm-none d-lg-inline-block">${ loginUser.name } ${ loginUser.jobGrade }</div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">

@@ -113,6 +113,7 @@
 	                                <div class="form-group">
 	                                    <label>글 제목</label>
 	                                    <input type="text" class="form-control" name="bTitle" value="${ b.bTitle }">
+	                                    <input type="hidden" name="flag" id="flag" value="0">
 	                                </div>
 	                                <div class="form-group half-col left-item">
 	                                    <label>작성자</label>
@@ -121,7 +122,7 @@
 	                                </div>
 	                                <div class="form-group half-col">
 	                                    <label>작성일</label>
-	                                    <input type="date" class="form-control" name="bDate" value="${ b.bDate }">
+	                                    <input type="date" class="form-control" name="bDate" value="${ b.bDate }" disabled>
 	                                </div>
 	                                <div class="form-group half-col">
 	                                    <label>중요도</label>
@@ -218,6 +219,8 @@
         $(document).on("click", "i[name='fileDelete']", function() {
 //         	var fNo = $(this).parent().find('input').val();
         	var fullDiv = $(this).parent();
+        	
+        	$('#flag').val('1');
         	
         	fullDiv.html('');
         	

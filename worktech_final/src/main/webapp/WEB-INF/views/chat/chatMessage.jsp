@@ -122,11 +122,11 @@
 													<c:param name="selectmNo" value="${ gl.gatheringMember }"/>
 												</c:url>
 					                            <a href="${ personalChat }" class="dropdown-item">
-													<c:if test="${ gl.profileUrl != null }">
-														<img src="${ ch.gatheringList.profileUrl }" class="mr-3 rounded-circle" width="20"
+													<c:if test="${ gl.profile != null }">
+														<img src="resources/profileUploadFiles/${ gl.profile.pReName }" class="mr-1 rounded-circle" width="20" height="20"
 															alt="image">
 													</c:if>
-													<c:if test="${ gl.profileUrl == null }">
+													<c:if test="${ gl.profile == null }">
 														<img src="resources/dist/assets/img/avatar/avatar-1.png" class="mr-1 rounded-circle" width="20"
 															alt="image">
 													</c:if>
@@ -138,11 +138,11 @@
 											</c:if>
 											<c:if test="${ gl.gatheringMember == loginUser.mNo }">
 												<a class="dropdown-item myInfo">
-													<c:if test="${ gl.profileUrl != null }">
-														<img src="${ ch.gatheringList.profileUrl }" class="mr-3 rounded-circle" width="20"
+													<c:if test="${ gl.profile.pReName != null }">
+														<img src="resources/profileUploadFiles/${ gl.profile.pReName }" class="mr-3 rounded-circle" width="20" height="20"
 															alt="image">
 													</c:if>
-													<c:if test="${ gl.profileUrl == null }">
+													<c:if test="${ gl.profile.pReName == null }">
 														<img src="resources/dist/assets/img/avatar/avatar-1.png" class="mr-1 rounded-circle" width="20"
 															alt="image">
 													</c:if>
@@ -191,10 +191,10 @@
 	                    	<c:if test="${ msg.readYN ne 'Y' && loginUser.mNo != msg.sendMember }">
 	                    		<div class="chat-item chat-left">
 	                    			<div class="senderName">${ msg.sendMemberFullName }</div>
-	                    			<c:if test="${ msg.profileUrl != null }">
-	                    				<img src="${ msg.profileUrl }">
+	                    			<c:if test="${ msg.pReName != null }">
+	                    				<img src="resources/profileUploadFiles/${ msg.pReName }" width="50" height="50">
 	                    			</c:if>
-	                    			<c:if test="${ msg.profileUrl == null }">
+	                    			<c:if test="${ msg.pReName == null }">
 	                    				<img src="resources/dist/assets/img/avatar/avatar-1.png">
 	                    			</c:if>
 	                    			<div class="chat-details">
@@ -212,10 +212,10 @@
 	                    	</c:if>
 	                    	<c:if test="${ msg.readYN ne 'Y' && loginUser.mNo == msg.sendMember }">
 	                    		<div class="chat-item chat-right">
-	                    			<c:if test="${ msg.profileUrl != null }">
-	                    				<img src="${ msg.profileUrl }">
+	                    			<c:if test="${ msg.pReName != null }">
+	                    				<img src="resources/profileUploadFiles/${ msg.pReName }" width="50" height="50">
 	                    			</c:if>
-	                    			<c:if test="${ msg.profileUrl == null }">
+	                    			<c:if test="${ msg.pReName == null }">
 	                    				<img src="resources/dist/assets/img/avatar/avatar-1.png">
 	                    			</c:if>
 	                    			<div class="chat-details">
@@ -274,7 +274,7 @@
 						"chatRoomNo" : "${ cr.chatRoomNo }",
 		                "sendMember" : "${ loginUser.mNo }",
 		                "sendMemberFullName" : sendMemberFullName,
-		                "profileUrl" : "${ loginUser.pUrl }"
+		                "pReName" : "${ loginUser.profile.pReName }"
 		            };
 				
 		        var jsonData = JSON.stringify(data);
@@ -285,8 +285,8 @@
 		        
 		        innerDiv += '<div class="chat-item chat-right">';
 		        
-		        if("${ loginUser.pUrl }" != '' && "${ loginUser.pUrl }" != null ){
-		        	innerDiv += '<img src="' + ${ loginUser.pUrl } + '">';	
+		        if("${ loginUser.profile.pReName }" != '' && "${ loginUser.profile.pReName }" != null ){
+		        	innerDiv += '<img src="resources/profileUploadFiles/${ loginUser.profile.pReName }" width="50" height="50">';	
 		        } else {
 		        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
 		        }
@@ -324,7 +324,7 @@
 			var chatRoomNo = msgData.chatRoomNo;
 			var sendMember = msgData.sendMember;
 			var sendMemberFullName = msgData.sendMemberFullName;
-			var pUrl = msgData.profileUrl;
+			var pReName = msgData.pReName;
 			var readYN = msgData.readYN;
 			
 			// 받은 메시지 추가
@@ -339,8 +339,8 @@
 					innerDiv += '<div class="chat-item chat-left">'
 								+ '<div class="senderName">' + sendMemberFullName + '</div>';
 			        
-			        if(pUrl != '' && pUrl != null ){
-			        	innerDiv += '<img src="' + pUrl + '">';	
+			        if(pReName != '' && pReName != null ){
+			        	innerDiv += '<img src="resources/profileUploadFiles/"' + pReName + '" width="50" height="50">';	
 			        } else {
 			        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
 			        }

@@ -206,11 +206,11 @@
 										<c:if test="${ fn:length(ch.gatheringList) == 2 }">
 											<c:forEach var="gl" items="${ ch.gatheringList }">
 												<c:if test="${ gl.gatheringMember != loginUser.mNo }">
-													<c:if test="${ gl.profileUrl != null }">
-														<img src="${ ch.gatheringList.profileUrl }" class="mr-3 rounded-circle" width="50"
+													<c:if test="${ gl.profile ne null }">
+														<img src="resources/profileUploadFiles/${ gl.profile.pReName }" class="mr-3 rounded-circle" width="50" height="50"
 															alt="image">
 													</c:if>
-													<c:if test="${ gl.profileUrl == null }">
+													<c:if test="${ gl.profile eq null }">
 														<img src="resources/dist/assets/img/avatar/avatar-1.png" class="mr-3 rounded-circle" width="50"
 															alt="image">
 													</c:if>
@@ -304,12 +304,12 @@
 									+ '<div class="chat_img">';
 									
 						if(data[i].gatheringList.length > 2){
-							innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-group.png" class="mr-3 rounded-circle" width="50" alt="image">';
+							innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-group.png" class="mr-3 rounded-circle" width="50" height="50" alt="image">';
 						} else if (data[i].gatheringList.length == 2) {
 							for(var g in data[i].gatheringList){
 								if(data[i].gatheringList[g].gatheringMember != loginmNo){
-									if(data[i].gatheringList[g].profileUrl != null){
-										innerDiv += '<img src="' + data[i].gatheringList[g].profileUrl + '" class="mr-3 rounded-circle" width="50" alt="image">';
+									if(data[i].gatheringList[g].profile != null){
+										innerDiv += '<img src="resources/profileUploadFiles/' + data[i].gatheringList[g].profile.pReName + '" class="mr-3 rounded-circle" width="50" alt="image">';
 									} else {
 										innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png" class="mr-3 rounded-circle" width="50" alt="image">';
 									}
@@ -373,11 +373,11 @@
     	
     	// 5초마다 채팅방 업데이트
     	$(function() {
-    		chatListReload();
+//     		chatListReload();
 			
-			setInterval(function() {
-				chatListReload();
-			}, 5000);
+// 			setInterval(function() {
+// 				chatListReload();
+// 			}, 5000);
 		});
 	    
 	</script>

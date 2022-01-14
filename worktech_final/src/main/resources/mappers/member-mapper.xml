@@ -27,10 +27,9 @@
 	
 	<!-- 로그인 수정-->
 	<select id="memberLogin" resultMap="memberResultSet">
-		select m_no, email, name, pwd, job_grade, birthday, phone, address, m_grade,
-				d_no, d_name, m_hired, m_status, profile_no, p_url, p_name, p_rname
-		from member
-			join department using (d_no)
+		select *
+		from member m 
+			left join department using (d_no)
 			left join profile using (m_no)
 		where m_no=#{mNo} and m_status='Y'
 	</select>
@@ -49,7 +48,7 @@
 		<result column="D_NAME" property="dName"/>
 		<result column="M_HIRED" property="hireDate"/>
 		<result column="M_STATUS" property="mStatus"/>
-		<collection property="profile" resultMap="profileResultSet" javaType="arrayList"/>
+		<collection property="profile" resultMap="profileResultSet" javaType="Profile"/>
 	</resultMap>
 	
 	<!-- 사원 목록 : 관리자 제외 -->

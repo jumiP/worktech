@@ -153,10 +153,6 @@ public class BoardService {
 		return result;
 
 	}
-
-	public ArrayList<Board> selectCommonList(PageInfo pi) {
-		return bDAO.selectCommonList(sqlSession, pi);
-	}
 	
 	public ArrayList<Board> selectCommonList(PageInfo pi, Integer category) {
 		return bDAO.selectCommonList(sqlSession, pi, category);

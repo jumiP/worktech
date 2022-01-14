@@ -115,11 +115,11 @@ h4.section-title:hover {
 											<c:forEach var="a" items="${ list }">
 												<tr>
 													<td><c:if test="${ a.pUrl eq null }">
-															<img alt="image" src="resources/dist/assets/img/avatar/avatar-5.png" class="rounded-circle" width="35">
+															<img alt="image" src="resources/dist/assets/img/avatar/avatar-3.png" class="rounded-circle" width="35">
 														</c:if>
 														<c:if test="${ a.pUrl ne null }">
 															<!-- 사진 경로 후에 수정 -->
-															<img alt="image">
+															<img alt="image" src="">
 														</c:if>
 														&nbsp;&nbsp;&nbsp;${ a.name }
 													</td>

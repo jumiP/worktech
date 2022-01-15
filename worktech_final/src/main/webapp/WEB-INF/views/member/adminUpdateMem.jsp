@@ -52,16 +52,16 @@
 				                    
 				                    
 				                    <!-- 프로필 이미지 영역 -->
-				                    <!-- Basic avatar examples : https://picturepan2.github.io/spectre/components/avatars.html-->
-					                <figure class="avatar avatar-xl" id="titleImgArea">
+					                 <!-- Basic avatar examples : https://picturepan2.github.io/spectre/components/avatars.html-->
+						             <figure class="avatar avatar-xl" id="titleImgArea">
 										<!-- pUrl이 비어있을때는 기본이미지 출력 -->
 										<c:choose>									
-	   										<c:when test="${ empty member.pUrl }" >
-	   											<img id="titleImg" src="./resources/assets/img/avatar/avatar-3.png" >
-	   										</c:when>
-	   										<c:otherwise>
-	   											<img id="titleImg" src="${ member.pUrl }" >
-	   										</c:otherwise>
+		   									<c:when test="${ member.profile.pReName eq null }" >
+		   										<img id="titleImg" src="resources/dist/assets/img/avatar/avatar-3.png" >
+		   									</c:when>
+		   									<c:otherwise>
+		   										<img id="titleImg" src="resources/profileUploadFiles/${ member.profile.pReName }" >
+		   									</c:otherwise>
 										</c:choose>
 									</figure>
 									<br><br><br>
@@ -106,8 +106,13 @@
 				                    </div>
 				                    
 				                    <div class="form-group">
-				                      <label>Email</label>
+				                      <label>사내 Email</label>
 				                      <input type="email" class="form-control" id="email" name="email" readonly style="background : white;" placeholder="${ member.email }">
+				                    </div>
+				                    
+				                    <div class="form-group">
+				                      <label>개인 Email</label>
+				                      <input type="email" class="form-control" id="mEmail" name="mEmail" readonly style="background : white;" placeholder="${ member.mEmail }">
 				                    </div>
 				                  
 				                  <div class="card-footer text-right">

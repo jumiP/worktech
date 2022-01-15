@@ -6,7 +6,7 @@
 	<insert id="insertMember">
 		insert into member
 		values (#{mNo}, #{email}, #{name}, #{pwd}, #{jobGrade}, null, null, null, default
-				, #{dNo}, sysdate, default)
+				, #{dNo}, sysdate, default, #{mEmail} )
 	</insert>
 	
 	<!-- 사원번호 중복 확인 : ajax -->
@@ -37,6 +37,7 @@
 	<resultMap type="Member" id="memberResultSet">
 		<id column="M_NO" property="mNo"/>
 		<result column="EMAIL" property="email"/>
+		<result column="M_EMAIL" property="mEmail"/>
 		<result column="NAME" property="name"/>
 		<result column="PWD" property="pwd"/>
 		<result column="JOB_GRADE" property="jobGrade"/>
@@ -53,8 +54,9 @@
 	
 	<!-- 사원 목록 : 관리자 제외 -->
 	<select id="selectMemList" resultMap="memberResultSet">
-		select m_no, email, name, pwd, job_grade, birthday, phone, address, m_grade,
-				d_no, d_name, m_hired, m_status
+<!-- 		select m_no, email, M_EMAIL, name, pwd, job_grade, birthday, phone, address, m_grade, -->
+<!-- 				d_no, d_name, m_hired, m_status -->
+		select *
 		from member
 		    join department using (d_no)
 		where m_status='Y' and m_grade='USER'
@@ -63,8 +65,9 @@
 	
 	<!-- 관리자 목록 -->
 	<select id="selectAdminList" resultMap="memberResultSet">
-		select m_no, email, name, pwd, job_grade, birthday, phone, address, m_grade,
-				d_no, d_name, m_hired, m_status
+<!-- 		select m_no, email, M_EMAIL, name, pwd, job_grade, birthday, phone, address, m_grade, -->
+<!-- 				d_no, d_name, m_hired, m_status -->
+		select *
 		from member
 		    join department using (d_no)
 		where m_status='Y' and m_grade='ADMIN'
@@ -105,7 +108,7 @@
 	
 	<!-- 사원 검색 : 검색 결과  -->
 	<select id="selectSearchResultList" parameterType="hashmap" resultMap="memberResultSet">
-		select m_no, email, name, pwd, job_grade, birthday, phone, address, m_grade,
+		select m_no, email, M_EMAIL, name, pwd, job_grade, birthday, phone, address, m_grade,
 				d_no, d_name, m_hired, m_status
 		from member
 		    join department using (d_no)
@@ -141,7 +144,8 @@
 
 	<!-- 사원 상세보기 -->
 	<select id="selectMember" resultMap="memberResultSet">
-		select m_no, name, d_name, job_grade, email, p_url
+<!-- 		select m_no, name, d_name, job_grade, email, m_email, p_url -->
+		select *
 		from member
 		    join department using (d_no)
 		    left join profile using (m_no)

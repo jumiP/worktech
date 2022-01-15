@@ -91,7 +91,7 @@
 				                    
 				                    <div class="form-group">
 				                      <label>개인 Email</label>
-<%-- 				                      <input type="email" class="form-control" id="mEmail" name="mEmail" readonly style="background : white;" value="${ loginUser.email2 }"> --%>
+				                      <input type="email" class="form-control" id="mEmail" name="mEmail" readonly style="background : white;" value="${ loginUser.mEmail }">
 				                    </div>
 				                       
 				                    
@@ -124,8 +124,7 @@
 		   										 <input type="text" class="form-control" id="address" name="address" readonly style="background : white;" value="${ loginUser.address }">
 		   									</c:otherwise>
 										</c:choose>
-				                       
-<%-- 				                       <input type="text" class="form-control" id="address" name="address" readonly style="background : white;" value="${ loginUser.address }"> --%>
+				                   
 				                    </div>
 				                   
 				                   <div class="card-footer text-right">

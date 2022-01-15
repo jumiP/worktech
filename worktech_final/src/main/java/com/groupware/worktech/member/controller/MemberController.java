@@ -591,6 +591,18 @@ public class MemberController {
 	}
 	
 	
+	// 임시비밀번호 발급? 페이지로 이동?
+		@RequestMapping("findPwd.me")
+		public String findPwdView() {
+			return "findPwd";
+		}
+
+	
+	
+	
+	
+	
+	
 	
 	
 	

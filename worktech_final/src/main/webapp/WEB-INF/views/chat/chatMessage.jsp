@@ -340,7 +340,7 @@
 								+ '<div class="senderName">' + sendMemberFullName + '</div>';
 			        
 			        if(pReName != '' && pReName != null ){
-			        	innerDiv += '<img src="resources/profileUploadFiles/"' + pReName + '" width="50" height="50">';	
+			        	innerDiv += '<img src="resources/profileUploadFiles/' + pReName + '" width="50" height="50">';	
 			        } else {
 			        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
 			        }

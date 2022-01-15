@@ -102,8 +102,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>글 제목</label>
-                                    <input type="text" class="form-control" id="bTitle" disabled
-                                        value="[ ${b.categoryName} ] ${ b.bTitle }">
+                                    <input type="text" class="form-control" id="bTitle" disabled value="[ ${b.categoryName} ] ${ b.bTitle }">
                                 </div>
                                 <div class="form-group half-col left-item">
                                     <label>작성자</label>
@@ -158,16 +157,20 @@
 	                                </form>
 								</c:if>
 								
-								<c:if test="${ searchCategory == '' }">
+								<c:if test="${ null eq searchCategory }">
 									<c:url var="clist" value="commonList.bo">
 										<c:param name="page" value="${ page }"/>
-										<c:param name="category" value="${ category }"/>
+										<c:if test="${ category ne null }">
+											<c:param name="category" value="${ category }"/>
+										</c:if>
 									</c:url>
 								</c:if>
-								<c:if test="${ searchCategory != '' }">
+								<c:if test="${ null ne searchCategory }">
 									<c:url var="clist" value="searchCommon.bo">
 										<c:param name="page" value="${ page }"/>
-										<c:param name="category" value="${ category }"/>
+										<c:if test="${ category ne null }">
+											<c:param name="category" value="${ category }"/>
+										</c:if>
 										<c:param name="searchCategory" value="${ searchCategory }"/>
 										<c:param name="searchValue" value="${ searchValue }"/>
 									</c:url>

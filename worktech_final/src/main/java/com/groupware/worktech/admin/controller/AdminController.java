@@ -11,10 +11,13 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +37,8 @@ import com.groupware.worktech.board.model.exception.BoardException;
 import com.groupware.worktech.board.model.service.BoardService;
 import com.groupware.worktech.board.model.vo.Board;
 import com.groupware.worktech.board.model.vo.BoardFile;
+import com.groupware.worktech.chat.model.exception.ChatException;
+import com.groupware.worktech.chat.model.service.ChatService;
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.common.Pagination;
 
@@ -45,6 +50,9 @@ public class AdminController {
 	
 	@Autowired
 	private BoardService bService;
+	
+	@Autowired
+	private ChatService cService;
 	
 	// 관리자 공지사항 게시판 부분 시작
 	@RequestMapping("noticeList.ad")
@@ -194,21 +202,20 @@ public class AdminController {
 		return "adminNoticeUpdate";
 	}
 	
-	@Transactional
 	@RequestMapping("nupdate.ad")
 	public String updateNotice(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile,
 							   @RequestParam(value="fNo",required=false) ArrayList<Integer> fNoes, @RequestParam("page") int page, 
-							   @RequestParam("flag") int flag, HttpServletRequest request, Model model) {
-		ArrayList<BoardFile> oldFileList = bService.selectNotice(b.getbNo(), "Y").getFileList();
-
+							  HttpServletRequest request, Model model) {
 		// 저장되어 있는 파일 삭제
 		if(fNoes != null && !fNoes.isEmpty()) { 
+			ArrayList<BoardFile> fileList = bService.selectNotice(b.getbNo(), "Y").getFileList();
 			
-			for(int i = 0; i < oldFileList.size(); i++) {
-				int fNo = oldFileList.get(i).getfNo();
+			for(int i = 0; i < fileList.size(); i++) {
+				int fNo = fileList.get(i).getfNo();
 				
 				if(!fNoes.contains(fNo)) {
-					deleteFile(oldFileList.get(i).getfRname(), request);
+					
+					deleteFile(fileList.get(i).getfRname(), request);
 					
 					int result = bService.deleteNoticeFile(fNo);
 					
@@ -218,25 +225,11 @@ public class AdminController {
 				}
 				
 			}
-		} else if(flag == 1) {
-			for(int i = 0; i < oldFileList.size(); i++) {
-				int fNo = oldFileList.get(i).getfNo();
-				
-				deleteFile(oldFileList.get(i).getfRname(), request);
-				
-				int result = bService.deleteNoticeFile(fNo);
-				
-				if(result <= 0) {
-					throw new BoardException("첨부 파일 삭제에 실패하였습니다."); 
-				}
-			}
 		}
 		
 		// 새로 추가한 파일 등록
-		ArrayList<BoardFile> fileList = null;
-		
-		if(reloadFile != null && !reloadFile[0].getOriginalFilename().trim().equals("")) {
-			fileList = new ArrayList<BoardFile>();
+		ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
+		if(reloadFile != null && reloadFile[0].getOriginalFilename() != null) {
 			for(int i=0; i<reloadFile.length; i++) {
 				HashMap<String, String> fileInfo = saveFile(reloadFile[i], request); 
 				
@@ -256,13 +249,7 @@ public class AdminController {
 		
 		int result = bService.updateNotice(b);
 		
-		int length = 0;
-		
-		if(fileList != null) {
-			length = fileList.size();
-		} 
-		
-		if(result >= length + 1) {
+		if(result >= b.getFileList().size() + 1) {
 			model.addAttribute("page", page);
 			return "redirect:ndetail.ad?bNo=" + b.getbNo() + "&upd=Y";
 		} else {
@@ -273,6 +260,7 @@ public class AdminController {
 	public void deleteFile(String fileName, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "/buploadFiles";
+		
 		File f = new File(savePath + "/" + fileName);
 		
 		if(f.exists()) {
@@ -523,21 +511,41 @@ public class AdminController {
 		return "main";
 	}
 	
-	// 부서 목록
+	// 부서 목록 페이지로 이동
 	@RequestMapping("dList.ad")
 	public String departmentList(Model model) {
+		// 트리
+		ArrayList<Department> list = cService.getChatDepartmentList();
 		
-		ArrayList<Department> list = aService.selectDepList();
-		
+		// 부서 목록
+		ArrayList<Department> dList = aService.selectDepList();
 		// 부서 구성원 수	
 		ArrayList<Integer> countList = aService.depCountList();
-		
+					
 		if(list != null) {
-			model.addAttribute("list", list);
-			model.addAttribute("countList", countList);
-
+			JSONArray jArr = new JSONArray();
+			
+			for(Department d : list) {
+				JSONObject jo = new JSONObject();
+				jo.put("id", d.getdNo());
+				jo.put("pId", d.getdParent());
+				jo.put("name", d.getdName());
+				
+				jArr.add(jo);
+			}	
+			
+			if(dList != null) {
+				model.addAttribute("list",dList);
+				model.addAttribute("countList", countList);
+			} else {
+				throw new ChatException("부서 목록 조회에 실패하였습니다.");
+			}
+			
+		model.addAttribute("jsonArray", jArr);
+			
+		} else {
+			throw new ChatException("부서 트리 조회에 실패하였습니다.");
 		}
-		
 		return "adminDepartment";
 	}
 
@@ -559,6 +567,7 @@ public class AdminController {
 	@RequestMapping("dInsert.ad")
 	public String insertDepartment(@ModelAttribute Department d, Model model) {
 			
+		System.out.println(d);
 		
 		// 등록
 		int result = aService.insertDepartment(d);
@@ -599,6 +608,7 @@ public class AdminController {
 	@ResponseBody
 	public void deleteDepartment(@RequestParam("dNo") String dNo) {
 		
+		System.out.println(dNo);
 		
 		int result = aService.deleteDep(dNo);
 		
@@ -624,6 +634,40 @@ public class AdminController {
 			}
 		}
 	}
+	
+	
+	// 부서 트리
+//	@ResponseBody
+//	@RequestMapping(value="deTree.ad", produces="application/json; charet=UTF-8")	
+//	public List<Code> findCodeByGroup(@RequestParam("codeGroupId") String codeGroupId) {
+	
+	@RequestMapping("deTree.ad")
+	public String findCodeByGroup(Model model) {
+		// 트리
+		ArrayList<Department> list = cService.getChatDepartmentList();
+				
+		if(list != null) {
+			JSONArray jArr = new JSONArray();
+					
+			for(Department d : list) {
+				JSONObject jo = new JSONObject();
+				jo.put("id", d.getdNo());
+				jo.put("pId", d.getdParent());
+				jo.put("name", d.getdName());
+				
+				jArr.add(jo);
+			}	
+					
+			model.addAttribute("jsonArray", jArr);	
+			} else {
+				throw new ChatException("부서 트리 조회에 실패하였습니다.");
+			}
+		return "departmentTree";
+	
+	}
+	
+	
+	
 	
 	
 }

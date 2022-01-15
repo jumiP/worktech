@@ -34,6 +34,10 @@ h4.section-title:hover {
 	font-weight: bold;
 	color: #495057;
 }
+
+.profileImg{
+ 	border-radius: 18px;
+}
 </style>
 </head>
 <body>
@@ -114,12 +118,11 @@ h4.section-title:hover {
 										<tbody>
 											<c:forEach var="a" items="${ list }">
 												<tr>
-													<td><c:if test="${ a.pUrl eq null }">
-															<img alt="image" src="resources/dist/assets/img/avatar/avatar-5.png" class="rounded-circle" width="35">
+													<td><c:if test="${ a.profile.pReName eq null }">
+															<img alt="image" src="resources/dist/assets/img/avatar/avatar-3.png" class="rounded-circle" width="36">
 														</c:if>
-														<c:if test="${ a.pUrl ne null }">
-															<!-- 사진 경로 후에 수정 -->
-															<img alt="image">
+														<c:if test="${ a.profile.pReName ne null }">
+															<img alt="image" class="profileImg" src="resources/profileUploadFiles/${ a.profile.pReName }" width="36" height="36">
 														</c:if>
 														&nbsp;&nbsp;&nbsp;${ a.name }
 													</td>

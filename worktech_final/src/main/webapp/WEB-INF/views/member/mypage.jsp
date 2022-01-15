@@ -85,8 +85,13 @@
 				                    </div>
 				                    
 				                    <div class="form-group">
-				                      <label>Email</label>
+				                      <label>사내 Email</label>
 				                      <input type="email" class="form-control" id="email" name="email" readonly style="background : white;" value="${ loginUser.email }">
+				                    </div>
+				                    
+				                    <div class="form-group">
+				                      <label>개인 Email</label>
+<%-- 				                      <input type="email" class="form-control" id="mEmail" name="mEmail" readonly style="background : white;" value="${ loginUser.email2 }"> --%>
 				                    </div>
 				                       
 				                    
@@ -97,13 +102,30 @@
 				                    
 				                    <div class="form-group">
 				                      <label>생년월일</label>
-				                      <input type="text" class="form-control" id="birthDay" name="birthDay" readonly style="background : white;" value="${ loginUser.birthDay }">
-				                    </div>
+				                      <c:choose>									
+		   									<c:when test="${ loginUser.birthDay == '1922-01-01' }" >
+		   										<input type="text" class="form-control" id="birthDay" name="birthDay" readonly style="background : white;" value="">
+		   									</c:when>
+		   									<c:otherwise>
+		   										<input type="text" class="form-control" id="birthDay" name="birthDay" readonly style="background : white;" value="${ loginUser.birthDay }">
+		   									</c:otherwise>
+										</c:choose>
+				            		</div>
 				                    
 				                    
 				                    <div class="form-group">
 				                      <label>주소</label>
-				                       <input type="text" class="form-control" id="address" name="address" readonly style="background : white;" value="${ loginUser.address }">
+				                       <c:choose>									
+		   									<c:when test="${ loginUser.address == '///' }" >
+		   										<input type="text" class="form-control" id="address" name="address" readonly style="background : white;" >
+				                   
+		   									</c:when>
+		   									<c:otherwise>
+		   										 <input type="text" class="form-control" id="address" name="address" readonly style="background : white;" value="${ loginUser.address }">
+		   									</c:otherwise>
+										</c:choose>
+				                       
+<%-- 				                       <input type="text" class="form-control" id="address" name="address" readonly style="background : white;" value="${ loginUser.address }"> --%>
 				                    </div>
 				                   
 				                   <div class="card-footer text-right">

@@ -7,6 +7,7 @@ public class Member {
 
 	private String mNo;
 	private String email;
+	private String mEmail;
 	private String name;
 	private String pwd;
 	private String jobGrade;

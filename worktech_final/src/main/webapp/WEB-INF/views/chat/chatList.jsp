@@ -179,11 +179,11 @@
 						<h4>채팅 목록</h4>
 					</div>
 					<div class="srch_bar">
-						<div class="btn">
-							<button type="button">
-								<i class="fas fa-cog"></i>
-							</button>
-						</div>
+<!-- 						<div class="btn"> -->
+<!-- 							<button type="button"> -->
+<!-- 								<i class="fas fa-cog"></i> -->
+<!-- 							</button> -->
+<!-- 						</div> -->
 						<div class="btn">
 							<button type="button" id="addChat">
 								<i class="fas fa-plus"></i>

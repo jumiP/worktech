@@ -242,7 +242,17 @@
 		                    <input type="text" id="msg" class="form-control" placeholder="더이상 메시지를 보낼 수 없는 채팅방입니다." readonly="readonly">
 	                    </c:if>
 	                    <c:if test="${ fn:length(memberList) > 1 }">
-	                    	<input type="text" id="msg" class="form-control" onkeyup="enterkey()" placeholder="메시지를 입력하세요">
+		                    <c:if test="${ cr.chatType == 0 }">
+		                    	<input type="text" id="msg" class="form-control" onkeyup="enterkey()" placeholder="메시지를 입력하세요">
+		                    </c:if>
+		                    <c:if test="${ cr.chatType == 1 }">
+			                    <c:if test="${ cr.chatOpenMem != loginUser.mNo }">
+			                    	<input type="text" id="msg" class="form-control" placeholder="해당 채팅방은 개설자만 메시지 전송이 가능합니다" readonly="readonly">
+			                    </c:if>
+			                    <c:if test="${ cr.chatOpenMem == loginUser.mNo }">
+			                    	<input type="text" id="msg" class="form-control" onkeyup="enterkey()" placeholder="메시지를 입력하세요">
+			                    </c:if>
+		                    </c:if>
 	                    </c:if>
 	                    <button class="btn btn-primary" id="button-send">
 	                        <i class="far fa-paper-plane"></i>

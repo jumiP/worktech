@@ -102,11 +102,12 @@
 	</insert>
 	
 	<select id="selectCreateChatRoom" resultMap="chatRoomResultSet2">
-		select chatroom_no, chat_open, chat_title, chat_type, chat_status, chat_list_no, chat_member, name || ' ' || job_grade as chat_member_name, p.*
+		select chatroom_no, chat_open, chat_title, chat_type, chat_status, chat_list_no, chat_member, name || ' ' || job_grade as chat_member_name, 
+			   profile_no, p_url, p_name, p_rname
 		from chatroom left join
 		     chat_list using(chatroom_no) join
 		     member on (chat_member = m_no) left join
-		     profile p using (m_no) 
+		     profile using (m_no) 
 		where chatroom_no = (select last_number
 		                     from USER_SEQUENCES
 		                     where sequence_name = 'SEQ_CHAT') - 1

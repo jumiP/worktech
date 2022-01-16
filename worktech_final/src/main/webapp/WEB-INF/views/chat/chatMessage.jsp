@@ -338,45 +338,48 @@
 			var readYN = msgData.readYN;
 			
 			// 받은 메시지 추가
+			// 동일한 채팅방일 경우
+			if(chatRoomNo == "${ cr.chatRoomNo }"){
+				
+				// 보낸 사람이 내가 아닐 경우에만 추가해야 함
+				if(sendMember != "${ loginUser.mNo }"){
+					var chatMsgBody = $('#chatMsgBody');
+			        var innerDiv = '';
+	
+			        if(readYN != 'Y'){
+				        // 일반 메시지
+						innerDiv += '<div class="chat-item chat-left">'
+									+ '<div class="senderName">' + sendMemberFullName + '</div>';
+				        
+				        if(pReName != '' && pReName != null ){
+				        	innerDiv += '<img src="resources/profileUploadFiles/' + pReName + '" width="50" height="50">';	
+				        } else {
+				        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
+				        }
+				        
+				        // 현재 시간 구하기
+				        var today = new Date();   
 			
-			// 보낸 사람이 내가 아닐 경우에만 추가해야 함
-			if(sendMember != "${ loginUser.mNo }"){
-				var chatMsgBody = $('#chatMsgBody');
-		        var innerDiv = '';
-
-		        if(readYN != 'Y'){
-			        // 일반 메시지
-					innerDiv += '<div class="chat-item chat-left">'
-								+ '<div class="senderName">' + sendMemberFullName + '</div>';
-			        
-			        if(pReName != '' && pReName != null ){
-			        	innerDiv += '<img src="resources/profileUploadFiles/' + pReName + '" width="50" height="50">';	
-			        } else {
-			        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
-			        }
-			        
-			        // 현재 시간 구하기
-			        var today = new Date();   
-		
-			        var hours = today.getHours(); // 시
-			        var minutes = today.getMinutes();  // 분
-			        
-			        var now = hours + ":" + minutes;
-			        
-			        innerDiv += '<div class="chat-details">'
-			        			+ '<div class="chat-text">' + msgContent + '</div>'
-			        			+ '<div class="chat-time">' + now + '</div></div></div>';
-			        
-			        chatMsgBody.append(innerDiv);
-				} else {
-					// 시스템 메시지
-					innerDiv += '<div class="sysMsg">' + msgContent + '</div>';
-				    chatMsgBody.append(innerDiv);
+				        var hours = today.getHours(); // 시
+				        var minutes = today.getMinutes();  // 분
+				        
+				        var now = hours + ":" + minutes;
+				        
+				        innerDiv += '<div class="chat-details">'
+				        			+ '<div class="chat-text">' + msgContent + '</div>'
+				        			+ '<div class="chat-time">' + now + '</div></div></div>';
+				        
+				        chatMsgBody.append(innerDiv);
+					} else {
+						// 시스템 메시지
+						innerDiv += '<div class="sysMsg">' + msgContent + '</div>';
+					    chatMsgBody.append(innerDiv);
+					}
 				}
+				
+				updateScroll();
+				updateTime();
 			}
-			
-			updateScroll();
-			updateTime();
 		}
 		
 		//채팅창에서 나갔을 때

@@ -107,6 +107,10 @@ public class MemberService {
 		return mDAO.selectProfile(sqlSession, mNo);
 	}
 
+	public ArrayList<Member> selectMainMemList() {
+		return mDAO.selectMainMemList(sqlSession);
+	}
+
 
 	
 	

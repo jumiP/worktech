@@ -203,7 +203,15 @@
 	</resultMap>
 	
 	
-	
+	<select id="selectMainMemList" resultMap="memberResultSet">
+		select *
+		from (select *
+			  from member
+			  	   join department using (d_no)
+		  	  where m_status='Y' and m_grade='USER'
+			  order by m_no desc)
+		where rownum <![CDATA[ <= ]]> 20
+	</select>
 	
 	
 	

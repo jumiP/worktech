@@ -115,6 +115,10 @@ public class MemberDAO {
 		return sqlSession.selectOne("memberMapper.selectProfile", mNo);
 	}
 
+	public ArrayList<Member> selectMainMemList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMainMemList");
+	}
+
 	
 	
 

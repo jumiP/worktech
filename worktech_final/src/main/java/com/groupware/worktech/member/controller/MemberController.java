@@ -5,13 +5,11 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +27,15 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 import com.groupware.worktech.admin.model.service.AdminService;
 import com.groupware.worktech.admin.model.vo.Department;
-import com.groupware.worktech.board.model.vo.BoardFile;
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.common.Pagination;
+import com.groupware.worktech.commut.model.service.CommutService;
+import com.groupware.worktech.commut.model.vo.QRCode;
 import com.groupware.worktech.member.model.exception.MemberException;
 import com.groupware.worktech.member.model.service.MemberService;
 import com.groupware.worktech.member.model.vo.Member;
@@ -52,6 +54,9 @@ public class MemberController {
 	private AdminService aService;
 	
 	@Autowired
+	private CommutService coService;
+	
+	@Autowired
 	private BCryptPasswordEncoder bcrypt;
 	
 	
@@ -59,18 +64,20 @@ public class MemberController {
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
 	public String login(Member m, Model model) {	
 		
-//		System.out.println(bcrypt.encode(m.getPwd()));
+		System.out.println(bcrypt.encode(m.getPwd()));
 		
 		Member loginMember = mService.memberLogin(m);
-
 		if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
 			model.addAttribute("loginUser", loginMember);
-//			logger.info(loginMember.getmNo());
+			
+			QRCode qr = coService.getinfo(loginMember.getmNo());
+			if(qr != null) {
+				model.addAttribute("qr", qr);
+			}
+//				logger.info(loginMember.getmNo());
 			return "redirect:home.do";
 		} else {
 			throw new MemberException("로그인에 실패하였습니다.");
-			
-			
 		}
 	}
 	
@@ -82,87 +89,6 @@ public class MemberController {
 		return "redirect:index.jsp";
 	}
 	
-	
-	
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
 	// 사원 등록페이지로 이동
 	@RequestMapping("enrollView.me")
 	public String enrollView(Model model, @ModelAttribute Department d) {
@@ -608,4 +534,84 @@ public class MemberController {
 	
 	
 	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	// admin main ajax
+	@RequestMapping("mListMain.me")
+	public void mListMain(Model model, HttpServletResponse response) {
+		
+		// 메인 사원 목록 
+		ArrayList<Member> mList = mService.selectMainMemList();
+		// 총 사원의 수
+		int memCount = mService.countMember();
+		
+		if(mList != null) {
+			
+			response.setContentType("application/json; charset=UTF-8");
+			
+			GsonBuilder gb = new GsonBuilder().setDateFormat("yyyy-MM-dd");
+			
+			Gson gson = gb.create();
+			try {
+				gson.toJson(mList, response.getWriter());
+				gson.toJson(memCount, response.getWriter());
+			} catch (JsonIOException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			model.addAttribute("mList", mList);
+//			model.addAttribute("memCount", memCount);
+		} else {
+			throw new MemberException("메인 화면 사원 목록 조회에 실패하였습니다.");
+		}
+	}
 }

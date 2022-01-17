@@ -13,7 +13,7 @@ public class Member {
 	private String jobGrade;
 	private Date birthDay;
 	private String phone;
-	private String address;
+	private String Address;
 	private String mGrade; // 회원 등급 : user/admin
 	private int dNo;
 	private String dName; // 부서이름
@@ -33,7 +33,7 @@ public class Member {
 		this.jobGrade = jobGrade;
 		this.birthDay = birthDay;
 		this.phone = phone;
-		this.address = address;
+		Address = address;
 		this.mGrade = mGrade;
 		this.dNo = dNo;
 		this.dName = dName;
@@ -118,11 +118,11 @@ public class Member {
 	}
 
 	public String getAddress() {
-		return address;
+		return Address;
 	}
 
 	public void setAddress(String address) {
-		this.address = address;
+		Address = address;
 	}
 
 	public String getmGrade() {
@@ -180,6 +180,10 @@ public class Member {
 				+ ", dNo=" + dNo + ", dName=" + dName + ", hireDate=" + hireDate + ", profile=" + profile + ", mStatus="
 				+ mStatus + "]";
 	}
+	
+	
+
+	
 
 	
 	

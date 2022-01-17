@@ -135,7 +135,9 @@
 												<c:if test="${ pi.currentPage > 1 }">
 													<c:url var="start" value="${ loc }">
 														<c:param name="page" value="1" />
-														<c:param name="searchValue" value="${ searchValue }" />
+														<c:if test="${ searchValue ne null }">
+															<c:param name="searchValue" value="${ searchValue }" />
+														</c:if>
 													</c:url>
 													<li class="page-item"><a class="page-link"
 														href="${ start }" aria-label="Previous"> <i
@@ -143,7 +145,9 @@
 													</a></li>
 													<c:url var="before" value="${ loc }">
 														<c:param name="page" value="${ pi.currentPage - 1 }" />
-														<c:param name="searchValue" value="${ searchValue }" />
+														<c:if test="${ searchValue ne null }">
+															<c:param name="searchValue" value="${ searchValue }" />
+														</c:if>
 													</c:url>
 													<li class="page-item"><a class="page-link"
 														href="${ before }" aria-label="Previous"> <i
@@ -160,7 +164,9 @@
 													<c:if test="${ p ne pi.currentPage }">
 														<c:url var="pagination" value="${ loc }">
 															<c:param name="page" value="${ p }" />
-															<c:param name="searchValue" value="${ searchValue }" />
+															<c:if test="${ searchValue ne null }">
+																<c:param name="searchValue" value="${ searchValue }" />
+															</c:if>
 														</c:url>
 														<li class="page-item"><a class="page-link"
 															href="${ pagination }">${ p }</a></li>
@@ -180,7 +186,9 @@
 												<c:if test="${ pi.currentPage < pi.maxPage }">
 													<c:url var="after" value="${ loc }">
 														<c:param name="page" value="${ pi.currentPage + 1 }" />
-														<c:param name="searchValue" value="${ searchValue }" />
+														<c:if test="${ searchValue ne null }">
+															<c:param name="searchValue" value="${ searchValue }" />
+														</c:if>
 													</c:url>
 													<li class="page-item"><a class="page-link"
 														href="${ after }" aria-label="Next"> <i
@@ -188,7 +196,9 @@
 													</a></li>
 													<c:url var="end" value="${ loc }">
 														<c:param name="page" value="${ pi.maxPage }" />
-														<c:param name="searchValue" value="${ searchValue }" />
+														<c:if test="${ searchValue ne null }">
+															<c:param name="searchValue" value="${ searchValue }" />
+														</c:if>
 													</c:url>
 													<li class="page-item"><a class="page-link"
 														href="${ end }" aria-label="Next"> <i

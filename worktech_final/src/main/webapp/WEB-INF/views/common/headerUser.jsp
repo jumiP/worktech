@@ -252,7 +252,7 @@
                                         <span>기타 예약</span></a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="nav-link" href="components-article.html">나의 예약 목록</a>
+                                                <a class="nav-link" href="myOrvList.rv">나의 예약 목록</a>
                                             </li>
                                             <li>
                                                 <a class="nav-link" href="orvList.rv">기타 예약 목록</a>

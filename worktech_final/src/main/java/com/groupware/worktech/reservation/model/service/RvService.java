@@ -91,8 +91,41 @@ public class RvService {
 	
 
 
+
 	public ArrayList<RvProduct> selectOrvList() {
 		return rvDAO.selectOrvList(sqlSession);
+	}
+
+	public RvProduct selectFormOrvList(int pdNo) {
+		return rvDAO.selectFormOrvList(sqlSession, pdNo);
+	}
+
+	public int insertOtherReservation(Reservation r) {
+		return rvDAO.insertOtherReservation(sqlSession, r);
+	}
+
+	public ArrayList<Reservation> getOrvList() {
+		return rvDAO.getOrvList(sqlSession);
+	}
+
+	public int getCountUpdate(Reservation rvp) {
+		return rvDAO.getCountUpdate(sqlSession, rvp);
+	}
+
+	public ArrayList<Reservation> selectMyOrvList() {
+		return rvDAO.selectMyOrvList(sqlSession);
+	}
+
+	public Reservation myOrvDetail(int rvNo) {
+		return rvDAO.myOrvDetail(sqlSession, rvNo);
+	}
+
+	public int myOrvListDelete(Reservation r) {
+		return rvDAO.myOrvListDelete(sqlSession, r);
+	}
+
+	public int getCountDelete(Reservation rvp) {
+		return rvDAO.getCountDelete(sqlSession, rvp);
 	}
 
 	

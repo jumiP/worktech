@@ -70,12 +70,15 @@
  	border-bottom: 2px solid #e3e3e3;
  }
  .perso{
-  	background-color: transparent !important;
+    background-color: transparent !important;
     background-image: none !important;
     border-color: transparent;
     border: none;
     font-size: 12px;
     color: #909090;
+ }
+ .perso:hover{
+   cursor: pointer;
  }
 
         .search {
@@ -131,7 +134,7 @@
                                        <!--  <h4>예약 자원 목록</h4> -->
                                     </div>
                                     <div class="card-body">
-                                        <table class="table">
+                                        <table class="table" id="orvTable">
                                             <thead>
 												<tr>
 													<th class="first_td" style="border-left: 1px solid #e3e3e3; width: 250px;">분류</th>
@@ -142,87 +145,40 @@
                                             <tbody>
                                             	<c:forEach var="o" items="${ list }">
                                             		<tr>
-                                            			<td style="height: 75px;">${ o.pdCategory }</td>
-                                            			<td>${ o.pdName }</td>
+                                            			<td style="height: 75px;">
+	                                            			<input type="hidden" name="pdNo" value="${ o.pdNo }">
+	                                            			${ o.pdCategory }
+                                            			</td>
+                                            			<td name="pdName" id="pdName" value="${ o.pdName }">${ o.pdName }</td>
                                             			<td>
-                                            				<c:if test="${ o.pdStatus eq 'Y'}">
-                                            					<button class="perso" onclick="rvPopup()">예약 가능</button>
+															<c:if test="${ o.pdCount > 0 }">
+                                            					<button class="perso" id="${ o.pdNo }" onclick="rvPopup(this.id)">예약 가능</button>
                                             				</c:if>
-                                            				<c:if test="${ o.pdStatus eq 'N'}">
+                                            				<c:if test="${ o.pdCount eq 0}">
                                             					<button class="perso" disabled>예약 불가</button>
-                                            				</c:if>
+                                            				</c:if> 
                                             			</td>
                                             		</tr>
                                             	</c:forEach>
-												<!-- <tr>
-													<td style="height: 75px;">노트북</td>
-													<td>FLEX 5 14ALC R5 W10</td>
-													<td><button class="perso">예약 가능</button></td>
-												</tr>
-												<tr>
-													<td style="height: 75px;">노트북</td>
-													<td>FLEX 5 14ALC R5 W10</td>
-													<td><button class="perso">예약 가능</button></td>
-												</tr>
-												<tr>
-													<td style="height: 75px;">노트북</td>
-													<td>FLEX 5 14ALC R5 W10</td>
-													<td><button class="perso">예약 가능</button></td>
-												</tr>
-												<tr>
-													<td  class="last_td"  style="height: 75px;">노트북</td>
-													<td  class="last_td">FLEX 5 14ALC R5 W10</td>
-													<td  class="last_td"><button class="perso">예약 불가</button></td>
-												</tr> -->
                                             </tbody>
                                         </table>
-                                     <!--    <button class="btn btn-primary push">예약하기</button> -->
-                                       <!--  <br clear="all">
-                                        <div class="card-body paging-area">
-                                            <div class="buttons">
-                                                <nav aria-label="Page navigation example">
-                                                    <ul class="pagination">
-                                                        <li class="page-item disabled">
-                                                            <a class="page-link" href="#" aria-label="Previous">
-                                                                <i class="fas fa-angle-double-left"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li class="page-item">
-                                                            <a class="page-link" href="#" aria-label="Previous">
-                                                                <i class="fas fa-angle-left"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                        <li class="page-item">
-                                                            <a class="page-link" href="#" aria-label="Next">
-                                                                <i class="fas fa-angle-right"></i>
-                                                            </a>
-                                                        </li>
-                                                        <li class="page-item">
-                                                            <a class="page-link" href="#" aria-label="Next">
-                                                                <i class="fas fa-angle-double-right"></i>
-                                                            </a> -->
-                                                        <!-- <li>
-                                                    </ul>/
-                                                </nav> -->
                                             </div>
                                         </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        <!-- </div>
+                         </div>
                     </div>
                 </section>
-            </div> -->
+            </div> 
             <c:import url="../common/footer.jsp" />
             <script>
-            	function rvPopup(){
-            		
-            	}
+            function rvPopup(pdNo){	
+            	window.open('otherReservationInsertForm.rv?pdNo=' + pdNo, '자원 예약 폼', 'width=500px,height=570px,scrollbars=yes');       
+        	}
             </script>
+
 
 </body>
 </html>

@@ -36,13 +36,13 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public int getTempListCount(String empNo) {
-		return mailDAO.getTempListCount(sqlSession, empNo);
+	public int getTempListCount(String mNo) {
+		return mailDAO.getTempListCount(sqlSession, mNo);
 	}
 
 	@Override
-	public ArrayList<Mail> selectTempList(PageInfo pi, String empNo) {
-		return mailDAO.selectTempList(sqlSession, pi, empNo);
+	public ArrayList<Mail> selectTempList(PageInfo pi, String mNo) {
+		return mailDAO.selectTempList(sqlSession, pi, mNo);
 	}
 
 	@Override
@@ -72,13 +72,13 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public int getsendListCount(String empNo) {
-		return mailDAO.getSendListCount(sqlSession, empNo);
+	public int getsendListCount(String mNo) {
+		return mailDAO.getSendListCount(sqlSession, mNo);
 	}
 
 	@Override
-	public ArrayList<Mail> selectSendList(PageInfo pi, String empNo) {
-		return mailDAO.selectSendList(sqlSession, pi, empNo);
+	public ArrayList<Mail> selectSendList(PageInfo pi, String mNo) {
+		return mailDAO.selectSendList(sqlSession, pi, mNo);
 	}
 
 	@Override
@@ -113,18 +113,18 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public int insertMailSRSender(String empNo) {
-		return mailDAO.insertMailSRSender(sqlSession, empNo);
+	public int insertMailSRSender(String mNo) {
+		return mailDAO.insertMailSRSender(sqlSession, mNo);
 	}
 
 	@Override
-	public int getDeleteListCount(String empNo) {
-		return mailDAO.getDeleteListCount(sqlSession, empNo);
+	public int getDeleteListCount(String mNo) {
+		return mailDAO.getDeleteListCount(sqlSession, mNo);
 	}
 
 	@Override
-	public ArrayList<Mail> selectDeleteList(PageInfo pi, String empNo) {
-		return mailDAO.selectDeleteList(sqlSession, pi, empNo);
+	public ArrayList<Mail> selectDeleteList(PageInfo pi, String mNo) {
+		return mailDAO.selectDeleteList(sqlSession, pi, mNo);
 	}
 
 	@Override
@@ -143,28 +143,28 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public int getAllListCount(String empNo) {
-		return mailDAO.getAllListCount(sqlSession, empNo);
+	public int getAllListCount(String mNo) {
+		return mailDAO.getAllListCount(sqlSession, mNo);
 	}
 
 	@Override
-	public ArrayList<Mail> selectAllList(PageInfo pi, String empNo) {
-		return mailDAO.selectAllList(sqlSession, pi, empNo);
+	public ArrayList<Mail> selectAllList(PageInfo pi, String mNo) {
+		return mailDAO.selectAllList(sqlSession, pi, mNo);
 	}
 
 	@Override
-	public int selectCountNotRead(String empNo) {
-		return mailDAO.selectCountNotRead(sqlSession, empNo);
+	public int selectCountNotRead(String mNo) {
+		return mailDAO.selectCountNotRead(sqlSession, mNo);
 	}
 
 	@Override
-	public int getFavoritesListCount(String empNo) {
-		return mailDAO.getFavoritesListCount(sqlSession, empNo);
+	public int getFavoritesListCount(String mNo) {
+		return mailDAO.getFavoritesListCount(sqlSession, mNo);
 	}
 
 	@Override
-	public ArrayList<Mail> selectFavoritesList(PageInfo pi, String empNo) {
-		return mailDAO.selectFavoritesList(sqlSession, pi, empNo);
+	public ArrayList<Mail> selectFavoritesList(PageInfo pi, String mNo) {
+		return mailDAO.selectFavoritesList(sqlSession, pi, mNo);
 	}
 
 	@Override
@@ -178,8 +178,8 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public ArrayList<Mail> selectCheckList(String empNo) {
-		return mailDAO.selectCheckList(sqlSession, empNo);
+	public ArrayList<Mail> selectCheckList(String mNo) {
+		return mailDAO.selectCheckList(sqlSession, mNo);
 	}
 
 	

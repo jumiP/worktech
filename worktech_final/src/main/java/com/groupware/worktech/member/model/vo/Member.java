@@ -20,6 +20,7 @@ public class Member {
 	private Date hireDate;
 	private Profile profile; // 프로필 사진
 	private String mStatus;
+	private String mEmail;
 	
 	public Member() {}
 

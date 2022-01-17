@@ -37,13 +37,12 @@ import com.groupware.worktech.mail.model.vo.MailSR;
 
 @Controller
 public class MailController {
-	// 테스트입니다.
+	
 	@Autowired
 	private MailService mailService;
 
 	@Autowired
-	private MemberService eService;
-//	mService
+	private MemberService mService;
 	
 	// 전체 메일함 
 	@RequestMapping("alllist.mail")
@@ -55,13 +54,13 @@ public class MailController {
 			currentPage = page;
 		}
 		int boardLimit = 15;
-		String memNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
-		int listCount = mailService.getAllListCount(memNo);
+		String mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		int listCount = mailService.getAllListCount(mNo);
 
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
-		ArrayList<Mail> list = mailService.selectAllList(pi, memNo);
+		ArrayList<Mail> list = mailService.selectAllList(pi, mNo);
 
-		int count = mailService.selectCountNotRead(memNo);  // 읽지 않은 메일 개수가져오기
+		int count = mailService.selectCountNotRead(mNo);  // 읽지 않은 메일 개수가져오기
 
 		if (list != null) {
 			mv.addObject("list", list).addObject("pi", pi).addObject("count", count);
@@ -77,9 +76,9 @@ public class MailController {
 	@RequestMapping("send.mail")
 	public ModelAndView mailSendForm(ModelAndView mv, HttpSession session) {
 		
-		String memNo = ((Member)session.getAttribute("loginUser")).getmNo();
+		String mNo = ((Member)session.getAttribute("loginUser")).getmNo();
 		
-		int count = mailService.selectCountNotRead(memNo);
+		int count = mailService.selectCountNotRead(mNo);
 		
 		mv.addObject("count", count);
 		mv.setViewName("mailsend");
@@ -100,13 +99,13 @@ public class MailController {
 		
 		System.out.println("메일 검색 커맨드 : " + command);
 
-		String memNo = ((Member) session.getAttribute("loginUser")).getmNo();
+		String mNo = ((Member) session.getAttribute("loginUser")).getmNo();
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		map.put("searchValue", searchValue);
 		map.put("command", command);
-		map.put("memNo", memNo);
+		map.put("mNo", mNo);
 
 		int currentPage = 1;
 		if (page != null) {
@@ -118,7 +117,7 @@ public class MailController {
 
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
 		ArrayList<Mail> list = mailService.searchList(pi, map);
-		int count = mailService.selectCountNotRead(memNo); // 읽지 않은 메일 개수 가져오기
+		int count = mailService.selectCountNotRead(mNo); // 읽지 않은 메일 개수 가져오기
 		System.out.println("count : " + count);
 		System.out.println("list  :" + list);
 
@@ -133,14 +132,14 @@ public class MailController {
 	public ModelAndView selectMail(@RequestParam("mId") int id,
 			@RequestParam(value = "page", required = false) Integer page, ModelAndView mv, HttpSession session) {
 
-		String memNo = ((Member) session.getAttribute("loginUser")).getmNo();
+		String mNo = ((Member) session.getAttribute("loginUser")).getmNo();
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
-		map.put("memNo", memNo);
+		map.put("mNo", mNo);
 
 		System.out.println(id);
-		System.out.println(memNo);
+		System.out.println(mNo);
 
 		Mail mail = mailService.selectMail(map);
 		System.out.println(mail);
@@ -152,7 +151,7 @@ public class MailController {
 			int result = mailService.updateRDate(map);
 		}
 
-		int count = mailService.selectCountNotRead(memNo);
+		int count = mailService.selectCountNotRead(mNo);
 		String mId = getMId(mail.getReceiveEmp());
 		Member m = mailService.getMId(mId); // 받는 사람 이름 구하는 메소드
 
@@ -192,12 +191,12 @@ public class MailController {
 
 	@RequestMapping("updateFavorites.mail") // 메일 즐겨찾기 추가
 	@ResponseBody
-	public void updateFavorites(@RequestParam("mNo") int mNo, HttpSession session, HttpServletResponse response)
+	public void updateFavorites(@RequestParam("mailNo") int mailNo, HttpSession session, HttpServletResponse response)
 			throws IOException {
-		String memNo = ((Member) session.getAttribute("loginUser")).getmNo();
+		String mNo = ((Member) session.getAttribute("loginUser")).getmNo();
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("memNo", memNo);
-		map.put("id", mNo);
+		map.put("mNo", mNo);
+		map.put("id", mailNo);
 
 		Mail mail = mailService.selectMail(map);
 		System.out.println(mail);
@@ -230,14 +229,14 @@ public class MailController {
 			currentPage = page;
 		}
 		int boardLimit = 15;
-		String memNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
-		int listCount = mailService.getFavoritesListCount(memNo);
+		String mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		int listCount = mailService.getFavoritesListCount(mNo);
 		System.out.println("favorites listcount : " + listCount);
 
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
-		ArrayList<Mail> list = mailService.selectFavoritesList(pi, memNo);
+		ArrayList<Mail> list = mailService.selectFavoritesList(pi, mNo);
 
-		int count = mailService.selectCountNotRead(memNo); // 읽지 않은 메일 개수 가져오기
+		int count = mailService.selectCountNotRead(mNo); // 읽지 않은 메일 개수 가져오기
 
 		if (list != null) {
 			mv.addObject("list", list).addObject("pi", pi).addObject("count", count);
@@ -258,12 +257,12 @@ public class MailController {
 			currentPage = page;
 		}
 		int boardLimit = 15;
-		String memNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
-		int listCount = mailService.getsendListCount(memNo);
-		int count = mailService.selectCountNotRead(memNo);
+		String mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		int listCount = mailService.getsendListCount(mNo);
+		int count = mailService.selectCountNotRead(mNo);
 
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
-		ArrayList<Mail> list = mailService.selectSendList(pi, memNo);
+		ArrayList<Mail> list = mailService.selectSendList(pi, mNo);
 
 		if (list != null) {
 			mv.addObject("list", list).addObject("pi", pi).addObject("count", count);
@@ -282,18 +281,18 @@ public class MailController {
 		if (request.getSession().getAttribute("loginUser") == null) {
 			throw new MailException("로그인이 필요합니다.");
 		}
-		String memNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		String mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
 
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
 		}
 		int boardLimit = 15;
-		int listCount = mailService.getsendListCount(memNo);
+		int listCount = mailService.getsendListCount(mNo);
 
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
-		ArrayList<Mail> list = mailService.selectSendList(pi, memNo);
-		ArrayList<Mail> rList = mailService.selectCheckList(memNo);
+		ArrayList<Mail> list = mailService.selectSendList(pi, mNo);
+		ArrayList<Mail> rList = mailService.selectCheckList(mNo);
 		for(Mail m : list) {
 			for(int i = 0; i < rList.size(); i++) {
 				if(rList.get(i).getMailNo() == m.getMailNo()) {
@@ -301,7 +300,7 @@ public class MailController {
 				}
 			}
 		}
-		int count = mailService.selectCountNotRead(memNo);
+		int count = mailService.selectCountNotRead(mNo);
 		if (list != null) {
 			mv.addObject("list", list).addObject("pi", pi).addObject("count", count);
 			mv.setViewName("checkReadTime");
@@ -320,21 +319,21 @@ public class MailController {
 			throw new MailException("로그인이 필요합니다.");
 		}
 
-		String memNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		String mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
 
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = page;
 		}
 		int boardLimit = 15;
-		int listCount = mailService.getReceiveListCount(memNo);
+		int listCount = mailService.getReceiveListCount(mNo);
 
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
 		System.out.println(Pagination.getPageInfo(currentPage, listCount, boardLimit));
 
-		ArrayList<Mail> list = mailService.selectReceiveList(pi, memNo);
+		ArrayList<Mail> list = mailService.selectReceiveList(pi, mNo);
 
-		int count = mailService.selectCountNotRead(memNo);
+		int count = mailService.selectCountNotRead(mNo);
 
 		System.out.println(list);
 
@@ -352,9 +351,9 @@ public class MailController {
 	public ModelAndView tempList(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv,
 			HttpServletRequest request) {
 
-		String memNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		String mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
 
-		if (memNo == null) {
+		if (mNo == null) {
 			throw new MailException("로그인이 필요합니다.");
 		}
 
@@ -363,13 +362,13 @@ public class MailController {
 			currentPage = page;
 		}
 		int boardLimit = 15;
-		int listCount = mailService.getTempListCount(memNo);
-		int count = mailService.selectCountNotRead(memNo);
+		int listCount = mailService.getTempListCount(mNo);
+		int count = mailService.selectCountNotRead(mNo);
 
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
 		System.out.println(Pagination.getPageInfo(currentPage, listCount, boardLimit));
 
-		ArrayList<Mail> list = mailService.selectTempList(pi, memNo);
+		ArrayList<Mail> list = mailService.selectTempList(pi, mNo);
 
 		if (list != null) {
 			mv.addObject("list", list).addObject("pi", pi).addObject("count", count);
@@ -393,22 +392,23 @@ public class MailController {
 		gson.toJson(list, response.getWriter());
 	}
 
+	
 	@RequestMapping("deletemail.mail") // 메일 삭제 (커맨드 패턴 적용)
 	public String deleteMail(@RequestParam("check") int[] check, @RequestParam("command") String command,
 			HttpSession session) {
 		System.out.println("command :" + command);
 
-		String memNo = ((Member) session.getAttribute("loginUser")).getmNo();
+		String mNo = ((Member) session.getAttribute("loginUser")).getmNo();
 
 		int result = 0;
 
 		for (int i = 0; i < check.length; i++) {
-			int mNo = check[i];
+			int mailNo = check[i];
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("memNo", memNo);
-			System.out.println("memNo : " + memNo);
 			map.put("mNo", mNo);
 			System.out.println("mNo : " + mNo);
+			map.put("mailNo", mailNo);
+			System.out.println("mailNo : " + mailNo);
 			map.put("command", command);
 			result += mailService.deleteMail(map);
 		}
@@ -439,9 +439,9 @@ public class MailController {
 	public ModelAndView deleteList(@RequestParam(value = "page", required = false) Integer page, ModelAndView mv,
 			HttpServletRequest request) {
 
-		String memNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		String mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
 
-		if (memNo == null) {
+		if (mNo == null) {
 			throw new MailException("로그인이 필요합니다.");
 		}
 
@@ -450,13 +450,13 @@ public class MailController {
 			currentPage = page;
 		}
 		int boardLimit = 15;
-		int listCount = mailService.getDeleteListCount(memNo);
-		int count = mailService.selectCountNotRead(memNo);
+		int listCount = mailService.getDeleteListCount(mNo);
+		int count = mailService.selectCountNotRead(mNo);
 
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
 		System.out.println(Pagination.getPageInfo(currentPage, listCount, boardLimit));
 
-		ArrayList<Mail> list = mailService.selectDeleteList(pi, memNo);
+		ArrayList<Mail> list = mailService.selectDeleteList(pi, mNo);
 
 		System.out.println(list);
 
@@ -481,9 +481,9 @@ public class MailController {
 		List<MailFile> mailFileList = new ArrayList<MailFile>();
 
 		Member e = (Member) mtpRequest.getSession().getAttribute("loginUser");
-		String memNo = e.getmNo();
+		String mNo = e.getmNo();
 
-		mail.setMNo(memNo);
+		mail.setMNo(mNo);
 
 		System.out.println(mail);
 		int result1 = mailService.insertTempMail(mail);
@@ -528,10 +528,10 @@ public class MailController {
 		List<MailFile> mailFileList = new ArrayList<MailFile>();
 		int result1 = 0;
 		Member e = (Member) mtpRequest.getSession().getAttribute("loginUser");
-		String memNo = e.getmNo();
+		String mNo = e.getmNo();
 		if(mail.getMailNo() != 0) {
 			boolean flag = true;
-			mail.setMNo(memNo);
+			mail.setMNo(mNo);
 			mail.setMailFileList(mailService.selectTempMail(mail.getMailNo()).getMailFileList());
 			for(MailFile mf : mail.getMailFileList()) {
 				mf.setMailNo(0);
@@ -544,7 +544,7 @@ public class MailController {
 				mailService.insertMailFile(mail.getMailFileList());
 			}
 		} else {
-			mail.setMNo(memNo);
+			mail.setMNo(mNo);
 			mailService.insertMail(mail);
 		}
 		if (!uploadFile.isEmpty()) { 
@@ -567,17 +567,7 @@ public class MailController {
 		}
 
 		int result3 = mailService.insertMailSRReceiver(getMId(mail.getReceiveEmp()));
-		int result4 = mailService.insertMailSRSender(mail.getMNo()); // 보낸 메일함에 저장
-
-//		if (result3 <= 0 || result4 <= 0) {
-//			throw new MailException("메일 전송에 실패했습니다.");
-//		} else { // 알림 등록
-//			HashMap<String, Object> map = new HashMap<>();
-//			map.put("aContents", e.getName() + "님으로부터 메일이 도착했습니다.");
-//			map.put("aType", "mail");
-//			map.put("empNo", getMId(mail.getReceiveEmp())); // 알림 보내는 사람이 아니라 받는 사람의 empNo 넣기
-//			mailService.insertAlert(map);
-//		}
+		int result4 = mailService.insertMailSRSender(mail.getmNo()); // 보낸 메일함에 저장
 
 		return "redirect:sendlist.mail";
 	}
@@ -607,9 +597,9 @@ public class MailController {
 		MultipartFile uploadFile = mtpRequest.getFile("uploadFile");
 		List<MailFile> mailFileList = new ArrayList<MailFile>();
 		Member e = (Member) mtpRequest.getSession().getAttribute("loginUser");
-		String memNo = e.getmNo();
+		String mNo = e.getmNo();
 
-		mail.setMNo(memNo);
+		mail.setMNo(mNo);
 
 		System.out.println(mail);
 		int result1 = mailService.updateMail(mail);

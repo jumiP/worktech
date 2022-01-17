@@ -9,7 +9,7 @@ public class MailFile {
 	private String mChangeName;
 	private String mFilePath;
 	private Date mUploadDate;
-	private String mStatus;
+	private String mlStatus;
 	private int mailNo;
 
 	public int getmFileNo() {
@@ -52,12 +52,12 @@ public class MailFile {
 		this.mUploadDate = mUploadDate;
 	}
 
-	public String getmStatus() {
-		return mStatus;
+	public String getmlStatus() {
+		return mlStatus;
 	}
 
-	public void setmStatus(String mStatus) {
-		this.mStatus = mStatus;
+	public void setmStatus(String mlStatus) {
+		this.mlStatus = mlStatus;
 	}
 
 	public int getMailNo() {
@@ -72,21 +72,21 @@ public class MailFile {
 	}
 
 	public MailFile(int mFileNo, String mOriginalName, String mChangeName, String mFilePath, Date mUploadDate,
-			String mStatus, int mailNo) {
+			String mlStatus, int mailNo) {
 		super();
 		this.mFileNo = mFileNo;
 		this.mOriginalName = mOriginalName;
 		this.mChangeName = mChangeName;
 		this.mFilePath = mFilePath;
 		this.mUploadDate = mUploadDate;
-		this.mStatus = mStatus;
+		this.mlStatus = mlStatus;
 		this.mailNo = mailNo;
 	}
 
 	@Override
 	public String toString() {
 		return "MailFile [mFileNo=" + mFileNo + ", mOriginalName=" + mOriginalName + ", mChangeName=" + mChangeName
-				+ ", mFilePath=" + mFilePath + ", mUploadDate=" + mUploadDate + ", mStatus=" + mStatus + ", mailNo="
+				+ ", mFilePath=" + mFilePath + ", mUploadDate=" + mUploadDate + ", mlStatus=" + mlStatus + ", mailNo="
 				+ mailNo + "]";
 	}
 

@@ -8,12 +8,12 @@ public class ChatMessage {
 	private Timestamp sendTime;
 	private String time; // 발송 시간 포맷 변경
 	private String date; // 발송 날짜 포맷 변경
-	private String readYN;
+	private String readYN; // 시스템 메시지, 일반 메시지 구분
 	private int chatRoomNo;
 	private String sendMember; // 보낸 사람 사번
 	private String sendMemberName; // 보낸 사람 이름
 	private String sendMemberFullName; // 보낸 사람 풀네임
-	private String profileUrl;
+	private String pReName;
 	
 	public ChatMessage() {}
 
@@ -43,7 +43,7 @@ public class ChatMessage {
 		this.chatRoomNo = chatRoomNo;
 		this.sendMember = sendMember;
 		this.sendMemberName = sendMemberName;
-		this.profileUrl = profileUrl;
+		this.pReName = profileUrl;
 	}
 
 	public ChatMessage(int msgId, String msgContent, Timestamp sendTime, String time, String date, String readYN,
@@ -59,7 +59,7 @@ public class ChatMessage {
 		this.sendMember = sendMember;
 		this.sendMemberName = sendMemberName;
 		this.sendMemberFullName = sendMemberFullName;
-		this.profileUrl = profileUrl;
+		this.pReName = profileUrl;
 	}
 
 	public int getMsgId() {
@@ -142,12 +142,12 @@ public class ChatMessage {
 		this.sendMemberFullName = sendMemberFullName;
 	}
 
-	public String getProfileUrl() {
-		return profileUrl;
+	public String getpReName() {
+		return pReName;
 	}
 
-	public void setProfileUrl(String profileUrl) {
-		this.profileUrl = profileUrl;
+	public void setpReName(String pReName) {
+		this.pReName = pReName;
 	}
 
 	@Override
@@ -155,7 +155,7 @@ public class ChatMessage {
 		return "ChatMessage [msgId=" + msgId + ", msgContent=" + msgContent + ", sendTime=" + sendTime + ", time="
 				+ time + ", date=" + date + ", readYN=" + readYN + ", chatRoomNo=" + chatRoomNo + ", sendMember="
 				+ sendMember + ", sendMemberName=" + sendMemberName + ", sendMemberFullName=" + sendMemberFullName
-				+ ", profileUrl=" + profileUrl + "]";
+				+ ", pReName=" + pReName + "]";
 	}
 
 }

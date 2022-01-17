@@ -47,7 +47,7 @@ public class AdbookController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Member> list = abService.selectAdbookList(pi, selectMap);
-
+		
 		if(list != null) {
 			model.addAttribute("list", list);
 			model.addAttribute("pi", pi);

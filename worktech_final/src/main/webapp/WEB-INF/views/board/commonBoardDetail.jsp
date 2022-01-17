@@ -102,8 +102,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>글 제목</label>
-                                    <input type="text" class="form-control" id="bTitle" disabled
-                                        value="[ ${b.categoryName} ] ${ b.bTitle }">
+                                    <input type="text" class="form-control" id="bTitle" disabled value="[ ${b.categoryName} ] ${ b.bTitle }">
                                 </div>
                                 <div class="form-group half-col left-item">
                                     <label>작성자</label>
@@ -129,7 +128,7 @@
                                 		<c:if test="${ !empty b.fileList.get(0).getfName() }">
 		                                    <c:forEach var="f" items="${ b.fileList }">
 		                                    	<i class="fas fa-save"></i>
-		                                    	<a href="/resources/buploadFiles/${ f.getfRname() }" download="${ f.getfName() }">
+		                                    	<a href="resources/buploadFiles/${ f.getfRname() }" download="${ f.getfName() }">
 													${ f.getfName() }
 												</a>
 												<br>
@@ -158,16 +157,20 @@
 	                                </form>
 								</c:if>
 								
-								<c:if test="${ searchCategory == '' }">
+								<c:if test="${ null eq searchCategory }">
 									<c:url var="clist" value="commonList.bo">
 										<c:param name="page" value="${ page }"/>
-										<c:param name="category" value="${ category }"/>
+										<c:if test="${ category ne null }">
+											<c:param name="category" value="${ category }"/>
+										</c:if>
 									</c:url>
 								</c:if>
-								<c:if test="${ searchCategory != '' }">
+								<c:if test="${ null ne searchCategory }">
 									<c:url var="clist" value="searchCommon.bo">
 										<c:param name="page" value="${ page }"/>
-										<c:param name="category" value="${ category }"/>
+										<c:if test="${ category ne null }">
+											<c:param name="category" value="${ category }"/>
+										</c:if>
 										<c:param name="searchCategory" value="${ searchCategory }"/>
 										<c:param name="searchValue" value="${ searchValue }"/>
 									</c:url>
@@ -209,19 +212,25 @@
 		// 댓글 등록 ajax
 		$('#replyBtn').on('click', function(){
 			var rContent = $('#replyBox').val();
-			var rName = '${ loginUser.mNo}';
+			var rWriter = '${ loginUser.mNo}'; // 댓글 작성자의 사번
 			var bNo = '${ b.bNo }';
+			
+			var rName = '${ loginUser.name }'; // 알림으로 보내기 위한 댓글 작성자의 이름
+			var bWriter = '${ b.bWriter }';
+			var bTitle = '${ b.bTitle}';
 			
 			$.ajax({
 				url: 'addCommonReply.bo',
-				data: {rName:rName, rContent:rContent, bNo:bNo},
+				data: {rName:rWriter, rContent:rContent, bNo:bNo},
 				success: function(data){
 					console.log(data);
 					
-					if(data.trim() == 'success'){
-						getReplyList();
-						$('#replyBox').val('');
-					}
+					getReplyList();
+					$('#replyBox').val('');
+					
+					let socketMsg = "cReply," + bWriter + "," + data + "," + rName + "," + bNo + "," + bTitle;
+					console.log("msg: " + socketMsg);
+					socket.send(socketMsg);
 				},
 				error: function(data){
 					console.log(data);

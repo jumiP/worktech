@@ -57,7 +57,7 @@
         	margin-bottom: 5px;
         }
         
-        .chatRoomOpen {
+        .chatRoomOpen, .sysMsg {
         	text-align: center;
         	margin-bottom: 15px;
         	font-size: 12px;
@@ -74,6 +74,11 @@
         
         a:hover{
         	cursor: pointer;
+        }
+        
+        .myInfo:hover{
+        	cursor: default !important;
+        	background: none;
         }
     </style>
 </head>
@@ -101,12 +106,66 @@
 								대화 상대 없음
 							</c:if>
                     	</h4>
-                    	<ul class="navbar-nav navbar-right" style="width: 10%; text-align: right;">
+                    	<c:if test="${ fn:length(memberList) > 2 }">
+	                    	<ul class="navbar-nav navbar-right" style="width: 5%; text-align: right;">
+		                    	<li class="dropdown" >
+			                        <a data-toggle="dropdown" class="nav-link-lg nav-link-user">
+										<i class="fas fa-users"></i>
+			                        </a>
+									<div class="dropdown-menu dropdown-menu-right">
+			                            <a onclick="inviteChat()" class="dropdown-item has-icon">
+			                                <i class="fas fa-user-plus"></i> 채팅방 초대
+			                            </a>
+			                            <c:forEach var="gl" items="${ memberList }">
+											<c:if test="${ gl.gatheringMember != loginUser.mNo }">
+												<c:url value='addPersonalChat.ct' var="personalChat">
+													<c:param name="selectmNo" value="${ gl.gatheringMember }"/>
+												</c:url>
+					                            <a href="${ personalChat }" class="dropdown-item">
+													<c:if test="${ gl.profile != null }">
+														<img src="resources/profileUploadFiles/${ gl.profile.pReName }" class="mr-1 rounded-circle" width="20" height="20"
+															alt="image">
+													</c:if>
+													<c:if test="${ gl.profile == null }">
+														<img src="resources/dist/assets/img/avatar/avatar-1.png" class="mr-1 rounded-circle" width="20"
+															alt="image">
+													</c:if>
+						                               ${ gl.gatheringMemberName } ${ gl.gatheringMemberJobGrade }
+						                            <c:if test="${ gl.gatheringMember == cr.chatOpenMem }">
+						                            	<i class="fas fa-crown" style="color: #FFBB00;"></i>
+						                            </c:if>
+					                            </a>
+											</c:if>
+											<c:if test="${ gl.gatheringMember == loginUser.mNo }">
+												<a class="dropdown-item myInfo">
+													<c:if test="${ gl.profile.pReName != null }">
+														<img src="resources/profileUploadFiles/${ gl.profile.pReName }" class="mr-3 rounded-circle" width="20" height="20"
+															alt="image">
+													</c:if>
+													<c:if test="${ gl.profile.pReName == null }">
+														<img src="resources/dist/assets/img/avatar/avatar-1.png" class="mr-1 rounded-circle" width="20"
+															alt="image">
+													</c:if>
+													 <span style="color: #67d4ef;">${ gl.gatheringMemberName } ${ gl.gatheringMemberJobGrade }</span> 
+													 <c:if test="${ gl.gatheringMember == cr.chatOpenMem }">
+						                            	<i class="fas fa-crown" style="color: #FFBB00;"></i>
+						                            </c:if>
+												</a>
+											</c:if>
+										</c:forEach>
+			                        </div>
+		                        </li>
+	                        </ul>
+                        </c:if>
+                    	<ul class="navbar-nav navbar-right" style="width: 5%; text-align: right;">
 	                    	<li class="dropdown" >
 		                        <a data-toggle="dropdown" class="nav-link-lg nav-link-user">
 									<i class="fas fa-bars"></i>
 		                        </a>
 								<div class="dropdown-menu dropdown-menu-right">
+		                            <a href="chatView.ct" class="dropdown-item">
+		                               <i class="fas fa-arrow-alt-circle-left"></i> &nbsp;&nbsp;목록으로
+		                            </a>
 									<c:if test="${ fn:length(memberList) > 2 }">
 			                            <a href="#" onclick="renameChatRoom();" class="dropdown-item has-icon">
 			                                <i class="fas fa-user-edit"></i> 채팅방 이름 변경
@@ -129,13 +188,13 @@
                     <div class="card-body chat-content" tabindex="1" style="overflow: hidden; outline: none;" id="chatMsgBody">
 	                    <div class="chatRoomOpen">채팅방이 생성되었습니다.</div>
 	                    <c:forEach var="msg" items="${ messageList }">
-	                    	<c:if test="${ loginUser.mNo != msg.sendMember }">
+	                    	<c:if test="${ msg.readYN ne 'Y' && loginUser.mNo != msg.sendMember }">
 	                    		<div class="chat-item chat-left">
 	                    			<div class="senderName">${ msg.sendMemberFullName }</div>
-	                    			<c:if test="${ msg.profileUrl != null }">
-	                    				<img src="${ msg.profileUrl }">
+	                    			<c:if test="${ msg.pReName != null }">
+	                    				<img src="resources/profileUploadFiles/${ msg.pReName }" width="50" height="50">
 	                    			</c:if>
-	                    			<c:if test="${ msg.profileUrl == null }">
+	                    			<c:if test="${ msg.pReName == null }">
 	                    				<img src="resources/dist/assets/img/avatar/avatar-1.png">
 	                    			</c:if>
 	                    			<div class="chat-details">
@@ -151,12 +210,12 @@
 	                                </div>
 	                    		</div>
 	                    	</c:if>
-	                    	<c:if test="${ loginUser.mNo == msg.sendMember }">
+	                    	<c:if test="${ msg.readYN ne 'Y' && loginUser.mNo == msg.sendMember }">
 	                    		<div class="chat-item chat-right">
-	                    			<c:if test="${ msg.profileUrl != null }">
-	                    				<img src="${ msg.profileUrl }">
+	                    			<c:if test="${ msg.pReName != null }">
+	                    				<img src="resources/profileUploadFiles/${ msg.pReName }" width="50" height="50">
 	                    			</c:if>
-	                    			<c:if test="${ msg.profileUrl == null }">
+	                    			<c:if test="${ msg.pReName == null }">
 	                    				<img src="resources/dist/assets/img/avatar/avatar-1.png">
 	                    			</c:if>
 	                    			<div class="chat-details">
@@ -172,6 +231,9 @@
                                 	</div>
 	                    		</div>
 	                    	</c:if>
+	                    	<c:if test="${ msg.readYN eq 'Y' }">
+	                    		<div class="sysMsg">${ msg.msgContent }</div>
+	                    	</c:if>
 	                    </c:forEach>
 	                    <div id="endChat"></div>
                     </div>
@@ -180,7 +242,17 @@
 		                    <input type="text" id="msg" class="form-control" placeholder="더이상 메시지를 보낼 수 없는 채팅방입니다." readonly="readonly">
 	                    </c:if>
 	                    <c:if test="${ fn:length(memberList) > 1 }">
-	                    	<input type="text" id="msg" class="form-control" placeholder="메시지를 입력하세요">
+		                    <c:if test="${ cr.chatType == 0 }">
+		                    	<input type="text" id="msg" class="form-control" onkeyup="enterkey()" placeholder="메시지를 입력하세요">
+		                    </c:if>
+		                    <c:if test="${ cr.chatType == 1 }">
+			                    <c:if test="${ cr.chatOpenMem != loginUser.mNo }">
+			                    	<input type="text" id="msg" class="form-control" placeholder="해당 채팅방은 개설자만 메시지 전송이 가능합니다" readonly="readonly">
+			                    </c:if>
+			                    <c:if test="${ cr.chatOpenMem == loginUser.mNo }">
+			                    	<input type="text" id="msg" class="form-control" onkeyup="enterkey()" placeholder="메시지를 입력하세요">
+			                    </c:if>
+		                    </c:if>
 	                    </c:if>
 	                    <button class="btn btn-primary" id="button-send">
 	                        <i class="far fa-paper-plane"></i>
@@ -192,81 +264,39 @@
     </div>
     
     <script type="text/javascript">
-		var sock = new SockJS("http://localhost:8081/worktech/chat");
+		var sock = new SockJS("http://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/chat");
 		
 		sock.onmessage = onMessage;
 		sock.onclose = onClose;
 		sock.onopen = onOpen;
-	
-		function sendMessage() {
-			// 내 메시지 서버로 보내기
-			var message = $("#msg").val();
-			
-			var sendMemberFullName = "${ loginUser.dName } ${ loginUser.name } ${ loginUser.jobGrade }";
-			
-			var data = {
-					"msgContent" : message,
-					"chatRoomNo" : "${ cr.chatRoomNo }",
-	                "sendMember" : "${ loginUser.mNo }",
-	                "sendMemberFullName" : sendMemberFullName,
-	                "profileUrl" : "${ loginUser.pUrl }"
-	            };
-			
-	        var jsonData = JSON.stringify(data);
-	        
-	        // 보낸 메시지 추가
-	        var chatMsgBody = $('#chatMsgBody');
-	        var innerDiv = '';
-	        
-	        innerDiv += '<div class="chat-item chat-right">';
-	        
-	        if("${ loginUser.pUrl }" != '' && "${ loginUser.pUrl }" != null ){
-	        	innerDiv += '<img src="' + ${ loginUser.pUrl } + '">';	
-	        } else {
-	        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
-	        }
-	        
-	        // 현재 시간 구하기
-	        var today = new Date();   
-
-	        var hours = today.getHours(); // 시
-	        var minutes = today.getMinutes();  // 분
-	        
-	        var now = hours + ":" + minutes;
-	        
-	        innerDiv += '<div class="chat-details">'
-	        			+ '<div class="chat-text">' + message + '</div>'
-	        			+ '<div class="chat-time">' + now + '</div></div></div>';
-	        
-	        chatMsgBody.append(innerDiv);
-	        
-	        updateTime();
-	        sock.send(jsonData);
-		}
 		
-		//서버에서 메시지를 받았을 때
-		function onMessage(msg) {
-			
-			var msgData = JSON.parse(msg.data);
-			
-			var msgContent = msgData.msgContent;
-			var chatRoomNo = msgData.chatRoomNo;
-			var sendMember = msgData.sendMember;
-			var sendMemberFullName = msgData.sendMemberFullName;
-			var pUrl = msgData.profileUrl;
-			
-			// 받은 메시지 추가
-			
-			// 보낸 사람이 내가 아닐 경우에만 추가해야 함
-			if(sendMember != "${ loginUser.mNo }"){
+		// 일반 메시지
+		function sendMessage() {
+			// 메시지 부분이 비어 있지 않으면
+			if($('#msg').val() != ''){
+				// 내 메시지 서버로 보내기
+				var message = $("#msg").val();
+				
+				var sendMemberFullName = "${ loginUser.dName } ${ loginUser.name } ${ loginUser.jobGrade }";
+				
+				var data = {
+						"msgContent" : message,
+						"chatRoomNo" : "${ cr.chatRoomNo }",
+		                "sendMember" : "${ loginUser.mNo }",
+		                "sendMemberFullName" : sendMemberFullName,
+		                "pReName" : "${ loginUser.profile.pReName }"
+		            };
+				
+		        var jsonData = JSON.stringify(data);
+		        
+		        // 보낸 메시지 추가
 		        var chatMsgBody = $('#chatMsgBody');
 		        var innerDiv = '';
 		        
-				innerDiv += '<div class="chat-item chat-left">'
-							+ '<div class="senderName">' + sendMemberFullName + '</div>';
+		        innerDiv += '<div class="chat-item chat-right">';
 		        
-		        if(pUrl != '' && pUrl != null ){
-		        	innerDiv += '<img src="' + pUrl + '">';	
+		        if("${ loginUser.profile.pReName }" != '' && "${ loginUser.profile.pReName }" != null ){
+		        	innerDiv += '<img src="resources/profileUploadFiles/${ loginUser.profile.pReName }" width="50" height="50">';	
 		        } else {
 		        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
 		        }
@@ -280,14 +310,76 @@
 		        var now = hours + ":" + minutes;
 		        
 		        innerDiv += '<div class="chat-details">'
-		        			+ '<div class="chat-text">' + msgContent + '</div>'
+		        			+ '<div class="chat-text">' + message + '</div>'
 		        			+ '<div class="chat-time">' + now + '</div></div></div>';
 		        
 		        chatMsgBody.append(innerDiv);
+		        
+		        updateTime();
+		        sock.send(jsonData);
+		        
+		        $('#msg').val('');
+			} else {
+				alert("메시지를 입력하세요.");
+				$('#msg').focus();
 			}
+		}
+		
+		//서버에서 메시지를 받았을 때
+		function onMessage(msg) {
 			
-			updateScroll();
-			updateTime();
+			var msgData = JSON.parse(msg.data);
+			
+			var msgContent = msgData.msgContent;
+			var chatRoomNo = msgData.chatRoomNo;
+			var sendMember = msgData.sendMember;
+			var sendMemberFullName = msgData.sendMemberFullName;
+			var pReName = msgData.pReName;
+			var readYN = msgData.readYN;
+			
+			// 받은 메시지 추가
+			// 동일한 채팅방일 경우
+			if(chatRoomNo == "${ cr.chatRoomNo }"){
+				
+				// 보낸 사람이 내가 아닐 경우에만 추가해야 함
+				if(sendMember != "${ loginUser.mNo }"){
+					var chatMsgBody = $('#chatMsgBody');
+			        var innerDiv = '';
+	
+			        if(readYN != 'Y'){
+				        // 일반 메시지
+						innerDiv += '<div class="chat-item chat-left">'
+									+ '<div class="senderName">' + sendMemberFullName + '</div>';
+				        
+				        if(pReName != '' && pReName != null ){
+				        	innerDiv += '<img src="resources/profileUploadFiles/' + pReName + '" width="50" height="50">';	
+				        } else {
+				        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
+				        }
+				        
+				        // 현재 시간 구하기
+				        var today = new Date();   
+			
+				        var hours = today.getHours(); // 시
+				        var minutes = today.getMinutes();  // 분
+				        
+				        var now = hours + ":" + minutes;
+				        
+				        innerDiv += '<div class="chat-details">'
+				        			+ '<div class="chat-text">' + msgContent + '</div>'
+				        			+ '<div class="chat-time">' + now + '</div></div></div>';
+				        
+				        chatMsgBody.append(innerDiv);
+					} else {
+						// 시스템 메시지
+						innerDiv += '<div class="sysMsg">' + msgContent + '</div>';
+					    chatMsgBody.append(innerDiv);
+					}
+				}
+				
+				updateScroll();
+				updateTime();
+			}
 		}
 		
 		//채팅창에서 나갔을 때
@@ -297,13 +389,21 @@
 		
 		//채팅창에 들어왔을 때
 		function onOpen(evt) {
+			var names = '${names}';
+			
+			if(names != ''){
+				names = names.replace("[", '');
+				names = names.replace("]", '');
+				
+				var nameArr = names.split(", ");
+				sendSystemMessage(nameArr);
+			}
 			updateTime();
 		}
 	
 		// 채팅 전송
 		$('#button-send').on('click', function(e) {
 			sendMessage();
-			$('#msg').val('');
 			updateScroll();
 		});
 		
@@ -389,6 +489,54 @@
 			newForm.submit();
 		}
 		
+		// 엔터키로 전송하기
+		function enterkey() {
+			if (window.event.keyCode == 13) {
+				sendMessage();
+			}
+		}
+
+		// 시스템 메시지
+		function sendSystemMessage(nameArr) {
+			// 내 메시지 서버로 보내기
+			var message = '';
+			var count = nameArr.length - 1;
+			
+			if(nameArr.length > 1){
+				message = "${ loginUser.name } 님이 [" + nameArr[0] + "] 님 외 " + count + "명을 초대하였습니다.";
+			} else{
+				message = "${ loginUser.name } 님이 [" + nameArr[0] + "] 님을 초대하였습니다.";
+			}
+			
+			var sendMemberFullName = "${ loginUser.dName } ${ loginUser.name } ${ loginUser.jobGrade }";
+			
+			var data = {
+					"msgContent" : message,
+					"chatRoomNo" : "${ cr.chatRoomNo }",
+	                "sendMember" : "${ loginUser.mNo }",
+	                "sendMemberFullName" : sendMemberFullName,
+	                "readYN" : "Y"
+	        };
+			
+	        var jsonData = JSON.stringify(data);
+	        
+	        // 시스템 메시지 추가
+	        var chatMsgBody = $('#chatMsgBody');
+	        var innerDiv = '';
+	        
+	        innerDiv += '<div class="sysMsg">' + message + '</div>';
+	        
+	        chatMsgBody.append(innerDiv);
+	        
+	        updateTime();
+	        sock.send(jsonData);
+		        
+		}
+		
+		// 채팅방 초대
+		function inviteChat() {
+			location.href = 'inviteChatMemberView.ct?chatRoomNo=' + ${ cr.chatRoomNo };
+		}
 	</script>
 
     <!-- General JS Scripts -->

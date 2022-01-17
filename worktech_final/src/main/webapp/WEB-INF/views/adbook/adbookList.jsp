@@ -34,6 +34,10 @@ h4.section-title:hover {
 	font-weight: bold;
 	color: #495057;
 }
+
+.profileImg{
+ 	border-radius: 18px;
+}
 </style>
 </head>
 <body>
@@ -114,12 +118,11 @@ h4.section-title:hover {
 										<tbody>
 											<c:forEach var="a" items="${ list }">
 												<tr>
-													<td><c:if test="${ a.pUrl eq null }">
-															<img alt="image" src="resources/dist/assets/img/avatar/avatar-5.png" class="rounded-circle" width="35">
+													<td><c:if test="${ a.profile.pReName eq null }">
+															<img alt="image" src="resources/dist/assets/img/avatar/avatar-3.png" class="rounded-circle" width="36">
 														</c:if>
-														<c:if test="${ a.pUrl ne null }">
-															<!-- 사진 경로 후에 수정 -->
-															<img alt="image">
+														<c:if test="${ a.profile.pReName ne null }">
+															<img alt="image" class="profileImg" src="resources/profileUploadFiles/${ a.profile.pReName }" width="36" height="36">
 														</c:if>
 														&nbsp;&nbsp;&nbsp;${ a.name }
 													</td>
@@ -150,18 +153,26 @@ h4.section-title:hover {
 													<c:if test="${ pi.currentPage > 1 }">
 														<c:url var="start" value="${ loc }">
 															<c:param name="page" value="1" />
-															<c:param name="searchValue" value="${ searchValue }" />
-															<c:param name="selectCategory" value="${ selectCategory }" />
-															<c:param name="selectValue" value="${ selectValue }" />
+															<c:if test="${ searchValue ne null }">
+																<c:param name="searchValue" value="${ searchValue }" />
+															</c:if>
+															<c:if test="${ searchCategory ne null }">
+																<c:param name="selectCategory" value="${ selectCategory }" />
+																<c:param name="selectValue" value="${ selectValue }" />
+															</c:if>
 														</c:url>
 														<li class="page-item">
 															<a class="page-link" href="${ start }" aria-label="Previous"> <i class="fas fa-angle-double-left"></i></a>
 														</li>
 														<c:url var="before" value="${ loc }">
 															<c:param name="page" value="${ pi.currentPage - 1 }" />
-															<c:param name="searchValue" value="${ searchValue }" />
-															<c:param name="selectCategory" value="${ selectCategory }" />
-															<c:param name="selectValue" value="${ selectValue }" />
+															<c:if test="${ searchValue ne null }">
+																<c:param name="searchValue" value="${ searchValue }" />
+															</c:if>
+															<c:if test="${ searchCategory ne null }">
+																<c:param name="selectCategory" value="${ selectCategory }" />
+																<c:param name="selectValue" value="${ selectValue }" />
+															</c:if>
 														</c:url>
 														<li class="page-item">
 															<a class="page-link" href="${ before }" aria-label="Previous"> <i class="fas fa-angle-left"></i></a>
@@ -177,9 +188,13 @@ h4.section-title:hover {
 														<c:if test="${ p ne pi.currentPage }">
 															<c:url var="pagination" value="${ loc }">
 																<c:param name="page" value="${ p }" />
-																<c:param name="searchValue" value="${ searchValue }" />
-																<c:param name="selectCategory" value="${ selectCategory }" />
-																<c:param name="selectValue" value="${ selectValue }" />
+																<c:if test="${ searchValue ne null }">
+																	<c:param name="searchValue" value="${ searchValue }" />
+																</c:if>
+																<c:if test="${ searchCategory ne null }">
+																	<c:param name="selectCategory" value="${ selectCategory }" />
+																	<c:param name="selectValue" value="${ selectValue }" />
+																</c:if>
 															</c:url>
 															<li class="page-item">
 																<a class="page-link" href="${ pagination }">${ p }</a>
@@ -199,18 +214,26 @@ h4.section-title:hover {
 													<c:if test="${ pi.currentPage < pi.maxPage }">
 														<c:url var="after" value="${ loc }">
 															<c:param name="page" value="${ pi.currentPage + 1 }" />
-															<c:param name="searchValue" value="${ searchValue }" />
-															<c:param name="selectCategory" value="${ selectCategory }" />
-															<c:param name="selectValue" value="${ selectValue }" />
+															<c:if test="${ searchValue ne null }">
+																<c:param name="searchValue" value="${ searchValue }" />
+															</c:if>
+															<c:if test="${ searchCategory ne null }">
+																<c:param name="selectCategory" value="${ selectCategory }" />
+																<c:param name="selectValue" value="${ selectValue }" />
+															</c:if>
 														</c:url>
 														<li class="page-item">
 															<a class="page-link" href="${ after }" aria-label="Next"> <i class="fas fa-angle-right"></i></a>
 														</li>
 														<c:url var="end" value="${ loc }">
 															<c:param name="page" value="${ pi.maxPage }" />
-															<c:param name="searchValue" value="${ searchValue }" />
-															<c:param name="selectCategory" value="${ selectCategory }" />
-															<c:param name="selectValue" value="${ selectValue }" />
+															<c:if test="${ searchValue ne null }">
+																<c:param name="searchValue" value="${ searchValue }" />
+															</c:if>
+															<c:if test="${ searchCategory ne null }">
+																<c:param name="selectCategory" value="${ selectCategory }" />
+																<c:param name="selectValue" value="${ selectValue }" />
+															</c:if>
 														</c:url>
 														<li class="page-item">
 															<a class="page-link" href="${ end }" aria-label="Next"> <i class="fas fa-angle-double-right"></i></a>

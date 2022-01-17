@@ -111,26 +111,6 @@
 		<url-pattern>*.ct</url-pattern>
 	</servlet-mapping>
 	
-	<!-- 공용 에러 페이지 -->
-	<error-page>
-		<exception-type>java.lang.Exception</exception-type>
-		<location>/WEB-INF/views/common/errorPage.jsp</location>
-	</error-page>
-	
-	<!-- 인코딩 filter -->
-	<filter>
-		<filter-name>encodingFilter</filter-name>
-		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-		<init-param>
-			<param-name>encoding</param-name>
-			<param-value>UTF-8</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>encodingFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
 	<!-- 전자결재 관련 -->
 	<servlet>
 		<servlet-name>approvalServlet</servlet-name>
@@ -145,31 +125,7 @@
 		<servlet-name>approvalServlet</servlet-name>
 		<url-pattern>*.ap</url-pattern>
 	</servlet-mapping>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	<!-- 캘린더 관련 -->
 	<servlet>
 		<servlet-name>ScheduleServlet</servlet-name>
@@ -198,5 +154,53 @@
 		<servlet-name>adbookServlet</servlet-name>
 		<url-pattern>*.ab</url-pattern>
 	</servlet-mapping>
+
+	<!-- 예약 관련 -->
+	<servlet>
+		<servlet-name>reservationServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/reservation-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>reservationServlet</servlet-name>
+		<url-pattern>*.rv</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 근태관리 관련 -->
+	<servlet>
+		<servlet-name>commutServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/commut-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>commutServlet</servlet-name>
+		<url-pattern>*.co</url-pattern>
+	</servlet-mapping>
+		
+	<!-- 공용 에러 페이지 -->
+	<error-page>
+		<exception-type>java.lang.Exception</exception-type>
+		<location>/WEB-INF/views/common/errorPage.jsp</location>
+	</error-page>
+	
+	<!-- 인코딩 filter -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	
 </web-app>

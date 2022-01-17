@@ -119,11 +119,11 @@
 	                                <div class="form-group half-col left-item">
 	                                    <label>작성자</label>
 	                                    <input type="text" class="form-control" disabled value="${ loginUser.name }">
-	                                    <input type="hidden" name="bWriter" value="000000">
+	                                    <input type="hidden" name="bWriter" value="${ loginUser.mNo }">
 	                                </div>
 	                                <div class="form-group half-col">
 	                                    <label>작성일</label>
-	                                    <input type="date" class="form-control" name="bDate" value="">
+	                                    <input type="text" class="form-control" name="bDate" disabled>
 	                                </div>
 	                                <div class="form-group">
 	                                	<label>파일 첨부</label>
@@ -142,7 +142,7 @@
 	                            </div>
 	                            <div class="card-footer text-right">
 	                                <button class="btn btn-primary mr-1" type="submit">저장</button>
-	                                <c:url var="clist" value="commonBoard.bo"/>
+	                                <c:url var="clist" value="commonList.bo"/>
 	                                <button class="btn btn-danger" type="reset" onclick="location.href='${ clist }'">취소</button>
 	                            </div>
 	                        </div>

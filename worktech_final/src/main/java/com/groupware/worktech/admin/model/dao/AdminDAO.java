@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.groupware.worktech.admin.model.vo.Department;
 import com.groupware.worktech.admin.model.vo.RvProduct;
 import com.groupware.worktech.admin.model.vo.RvRange;
+import com.groupware.worktech.board.model.vo.Board;
 import com.groupware.worktech.common.PageInfo;
 
 @Repository("aDAO")
@@ -98,5 +99,5 @@ public class AdminDAO {
 	public int updateRvProduct(SqlSessionTemplate sqlSession, RvProduct rp) {
 		return sqlSession.update("adminMapper.updateRvProduct", rp);
 	}
-	
+
 }

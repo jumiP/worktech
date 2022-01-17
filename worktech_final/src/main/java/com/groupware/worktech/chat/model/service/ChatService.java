@@ -109,4 +109,24 @@ public class ChatService {
 	public int deleteChatRoom(int chatRoomNo) {
 		return cDAO.deleteChatRoom(sqlSession, chatRoomNo);
 	}
+
+	public ArrayList<String> getGatheringMNoList(int chatRoomNo) {
+		return cDAO.getGatheringMNoList(sqlSession, chatRoomNo);
+	}
+
+	public ArrayList<Member> selectInviteDeptMember(HashMap<String, Object> map) {
+		return cDAO.selectInviteDeptMember(sqlSession, map);
+	}
+
+	public int insertMoreMember(HashMap<String, Object> map) {
+		return cDAO.insertMoreMember(sqlSession, map);
+	}
+
+	public ArrayList<String> selectNames(ArrayList<String> mNoes) {
+		return cDAO.selectNames(sqlSession, mNoes);
+	}
+
+	public int insertSystemMessage(ChatMessage chatRoom) {
+		return cDAO.insertSystemMessage(sqlSession, chatRoom);
+	}
 }

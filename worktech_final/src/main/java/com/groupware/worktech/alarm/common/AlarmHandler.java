@@ -46,7 +46,7 @@ public class AlarmHandler extends TextWebSocketHandler {
 			WebSocketSession bWriterSession = userSessionsMap.get(receiver);
 			
 			// 일반 게시판 글 작성자가 로그인 중이라면
-			if("cReply".equals(type) && bWriterSession != null) {
+			if("cReply".equals(type) && bWriterSession != null && !sender.equals(receiver)) {
 				TextMessage tmpMsg = new TextMessage(msg);
 				bWriterSession.sendMessage(tmpMsg);
 			}

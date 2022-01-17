@@ -8,6 +8,7 @@
 			 join member on(alarm_sender = m_no)
 			 join board using(b_no)
 		where alarm_receiver = #{mNo}
+			  and alarm_sender != #{mNo}
 			  and alarm_date >= to_char(sysdate-7, 'yyyymmdd')
 		order by alarm_no desc
 	</select>

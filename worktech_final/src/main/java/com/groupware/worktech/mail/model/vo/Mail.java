@@ -65,7 +65,7 @@ public class Mail {
 		this.mailFileList = mailFileList;
 	}
 
-	public String getMNo() {
+	public String getmNo() {
 		return mNo;
 	}
 

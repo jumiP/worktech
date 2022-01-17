@@ -88,6 +88,10 @@
 	#alarmListDiv::-webkit-scrollbar{
 		display: none;
 	}
+	
+	.alarmRead{
+		background-color: #fbfbfb;
+	}
 </style>
 <body>
     <div id="app">
@@ -226,10 +230,10 @@
                                         <span>기타 예약</span></a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="nav-link" href="components-article.html">나의 예약 목록</a>
+                                                <a class="nav-link" href="myOrvList.rv">나의 예약 목록</a>
                                             </li>
                                             <li>
-                                                <a class="nav-link" href="components-avatar.html">기타 예약 목록</a>
+                                                <a class="nav-link" href="orvList.rv">기타 예약 목록</a>
                                             </li>
                                         </ul>
                                 </li>
@@ -255,7 +259,7 @@
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link has-dropdown">
+                            <a href="myCal.cr" class="nav-link has-dropdown">
                                 <i class="fas fa-calendar-alt"></i>
                                 <span>캘린더</span></a>
                                 <ul class="dropdown-menu">
@@ -329,13 +333,12 @@
 			var sock = new SockJS('http://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/alarm');
 			socket = sock;
 
-			// 이벤트 리스터(커넥션이 연결되었을 때 서버 호출된다)
+			// 커넥션 연결되었을 때 호출
 			sock.onopen = function() {
 				console.log('info: connection opened.');
 			}
 			
-			// 서버에 메시지를 보내주며 함수가 호출된다.
-			// 메세지를 보냈을 때 호출
+			// 메세지를 받았을 때 호출
 			sock.onmessage = function(evt){
 				console.log('info: connection onmessage');
 				var data = evt.data;
@@ -378,7 +381,7 @@
 				$('#alarmBtn').addClass("beep");
 			}
 			
-			// 서버가 끊겼을 때 호출
+			// 연결이 끊겼을 때 호출
 			sock.onclose = function(){
 				console.log('info: connect close');
 			};
@@ -393,11 +396,9 @@
 			$('#alarmListDiv').getNiceScroll().resize();
 		});
 		
-		
 		function alarmList() {
 			$('#alarmListDiv').css({overflow:'auto'});
 			$('#alarmListDiv').getNiceScroll().resize();
-// 			$('#alarmListDiv').niceScroll();
 
 			var mNo = '${ loginUser.mNo }';
 			
@@ -406,19 +407,15 @@
 				data: {mNo:mNo},
 				dataType: 'json',
 				success: function(data){
-					console.log(data);
 					var count = 0;
-					
 						
 					for(var i in data){
-						
-						
 						if(data[i].alarmCheck == 'N'){
 							count += 1;
 						}
 						
 						if(data[i].alarmCheck == 'Y') {
-							var $a = $('<a class="dropdown-item dropdown-item-unread alarmArea">');
+							var $a = $('<a class="dropdown-item alarmRead alarmArea">');
 						} else {
 							var $a = $('<a class="dropdown-item alarmArea">');
 						}
@@ -447,34 +444,24 @@
 					console.log("error");
 				}
 			});
-		
-			
 		}
 		
 		$(document).on("click", ".alarmArea", function(){
 			var alarmArea = $(this);
 			var alarmNo = $(this).children().eq(2).val();
 			
-			
 			$.ajax({
 				url: 'checkAlarm.al',
 				data: {alarmNo:alarmNo},
 				success: function(data){
-					console.log(data);
-
 					$('#alarmListDiv').html('');
 					alarmList();
-					
-// 					alarmArea.addClass("dropdown-item-unread");
 				},
 				error: function(data){
-					console.log(data);
+					console.log('error');
 				}
 			});
-			
-			
 		});
 	</script>
 </body>
-
 </html>

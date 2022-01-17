@@ -7,7 +7,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Properties;
 
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -517,11 +527,101 @@ public class MemberController {
 	}
 	
 	
-	// 임시비밀번호 발급? 페이지로 이동?
-		@RequestMapping("findPwd.me")
-		public String findPwdView() {
-			return "findPwd";
+	// 임시비밀번호 페이지로 이동
+	@RequestMapping("findPwdView.me")
+	public String findPwdView() {
+		return "findPwd";
+	}
+
+	// 임시 비밀번호 발급
+	@RequestMapping("findPassword.me")
+	public String findPwd(@RequestParam("mNo") String mNo, @RequestParam("mEmail") String mEmail) {
+		// 사용자가 입력한 사번과 개인 이메일
+//		System.out.println(mNo);
+//		System.out.println(mEmail);
+		
+		// 해당 사원 정보 가져오기
+		Member m = mService.selectmemEmail(mNo);
+		String memEmail = m.getmEmail(); // 해당하는 사번의 개인 이메일
+//		System.out.println(memEmail);
+		
+		String name = m.getName();  // 해당하는 사번의 이름
+		
+		// 이메일이 일치할 경우 : 임시비밀번호 발급
+		if( mEmail.equals(memEmail)) { 
+			// 임시 비밀번호 생성
+			String pw = "";
+			for (int i = 0; i < 12; i++) {
+				pw += (char) ((Math.random() * 26) + 97);
+			}
+			
+//			System.out.println(pw); // 임시 비밀번호
+			
+			// 이메일 발송
+			String receiver = memEmail; // 받는사람
+			String title = "[ WORKTECH ] " + name +"님의  임시 비밀번호를 알려드립니다.";
+			String content = "<div align='center' style='border:1px solid black; font-family:verdana'>"
+					+ "<h3 style='color: blue;'>"
+					+ name + "님의 임시 비밀번호 입니다. 비밀번호를 변경하여 사용하세요.</h3>"
+					+ "<p>임시 비밀번호 : " + pw + "</p></div>";
+			
+			String host = "smtp.naver.com"; // 네이버에서 보내기(smtp.naver.com) | gmail에서 보내기 (smtp.gmail.com)
+			String sender = " "; // 실제 보내는 사람의 유효한 메일 [ ※ test시 각자의 naver/gmail 계정을 추가하세요 ]
+			String senderPwd= " "; // 그 메일의 실제 비밀번호  [ ※ test시 각자의 naver/gmail 계정의 비밀번호를 추가하세요 ]
+			
+			Properties prop = new Properties(); 
+			prop.setProperty("mail.smtp.host", host);
+			prop.setProperty("mail.smtp.auth", "true");
+			prop.put("mail.smtp.starttls.enable","true");
+			
+			Session session = Session.getDefaultInstance(prop, new Authenticator() {
+				// 익명 클래스 : 내부적으로 객체를 만들게끔하는것 (gui)
+				@Override
+				protected PasswordAuthentication getPasswordAuthentication() {
+					// 보내는 사람에 대해서 session을 만들어줌
+					return new PasswordAuthentication(sender, senderPwd);
+				}
+			});
+			
+			try {
+				MimeMessage message = new MimeMessage(session);
+				message.setFrom(new InternetAddress(sender));
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
+				message.setSubject(title);
+				message.setText(content, "UTF-8", "html");
+				
+				// 전송
+				Transport.send(message);
+				
+//				System.out.println("메일 발송 성공");
+			} catch (AddressException e) {
+				e.printStackTrace();
+//				System.out.println("메일 발송 실패");
+			} catch (MessagingException e) {
+				e.printStackTrace();
+//				System.out.println("메일 발송 실패");
+			}
+			
+			// 임시 비밀번호 암호화 후 저장
+			String encPwd = bcrypt.encode(pw);
+//			System.out.println(encPwd);
+			m.setPwd(encPwd); 
+			
+			// 비밀 번호 update
+			HashMap <String, String> map = new HashMap();
+			map.put("mNo", mNo);
+			map.put("encPwd", encPwd);
+			
+			int result = mService.updatePwd(map);
+			
+//			System.out.println(m);
+			
+		} else {
+			throw new MemberException("개인 이메일이 일치하지 않습니다.");
 		}
+		
+		return "redirect:/";
+	}
 
 	
 	

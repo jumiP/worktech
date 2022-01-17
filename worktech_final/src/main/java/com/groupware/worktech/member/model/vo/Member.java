@@ -60,6 +60,27 @@ public class Member {
 		this.profile = profile;
 		this.mStatus = mStatus;
 	}
+		
+	public Member(String mNo, String email, String mEmail, String name, String pwd, String jobGrade, Date birthDay,
+			String phone, String address, String mGrade, int dNo, String dName, Date hireDate, Profile profile,
+			String mStatus) {
+		super();
+		this.mNo = mNo;
+		this.email = email;
+		this.mEmail = mEmail;
+		this.name = name;
+		this.pwd = pwd;
+		this.jobGrade = jobGrade;
+		this.birthDay = birthDay;
+		this.phone = phone;
+		this.address = address;
+		this.mGrade = mGrade;
+		this.dNo = dNo;
+		this.dName = dName;
+		this.hireDate = hireDate;
+		this.profile = profile;
+		this.mStatus = mStatus;
+	}
 
 	public String getmNo() {
 		return mNo;
@@ -173,14 +194,20 @@ public class Member {
 		this.mStatus = mStatus;
 	}
 
-	@Override
-	public String toString() {
-		return "Member [mNo=" + mNo + ", email=" + email + ", name=" + name + ", pwd=" + pwd + ", jobGrade=" + jobGrade
-				+ ", birthDay=" + birthDay + ", phone=" + phone + ", address=" + address + ", mGrade=" + mGrade
-				+ ", dNo=" + dNo + ", dName=" + dName + ", hireDate=" + hireDate + ", profile=" + profile + ", mStatus="
-				+ mStatus + "]";
+	public String getmEmail() {
+		return mEmail;
 	}
 
-	
+	public void setmEmail(String mEmail) {
+		this.mEmail = mEmail;
+	}
+
+	@Override
+	public String toString() {
+		return "Member [mNo=" + mNo + ", email=" + email + ", mEmail=" + mEmail + ", name=" + name + ", pwd=" + pwd
+				+ ", jobGrade=" + jobGrade + ", birthDay=" + birthDay + ", phone=" + phone + ", address=" + address
+				+ ", mGrade=" + mGrade + ", dNo=" + dNo + ", dName=" + dName + ", hireDate=" + hireDate + ", profile="
+				+ profile + ", mStatus=" + mStatus + "]";
+	}
 	
 }

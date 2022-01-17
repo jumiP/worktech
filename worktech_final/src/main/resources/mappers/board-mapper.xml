@@ -43,7 +43,7 @@
 	
 	<insert id="insertNotice">
 		insert into board
-		values(SEQ_BOARD.NEXTVAL, #{bTitle}, #{bContent}, #{bDate}, DEFAULT, 'NOTICE', #{bCritical},
+		values(SEQ_BOARD.NEXTVAL, #{bTitle}, #{bContent}, SYSDATE, DEFAULT, 'NOTICE', #{bCritical},
 			   #{bWriter}, NULL, DEFAULT)
 	</insert>
 	
@@ -82,7 +82,7 @@
 	
 	<update id="updateNotice">
 		update board
-		set b_title = #{bTitle}, b_content = #{bContent}, b_date = #{bDate}, b_critical = #{bCritical}
+		set b_title = #{bTitle}, b_content = #{bContent}, b_critical = #{bCritical}
 		where b_no = #{bNo}
 		and b_status = 'N'
 	</update>
@@ -133,7 +133,7 @@
 		values(SEQ_BOARD.NEXTVAL, #{bTitle}, #{bContent}, SYSDATE, DEFAULT, 'COMMON', NULL, #{bWriter}, #{categoryNo}, DEFAULT)
 	</insert>
 	
-	<select id="selectCommonList" parameterType="_int" resultMap="commonBoardResultSet">
+	<select id="selectCommonList" parameterType="int" resultMap="commonBoardResultSet">
 		select b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, category_no, category_name, b_status,
 			   f_no, f_url, f_name, f_rname
 		from board
@@ -142,6 +142,9 @@
 			 left join board_file using(b_no)
 		where b_type = 'COMMON'
 			  and b_status = 'N'
+			  <if test='value != null'>
+			  	and category_no = #{value}
+			  </if>
 		order by b_no desc
 	</select>
 	
@@ -166,19 +169,6 @@
 		where b_type = 'COMMON'
 			  and b_status = 'N'
 			  and category_no = #{category}
-	</select>
-	
-	<select id="selectCategoryList" resultMap="commonBoardResultSet">
-		select b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, category_no, category_name, b_status,
-			   f_no, f_url, f_name, f_rname
-		from board
-			 join member on(b_writer = m_no)
-			 join category using(category_no)
-			 left join board_file using(b_no)
-		where b_type = 'COMMON'
-			  and b_status = 'N'
-			  and category_no = #{category}
-		order by b_no desc
 	</select>
 	
 	<select id="selectCommonBoard" resultMap="commonBoardResultSet">

@@ -2,17 +2,23 @@ package com.groupware.worktech.board.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,13 +64,8 @@ public class BoardController {
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
-		ArrayList<Board> list = null;
-		if(category != null) {
-			list = bService.selectCommonList(pi, category);
-		} else {
-			list = bService.selectCommonList(pi);
-		}
-		
+		ArrayList<Board> list = bService.selectCommonList(pi, category);
+//		
 		if(list != null) {
 			model.addAttribute("pi", pi);
 			model.addAttribute("list", list);
@@ -187,58 +188,84 @@ public class BoardController {
 		
 		return "commonBoardUpdate";
 	}
+
 	
+	@Transactional
 	@RequestMapping("cupdate.bo")
-	public String commonBoardUpdate(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile, @RequestParam(value="fNo", required=false) ArrayList<Integer> fNoes, @RequestParam("upd") String upd, HttpServletRequest request, Model model) {
-		if(fNoes != null && !fNoes.isEmpty()) {
-			ArrayList<BoardFile> fileList = bService.selectCommonBoard(b.getbNo(), upd).getFileList();
-			
-			for(int i = 0; i < fileList.size(); i++) {
-				int fNo = fileList.get(i).getfNo();
-				
-				if(!fNoes.contains(fNo)) {
-					deleteFile(fileList.get(i).getfRname(), request);
-					
+	public String commonBoardUpdate(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile,
+									@RequestParam(value = "fNo", required = false) ArrayList<Integer> fNoes, @RequestParam("upd") String upd,
+									@RequestParam("flag") int flag, HttpServletRequest request, Model model) {
+		
+		ArrayList<BoardFile> oldFileList = bService.selectCommonBoard(b.getbNo(), upd).getFileList();
+
+		// 저장되어 있는 파일 삭제
+		if (fNoes != null && !fNoes.isEmpty()) {
+
+			for (int i = 0; i < oldFileList.size(); i++) {
+				int fNo = oldFileList.get(i).getfNo();
+
+				if (!fNoes.contains(fNo)) {
+					deleteFile(oldFileList.get(i).getfRname(), request);
+
 					int result = bService.deleteNoticeFile(fNo);
-					
-					if(result <= 0) {
+
+					if (result <= 0) {
 						throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
 					}
-				};
+				}
+
+			}
+		} else if (flag == 1) {
+			for (int i = 0; i < oldFileList.size(); i++) {
+				int fNo = oldFileList.get(i).getfNo();
+
+				deleteFile(oldFileList.get(i).getfRname(), request);
+
+				int result = bService.deleteNoticeFile(fNo);
+
+				if (result <= 0) {
+					throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
+				}
 			}
 		}
-		
-		ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
-		
-		if(reloadFile != null && !reloadFile[0].isEmpty()) {
-			for(int i = 0; i < reloadFile.length; i++) {
+
+		// 새로 추가한 파일 등록
+		ArrayList<BoardFile> fileList = null;
+
+		if (reloadFile != null && !reloadFile[0].getOriginalFilename().trim().equals("")) {
+			fileList = new ArrayList<BoardFile>();
+			for (int i = 0; i < reloadFile.length; i++) {
 				HashMap<String, String> fileInfo = saveFile(reloadFile[i], request);
-				
-				if(fileInfo.get("renameFileName") != null) {
+
+				if (fileInfo.get("renameFileName") != null) {
 					BoardFile f = new BoardFile();
 					f.setfName(reloadFile[i].getOriginalFilename());
 					f.setfRname(fileInfo.get("renameFileName"));
 					f.setfURL(fileInfo.get("renamePath"));
 					f.setRefBNo(b.getbNo());
-					
+
 					fileList.add(f);
 				}
 			}
 		}
-		
+
 		b.setFileList(fileList);
-		
+
 		int result = bService.updateCommonBoard(b);
-		
-		if(result > 0) {
-			Board updateBoard = bService.selectCommonBoard(b.getbNo(), upd);
-			model.addAttribute("b", updateBoard);
-			
+
+		int length = 0;
+
+		if (fileList != null) {
+			length = fileList.size();
+		}
+
+		if (result >= length + 1) {
 			return "redirect:cdetail.bo?bNo=" + b.getbNo() + "&upd=Y";
 		} else {
 			throw new BoardException("게시글 수정에 실패하였습니다.");
 		}
 	}
+
 	
 	public void deleteFile(String fRname, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
@@ -380,26 +407,41 @@ public class BoardController {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// summernote 이미지 삽입
+	@RequestMapping("uploadSummernoteImageFile")
+	@ResponseBody
+	public String SummerNoteImageFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+		JSONObject jsonObject = new JSONObject();
+		
+		// 내부경로로 저장
+		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
+		String fileRoot = contextRoot+"resources/fileupload/";
+		
+		String originalFileName = file.getOriginalFilename();	//오리지날 파일명
+		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
+		String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
+		
+		File folder = new File(fileRoot);
+		
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+		File targetFile = new File(fileRoot + savedFileName);	
+		try {
+			InputStream fileStream = file.getInputStream();
+			FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
+			jsonObject.put("url", "resources/fileupload/"+savedFileName); // contextroot + resources + 저장할 내부 폴더명
+			jsonObject.put("responseCode", "success");
+				
+		} catch (IOException e) {
+			FileUtils.deleteQuietly(targetFile);	//저장된 파일 삭제
+			jsonObject.put("responseCode", "error");
+			e.printStackTrace();
+		}
+		
+		return jsonObject.toString();
+	}
 	
 	
 	

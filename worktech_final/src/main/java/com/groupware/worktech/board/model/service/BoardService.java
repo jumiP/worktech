@@ -307,6 +307,7 @@ public class BoardService {
 	public ArrayList<Board> selectZList(PageInfo pi) {
 		return bDAO.selectZList(sqlSession, pi);
 	}
+		
 	
 	
 	

@@ -115,6 +115,24 @@ public class MemberDAO {
 		return sqlSession.selectOne("memberMapper.selectProfile", mNo);
 	}
 
+
+	public ArrayList<Member> selectMainMemList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMainMemList");
+	}
+
+
+	// 임시 비밀번호 발급 : 해당 사원의 mEmail 받아오기
+	public Member selectmemEmail(SqlSessionTemplate sqlSession, String mNo) {
+		return sqlSession.selectOne("memberMapper.selectmemEmail", mNo);
+	}
+
+	// 임시비밀번호 : 비밀번호 변경
+	public int updatePwd(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.update("memberMapper.updatePwd", map);
+	}
+
+	
+
 	
 	
 

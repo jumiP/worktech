@@ -11,6 +11,8 @@
     <c:if test="${ loginUser.mGrade eq 'ADMIN' }">
     	<c:import url="../views/main/mainAdmin.jsp" />
     </c:if>
-	
+    <c:if test="${ loginUser eq null }">
+    	<c:import url="../views/main/mainError.jsp" />
+    </c:if>
 </body>
 </html>

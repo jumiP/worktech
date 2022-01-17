@@ -23,9 +23,7 @@ public class RvDAO {
 		return sqlSession.selectOne("reservationMapper.selectReservation", rvNo);
 	}
 
-    public int deleteReservation(SqlSessionTemplate sqlSession, int rvNo) {
-    	return sqlSession.update("reservationMapper.deleteReservation", rvNo);
-    }
+
 	
 	
 	
@@ -111,6 +109,10 @@ public class RvDAO {
 
 
 
+
+	public int deleteReservation(SqlSessionTemplate sqlSession, int rvNo) {
+		return sqlSession.update("reservationMapper.deleteReservation", rvNo);
+	}
 
 	public ArrayList<RvProduct> selectOrvList(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("reservationMapper.selectOrvList");

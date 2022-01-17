@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -2456,6 +2457,7 @@ label+.MuiInput-formControl {
 </style>
 </head>
 <body style="font-family: Roboto, sans-serif">
+<c:if test="${ loginUser eq null }">
 	<div id="root">
 		<div class="MuiGrid-root jss1 MuiGrid-container">
 			<div class="jss2">
@@ -2505,9 +2507,16 @@ label+.MuiInput-formControl {
 								<span class="MuiButton-label">로그인</span> <span
 									class="MuiTouchRipple-root"></span>
 							</button>
+<!-- 							<button -->
+<!-- 								class="MuiButtonBase-root MuiButton-root MuiButton-text jss22 MuiButton-textPrimary MuiButton-textSizeLarge MuiButton-sizeLarge" -->
+<!-- 								tabindex="0" type="button" onclick="pwdBtn()"> -->
+<!-- 								<span class="MuiButton-label">비밀번호찾기</span> <span -->
+<!-- 									class="MuiTouchRipple-root"></span> -->
+<!-- 							</button> -->
+							
 							<button
 								class="MuiButtonBase-root MuiButton-root MuiButton-text jss22 MuiButton-textPrimary MuiButton-textSizeLarge MuiButton-sizeLarge"
-								tabindex="0" type="button" onclick="pwdBtn()">
+								tabindex="0" type="button" onclick="location.href='findPwdView.me'">
 								<span class="MuiButton-label">비밀번호찾기</span> <span
 									class="MuiTouchRipple-root"></span>
 							</button>
@@ -2531,5 +2540,12 @@ label+.MuiInput-formControl {
 		<polyline id="SvgjsPolyline1003" points="0,0"></polyline>
 		<path id="SvgjsPath1004" d="M0 0 "></path>
 	</svg>
+</c:if>
+<c:if test="${ loginUser ne null }">
+	<div style="text-align: center;">
+		이미 로그인한 유저입니다.<br>
+		<a href="home.do">메인으로</a>
+	</div>
+</c:if>
 </body>
 </html>

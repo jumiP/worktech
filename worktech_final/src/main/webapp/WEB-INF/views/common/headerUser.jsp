@@ -259,7 +259,7 @@
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link has-dropdown">
+                            <a href="myCal.cr" class="nav-link has-dropdown">
                                 <i class="fas fa-calendar-alt"></i>
                                 <span>캘린더</span></a>
                                 <ul class="dropdown-menu">

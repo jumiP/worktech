@@ -105,11 +105,7 @@ public class ReservationController {
 		try {
 			rvStartTime = sdf.parse(strStartTime);
 			rvEndTime = sdf.parse(strEndTime);
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}
-		
-		if(rvStartTime != null && rvEndTime != null) {
+			
 			ArrayList<Reservation> list = rvService.getRvMeetingRoomList();
 			
 			int result = 0;
@@ -121,186 +117,94 @@ public class ReservationController {
 				// rvEndTime : 입력받은 종료 시간
 				// start : DB에 저장되어 있는 시작 시간
 				// end : DB에 저장되어 있는 종료 시간
-
+				
 				// 중복되는 시간이 있는지 확인
 				if(start.compareTo(rvStartTime) == 0 || end.compareTo(rvEndTime) == 0) { // 시작 시간 혹은 끝나는 시간이 같은 경우
 					result++;
 					break;
-				} else if(start.compareTo(rvStartTime) == 1 && end.compareTo(rvStartTime) == -1) { // 입력받은 시작 시간이 이미 저장된 시작 시간 ~ 종료 시간 사이인 경우
+				} else if(start.compareTo(rvStartTime) < 0 && end.compareTo(rvStartTime) > 0) { // 입력받은 시작 시간이 이미 저장된 시작 시간 ~ 종료 시간 사이인 경우
 					result++;
 					break;
-				} else if (start.compareTo(rvEndTime) == 1 && end.compareTo(rvEndTime) == -1) { // 입력받은 종료 시간이 이미 저장된 시작 시간 ~ 종료 시간 사이
+				} else if (start.compareTo(rvEndTime) < 0 && end.compareTo(rvEndTime) > 0) { // 입력받은 종료 시간이 이미 저장된 시작 시간 ~ 종료 시간 사이
 					result++;
 					break;
-				} else if (start.compareTo(rvStartTime) == 1 && end.compareTo(rvEndTime) == -1) { // 입력받은 시간이 DB에 저장된 시간을 포함하고 있는 경우
+				} else if (start.compareTo(rvStartTime) > 0 && end.compareTo(rvEndTime) < 0) { // 입력받은 시간이 DB에 저장된 시간을 포함하고 있는 경우
 					result++;
 					break;
 				}
 			}
 			
-			try {
-				response.getWriter().println(result);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			response.getWriter().println(result);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@RequestMapping("meetRoomRvDetail.rv")
+	public String meetingRoomDeatil(@RequestParam("rvNo") int rvNo, Model model) {
+		Reservation rv = rvService.selectReservation(rvNo);
+		
+		if(rv != null) {
+			model.addAttribute("rv", rv);
+			
+			return "detailRvMeetingRoom";
+		} else {
+			throw new RvException("회의실 예약 상세 조회에 실패하였습니다.");
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@RequestMapping("rvMeetingRoomDelete.rv")
+	public String deleteRvMeetingRoom(@RequestParam("rvNo") int rvNo) {
+		int result = rvService.deleteReservation(rvNo);
+		
+		if(result > 0) {
+			return "redirect:rvMeetingRoomView.rv";
+		} else {
+			throw new RvException("회의실 예약 삭제에 실패하였습니다.");
+		}
+	}
+	
+	@RequestMapping("insertSelectRvMeetingRoom.rv")
+	public void addSelectMeetRoom(@RequestParam("startTime") String startTime, @RequestParam("rvUsage") String rvUsage,
+			@RequestParam("endTime") String endTime, @RequestParam("date") String date,
+			HttpSession session, HttpServletResponse response) {
+		
+		startTime = startTime.split(" G")[0];
+		endTime = endTime.split(" G")[0];
 
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss", Locale.US);
+		SimpleDateFormat sdfTs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		Timestamp rvStartTime = null;
+		Timestamp rvEndTime = null;
+		java.sql.Date rvDate = null;
+		try {
+			rvStartTime = Timestamp.valueOf(sdfTs.format(sdf.parse(startTime)));
+			rvEndTime = Timestamp.valueOf(sdfTs.format(sdf.parse(endTime)));
+			rvDate = java.sql.Date.valueOf(date);
+			
+			String rvMember = ((Member)session.getAttribute("loginUser")).getmNo();
+			
+			Reservation r = new Reservation(0, "MEETING", null, "회의실", 0, rvDate, (Timestamp)rvStartTime, (Timestamp)rvEndTime, rvUsage, rvMember, null, null);
+			
+			int result = rvService.insertReservation(r);
+			
+			if(result > 0) {
+				response.getWriter().println(result);
+			} else {
+				throw new RvException("회의실 예약에 실패하였습니다.");
+			}
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	} 
 
 	@RequestMapping("orvList.rv")
 	public String orvList(Model model) {

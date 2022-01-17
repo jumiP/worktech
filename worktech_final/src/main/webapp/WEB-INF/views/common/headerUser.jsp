@@ -12,6 +12,7 @@
     <!-- General CSS Files -->
     <link rel="stylesheet" href="resources/dist/assets/modules/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="resources/dist/assets/modules/fontawesome/css/all.min.css">
+    <script src="https://kit.fontawesome.com/24e710bae2.js" crossorigin="anonymous"></script>
 
     <!-- CSS Libraries -->
 
@@ -84,8 +85,8 @@
 		cursor: pointer;
 	}
 	
-	#alarmBtn{
-		
+	#alarmListDiv::-webkit-scrollbar{
+		display: none;
 	}
 </style>
 <body>
@@ -121,43 +122,16 @@
                         </a> <!-- href에 메일 url 삽입 -->
                     </li>
                     <li class="dropdown dropdown-list-toggle">
-                        <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep" id="alarmBtn">
+                        <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg" id="alarmBtn">
                             <i class="far fa-bell"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                            <div class="dropdown-header">Notifications
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right" id="alarmListArea">
+                            <div class="dropdown-header">알림
                                 <div class="float-right">
-                                    <a href="#">5개</a>
+                                    <a id="alarmCount"></a>
                                 </div>
                             </div>
 							<div class="dropdown-list-content dropdown-list-icons" id="alarmListDiv">
-<!-- 								<a href="#" class="dropdown-item dropdown-item-unread"> -->
-<!-- 									<div class="dropdown-item-icon bg-primary text-white"> -->
-<!-- 										<i class="far fa-calendar-alt alarmIcon"></i> -->
-<!-- 									</div> -->
-<!-- 									<div class="dropdown-item-desc"> -->
-<!-- 										캘린더 알림 -->
-<!-- 										<div class="time text-primary">2 Min Ago</div> -->
-<!-- 									</div> -->
-<!-- 								</a> -->
-<!-- 								<a href="#" class="dropdown-item"> -->
-<!-- 									<div class="dropdown-item-icon bg-info text-white"> -->
-<!-- 										<i class="fas fa-clipboard-list alarmIcon"></i> -->
-<!-- 									</div> -->
-<!-- 									<div class="dropdown-item-desc"> -->
-<!-- 										게시판 알림 -->
-<!-- 										<div class="time">10 Hours Ago</div> -->
-<!-- 									</div> -->
-<!-- 								</a> -->
-<!-- 								<a href="#" class="dropdown-item"> -->
-<!-- 									<div class="dropdown-item-icon bg-success text-white"> -->
-<!-- 										<i class="fas fa-user-friends alarmIcon"></i> -->
-<!-- 									</div> -->
-<!-- 									<div class="dropdown-item-desc"> -->
-<!-- 										전자결재 알림 -->
-<!-- 										<div class="time">12 Hours Ago</div> -->
-<!-- 									</div> -->
-<!-- 								</a> -->
 							</div>
 							<div class="dropdown-footer text-center">
                             </div>
@@ -165,18 +139,23 @@
                     </li>
                     <li class="dropdown">
                         <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                            <img alt="image" src="resources/dist/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+                            <c:if test="${ loginUser.profile.pReName != null}">
+	                            <img alt="image" src="resources/profileUploadFiles/${ loginUser.profile.pReName }" width="30" height="30" class="rounded-circle mr-1">
+                            </c:if>
+                            <c:if test="${ loginUser.profile.pReName == null}">
+	                            <img alt="image" src="resources/dist/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+                            </c:if>
                             <div class="d-sm-none d-lg-inline-block">${ loginUser.name } ${ loginUser.jobGrade }</div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-title">${ loginUser.name } 님 환영합니다!</div>
-                            <a href="features-profile.html" class="dropdown-item has-icon">
+                            <a href="myPage.me" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i>
-                                마이 페이지
+                              	  마이 페이지
                             </a>
                             <a href="features-activities.html" class="dropdown-item has-icon">
                                 <i class="fas fa-bolt"></i>
-                                전자결재
+                            	    전자결재
                             </a>
                             <div class="dropdown-divider"></div>
                             <a href="logout.me" class="dropdown-item has-icon text-danger">
@@ -216,11 +195,6 @@
                                     </li>
                                 </ul>
                         </li>
-                        <li>
-                            <a class="nav-link" href="blank.html">
-                                <i class="fas fa-clock"></i>
-                                <span>근태 관리</span></a>
-                        </li>
                         <li class="dropdown">
                             <a href="alllist.mail" class="nav-link">
                                 <i class="fas fa-envelope-open-text"></i>
@@ -228,7 +202,7 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="nav-link has-dropdown">
-                                <i class="fas fa-th"></i>
+                                <i class="fas fa-phone-square-alt"></i>
                                 <span>주소록</span></a>
                                 <ul class="dropdown-menu">
                                     <li>
@@ -282,7 +256,7 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="nav-link has-dropdown">
-                                <i class="fas fa-th"></i>
+                                <i class="fas fa-calendar-alt"></i>
                                 <span>캘린더</span></a>
                                 <ul class="dropdown-menu">
                                     <li>
@@ -294,7 +268,7 @@
                                 </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="nav-link">
+                            <a href="myPage.me" class="nav-link">
                                 <i class="fas fa-user-lock"></i>
                                 <span>마이 페이지</span></a>
                         </li>
@@ -335,7 +309,7 @@
 <!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script> -->
 <!-- 	<script src="resources/dist/jstree.min.js"></script> -->
 
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
 	
 	<script>
 		function chatOpen() {
@@ -400,6 +374,8 @@
 				$('.alarmDiv').append($aContainer);
 				
 				$('.aContainer').css({'animation-duration':'4s', 'animation-name':'slidein'});
+				
+				$('#alarmBtn').addClass("beep");
 			}
 			
 			// 서버가 끊겼을 때 호출
@@ -413,7 +389,16 @@
 			}
 		}
 		
+		$('#alarmListDiv').mouseover(function(){
+			$('#alarmListDiv').getNiceScroll().resize();
+		});
+		
+		
 		function alarmList() {
+			$('#alarmListDiv').css({overflow:'auto'});
+			$('#alarmListDiv').getNiceScroll().resize();
+// 			$('#alarmListDiv').niceScroll();
+
 			var mNo = '${ loginUser.mNo }';
 			
 			$.ajax({
@@ -421,8 +406,23 @@
 				data: {mNo:mNo},
 				dataType: 'json',
 				success: function(data){
+					console.log(data);
+					var count = 0;
+					
+						
 					for(var i in data){
-						var $a = $('<a class="dropdown-item alarmArea">');
+						
+						
+						if(data[i].alarmCheck == 'N'){
+							count += 1;
+						}
+						
+						if(data[i].alarmCheck == 'Y') {
+							var $a = $('<a class="dropdown-item dropdown-item-unread alarmArea">');
+						} else {
+							var $a = $('<a class="dropdown-item alarmArea">');
+						}
+						
 						var $icon = $('<div class="dropdown-item-icon bg-info text-white"><i class="fas fa-clipboard-list alarmIcon"></i>');
 						var $desc = $('<div class="dropdown-item-desc">')
 									.html(data[i].senderName + " 님이 " + "<a href='cdetail.bo?bNo=" + data[i].bNo + "'>[" + data[i].bTitle + "]</a> 글에 댓글을 남겼습니다.");
@@ -436,35 +436,43 @@
 						
 						$($a).appendTo('#alarmListDiv');
 					}
+					
+					if(count > 0){
+						$('#alarmBtn').addClass("beep");
+					} else {
+						$('#alarmBtn').removeClass("beep");
+					}
 				},
 				error: function(data){
-					console.log(data);
+					console.log("error");
 				}
 			});
+		
+			
 		}
 		
-		$('#alarmBtn').click(function(){
-			$('#alarmListDiv').css('display', 'block');
-		});
-		
 		$(document).on("click", ".alarmArea", function(){
+			var alarmArea = $(this);
 			var alarmNo = $(this).children().eq(2).val();
 			
-			$('#alarmListDiv').css('display', 'block');
 			
 			$.ajax({
 				url: 'checkAlarm.al',
 				data: {alarmNo:alarmNo},
 				success: function(data){
 					console.log(data);
-					
+
 					$('#alarmListDiv').html('');
 					alarmList();
+					
+// 					alarmArea.addClass("dropdown-item-unread");
 				},
 				error: function(data){
 					console.log(data);
 				}
 			});
+			
+			
 		});
 	</script>
 </body>

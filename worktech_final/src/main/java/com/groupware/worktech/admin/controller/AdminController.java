@@ -11,10 +11,13 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +37,8 @@ import com.groupware.worktech.board.model.exception.BoardException;
 import com.groupware.worktech.board.model.service.BoardService;
 import com.groupware.worktech.board.model.vo.Board;
 import com.groupware.worktech.board.model.vo.BoardFile;
+import com.groupware.worktech.chat.model.exception.ChatException;
+import com.groupware.worktech.chat.model.service.ChatService;
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.common.Pagination;
 
@@ -45,6 +50,9 @@ public class AdminController {
 	
 	@Autowired
 	private BoardService bService;
+	
+	@Autowired
+	private ChatService cService;
 	
 	// 관리자 공지사항 게시판 부분 시작
 	@RequestMapping("noticeList.ad")
@@ -503,21 +511,41 @@ public class AdminController {
 		return "main";
 	}
 	
-	// 부서 목록
+	// 부서 목록 페이지로 이동
 	@RequestMapping("dList.ad")
 	public String departmentList(Model model) {
+		// 트리
+		ArrayList<Department> list = cService.getChatDepartmentList();
 		
-		ArrayList<Department> list = aService.selectDepList();
-		
+		// 부서 목록
+		ArrayList<Department> dList = aService.selectDepList();
 		// 부서 구성원 수	
 		ArrayList<Integer> countList = aService.depCountList();
-		
+					
 		if(list != null) {
-			model.addAttribute("list", list);
-			model.addAttribute("countList", countList);
-
+			JSONArray jArr = new JSONArray();
+			
+			for(Department d : list) {
+				JSONObject jo = new JSONObject();
+				jo.put("id", d.getdNo());
+				jo.put("pId", d.getdParent());
+				jo.put("name", d.getdName());
+				
+				jArr.add(jo);
+			}	
+			
+			if(dList != null) {
+				model.addAttribute("list",dList);
+				model.addAttribute("countList", countList);
+			} else {
+				throw new ChatException("부서 목록 조회에 실패하였습니다.");
+			}
+			
+		model.addAttribute("jsonArray", jArr);
+			
+		} else {
+			throw new ChatException("부서 트리 조회에 실패하였습니다.");
 		}
-		
 		return "adminDepartment";
 	}
 
@@ -606,6 +634,40 @@ public class AdminController {
 			}
 		}
 	}
+	
+	
+	// 부서 트리
+//	@ResponseBody
+//	@RequestMapping(value="deTree.ad", produces="application/json; charet=UTF-8")	
+//	public List<Code> findCodeByGroup(@RequestParam("codeGroupId") String codeGroupId) {
+	
+	@RequestMapping("deTree.ad")
+	public String findCodeByGroup(Model model) {
+		// 트리
+		ArrayList<Department> list = cService.getChatDepartmentList();
+				
+		if(list != null) {
+			JSONArray jArr = new JSONArray();
+					
+			for(Department d : list) {
+				JSONObject jo = new JSONObject();
+				jo.put("id", d.getdNo());
+				jo.put("pId", d.getdParent());
+				jo.put("name", d.getdName());
+				
+				jArr.add(jo);
+			}	
+					
+			model.addAttribute("jsonArray", jArr);	
+			} else {
+				throw new ChatException("부서 트리 조회에 실패하였습니다.");
+			}
+		return "departmentTree";
+	
+	}
+	
+	
+	
 	
 	
 }

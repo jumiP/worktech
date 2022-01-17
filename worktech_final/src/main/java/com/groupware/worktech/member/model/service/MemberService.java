@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.member.model.dao.MemberDAO;
 import com.groupware.worktech.member.model.vo.Member;
+import com.groupware.worktech.member.model.vo.Profile;
 
 @Service("mService")
 public class MemberService {
@@ -89,6 +90,21 @@ public class MemberService {
 	// 비밀번호 변경
 	public int updatePassword(HashMap<String, String> map) {
 		return mDAO.updatePassword(sqlSession, map);
+	}
+
+	// 내 정보 수정 : 마이페이지 프로필 이미지 저장
+	public int updateProfile(Profile p) {
+		return mDAO.updateProfile(sqlSession, p);
+	}
+
+	// 내 정보 수정
+	public int updateMemberInfo(Member m) {
+		return mDAO.updateMemberInfo(sqlSession, m);
+	}
+
+	// profile 가져오기
+	public Profile selectProfile(String mNo) {
+		return mDAO.selectProfile(sqlSession, mNo);
 	}
 
 

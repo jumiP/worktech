@@ -134,6 +134,7 @@
 	                                <div class="form-group">
 	                                    <label>글 제목</label>
 	                                    <input type="text" class="form-control" name="bTitle" value="${ b.bTitle }">
+	                                    <input type="hidden" name="flag" id="flag" value="0">
 	                                </div>
 	                                <div class="form-group half-col left-item">
 	                                    <label>작성자</label>
@@ -229,6 +230,8 @@
         $(document).on("click", "i[name='fileDelete']", function() {
 //         	var fNo = $(this).parent().find('input').val();
         	var fullDiv = $(this).parent();
+        	
+        	$('#flag').val('1');
         	
         	fullDiv.html('');
         	

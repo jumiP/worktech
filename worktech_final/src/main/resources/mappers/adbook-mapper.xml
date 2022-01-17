@@ -16,7 +16,8 @@
 	</select>
 	
 	<select id="selectAdbookList" resultMap="adbookResultSet">
-		select m_no, email, name, job_grade, phone, d_no, d_name, m_hired, p_url
+		select m_no, email, name, job_grade, phone, d_no, d_name, m_hired, 
+			   profile_no, p_url, p_name, p_rname
 		from member
 			 join department using(d_no)
 			 left join profile using(m_no)
@@ -39,7 +40,15 @@
 		<result column="D_NO" property="dNo"/>
 		<result column="D_NAME" property="dName"/>
 		<result column="M_HIRED" property="hireDate"/>
+		<association property="profile" resultMap="profileResultSet"/>
+	</resultMap>
+	
+	<resultMap type="Profile" id="profileResultSet">
+		<id column="PROFILE_NO" property="pNo"/>
 		<result column="P_URL" property="pUrl"/>
+		<result column="P_NAME" property="pName"/>
+		<result column="P_RNAME" property="pReName"/>
+		<result column="M_NO" property="mNo"/>
 	</resultMap>
 	
 	<select id="getSearchAdbookListCount" resultType="_int">

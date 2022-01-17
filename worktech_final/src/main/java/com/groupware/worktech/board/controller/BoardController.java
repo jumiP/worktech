@@ -65,7 +65,7 @@ public class BoardController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Board> list = bService.selectCommonList(pi, category);
-//		
+		
 		if(list != null) {
 			model.addAttribute("pi", pi);
 			model.addAttribute("list", list);
@@ -213,7 +213,6 @@ public class BoardController {
 						throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
 					}
 				}
-
 			}
 		} else if (flag == 1) {
 			for (int i = 0; i < oldFileList.size(); i++) {
@@ -265,7 +264,6 @@ public class BoardController {
 			throw new BoardException("게시글 수정에 실패하였습니다.");
 		}
 	}
-
 	
 	public void deleteFile(String fRname, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
@@ -293,7 +291,6 @@ public class BoardController {
 				}
 			}
 		}
-		
 		
 		int result = bService.deleteNotice(bNo);
 		
@@ -339,7 +336,6 @@ public class BoardController {
 		}
 		
 		return "commonBoardList";
-		
 	}
 	
 	@RequestMapping("addCommonReply.bo")

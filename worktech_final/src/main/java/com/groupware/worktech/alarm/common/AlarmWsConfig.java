@@ -23,10 +23,5 @@ public class AlarmWsConfig implements WebSocketConfigurer{
 		.withSockJS();
 	}
 
-//	@Bean
-//	public WebSocketHandler alarmHandler() {
-//		return new AlarmHandler();
-//	}
-	
 }
 

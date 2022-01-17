@@ -1,11 +1,17 @@
 package com.groupware.worktech.member.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +26,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.groupware.worktech.admin.model.service.AdminService;
 import com.groupware.worktech.admin.model.vo.Department;
+import com.groupware.worktech.board.model.vo.BoardFile;
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.common.Pagination;
 import com.groupware.worktech.member.model.exception.MemberException;
 import com.groupware.worktech.member.model.service.MemberService;
 import com.groupware.worktech.member.model.vo.Member;
+import com.groupware.worktech.member.model.vo.Profile;
 
 @SessionAttributes("loginUser")
 @Controller
@@ -49,16 +59,18 @@ public class MemberController {
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
 	public String login(Member m, Model model) {	
 		
-		System.out.println(bcrypt.encode(m.getPwd()));
+//		System.out.println(bcrypt.encode(m.getPwd()));
 		
 		Member loginMember = mService.memberLogin(m);
-		
+
 		if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
 			model.addAttribute("loginUser", loginMember);
-			logger.info(loginMember.getmNo());
+//			logger.info(loginMember.getmNo());
 			return "redirect:home.do";
 		} else {
 			throw new MemberException("로그인에 실패하였습니다.");
+			
+			
 		}
 	}
 	
@@ -313,33 +325,293 @@ public class MemberController {
 		
 		int result = mService.deleteMember(mNo);
 		
-//		if( result > 0 ) {
-//			
-//		} else {
-//			throw new MemberException("사원 삭제를 실패하였습니다.");
-//		}
-		
-//		return null;
 	}
 
 	
 	// 사원 삭제(선택)
 	@RequestMapping("selectDelete.me")
 	@ResponseBody
-	public void deleteSelectMember(HttpServletRequest request, 
-									@RequestParam(value="valueArr", required=false) String[] valueArr ) {
-		
-//		String[] ajaxMsg = request.getParameterValues("valueArr");
-//		int size = ajaxMsg.length; // NullPointerException
-//		for(int i = 0; i < size; i++) {
-//			mService.deleteSelectMember(ajaxMsg[i]);
-//		}
-		
-		
-//		int size = valueArr.length;
+	public void deleteSelectMember(@RequestParam(value="valueArr") String valueArr ) {
+
+		// valueArr값 받아온것 확인
 		System.out.println(valueArr);
-		
+		// 여러개의 값들이 하나의 String으로 들어옴 → split을 이용해서 나누기
+		String[] selectList = valueArr.split(" ");
+		for(int i = 0; i < selectList.length; i++) {
+			int result = mService.deleteSelectMember(selectList[i]);
+		}
+
 	}
 
+	
+	// 사원정보 상세보기 페이지로 이동
+	@RequestMapping("mdetail.me")
+	public String detailMemView(@RequestParam("mNo") String mNo, @RequestParam("page") int page, Model model) {
+		
+		Member m = mService.selectMember(mNo);
+		
+		if(m != null) {
+			model.addAttribute("member", m);
+			model.addAttribute("page", page);
+		} else {
+			throw new MemberException("사원 정보 상세보기에 실패하였습니다.");
+		}
+		
+		return "adminMemView";
+	}
+	
+	// 사원정보 상세보기 페이지에서 사원 삭제
+	@RequestMapping("delete.me")
+	public String deleteDetailMember(@RequestParam("mNo" ) String mNo) {
+		
+//		System.out.println(mNo);
+		
+		int result = mService.deleteDetailMem(mNo);
+		
+		if(result > 0) {
+			return "redirect:mList.me";
+		} else {
+			throw new MemberException("사원 삭제에 실패하였습니다.");
+		}
 
+	}
+	
+	// 관리자 사원 정보 수정 페이지로 이동
+	@RequestMapping("adminUpdateMem.me")
+	public String adminUpdateMemview(@RequestParam("mNo") String mNo, @RequestParam("page") int page, Model model){
+		Member m = mService.selectMember(mNo);
+		model.addAttribute("member", m).addAttribute("page", page);
+		
+		// 부서 목록
+		ArrayList<Department> list = aService.selectDepList();
+		if(list != null) {
+			model.addAttribute("list", list);
+		}
+		
+		return "adminUpdateMem";
+	}
+	
+	
+	// 관리자 : 사원 정보 수정 
+	@RequestMapping("AdminUdateMem.me")
+	public String adminUpdateMem(@ModelAttribute Member m, @RequestParam("page") int page, Model model) {
+		int result = mService.adminUpdateMem(m);
+		
+		if(result > 0) {
+			model.addAttribute("page", page);
+		} else {
+			throw new MemberException("사원 정보 수정에 실패하였습니다.");
+		}
+		return "redirect:mdetail.me?mNo=" + m.getmNo();
+	}
+	
+	
+	// 관리자 : 사원 비밀번호 수정페이지로 이동
+	@RequestMapping("updateMemPwdView.me")
+	public String updateMemberPwdView(@ModelAttribute Member m) {
+		return "adminUpdateMemPwd";
+	}
+	
+	
+	// 관리자 비밀번호 페이지로 이동
+	@RequestMapping("adminPwdView.me")
+	public String adminPwdView(@RequestParam("adminMNo") String mNo, @RequestParam("adminName") String name, Model model) {
+//		System.out.println(mNo);
+//		System.out.println(name);
+		
+		model.addAttribute("mNo", mNo);
+		model.addAttribute("name", name);
+		return "adminUpdatePwd";
+	}
+	
+	// 관리자 비밀번호 변경
+	@RequestMapping("adminPwd.me")
+	public String adminPwd(@RequestParam("pwd") String oldPwd, @RequestParam("newPwd") String Pwd, Model model) {
+		// 비밀번호 받아오기
+//		System.out.println(oldPwd); // 기존 비밀번호
+//		System.out.println(Pwd); // 새로운 비밀번호 리스트
+		String[] pwdList = Pwd.split(",");
+		String newPwd = pwdList[1]; // 새로운 비밀번호
+		
+		// 아이디 받아오기 
+		Member m = (Member)model.getAttribute("loginUser");
+//		System.out.println(m); 
+		Member dbMember = mService.memberLogin(m);
+		
+		int result = 0;
+		
+		if(bcrypt.matches(oldPwd, dbMember.getPwd())) {
+			HashMap<String, String> map = new HashMap<String, String> ();
+			map.put("mNo", m.getmNo());
+			map.put("newPwd", bcrypt.encode(newPwd));
+			
+			result = mService.updatePassword(map);
+		}
+		
+		if(result > 0) {
+			return "redirect:mList.me";
+		} else {
+			throw new MemberException("비밀번호 수정에 실패하였습니다.");
+		}
+	}
+
+	// 마이페이지로 이동
+	@RequestMapping("myPage.me")
+	public String myPageView() {
+		return "mypage";
+	}
+	
+	// 마이페이지 : 비밀번호 변경 페이지로 이동
+	@RequestMapping("updatePwdView.me")
+	public String myPagePwdView() {
+		return "updatePwd";
+	}
+
+	
+	// 관리자 비밀번호 변경
+	@RequestMapping("updatePwd.me")
+	public String memPwd(@RequestParam("pwd") String oldPwd, @RequestParam("newPwd") String Pwd, Model model) {
+		// 비밀번호 받아오기
+//		System.out.println(oldPwd); // 기존 비밀번호
+//		System.out.println(Pwd); // 새로운 비밀번호 리스트
+		String[] pwdList = Pwd.split(",");
+		String newPwd = pwdList[1]; // 새로운 비밀번호
+			
+		// 아이디 받아오기 
+		Member m = (Member)model.getAttribute("loginUser");
+//		System.out.println(m); 
+		Member dbMember = mService.memberLogin(m);
+		
+		int result = 0;
+			
+		if(bcrypt.matches(oldPwd, dbMember.getPwd())) {
+			HashMap<String, String> map = new HashMap<String, String> ();
+			map.put("mNo", m.getmNo());
+			map.put("newPwd", bcrypt.encode(newPwd));
+			
+			result = mService.updatePassword(map);
+		}
+			
+		if(result > 0) {
+			return "redirect:myPage.me";
+		} else {
+			throw new MemberException("비밀번호 수정에 실패하였습니다.");
+		}
+	}
+	
+	// 내정보 수정 페이지로 이동
+	@RequestMapping("detailMyPage.me")
+	public String updateMyPageView() {
+		return "updateMypage";
+	}
+	
+	
+	// 내 정보 수정
+	@RequestMapping("mUpdate.me")
+	public String updateMember(@ModelAttribute Member m, Model model,
+								@RequestParam("post") String post, 
+								@RequestParam("address1") String address1, @RequestParam("address2") String address2, @RequestParam("address3") String address3, 
+								@RequestParam("year") int year, @RequestParam("month") int month, @RequestParam("date") int date, 
+								@RequestParam("proImg") MultipartFile proImg, MultipartHttpServletRequest request) {
+		
+		/*------------------------------ 주소 ------------------------------*/
+		m.setAddress(post + "/" + address1 + "/" + address2 + "/" + address3);
+		
+		/*------------------------------ 생년월일 ------------------------------*/
+		Date birthDay = new Date(new GregorianCalendar(year, month-1, date).getTimeInMillis());
+		m.setBirthDay(birthDay);
+		
+		/*------------------------------ 프로필 사진------------------------------*/
+		Profile profile = new Profile();
+		
+		if( proImg != null && !proImg.isEmpty() ) {
+		
+			HashMap<String, String> profileInfo = saveFile(proImg, request); 
+			
+			if(profileInfo.get("renameFileName") != null) {
+				profile.setpName(proImg.getOriginalFilename());
+				profile.setpReName(profileInfo.get("renameFileName"));
+				profile.setpUrl(profileInfo.get("renamePath"));
+				profile.setmNo(m.getmNo());
+				
+				// 프로필 insert 및 update
+				int result = mService.updateProfile(profile);
+				if(result > 0) {
+//					System.out.println("프로필 사진 등록 성공");
+				} else {
+					throw new MemberException("프로필 사진 등록에 실패하였습니다.");
+				}
+			}
+			
+		}
+		// 프로필 사진 경로
+		m.setProfile(profile);
+		
+		// 수정된 내용 확인
+//		System.out.println(profile);
+//		System.out.println(m);
+		
+		// 수정된 내용 저장
+		int result  = mService.updateMemberInfo(m);
+		if(result>0) {
+			model.addAttribute("loginUser", m);
+			return "redirect:myPage.me";
+		} else {
+			throw new MemberException("내 정보 수정에 실패하였습니다.");
+		}
+
+	}
+	
+	
+	public HashMap<String, String> saveFile(MultipartFile file, HttpServletRequest request) {
+		// 저장경로 : profileUploadFiles
+		String root = request.getSession().getServletContext().getRealPath("resources"); // 작은 resources
+		System.out.println(root);
+		String savePath = root + "/profileUploadFiles";
+		
+		File folder = new File(savePath);
+		if(!folder.exists()) {
+			folder.mkdirs(); 
+		}
+		
+		// 이름 변경
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		String pName = file.getOriginalFilename();
+		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + "." + pName.substring(pName.lastIndexOf(".") + 1); 
+		
+		String renamePath = folder + "/" + renameFileName;
+		try {
+			file.transferTo(new File(renamePath));
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		HashMap<String, String> profileInfo = new HashMap<String, String>();
+		profileInfo.put("renameFileName", renameFileName);
+		profileInfo.put("renamePath", renamePath);
+		
+		return profileInfo;
+		
+	}
+	
+	
+	// 임시비밀번호 발급? 페이지로 이동?
+		@RequestMapping("findPwd.me")
+		public String findPwdView() {
+			return "findPwd";
+		}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

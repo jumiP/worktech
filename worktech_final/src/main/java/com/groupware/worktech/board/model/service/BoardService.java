@@ -74,7 +74,7 @@ public class BoardService {
 	public int updateNotice(Board b) {
 		int result = bDAO.updateNotice(sqlSession, b);
 		
-		if(result > 0 && !b.getFileList().isEmpty()) {
+		if(result > 0 && b.getFileList() != null) {
 			for(int i = 0; i < b.getFileList().size(); i++) {
 				result += bDAO.updateNoticeFile(sqlSession, b.getFileList().get(i));
 			}
@@ -153,10 +153,6 @@ public class BoardService {
 		return result;
 
 	}
-
-	public ArrayList<Board> selectCommonList(PageInfo pi) {
-		return bDAO.selectCommonList(sqlSession, pi);
-	}
 	
 	public ArrayList<Board> selectCommonList(PageInfo pi, Integer category) {
 		return bDAO.selectCommonList(sqlSession, pi, category);
@@ -184,7 +180,7 @@ public class BoardService {
 	public int updateCommonBoard(Board b) {
 		int result = bDAO.updateCommonBoard(sqlSession, b);
 		
-		if(result > 0 && !b.getFileList().isEmpty()) {
+		if(result > 0 && b.getFileList() != null) {
 			for(int i = 0; i < b.getFileList().size(); i++) {
 				result += bDAO.updateNoticeFile(sqlSession, b.getFileList().get(i));
 			}
@@ -201,23 +197,25 @@ public class BoardService {
 		return bDAO.selectCommonSearchList(sqlSession, searchListMap);
 	}
 
+	public int insertCommonReply(Reply r) {
+		return bDAO.insertCommonReply(sqlSession, r);
+	}
+
+	public ArrayList<Reply> selectCommonReplyList(int bNo) {
+		return bDAO.selectCommonReplyList(sqlSession, bNo);
+	}
+
+	public int deleteCommonReply(int rNo) {
+		return bDAO.deleteCommonReply(sqlSession, rNo);
+	}
+
+	public ArrayList<Board> selectCommonTopList() {
+		return bDAO.selectCommonTopList(sqlSession);
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public ArrayList<Board> selectNoticeRecentList() {
+		return bDAO.selectNoticeRecentList(sqlSession);
+	}
 	
 	
 	
@@ -309,17 +307,8 @@ public class BoardService {
 	}
 		
 	
-	public int insertCommonReply(Reply r) {
-		return bDAO.insertCommonReply(sqlSession, r);
-	}
-
-	public ArrayList<Reply> selectCommonReplyList(int bNo) {
-		return bDAO.selectCommonReplyList(sqlSession, bNo);
-	}
-
-	public int deleteCommonReply(int rNo) {
-		return bDAO.deleteCommonReply(sqlSession, rNo);
-	}
+	
+	
 
 
 

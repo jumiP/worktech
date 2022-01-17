@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="chatMapper">
 	<select id="selectChatList" resultMap="chatRoomResultSet">
-		SELECT CHATROOM_NO, CHAT_OPEN, CHAT_TITLE, CHAT_TYPE, P_URL, MSG_CONTENT, SEND_TIME, CHAT_LIST_NO, CHAT_MEMBER, CHAT_STATUS, D_NAME, NAME, JOB_GRADE
+		SELECT CHATROOM_NO, CHAT_OPEN, CHAT_TITLE, CHAT_TYPE, P_URL, MSG_CONTENT, SEND_TIME, CHAT_LIST_NO, CHAT_MEMBER, CHAT_STATUS, D_NAME, NAME, JOB_GRADE, P.*
 		FROM CHATROOM
      		 LEFT JOIN CHAT_LIST USING(CHATROOM_NO)
              LEFT JOIN MEMBER M ON(CHAT_MEMBER = M.M_NO)
@@ -35,9 +35,17 @@
 		<result column="CHATROOM_NO" property="chatRoomNo"/>
 		<result column="CHAT_MEMBER" property="gatheringMember"/>
 		<result column="NAME" property="gatheringMemberName"/>
-		<result column="P_URL" property="profileUrl"/>
 		<result column="JOB_GRADE" property="gatheringMemberJobGrade"/>
 		<result column="D_NAME" property="gatheringMemberDName"/>
+		<collection property="profile" resultMap="profileResultSet" javaType="Profile"/>
+	</resultMap>
+	
+	<resultMap type="Profile" id="profileResultSet">
+		<id column="PROFILE_NO" property="pNo"/>
+		<result column="P_URL" property="pUrl"/>
+		<result column="P_NAME" property="pName"/>
+		<result column="P_RNAME" property="pReName"/>
+		<result column="M_NO" property="mNo"/>
 	</resultMap>
 	
 	<select id="getChatDepartmentList" resultMap="departmentResultSet">
@@ -94,7 +102,8 @@
 	</insert>
 	
 	<select id="selectCreateChatRoom" resultMap="chatRoomResultSet2">
-		select chatroom_no, chat_open, chat_title, chat_type, chat_status, chat_list_no, chat_member, name || ' ' || job_grade as chat_member_name, p_url
+		select chatroom_no, chat_open, chat_title, chat_type, chat_status, chat_list_no, chat_member, name || ' ' || job_grade as chat_member_name, 
+			   profile_no, p_url, p_name, p_rname
 		from chatroom left join
 		     chat_list using(chatroom_no) join
 		     member on (chat_member = m_no) left join
@@ -119,7 +128,7 @@
 		<result column="CHATROOM_NO" property="chatRoomNo"/>
 		<result column="CHAT_MEMBER" property="gatheringMember"/>
 		<result column="chat_member_name" property="gatheringMemberName"/>
-		<result column="P_URL" property="profileUrl"/>
+		<collection property="profile" resultMap="profileResultSet" javaType="Profile"/>
 	</resultMap>
 	
 	<select id="selectMessageList" resultMap="chatMessageResultSet">
@@ -173,7 +182,8 @@
 	</insert>
 	
 	<select id="getGatheringMemberList" resultMap="gatheringMemberResultSet">
-		select chat_list_no, chatroom_no, chat_member, name as chat_member_name, p_url, d_name, name, job_grade
+		select chat_list_no, chatroom_no, chat_member, name as chat_member_name, d_name, name, job_grade,
+				profile_no, p_url, p_name, p_rname
 		from chat_list join
 			 member on (m_no = chat_member) left join
 			 profile using(m_no) left join
@@ -196,8 +206,8 @@
 	</resultMap>
 	
 	<select id="getMessageList" resultMap="chatMessageResultSet2">
-		select msg_id, msg_content, send_time, chatroom_no, chat_member, name as chat_member_name, p_url,
-			   d_name || ' ' || name || ' ' || job_grade as send_member_full_name
+		select msg_id, msg_content, send_time, chatroom_no, chat_member, name as chat_member_name, p_rname,
+			   d_name || ' ' || name || ' ' || job_grade as send_member_full_name, read_yn
 		from chat_msg join
 		     member on (m_no = chat_member) left join
 			 profile using(m_no) left join
@@ -212,9 +222,10 @@
 		<result column="SEND_TIME" property="sendTime"/>
 		<result column="CHATROOM_NO" property="chatRoomNo"/>
 		<result column="CHAT_MEMBER" property="sendMember"/>
+		<result column="READ_YN" property="readYN"/>
 		<result column="chat_member_name" property="sendMemberName"/>
 		<result column="send_member_full_name" property="sendMemberFullName"/>
-		<result column="p_url" property="profileUrl"/>
+		<result column="p_rname" property="pReName"/>
 	</resultMap>
 	
 	<insert id="insertMessage">
@@ -241,4 +252,45 @@
 		update chatroom set chat_status = 'N'
 		where chatroom_no = #{chatRoomNo}
 	</update>
+	
+	<select id="getGatheringMNoList" resultType="string">
+		select chat_member
+		from chat_list
+		where chatroom_no = #{chatRoomNo}
+	</select>
+	
+	<select id="selectInviteDeptMember" resultMap="memberResultSet">
+		select m_no, name, job_grade, d_name
+		from member
+			 join department using(d_no)
+		where m_no not in
+			<foreach item="item" index="index" collection="mNoList" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			  and (d_no = #{dNo}
+			  or d_no in (select d_no
+			  			  from department
+			  			  start with d_parent = #{dNo}
+                          connect by prior d_no = d_parent))
+		order by name
+	</select>
+	
+	<insert id="insertMoreMember">
+		insert into chat_list
+		values(SEQ_LIST.NEXTVAL, #{chatRoomNo}, #{mNo}, DEFAULT)
+	</insert>
+	
+	<select id="selectNames" resultType="string">
+		select name
+		from member
+		where m_no in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+				#{item}
+		</foreach>
+	</select>
+	
+	<insert id="insertSystemMessage">
+		insert into chat_msg
+		values(SEQ_MSG.NEXTVAL, #{msgContent}, sysdate, #{readYN}, #{chatRoomNo}, #{sendMember})
+	</insert>
 </mapper>

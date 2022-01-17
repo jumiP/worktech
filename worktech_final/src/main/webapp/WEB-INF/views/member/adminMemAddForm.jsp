@@ -90,11 +90,14 @@
 				                      </select>
 				                    </div>
 				                    
-				                    <!-- selectbox에 required가 안먹힌 이유 : disabled를 사용했기때문에 -->
+				                    <div class="form-group">
+				                      <label>사내 Email</label>
+				                      <input type="email" class="form-control" id="email" name="email" required>
+				                    </div>
 				                    
 				                    <div class="form-group">
-				                      <label>Email</label>
-				                      <input type="email" class="form-control" id="email" name="email" required>
+				                      <label>개인 Email</label>
+				                      <input type="email" class="form-control" id="mEmail" name="mEmail" required>
 				                    </div>
 	
 				                  <div class="card-footer text-right">

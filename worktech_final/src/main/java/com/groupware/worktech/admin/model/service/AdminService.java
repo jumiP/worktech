@@ -11,6 +11,7 @@ import com.groupware.worktech.admin.model.dao.AdminDAO;
 import com.groupware.worktech.admin.model.vo.Department;
 import com.groupware.worktech.admin.model.vo.RvProduct;
 import com.groupware.worktech.admin.model.vo.RvRange;
+import com.groupware.worktech.board.model.vo.Board;
 import com.groupware.worktech.common.PageInfo;
 
 @Service("aService")
@@ -110,5 +111,5 @@ public class AdminService {
 	public int updateRvProduct(RvProduct rp) {
 		return aDAO.updateRvProduct(sqlSession, rp);
 	}
-	
+
 }

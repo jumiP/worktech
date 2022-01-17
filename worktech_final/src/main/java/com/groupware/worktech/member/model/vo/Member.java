@@ -18,6 +18,7 @@ public class Member {
 	private Date hireDate;
 	private String pUrl; // 프로필 사진 경로
 	private String mStatus;
+	private String mEmail;
 	
 	public Member() {}
 

@@ -132,33 +132,6 @@
                                 </div>
                             </div>
 							<div class="dropdown-list-content dropdown-list-icons" id="alarmListDiv">
-<!-- 								<a href="#" class="dropdown-item dropdown-item-unread"> -->
-<!-- 									<div class="dropdown-item-icon bg-primary text-white"> -->
-<!-- 										<i class="far fa-calendar-alt alarmIcon"></i> -->
-<!-- 									</div> -->
-<!-- 									<div class="dropdown-item-desc"> -->
-<!-- 										캘린더 알림 -->
-<!-- 										<div class="time text-primary">2 Min Ago</div> -->
-<!-- 									</div> -->
-<!-- 								</a> -->
-<!-- 								<a href="#" class="dropdown-item"> -->
-<!-- 									<div class="dropdown-item-icon bg-info text-white"> -->
-<!-- 										<i class="fas fa-clipboard-list alarmIcon"></i> -->
-<!-- 									</div> -->
-<!-- 									<div class="dropdown-item-desc"> -->
-<!-- 										게시판 알림 -->
-<!-- 										<div class="time">10 Hours Ago</div> -->
-<!-- 									</div> -->
-<!-- 								</a> -->
-<!-- 								<a href="#" class="dropdown-item"> -->
-<!-- 									<div class="dropdown-item-icon bg-success text-white"> -->
-<!-- 										<i class="fas fa-user-friends alarmIcon"></i> -->
-<!-- 									</div> -->
-<!-- 									<div class="dropdown-item-desc"> -->
-<!-- 										전자결재 알림 -->
-<!-- 										<div class="time">12 Hours Ago</div> -->
-<!-- 									</div> -->
-<!-- 								</a> -->
 							</div>
 							<div class="dropdown-footer text-center">
                             </div>
@@ -166,13 +139,12 @@
                     </li>
                     <li class="dropdown">
                         <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                            <c:if test="${ loginUser.profile.pReName == null }">
-                            	<img alt="image" src="resources/dist/assets/img/avatar/avatar-4.png" width="30" height="30" class="rounded-circle mr-1">
+                            <c:if test="${ loginUser.profile.pReName != null}">
+	                            <img alt="image" src="resources/profileUploadFiles/${ loginUser.profile.pReName }" width="30" height="30" class="rounded-circle mr-1">
                             </c:if>
-                            <c:if test="${ loginUser.profile.pReName != null }">
-                            	<img alt="image" src="resources/profileUploadFiles/${ loginUser.profile.pReName }" width="30" height="30" class="rounded-circle mr-1">
+                            <c:if test="${ loginUser.profile.pReName == null}">
+	                            <img alt="image" src="resources/dist/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
                             </c:if>
-                            
                             <div class="d-sm-none d-lg-inline-block">${ loginUser.name } ${ loginUser.jobGrade }</div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">

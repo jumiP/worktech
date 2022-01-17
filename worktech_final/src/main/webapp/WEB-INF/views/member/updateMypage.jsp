@@ -103,9 +103,14 @@
 			                    </div>
 			                    
 			                    <div class="form-group">
-			                      <label>Email</label>
+			                      <label>사내 Email</label>
 			                      <!-- 사내 이메일 : 수정 불가 -->
 			                      <input type="email" class="form-control" id="email" name="email" readonly style="background : white;" value="${ loginUser.email }">
+			                    </div>
+			                    
+			                     <div class="form-group">
+			                      <label>개인 Email</label>
+			                      <input type="email" class="form-control" id="mEmail" name="mEmail"  style="background : white;" value="${ loginUser.mEmail }">
 			                    </div>
 			                       
 			                    

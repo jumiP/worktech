@@ -242,7 +242,17 @@
 		                    <input type="text" id="msg" class="form-control" placeholder="더이상 메시지를 보낼 수 없는 채팅방입니다." readonly="readonly">
 	                    </c:if>
 	                    <c:if test="${ fn:length(memberList) > 1 }">
-	                    	<input type="text" id="msg" class="form-control" onkeyup="enterkey()" placeholder="메시지를 입력하세요">
+		                    <c:if test="${ cr.chatType == 0 }">
+		                    	<input type="text" id="msg" class="form-control" onkeyup="enterkey()" placeholder="메시지를 입력하세요">
+		                    </c:if>
+		                    <c:if test="${ cr.chatType == 1 }">
+			                    <c:if test="${ cr.chatOpenMem != loginUser.mNo }">
+			                    	<input type="text" id="msg" class="form-control" placeholder="해당 채팅방은 개설자만 메시지 전송이 가능합니다" readonly="readonly">
+			                    </c:if>
+			                    <c:if test="${ cr.chatOpenMem == loginUser.mNo }">
+			                    	<input type="text" id="msg" class="form-control" onkeyup="enterkey()" placeholder="메시지를 입력하세요">
+			                    </c:if>
+		                    </c:if>
 	                    </c:if>
 	                    <button class="btn btn-primary" id="button-send">
 	                        <i class="far fa-paper-plane"></i>
@@ -328,45 +338,48 @@
 			var readYN = msgData.readYN;
 			
 			// 받은 메시지 추가
+			// 동일한 채팅방일 경우
+			if(chatRoomNo == "${ cr.chatRoomNo }"){
+				
+				// 보낸 사람이 내가 아닐 경우에만 추가해야 함
+				if(sendMember != "${ loginUser.mNo }"){
+					var chatMsgBody = $('#chatMsgBody');
+			        var innerDiv = '';
+	
+			        if(readYN != 'Y'){
+				        // 일반 메시지
+						innerDiv += '<div class="chat-item chat-left">'
+									+ '<div class="senderName">' + sendMemberFullName + '</div>';
+				        
+				        if(pReName != '' && pReName != null ){
+				        	innerDiv += '<img src="resources/profileUploadFiles/' + pReName + '" width="50" height="50">';	
+				        } else {
+				        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
+				        }
+				        
+				        // 현재 시간 구하기
+				        var today = new Date();   
 			
-			// 보낸 사람이 내가 아닐 경우에만 추가해야 함
-			if(sendMember != "${ loginUser.mNo }"){
-				var chatMsgBody = $('#chatMsgBody');
-		        var innerDiv = '';
-
-		        if(readYN != 'Y'){
-			        // 일반 메시지
-					innerDiv += '<div class="chat-item chat-left">'
-								+ '<div class="senderName">' + sendMemberFullName + '</div>';
-			        
-			        if(pReName != '' && pReName != null ){
-			        	innerDiv += '<img src="resources/profileUploadFiles/"' + pReName + '" width="50" height="50">';	
-			        } else {
-			        	innerDiv += '<img src="resources/dist/assets/img/avatar/avatar-1.png">';
-			        }
-			        
-			        // 현재 시간 구하기
-			        var today = new Date();   
-		
-			        var hours = today.getHours(); // 시
-			        var minutes = today.getMinutes();  // 분
-			        
-			        var now = hours + ":" + minutes;
-			        
-			        innerDiv += '<div class="chat-details">'
-			        			+ '<div class="chat-text">' + msgContent + '</div>'
-			        			+ '<div class="chat-time">' + now + '</div></div></div>';
-			        
-			        chatMsgBody.append(innerDiv);
-				} else {
-					// 시스템 메시지
-					innerDiv += '<div class="sysMsg">' + msgContent + '</div>';
-				    chatMsgBody.append(innerDiv);
+				        var hours = today.getHours(); // 시
+				        var minutes = today.getMinutes();  // 분
+				        
+				        var now = hours + ":" + minutes;
+				        
+				        innerDiv += '<div class="chat-details">'
+				        			+ '<div class="chat-text">' + msgContent + '</div>'
+				        			+ '<div class="chat-time">' + now + '</div></div></div>';
+				        
+				        chatMsgBody.append(innerDiv);
+					} else {
+						// 시스템 메시지
+						innerDiv += '<div class="sysMsg">' + msgContent + '</div>';
+					    chatMsgBody.append(innerDiv);
+					}
 				}
+				
+				updateScroll();
+				updateTime();
 			}
-			
-			updateScroll();
-			updateTime();
 		}
 		
 		//채팅창에서 나갔을 때

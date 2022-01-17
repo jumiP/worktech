@@ -141,7 +141,7 @@ public class BoardService {
 	
 	
 	
-	
+	@Transactional
 	public int insertCommonBoard(Board b) {
 		int result = bDAO.insertCommonBoard(sqlSession, b);
 		
@@ -162,6 +162,7 @@ public class BoardService {
 		return bDAO.getCategoryListCount(sqlSession, category);
 	}
 
+	@Transactional
 	public Board selectCommonBoard(int bNo, String upd) {
 		Board b = null;
 		if(upd != null && upd.equals("Y")) {
@@ -177,6 +178,7 @@ public class BoardService {
 		return b;
 	}
 
+	@Transactional
 	public int updateCommonBoard(Board b) {
 		int result = bDAO.updateCommonBoard(sqlSession, b);
 		

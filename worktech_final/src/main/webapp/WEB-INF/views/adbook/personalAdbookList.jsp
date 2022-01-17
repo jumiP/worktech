@@ -246,7 +246,6 @@
 				var checkArr = [];
 				$('input[name=pAdCheckbox]:checked').each(function(i){
 					checkArr.push($(this).val());
-					
 				});
 
 				location.href="pAdbookDelete.ab?checked=" + checkArr;

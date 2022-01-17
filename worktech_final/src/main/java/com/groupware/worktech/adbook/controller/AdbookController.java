@@ -32,7 +32,6 @@ public class AdbookController {
 							 @RequestParam(value="selectCategory", required=false) String selectCategory, 
 							 @RequestParam(value="selectValue", required=false) String selectValue,
 							 Model model) {
-		// 사내 주소록 페이징 처리
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = page;
@@ -62,7 +61,6 @@ public class AdbookController {
 	
 	@RequestMapping("searchAdbook.ab")
 	public String searchAdbook(@RequestParam("searchValue") String searchValue, @RequestParam(value="page", required=false) Integer page, Model model) {
-		// 사내 주소록 검색 결과 페이징 처리
 		int currentPage = 1;
 		
 		if(page != null) {

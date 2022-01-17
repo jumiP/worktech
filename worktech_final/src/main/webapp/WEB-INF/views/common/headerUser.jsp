@@ -343,7 +343,7 @@
 				console.log('info: connection onmessage');
 				var data = evt.data;
 				
-				const arr = data.split(",");
+				var arr = data.split(",");
 				
 				var today = new Date();
 				var month = ('0' + (today.getMonth() + 1)).slice(-2);
@@ -366,6 +366,7 @@
 				
 				$($a).prependTo('#alarmListDiv');
 				
+				// 화면 우측 하단 알림 메세지 영역
 				$aContainer = $('<div class="aContainer">');
 				$iconDiv = $('<div class="dropdown-item-icon bg-primary text-white iconDiv aItem">').html('<i class="fas fa-bell alarmIcon aItem"></i>');
 				$msg = $('<div class="aItem">').html('새로운 알림이 도착했습니다.');

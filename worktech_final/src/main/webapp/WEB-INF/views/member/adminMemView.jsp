@@ -85,7 +85,7 @@
 				                    
 				                    <div class="form-group">
 				                      <label>직급</label>
-				                      <input type="text" id="job_grade" name="job_grade" class="form-control" value="대리" readonly style="background : white;" value="${ member.jobGrade }">
+				                      <input type="text" id="job_grade" name="job_grade" class="form-control" readonly style="background : white;" value="${ member.jobGrade }">
 				                    </div>
 				                    
 				                    <div class="form-group">

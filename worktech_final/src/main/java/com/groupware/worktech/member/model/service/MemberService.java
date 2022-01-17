@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.member.model.dao.MemberDAO;
 import com.groupware.worktech.member.model.vo.Member;
+import com.groupware.worktech.member.model.vo.Profile;
 
 @Service("mService")
 public class MemberService {
@@ -74,6 +75,36 @@ public class MemberService {
 	// 사원 상세보기
 	public Member selectMember(String mNo) {
 		return mDAO.selectMember(sqlSession, mNo);
+	}
+
+	// 사원정보 상세보기 페이지에서 사원 삭제
+	public int deleteDetailMem(String mNo) {
+		return mDAO.deleteDetailMem(sqlSession, mNo);
+	}
+
+	// 관리자 : 사원 정보 수정 
+	public int adminUpdateMem(Member m) {
+		return mDAO.adminUpdateMem(sqlSession, m);
+	}
+
+	// 비밀번호 변경
+	public int updatePassword(HashMap<String, String> map) {
+		return mDAO.updatePassword(sqlSession, map);
+	}
+
+	// 내 정보 수정 : 마이페이지 프로필 이미지 저장
+	public int updateProfile(Profile p) {
+		return mDAO.updateProfile(sqlSession, p);
+	}
+
+	// 내 정보 수정
+	public int updateMemberInfo(Member m) {
+		return mDAO.updateMemberInfo(sqlSession, m);
+	}
+
+	// profile 가져오기
+	public Profile selectProfile(String mNo) {
+		return mDAO.selectProfile(sqlSession, mNo);
 	}
 
 

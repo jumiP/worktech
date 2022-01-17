@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <title>공지사항 게시판 등록</title>
@@ -71,7 +70,6 @@
             overflow: hidden;
             border: 0;
         }
-        
     </style>
 </head>
 
@@ -102,11 +100,11 @@
 	                                <div class="form-group half-col left-item">
 	                                    <label>작성자</label>
 	                                    <input type="text" class="form-control" disabled value="${ loginUser.name }">
-	                                    <input type="hidden" name="bWriter" value="000000">
+	                                    <input type="hidden" name="bWriter" value="${ loginUser.mNo }">
 	                                </div>
 	                                <div class="form-group half-col">
 	                                    <label>작성일</label>
-	                                    <input type="date" class="form-control" name="bDate" value="">
+	                                    <input type="date" class="form-control" name="bDate" id="bDate" disabled>
 	                                </div>
 	                                <div class="form-group half-col">
 	                                    <label>중요도</label>
@@ -145,11 +143,7 @@
     
     <script>
         $(function () {
-            var now = new Date();
-            var year = now.getFullYear();
-            var month = now.getMonth() + 1;
-            var date = now.getDate();
-            $('input[name=bDate]').val(year + '-' + month + '-' + date);
+            document.getElementById('bDate').valueAsDate = new Date();
         });
         
         $("#file").on('change', readInputFile);

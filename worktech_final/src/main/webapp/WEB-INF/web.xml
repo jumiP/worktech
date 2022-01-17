@@ -154,7 +154,7 @@
 		<servlet-name>adbookServlet</servlet-name>
 		<url-pattern>*.ab</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- 예약 관련 -->
 	<servlet>
 		<servlet-name>reservationServlet</servlet-name>
@@ -169,18 +169,18 @@
 		<url-pattern>*.rv</url-pattern>
 	</servlet-mapping>
 	
-	<!-- 메일 관련 -->
+	<!-- 근태관리 관련 -->
 	<servlet>
-		<servlet-name>mailServlet</servlet-name>
+		<servlet-name>commutServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring/appServlet/mail-context.xml</param-value>
+			<param-value>/WEB-INF/spring/appServlet/commut-context.xml</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>mailServlet</servlet-name>
-		<url-pattern>*.mail</url-pattern>
+		<servlet-name>commutServlet</servlet-name>
+		<url-pattern>*.co</url-pattern>
 	</servlet-mapping>
 		
 	<!-- 공용 에러 페이지 -->

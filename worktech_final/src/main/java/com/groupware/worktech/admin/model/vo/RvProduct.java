@@ -25,6 +25,18 @@ public class RvProduct {
 		this.pdStatus = pdStatus;
 		this.rvRange = rvRange;
 	}
+	
+	
+
+	public RvProduct(int pdNo, String pdCategory, String pdName, Date pdDate, int pdCount, String pdStatus) {
+		super();
+		this.pdNo = pdNo;
+		this.pdCategory = pdCategory;
+		this.pdName = pdName;
+		this.pdDate = pdDate;
+		this.pdCount = pdCount;
+		this.pdStatus = pdStatus;
+	}
 
 	public int getPdNo() {
 		return pdNo;

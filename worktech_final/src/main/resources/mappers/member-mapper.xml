@@ -6,7 +6,7 @@
 	<insert id="insertMember">
 		insert into member
 		values (#{mNo}, #{email}, #{name}, #{pwd}, #{jobGrade}, null, null, null, default
-				, #{dNo}, sysdate, default)
+				, #{dNo}, sysdate, default, #{mEmail} )
 	</insert>
 	
 	<!-- 사원번호 중복 확인 : ajax -->
@@ -18,16 +18,26 @@
 	</select>
 	
 	<!-- 로그인 -->
+<!-- 	<select id="memberLogin" resultMap="memberResultSet"> -->
+<!-- 		select * -->
+<!-- 		from member m join -->
+<!-- 			department using (d_no) -->
+<!-- 		where m_no=#{mNo} and m_status='Y' -->
+<!-- 	</select> -->
+	
+	<!-- 로그인 수정-->
 	<select id="memberLogin" resultMap="memberResultSet">
 		select *
-		from member m join
-			department using (d_no)
+		from member m 
+			left join department using (d_no)
+			left join profile using (m_no)
 		where m_no=#{mNo} and m_status='Y'
 	</select>
 		
 	<resultMap type="Member" id="memberResultSet">
 		<id column="M_NO" property="mNo"/>
 		<result column="EMAIL" property="email"/>
+		<result column="M_EMAIL" property="mEmail"/>
 		<result column="NAME" property="name"/>
 		<result column="PWD" property="pwd"/>
 		<result column="JOB_GRADE" property="jobGrade"/>
@@ -38,15 +48,15 @@
 		<result column="D_NO" property="dNo"/>
 		<result column="D_NAME" property="dName"/>
 		<result column="M_HIRED" property="hireDate"/>
-		<result column="P_URL" property="pUrl"/>
 		<result column="M_STATUS" property="mStatus"/>
+		<collection property="profile" resultMap="profileResultSet" javaType="Profile"/>
 	</resultMap>
-	<!-- pUrl : 프로필테이블과 조인 -->
 	
 	<!-- 사원 목록 : 관리자 제외 -->
 	<select id="selectMemList" resultMap="memberResultSet">
-		select m_no, email, name, pwd, job_grade, birthday, phone, address, m_grade,
-				d_no, d_name, m_hired, m_status
+<!-- 		select m_no, email, M_EMAIL, name, pwd, job_grade, birthday, phone, address, m_grade, -->
+<!-- 				d_no, d_name, m_hired, m_status -->
+		select *
 		from member
 		    join department using (d_no)
 		where m_status='Y' and m_grade='USER'
@@ -55,8 +65,9 @@
 	
 	<!-- 관리자 목록 -->
 	<select id="selectAdminList" resultMap="memberResultSet">
-		select m_no, email, name, pwd, job_grade, birthday, phone, address, m_grade,
-				d_no, d_name, m_hired, m_status
+<!-- 		select m_no, email, M_EMAIL, name, pwd, job_grade, birthday, phone, address, m_grade, -->
+<!-- 				d_no, d_name, m_hired, m_status -->
+		select *
 		from member
 		    join department using (d_no)
 		where m_status='Y' and m_grade='ADMIN'
@@ -78,7 +89,7 @@
 		where m_status='Y' and m_grade='USER'
 	</select>
 	
-	<!-- 사원 검색 : 사원 수 (사원 명 / 부서 명 / 직급 명 ) -->
+	<!-- 사원 검색 : 사원 수 ( 사원 명 / 부서 명 / 직급 명 ) -->
 	<select id="getSearchResultListCount" resultType="_int">
 			select count(*)
 			from member
@@ -97,7 +108,7 @@
 	
 	<!-- 사원 검색 : 검색 결과  -->
 	<select id="selectSearchResultList" parameterType="hashmap" resultMap="memberResultSet">
-		select m_no, email, name, pwd, job_grade, birthday, phone, address, m_grade,
+		select m_no, email, M_EMAIL, name, pwd, job_grade, birthday, phone, address, m_grade,
 				d_no, d_name, m_hired, m_status
 		from member
 		    join department using (d_no)
@@ -133,12 +144,73 @@
 
 	<!-- 사원 상세보기 -->
 	<select id="selectMember" resultMap="memberResultSet">
-		select m_no, name, d_name, job_grade, email, p_url
+<!-- 		select m_no, name, d_name, job_grade, email, m_email, p_url -->
+		select *
 		from member
 		    join department using (d_no)
 		    left join profile using (m_no)
 		where m_no = #{ m_no }
 	</select>
+	
+	<!-- 관리자 : 사원 정보 수정  -->
+	<update id="adminUpdateMem">
+		update member
+		set name=#{name}, job_grade=#{jobGrade}, d_no=#{dNo}
+		where m_No = #{mNo}
+	</update>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updatePassword">
+		update member
+		set pwd=#{newPwd}
+		where m_no = #{mNo}
+	</update>
+
+
+	<!-- 마이페이지 프로필 이미지 저장 : Merge 이용 -->
+	<!-- mNo가 profile테이블에 있을때 : update / 없을때 : insert -->
+	<update id="updateProfile">
+		merge into profile
+		using dual
+			on (m_no = #{mNo})
+		when matched then
+			update set p_url=#{pUrl}, p_name=#{pName}, p_rname=#{pReName}
+		when not matched then
+			insert(profile_no, p_url, p_name, p_rname, m_no)
+			values(seq_profile.nextval, #{pUrl}, #{pName}, #{pReName}, #{mNo})
+	</update>
+	
+	<!-- 내 정보 수정 : 주소, 생년월일, 프로필 사진 경로 -->
+	<update id="updateMemberInfo">
+		update member
+		set address=#{address}, birthday=#{birthDay}, phone=#{phone}
+		where m_No = #{mNo}
+	</update>
+	
+	<!-- profile 가져오기 -->
+	<select id="selectProfile" resultMap="profileResultSet">
+		select *
+		from profile
+		where m_no=#{mNo}
+	</select>
+	
+	<resultMap type="Profile" id="profileResultSet">
+		<id column="PROFILE_NO" property="pNo"/>
+		<result column="P_URL" property="pUrl"/>
+		<result column="P_NAME" property="pName"/>
+		<result column="P_RNAME" property="pReName"/>
+		<result column="M_NO" property="mNo"/>
+	</resultMap>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

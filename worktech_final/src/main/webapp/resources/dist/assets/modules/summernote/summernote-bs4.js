@@ -7082,7 +7082,7 @@ $$1.summernote = $$1.extend($$1.summernote, {
             ['font', ['bold', 'underline', 'clear']],
             ['fontname', ['fontname']],
             ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
+            ['para', ['ul', 'ol', 'paragraph', 'height']],
             ['table', ['table']],
             ['insert', ['link', 'picture', 'video']],
             ['view', ['fullscreen', 'codeview', 'help']]
@@ -7113,9 +7113,10 @@ $$1.summernote = $$1.extend($$1.summernote, {
         // air mode: inline editor
         airMode: false,
         width: null,
-        height: null,
+        height: 500,
         linkTargetBlank: true,
         focus: false,
+        disableResizeEditor: true,
         tabSize: 4,
         styleWithSpan: true,
         shortcuts: true,
@@ -7163,8 +7164,21 @@ $$1.summernote = $$1.extend($$1.summernote, {
             onEnter: null,
             onKeyup: null,
             onKeydown: null,
-            onImageUpload: null,
-            onImageUploadError: null
+            onImageUpload: function(files) {
+				uploadSummernoteImageFile(files[0],this);
+			},
+            onImageUploadError: function() {
+				console.log("이미지 추가 오류");
+			},
+			onPaste: function (e) {
+				var clipboardData = e.originalEvent.clipboardData;
+				if (clipboardData && clipboardData.items && clipboardData.items.length) {
+					var item = clipboardData.items[0];
+					if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+						e.preventDefault();
+					}
+				}
+			}
         },
         codemirror: {
             mode: 'text/html',
@@ -7281,4 +7295,22 @@ $$1.summernote = $$1.extend($$1.summernote, {
 });
 
 })));
+
+function uploadSummernoteImageFile(file, editor) {
+	var data = new FormData();
+	data.append("file", file);
+	$.ajax({
+		data : data,
+		type : "POST",
+		url : "uploadSummernoteImageFile",
+		contentType : false,
+		enctype : 'multipart/form-data',
+		processData : false,
+		success : function(data) {
+			var obj = JSON.parse(data);
+        	//항상 업로드된 파일의 url이 있어야 한다.
+			$(editor).summernote('editor.insertImage', obj.url);
+		}
+	});
+}
 //# sourceMappingURL=summernote-bs4.js.map

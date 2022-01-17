@@ -97,9 +97,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label>작성 내용</label>
-                                    <div class="inputData">
-                                    	<c:out value="${ b.bContent }" escapeXml="false" />
-                                    </div>
+                                    <textarea class="summernote" >
+                                    	${ b.bContent }
+                                    </textarea>
                                 </div>
                             <div class="form-group">
                                		<label>첨부 파일</label>
@@ -107,8 +107,8 @@
                                 		<c:if test="${ !empty b.fileList.get(0).getfName() }">
 		                                    <c:forEach var="f" items="${ b.fileList }">
 		                                    	<i class="fas fa-save"></i>
-		                                    	<a href="/resources/buploadFiles/${ f.getfRname() }" download="${ f.getfName() }">
-													${ f.getfName() }
+		                                    	<a href="resources/buploadFiles/${ f.fRname }" download="${ f.fName }">
+													${ f.fName }
 												</a>
 												<br>
 											</c:forEach>
@@ -132,15 +132,15 @@
 										<input type="hidden" name="bNo" value="${ b.bNo }">
 	                                	<button class="btn btn-danger" type="submit" onclick="return deleteNotice();">삭제</button>
 	                                </form>
-	                                <c:if test="${ !empty searchValue }">
-		                                <c:url var="nlist" value="searchNotice.ad">
-		                                	<c:param name="page" value="${ page }"/>
-		                                	<c:param name="searchCondition" value="${ searchCondition }"/>
-											<c:param name="searchValue" value="${ searchValue }"/>
-											<c:param name="boardLimit" value="${ boardLimit }"/>
-										</c:url>
-	                                </c:if>
 	                            </c:if>
+                                <c:if test="${ !empty searchValue }">
+	                                <c:url var="nlist" value="searchNotice.ad">
+	                                	<c:param name="page" value="${ page }"/>
+	                                	<c:param name="searchCondition" value="${ searchCondition }"/>
+										<c:param name="searchValue" value="${ searchValue }"/>
+										<c:param name="boardLimit" value="${ boardLimit }"/>
+									</c:url>
+                                </c:if>
                                 <c:if test="${ empty searchValue }">
 	                                <c:url var="nlist" value="noticeList.ad">
 										<c:param name="page" value="${ page }"/>
@@ -156,7 +156,7 @@
         </section>
     </div>
     <c:import url="../common/footer.jsp" />
-    <script src="resources/dist/assets/modules/summernote/summernote-bs4.js"></script>
+    <script src="resources/dist/assets/modules/summernote/summernote-detail.js"></script>
     <script src="resources/dist/assets/modules/codemirror/lib/codemirror.js"></script>
     <script src="resources/dist/assets/modules/codemirror/mode/javascript/javascript.js"></script>
     <script src="resources/dist/assets/modules/jquery-selectric/jquery.selectric.min.js"></script>

@@ -107,6 +107,7 @@
 		    left join member using(d_no)
 		where d_status='Y'
 		group by d_no
+		order by d_No asc
 	</select>
 	
 	<select id="depCount" resultType="_int">
@@ -139,7 +140,5 @@
 		set d_status='N'
 		where d_No=#{dNo}
 	</update>
-	
-	
 	
 </mapper>

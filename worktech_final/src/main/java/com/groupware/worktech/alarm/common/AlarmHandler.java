@@ -25,37 +25,28 @@ public class AlarmHandler extends TextWebSocketHandler {
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		logger.info("Socket 연결");
+//		logger.info("Socket 연결");
 		sessionList.add(session);
 		
 		String mNo = getmNo(session);
-		System.out.println(mNo);
 		userSessionsMap.put(mNo, session);
 	}
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		System.out.println("받음: " + message);
 		String sender = getmNo(session);
 		
 		String msg = message.getPayload();
 		String[] strs = msg.split(",");
-		
-		if(strs != null && strs.length == 5) {
+
+		if(strs != null && strs.length == 6) {
 			String type = strs[0];
-			String rName = strs[1];
-			String receiver = strs[2];
-			String bNo = strs[3];
-			String bTitle = strs[4];
+			String receiver = strs[1];
 			
 			WebSocketSession bWriterSession = userSessionsMap.get(receiver);
 			
 			// 일반 게시판 글 작성자가 로그인 중이라면
-			if("cReply".equals(type) && bWriterSession != null) {
-//				TextMessage tmpMsg = new TextMessage(rName + " 님이 " 
-//						+ "<a href='cdetail.bo?bNo=" + bNo + "'>[" + bTitle + "]</a>" + "번 게시글에 댓글을 남겼습니다.");
-//				bWriterSession.sendMessage(tmpMsg);
-				
+			if("cReply".equals(type) && bWriterSession != null && !sender.equals(receiver)) {
 				TextMessage tmpMsg = new TextMessage(msg);
 				bWriterSession.sendMessage(tmpMsg);
 			}
@@ -64,7 +55,7 @@ public class AlarmHandler extends TextWebSocketHandler {
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		logger.info("Socket 끊김");
+//		logger.info("Socket 끊김");
 		sessionList.remove(session);
 	}
 

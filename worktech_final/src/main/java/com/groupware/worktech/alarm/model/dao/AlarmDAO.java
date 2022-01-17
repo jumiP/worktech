@@ -14,4 +14,12 @@ public class AlarmDAO {
 		return (ArrayList)sqlSession.selectList("alarmMapper.selectAlarmList", mNo);
 	}
 
+	public int selectAlarmNo(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("alarmMapper.selectAlarmNo");
+	}
+
+	public int checkAlarm(SqlSessionTemplate sqlSession, int alarmNo) {
+		return sqlSession.update("alarmMapper.checkAlarm", alarmNo);
+	}
+
 }

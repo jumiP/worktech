@@ -1,29 +1,50 @@
 package com.groupware.worktech.member.model.vo;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class Member {
 
 	private String mNo;
 	private String email;
+	private String mEmail;
 	private String name;
 	private String pwd;
 	private String jobGrade;
 	private Date birthDay;
 	private String phone;
-	private String address;
+	private String Address;
 	private String mGrade; // 회원 등급 : user/admin
 	private int dNo;
-	private String dName;
+	private String dName; // 부서이름
 	private Date hireDate;
-	private String pUrl; // 프로필 사진 경로
+	private Profile profile; // 프로필 사진
 	private String mStatus;
 	private String mEmail;
 	
 	public Member() {}
 
 	public Member(String mNo, String email, String name, String pwd, String jobGrade, Date birthDay, String phone,
-			String address, String mGrade, int dNo, String dName, Date hireDate, String pUrl, String mStatus) {
+			String address, String mGrade, int dNo, String dName, Date hireDate, String mStatus) {
+		super();
+		this.mNo = mNo;
+		this.email = email;
+		this.name = name;
+		this.pwd = pwd;
+		this.jobGrade = jobGrade;
+		this.birthDay = birthDay;
+		this.phone = phone;
+		Address = address;
+		this.mGrade = mGrade;
+		this.dNo = dNo;
+		this.dName = dName;
+		this.hireDate = hireDate;
+		this.mStatus = mStatus;
+	}
+	
+	public Member(String mNo, String email, String name, String pwd, String jobGrade, Date birthDay, String phone,
+			String address, String mGrade, int dNo, String dName, Date hireDate, Profile profile,
+			String mStatus) {
 		super();
 		this.mNo = mNo;
 		this.email = email;
@@ -37,7 +58,7 @@ public class Member {
 		this.dNo = dNo;
 		this.dName = dName;
 		this.hireDate = hireDate;
-		this.pUrl = pUrl;
+		this.profile = profile;
 		this.mStatus = mStatus;
 	}
 
@@ -98,11 +119,11 @@ public class Member {
 	}
 
 	public String getAddress() {
-		return address;
+		return Address;
 	}
 
 	public void setAddress(String address) {
-		this.address = address;
+		Address = address;
 	}
 
 	public String getmGrade() {
@@ -137,12 +158,12 @@ public class Member {
 		this.hireDate = hireDate;
 	}
 
-	public String getpUrl() {
-		return pUrl;
+	public Profile getProfile() {
+		return profile;
 	}
 
-	public void setpUrl(String pUrl) {
-		this.pUrl = pUrl;
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 
 	public String getmStatus() {
@@ -157,8 +178,14 @@ public class Member {
 	public String toString() {
 		return "Member [mNo=" + mNo + ", email=" + email + ", name=" + name + ", pwd=" + pwd + ", jobGrade=" + jobGrade
 				+ ", birthDay=" + birthDay + ", phone=" + phone + ", address=" + address + ", mGrade=" + mGrade
-				+ ", dNo=" + dNo + ", dName=" + dName + ", hireDate=" + hireDate + ", pUrl=" + pUrl + ", mStatus="
+				+ ", dNo=" + dNo + ", dName=" + dName + ", hireDate=" + hireDate + ", profile=" + profile + ", mStatus="
 				+ mStatus + "]";
 	}
+	
+	
 
+	
+
+	
+	
 }

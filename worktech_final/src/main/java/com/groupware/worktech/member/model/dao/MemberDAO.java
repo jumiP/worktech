@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.member.model.vo.Member;
+import com.groupware.worktech.member.model.vo.Profile;
 
 @Repository("mDAO")
 public class MemberDAO {
@@ -82,6 +83,36 @@ public class MemberDAO {
 	// 사원 상세보기
 	public Member selectMember(SqlSessionTemplate sqlSession, String mNo) {
 		return sqlSession.selectOne("memberMapper.selectMember", mNo);
+	}
+
+	// 사원정보 상세보기 페이지에서 사원 삭제
+	public int deleteDetailMem(SqlSessionTemplate sqlSession, String mNo) {
+		return sqlSession.update("memberMapper.deleteMember", mNo);
+	}
+
+	// 관리자 : 사원 정보 수정 
+	public int adminUpdateMem(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("memberMapper.adminUpdateMem", m);
+	}
+
+	// 비밀번호 변경
+	public int updatePassword(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.update("memberMapper.updatePassword", map);
+	}
+
+	// 마이페이지 프로필 이미지 저장
+	public int updateProfile(SqlSessionTemplate sqlSession, Profile p) {
+		return sqlSession.update("memberMapper.updateProfile", p);
+	}
+
+	// 내 정보 수정
+	public int updateMemberInfo(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("memberMapper.updateMemberInfo", m);
+	}
+
+	// profile 가져오기
+	public Profile selectProfile(SqlSessionTemplate sqlSession, String mNo) {
+		return sqlSession.selectOne("memberMapper.selectProfile", mNo);
 	}
 
 	

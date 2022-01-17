@@ -99,30 +99,14 @@
                             <div class="card-body">
                             	<div class="category">
 	                            	<i class="fas fa-chevron-circle-down"></i>
-	                            	<select class="select" name="categoryNo" onchange="location.href=this.value">
-                           				<option>카테고리</option>
-                           				<c:url var="all" value="commonList.bo"/>
-                            			<option value="${ all }">전체</option>
-                            			<c:url var="meeting" value="commonList.bo">
-                            				<c:param name="category" value="100" />
-                            			</c:url>
-	                            		<option value="${ meeting }" <c:if test="${ category == 100 }">selected</c:if>>회의</option>
-	                            		<c:url var="businessTrip" value="commonList.bo">
-                            				<c:param name="category" value="200" />
-                            			</c:url>
-	                            		<option value="${ businessTrip }" <c:if test="${ category == 200 }">selected</c:if>>출장</option>
-	                            		<c:url var="promotion" value="commonList.bo">
-                            				<c:param name="category" value="300" />
-                            			</c:url>
-	                            		<option value="${ promotion }" <c:if test="${ category == 300 }">selected</c:if>>홍보</option>
-	                            		<c:url var="etc" value="commonList.bo">
-                            				<c:param name="category" value="400" />
-                            			</c:url>
-	                            		<option value="${ etc }" <c:if test="${ category == 400 }">selected</c:if>>기타</option>
-	                            		<c:url var="materials" value="commonList.bo">
-                            				<c:param name="category" value="500" />
-                            			</c:url>
-	                            		<option value="${ materials }" <c:if test="${ category == 500 }">selected</c:if>>자료</option>
+	                            	<select class="select" name="categoryNo" onchange="selectCategory(this)">
+	                            		<option selected disabled>카테고리</option>
+	                            		<option value="0">전체</option>
+	                            		<option value="100" <c:if test="${ category == 100 }">selected</c:if>>회의</option>
+	                            		<option value="200" <c:if test="${ category == 200 }">selected</c:if>>출장</option>
+	                            		<option value="300" <c:if test="${ category == 300 }">selected</c:if>>홍보</option>
+	                            		<option value="400" <c:if test="${ category == 400 }">selected</c:if>>기타</option>
+	                            		<option value="500" <c:if test="${ category == 500 }">selected</c:if>>자료</option>
 	                            	</select>
                             	</div>
                             	<br>
@@ -174,18 +158,30 @@
                                                 	</li>
 	                                            </c:if>
                                             	<c:if test="${ pi.currentPage > 1 }">
-                                            		<c:url var="start" value="commonList.bo">
+                                            		<c:url var="start" value="${ loc }">
 														<c:param name="page" value="1"/>
-														<c:param name="category" value="${ category }"/>
+														<c:if test="${ category ne null }">
+															<c:param name="category" value="${ category }"/>
+														</c:if>
+														<c:if test="${ searchCategory ne null }">
+															<c:param name="searchCategory" value="${ searchCategory }"/>
+															<c:param name="searchValue" value="${ searchValue }"/>
+														</c:if>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ start }" aria-label="Previous">
 	                                                        <i class="fas fa-angle-double-left"></i>
 	                                                    </a>
 	                                                </li>
-													<c:url var="before" value="commonList.bo">
+													<c:url var="before" value="${ loc }">
 														<c:param name="page" value="${ pi.currentPage - 1 }"/>
-														<c:param name="category" value="${ category }"/>
+														<c:if test="${ category ne null }">
+															<c:param name="category" value="${ category }"/>
+														</c:if>
+														<c:if test="${ searchCategory ne null }">
+															<c:param name="searchCategory" value="${ searchCategory }"/>
+															<c:param name="searchValue" value="${ searchValue }"/>
+														</c:if>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ before }" aria-label="Previous">
@@ -200,9 +196,15 @@
 	                                            	</c:if>
 	                                            
 	                                            	<c:if test="${ p ne pi.currentPage }">
-		                                            	<c:url var="pagination" value="commonList.bo">
+		                                            	<c:url var="pagination" value="${ loc }">
 															<c:param name="page" value="${ p }"/>
-															<c:param name="category" value="${ category }"/>
+															<c:if test="${ category ne null }">
+																<c:param name="category" value="${ category }"/>
+															</c:if>
+															<c:if test="${ searchCategory ne null }">
+																<c:param name="searchCategory" value="${ searchCategory }"/>
+																<c:param name="searchValue" value="${ searchValue }"/>
+															</c:if>
 														</c:url>
 	                                            		<li class="page-item">
 	                                            			<a class="page-link" href="${ pagination }">${ p }</a>
@@ -225,9 +227,15 @@
 												</c:if>
 
 												<c:if test="${ pi.currentPage < pi.maxPage }">
-													<c:url var="after" value="commonList.bo">
+													<c:url var="after" value="${ loc }">
 														<c:param name="page" value="${ pi.currentPage + 1 }"/>
-														<c:param name="category" value="${ category }"/>
+														<c:if test="${ category ne null }">
+															<c:param name="category" value="${ category }"/>
+														</c:if>
+														<c:if test="${ searchCategory ne null }">
+															<c:param name="searchCategory" value="${ searchCategory }"/>
+															<c:param name="searchValue" value="${ searchValue }"/>
+														</c:if>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ after }" aria-label="Next">
@@ -235,9 +243,15 @@
 	                                                    </a>
 	                                                </li>
 													
-													<c:url var="end" value="commonList.bo">
+													<c:url var="end" value="${ loc }">
 														<c:param name="page" value="${ pi.maxPage }"/>
-														<c:param name="category" value="${ category }"/>
+														<c:if test="${ category ne null }">
+															<c:param name="category" value="${ category }"/>
+														</c:if>
+														<c:if test="${ searchCategory ne null }">
+															<c:param name="searchCategory" value="${ searchCategory }"/>
+															<c:param name="searchValue" value="${ searchValue }"/>
+														</c:if>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ end }" aria-label="Next">
@@ -252,8 +266,9 @@
                                 <div class="search">
                                 	<c:url var="search" value="searchCommon.bo"/>
                                 	<form action="${ search }">
-                                		<input type="hidden" name="page" value="${ pi.currentPage }">
-                                		<input type="hidden" name="category" value="${ category }">
+                                		<c:if test="${ category ne null }">
+                                			<input type="hidden" name="category" value="${ category }">
+                                		</c:if>
 	                                    <select name="searchCategory" style="height: 30px; width: 80px; border: 1px solid #e3e3e3;">
 	                                        <option value="title">제목</option>
 	                                        <option value="content">내용</option>
@@ -273,9 +288,9 @@
     <c:import url="../common/footer.jsp" />
     
     <script>
-    	var category = '${category}';
-    	var searchCategory = '${searchCategory}';
-    	var searchValue = '${searchValue}';
+//     	var category = '${category}';
+//     	var searchCategory = '${searchCategory}';
+//     	var searchValue = '${searchValue}';
     	
 	    $(function() {
 			$('#tb tbody td').mouseenter(function() {
@@ -285,10 +300,34 @@
 			}).click(function() {
 				var bNo = $(this).parent().children().eq(0).text();
 				
-				location.href="cdetail.bo?bNo=" + bNo + "&page=" + ${pi.currentPage} + "&category=" + category
-							  + "&searchCategory=" + searchCategory + "&searchValue=" + searchValue;
+// 				location.href="cdetail.bo?bNo=" + bNo + "&page=" + ${pi.currentPage} + "&category=" + category
+// 							  + "&searchCategory=" + searchCategory + "&searchValue=" + searchValue;
+				
+				<c:url var="commonDetail" value="cdetail.bo">
+					<c:param name="page" value="${ pi.currentPage }"/>
+					<c:if test="${ category ne null }">
+						<c:param name="category" value="${ category }"/>
+					</c:if>
+					<c:if test="${ searchCategory ne null }">
+						<c:param name="searchCategory" value="${ searchCategory }"/>
+						<c:param name="searchValue" value="${ searchValue }"/>
+					</c:if>
+				</c:url>
+				
+				location.href = "${ commonDetail }" + "&bNo=" + bNo;
 			});
 		});
+	    
+		// 카테고리 선택 시
+	    function selectCategory(value){
+	    	var categoryNo = $('option:selected').val();
+			
+	    	if(categoryNo == '0'){
+	    		location.href = "commonList.bo";
+	    	} else {
+	    		location.href = "commonList.bo?category=" + categoryNo;
+	    	}
+	    }
 	    
     </script>
 

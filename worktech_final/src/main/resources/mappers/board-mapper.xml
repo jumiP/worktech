@@ -313,59 +313,6 @@
 		<result column="B_STATUS" property="bStatus"/>
 	</resultMap>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	<select id="getZListCount" resultType="_int">
 		select count(*)
 		from board
@@ -379,11 +326,4 @@
 		where b_status='Y'
 		order by b_no desc
 	</select>
-	
-	
-	
-	
-	
-	
-	
 </mapper>

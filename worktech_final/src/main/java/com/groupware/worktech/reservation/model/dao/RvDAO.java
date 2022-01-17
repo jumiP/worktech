@@ -19,91 +19,13 @@ public class RvDAO {
 		return sqlSession.insert("reservationMapper.insertReservation", r);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public Reservation selectReservation(SqlSessionTemplate sqlSession, int rvNo) {
+		return sqlSession.selectOne("reservationMapper.selectReservation", rvNo);
+	}
 
-
-
+	public int deleteReservation(SqlSessionTemplate sqlSession, int rvNo) {
+		return sqlSession.update("reservationMapper.deleteReservation", rvNo);
+	}
 
 	public ArrayList<RvProduct> selectOrvList(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("reservationMapper.selectOrvList");

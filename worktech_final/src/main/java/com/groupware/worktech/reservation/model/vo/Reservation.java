@@ -159,6 +159,14 @@ public class Reservation {
 		this.rvStatus = rvStatus;
 	}
 
+	public String getRvCategory() {
+		return rvCategory;
+	}
+
+	public void setRvCategory(String rvCategory) {
+		this.rvCategory = rvCategory;
+	}
+
 	@Override
 	public String toString() {
 		return "Reservation [rvNo=" + rvNo + ", rvType=" + rvType + ", rvpNo=" + rvpNo + ", rvName=" + rvName

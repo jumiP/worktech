@@ -3,6 +3,7 @@ package com.groupware.worktech.member.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.ibatis.session.SqlSessionManager;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,6 +108,18 @@ public class MemberService {
 		return mDAO.selectProfile(sqlSession, mNo);
 	}
 
+	// 임시 비밀번호 발급 : 해당 사원의 mEmail 받아오기
+	public Member selectmemEmail(String mNo) {
+		return mDAO.selectmemEmail(sqlSession, mNo);
+	}
+
+	// 임시비밀번호 : 비밀번호 변경
+	public int updatePwd(HashMap<String, String> map) {
+		return mDAO.updatePwd(sqlSession, map);
+	}
+
+	
+	
 
 	
 	

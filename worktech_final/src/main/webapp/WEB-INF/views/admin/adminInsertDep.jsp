@@ -114,10 +114,12 @@
 						$('.invalid-feedback').hide();
 						$('.valid-feedback').show();
 						$('#idDuplicateCheck').val(1);
+						$("input[name=dName]").attr("class", 'form-control is-valid');
 					} else if(data == 'Dup'){
 						$('.invalid-feedback').show();
 						$('.valid-feedback').hide();
 						$('#idDuplicateCheck').val(0);
+						$("input[name=dName]").attr("class", 'form-control is-invalid');
 					}
 					
 				},

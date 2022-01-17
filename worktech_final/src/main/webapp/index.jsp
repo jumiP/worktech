@@ -2505,9 +2505,16 @@ label+.MuiInput-formControl {
 								<span class="MuiButton-label">로그인</span> <span
 									class="MuiTouchRipple-root"></span>
 							</button>
+<!-- 							<button -->
+<!-- 								class="MuiButtonBase-root MuiButton-root MuiButton-text jss22 MuiButton-textPrimary MuiButton-textSizeLarge MuiButton-sizeLarge" -->
+<!-- 								tabindex="0" type="button" onclick="pwdBtn()"> -->
+<!-- 								<span class="MuiButton-label">비밀번호찾기</span> <span -->
+<!-- 									class="MuiTouchRipple-root"></span> -->
+<!-- 							</button> -->
+							
 							<button
 								class="MuiButtonBase-root MuiButton-root MuiButton-text jss22 MuiButton-textPrimary MuiButton-textSizeLarge MuiButton-sizeLarge"
-								tabindex="0" type="button" onclick="pwdBtn()">
+								tabindex="0" type="button" onclick="location.href='findPwdView.me'">
 								<span class="MuiButton-label">비밀번호찾기</span> <span
 									class="MuiTouchRipple-root"></span>
 							</button>

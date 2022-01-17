@@ -14,7 +14,6 @@ public class Reservation {
 	private Timestamp rvEndTime;
 	private String rvUsage;
 	private String rvMember;
-	private String rvCategory;
 	private String rvMemberFullName; // 빌린 사원 부서명 + 이름 + 직급
 	private String rvStatus;
 	
@@ -36,31 +35,6 @@ public class Reservation {
 		this.rvMember = rvMember;
 		this.rvMemberFullName = rvMemberFullName;
 		this.rvStatus = rvStatus;
-	}
-	
-	public Reservation(int rvNo, String rvType, Integer rvpNo, String rvName, int rvCount, Date rvDate,
-			Timestamp rvStartTime, Timestamp rvEndTime, String rvUsage, String rvMember, String rvCategory,
-			String rvMemberFullName, String rvStatus) {
-		super();
-		this.rvNo = rvNo;
-		this.rvType = rvType;
-		this.rvpNo = rvpNo;
-		this.rvName = rvName;
-		this.rvCount = rvCount;
-		this.rvDate = rvDate;
-		this.rvStartTime = rvStartTime;
-		this.rvEndTime = rvEndTime;
-		this.rvUsage = rvUsage;
-		this.rvMember = rvMember;
-		this.rvCategory = rvCategory;
-		this.rvMemberFullName = rvMemberFullName;
-		this.rvStatus = rvStatus;
-	}
-	
-	public Reservation(Integer rvpNo, int rvCount) {
-		super();
-		this.rvpNo = rvpNo;
-		this.rvCount = rvCount;
 	}
 
 	public int getRvNo() {

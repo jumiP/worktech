@@ -19,15 +19,10 @@ import com.groupware.worktech.member.model.vo.Member;
 @Repository
 public class AlarmHandler extends TextWebSocketHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(WebSocketHandler.class);
-	private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
 	private Map<String, WebSocketSession> userSessionsMap = new HashMap<String, WebSocketSession>();
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-//		logger.info("Socket 연결");
-		sessionList.add(session);
-		
 		String mNo = getmNo(session);
 		userSessionsMap.put(mNo, session);
 	}
@@ -55,8 +50,8 @@ public class AlarmHandler extends TextWebSocketHandler {
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-//		logger.info("Socket 끊김");
-		sessionList.remove(session);
+		String mNo = getmNo(session);
+		userSessionsMap.remove(mNo, session);
 	}
 
 	private String getmNo(WebSocketSession session) {

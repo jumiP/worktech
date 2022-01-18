@@ -300,9 +300,6 @@
 			}).click(function() {
 				var bNo = $(this).parent().children().eq(0).text();
 				
-// 				location.href="cdetail.bo?bNo=" + bNo + "&page=" + ${pi.currentPage} + "&category=" + category
-// 							  + "&searchCategory=" + searchCategory + "&searchValue=" + searchValue;
-				
 				<c:url var="commonDetail" value="cdetail.bo">
 					<c:param name="page" value="${ pi.currentPage }"/>
 					<c:if test="${ category ne null }">
@@ -330,8 +327,5 @@
 	    }
 	    
     </script>
-
-
 </body>
-
 </html>

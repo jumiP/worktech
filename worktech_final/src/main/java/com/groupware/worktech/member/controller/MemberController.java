@@ -51,7 +51,7 @@ import com.groupware.worktech.member.model.service.MemberService;
 import com.groupware.worktech.member.model.vo.Member;
 import com.groupware.worktech.member.model.vo.Profile;
 
-@SessionAttributes("loginUser")
+@SessionAttributes({"loginUser", "qr"})
 @Controller
 public class MemberController {
 	
@@ -74,7 +74,7 @@ public class MemberController {
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
 	public String login(Member m, Model model) {	
 		
-		System.out.println(bcrypt.encode(m.getPwd()));
+//		System.out.println(bcrypt.encode(m.getPwd()));
 		
 		Member loginMember = mService.memberLogin(m);
 		if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
@@ -685,12 +685,10 @@ public class MemberController {
 		
 	// admin main ajax
 	@RequestMapping("mListMain.me")
-	public void mListMain(Model model, HttpServletResponse response) {
+	public void mListMain(HttpServletResponse response) {
 		
 		// 메인 사원 목록 
 		ArrayList<Member> mList = mService.selectMainMemList();
-		// 총 사원의 수
-		int memCount = mService.countMember();
 		
 		if(mList != null) {
 			
@@ -701,17 +699,28 @@ public class MemberController {
 			Gson gson = gb.create();
 			try {
 				gson.toJson(mList, response.getWriter());
-				gson.toJson(memCount, response.getWriter());
 			} catch (JsonIOException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
-			model.addAttribute("mList", mList);
-//			model.addAttribute("memCount", memCount);
 		} else {
 			throw new MemberException("메인 화면 사원 목록 조회에 실패하였습니다.");
 		}
+	}
+	
+	@RequestMapping("mGetMaitCount.me")
+	public void mMainCount(HttpServletResponse response) {
+		// 총 사원의 수
+		int memCount = mService.countMember();
+		
+		try {
+			response.getWriter().println(memCount);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

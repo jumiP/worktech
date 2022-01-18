@@ -41,10 +41,6 @@ table {
 	margin-right: 10%;
 }
 
-#tableCard {
-	height: 330px;
-}
-
 .boardTable {
 	width: 100%;
 	border-collapse: collapse;
@@ -98,10 +94,10 @@ table {
 		<div class="row">
 			<div class="col-12">
 				<div class="card">
-					<div class="card-body" id="tableCard">
+					<div class="card-body">
 						<div>
 							<h5>
-								총 사원의 수는 <span style="color: #6ED7F9">${ memCount }</span>명 입니다.
+								총 사원의 수는 <span id="count" style="color: #6ED7F9"></span>명 입니다.
 							</h5>
 						</div>
 						<br>
@@ -109,7 +105,6 @@ table {
 							<table class="table table-striped" id="memberTable">
 								<thead>
 									<tr>
-										<th width="30px;"></th>
 										<th>사원 번호</th>
 										<th>사원 명</th>
 										<th>부서</th>
@@ -135,36 +130,37 @@ table {
 			success: function(data) {
 				console.log(data);
 				
-// 				$tableBody = $('#memberTable tbody');
-// 				$tableBody.html(''); // 위에 있던 부분이 중복되지 않게 지워줌
+				$tableBody = $('#memberTable tbody');
+				$tableBody.html(''); // 위에 있던 부분이 중복되지 않게 지워줌
 				
-// 				var $tr;
-// 				var $writer;
-// 				var $content;
-// 				var $date;
+				var $tr;
+				var $mNo;
+				var $name;
+				var $dept;
+				var $job;
 				
-// 				$('#rCount').text('댓글 (' + data.length + ")");
-				
-// 				if(data.length > 0){
-// 					for(var i in data){
-// 						$tr = $('<tr>');
-// 						$writer = $('<td width="100">').text(data[i].nickName);
-// 						$content = $('<td>').text(data[i].replyContent);
-// 						$date = $('<td width="100">').text(data[i].replyCreateDate);
+				if(data.length > 0){
+					for(var i in data){
+						$tr = $('<tr>');
+						$mNo = $('<td>').text(data[i].mNo);
+						$name = $('<td>').text(data[i].name);
+						$dept = $('<td>').text(data[i].dName);
+						$job = $('<td>').text(data[i].jobGrade);
 						
-// 						$tr.append($writer);
-// 						$tr.append($content);
-// 						$tr.append($date);
+						$tr.append($mNo);
+						$tr.append($name);
+						$tr.append($dept);
+						$tr.append($job);
 						
-// 						$tableBody.append($tr);
-// 					}
-// 				}else{
-// 						$tr = $('<tr>');
-// 						$content = $('<td colspan="5">').text("사원이 존재하지 않습니다.");
+						$tableBody.append($tr);
+					}
+				}else{
+						$tr = $('<tr>');
+						$content = $('<td colspan="5">').text("사원이 존재하지 않습니다.");
 						
-// 						$tr.append($content);
-// 						$tableBody.append($tr);
-// 				}
+						$tr.append($content);
+						$tableBody.append($tr);
+				}
 			},
 			error: function(request, error) {
 				console.log(request.status);
@@ -173,9 +169,30 @@ table {
 			}
 		})
 	}
+	
+	function getMemCount() {
+		
+		$.ajax({
+			url: 'mGetMaitCount.me',
+			success: function(data) {
+				$('#count').text(data);
+				
+				console.log(data);
+				
+			},
+			error: function(request, error) {
+				console.log(request.status);
+				console.log(request.responseText);
+				console.log(error);
+			}
+		})
+	}
+	
+	
 
 	$(function() {
 		getMemList();
+		getMemCount();
 	});
 
 </script>

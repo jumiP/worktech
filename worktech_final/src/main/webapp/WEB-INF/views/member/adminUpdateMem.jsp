@@ -107,7 +107,7 @@
 				                    
 				                    <div class="form-group">
 				                      <label>사내 Email</label>
-				                      <input type="email" class="form-control" id="email" name="email" readonly style="background : white;" placeholder="${ member.email }">
+				                      <input type="email" class="form-control" id="email" name="email" style="background : white;" placeholder="${ member.email }">
 				                    </div>
 				                    
 				                    <div class="form-group">

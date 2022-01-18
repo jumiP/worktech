@@ -169,8 +169,7 @@ public class BoardDAO {
 		return sqlSession.selectOne("boardMapper.getCommonSearchListCount", searchMap);
 	}
 
-	public ArrayList<Board> selectCommonSearchList(SqlSessionTemplate sqlSession,
-			HashMap<String, Object> searchListMap) {
+	public ArrayList<Board> selectCommonSearchList(SqlSessionTemplate sqlSession, HashMap<String, Object> searchListMap) {
 		PageInfo pi = (PageInfo)searchListMap.get("pi");
 		
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();

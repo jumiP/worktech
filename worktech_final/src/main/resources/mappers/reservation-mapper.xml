@@ -8,6 +8,7 @@
 			 member on (rv_member = m_no) left join
 			 department using(d_no)
 		where rv_type = 'MEETING'
+			  and rv_status = 'N'
 	</select>
 	
 	<resultMap type="Reservation" id="rvMeetingRoomResultSet">
@@ -28,79 +29,37 @@
 		values (SEQ_RV.NEXTVAL, #{rvType}, #{rvpNo}, #{rvName}, #{rvCount}, #{rvDate}, #{rvStartTime}, #{rvEndTime}, #{rvUsage}, #{rvMember}, DEFAULT)
 	</insert>
 	
+	<select id="selectReservation" resultMap="rvResultSet">
+		select rv_no, rv_type, rvp_no, rv_name, rv_count, rv_date, rv_start_time, rv_end_time, 
+			   rv_usage, rv_member, rv_status, 
+			   d_name || ' ' || name || ' ' || job_grade as rv_member_full_name
+		from reservation join 
+			 member on (rv_member = m_no) left join
+			 department using(d_no)
+		where rv_no = #{rvNo}
+			  and rv_status = 'N'
+	</select>
+	
+	<resultMap type="Reservation" id="rvResultSet">
+		<id column="rv_no" property="rvNo"/>
+		<result column="rv_type" property="rvType"/>
+		<result column="rvp_no" property="rvpNo"/>
+		<result column="rv_name" property="rvName"/>
+		<result column="rv_count" property="rvCount"/>
+		<result column="rv_date" property="rvDate"/>
+		<result column="rv_start_time" property="rvStartTime"/>
+		<result column="rv_end_time" property="rvEndTime"/>
+		<result column="rv_usage" property="rvUsage"/>
+		<result column="rv_member" property="rvMember"/>
+		<result column="rv_member_full_name" property="rvMemberFullName"/>
+		<result column="rv_status" property="rvStatus"/>
+	</resultMap>
+	
+	<update id="deleteReservation">
+		update reservation set rv_status = 'Y'
+		where rv_no = #{rvNo}
+	</update>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	<select id="selectOrvList" resultMap="orvResultSet">
 		select *
 		from rv_product

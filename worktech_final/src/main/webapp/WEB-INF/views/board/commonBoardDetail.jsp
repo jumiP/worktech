@@ -229,7 +229,6 @@
 					$('#replyBox').val('');
 					
 					let socketMsg = "cReply," + bWriter + "," + data + "," + rName + "," + bNo + "," + bTitle;
-					console.log("msg: " + socketMsg);
 					socket.send(socketMsg);
 				},
 				error: function(data){
@@ -315,7 +314,6 @@
 					console.log(data);
 				}
 			});
-// 			location.href="deleteCommonReply.bo?bNo=" + bNo + "&rNo=" + rNo;
 		});
 	</script>
 </body>

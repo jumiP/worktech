@@ -183,7 +183,7 @@
 	<!-- 내 정보 수정 : 주소, 생년월일, 프로필 사진 경로 -->
 	<update id="updateMemberInfo">
 		update member
-		set address=#{address}, birthday=#{birthDay}, phone=#{phone}
+		set address=#{address}, birthday=#{birthDay}, phone=#{phone}, m_email = #{mEmail}
 		where m_No = #{mNo}
 	</update>
 	
@@ -202,11 +202,30 @@
 		<result column="M_NO" property="mNo"/>
 	</resultMap>
 	
+	<!-- 임시 비밀번호 발급 : 입력한 사원의 정보 -->
+	<select id="selectmemEmail" resultMap="memberResultSet">
+		select *
+		from member
+		where m_no = #{mNo}
+	</select>
 	
-	
-	
-	
-	
+	<select id="selectMainMemList" resultMap="memberResultSet">
+		select *
+		from (select *
+			  from member
+			  	   join department using (d_no)
+		  	  where m_status='Y' and m_grade='USER'
+			  order by m_no desc)
+		where rownum <![CDATA[ <= ]]> 20
+	</select>
+
+	<!-- 임시 비밀번호 발급 : 비밀번호 변경 -->
+	<update id="updatePwd">
+		update member
+		set pwd = #{encPwd}
+		where m_No = #{mNo}
+	</update>
+
 	
 	
 	

@@ -16,9 +16,9 @@ public interface MailService {
 
 	int insertMail(Mail m);
 
-	int getTempListCount(String empNo);
+	int getTempListCount(String mNo);
 
-	ArrayList<Mail> selectTempList(PageInfo pi, String empNo);
+	ArrayList<Mail> selectTempList(PageInfo pi, String mNo);
 
 	Mail selectTempMail(int id);
 
@@ -30,9 +30,9 @@ public interface MailService {
 
 	int insertTempMail(Mail m);
 
-	int getsendListCount(String empNo);
+	int getsendListCount(String mNo);
 
-	ArrayList<Mail> selectSendList(PageInfo pi, String empNo);
+	ArrayList<Mail> selectSendList(PageInfo pi, String mNo);
 
 
 	Member getMId(String mId);
@@ -45,11 +45,11 @@ public interface MailService {
 
 	int insertMailSRReceiver(String mId);
 
-	int insertMailSRSender(String empNo);
+	int insertMailSRSender(String mNo);
 
-	int getDeleteListCount(String empNo);
+	int getDeleteListCount(String mNo);
 
-	ArrayList<Mail> selectDeleteList(PageInfo pi, String empNo);
+	ArrayList<Mail> selectDeleteList(PageInfo pi, String mNo);
 
 	ArrayList<Member> searchEmp(String keyword);
 
@@ -59,21 +59,21 @@ public interface MailService {
 
 	Mail selectMail(Map<String, Object> map);
 
-	int getAllListCount(String empNo);
+	int getAllListCount(String mNo);
 
-	ArrayList<Mail> selectAllList(PageInfo pi, String empNo);
+	ArrayList<Mail> selectAllList(PageInfo pi, String mNo);
 
-	int selectCountNotRead(String empNo);
+	int selectCountNotRead(String mNo);
 
-	int getFavoritesListCount(String empNo);
+	int getFavoritesListCount(String mNo);
 
-	ArrayList<Mail> selectFavoritesList(PageInfo pi, String empNo);
+	ArrayList<Mail> selectFavoritesList(PageInfo pi, String mNo);
 
 	int getSearchListCount(Map<String, Object> map);
 
 	ArrayList<Mail> searchList(PageInfo pi, Map<String, Object> map);
 
-	ArrayList<Mail> selectCheckList(String empNo);
+	ArrayList<Mail> selectCheckList(String mNo);
 
 
 }

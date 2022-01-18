@@ -78,10 +78,10 @@
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="index.html"><img src="resources/dist/assets/img/logo.png" width="60%" height="auto"></a>
+                        <a href="home.do"><img src="resources/dist/assets/img/logo.png" width="60%" height="auto"></a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
-                        <a href="index.html"><img src="resources/dist/assets/img/logo_small.png" width="45%" height="auto" style="padding-top: 30%;"></a>
+                        <a href="home.do">WT</a>
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">Admin Menu</li>
@@ -89,11 +89,6 @@
                             <a href="mList.me" class="nav-link">
                                 <i class="fas fa-user-friends"></i>
                                 <span>사원 관리</span></a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="blank.html">
-                                <i class="fas fa-clock"></i>
-                                <span>연장 근무 관리</span></a>
                         </li>
                         <li class="dropdown">
                             <a href="dList.ad" class="nav-link">
@@ -127,13 +122,6 @@
                             </ul>
                         </li>
                     </ul>
-
-                    <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-                        <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
-                            <i class="fas fa-comments"></i>
-                            CHAT
-                        </a>
-                    </div>
                 </aside>
             </div>
             

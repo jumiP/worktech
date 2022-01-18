@@ -2,11 +2,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="UTF-8">
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
 	<title>새 결재 진행</title>
+	
+	<!-- jstree -->
+	<link rel="stylesheet" href="resources/dist/themes/default/style.min.css" />
+	
+	<!-- CSS Libraries -->
+	<link rel="stylesheet" href="resources/dist/assets/modules/summernote/summernote-bs4.css">
+	<link rel="stylesheet" href="resources/dist/assets/modules/codemirror/lib/codemirror.css">
+	<link rel="stylesheet" href="resources/dist/assets/modules/codemirror/theme/duotone-dark.css">
+	<link rel="stylesheet" href="resources/dist/assets/modules/jquery-selectric/selectric.css">
+
 	<style>
 		.section-header{
 			padding: 20px, 35px;
@@ -445,6 +454,19 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	
+	<!-- jstree -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+	<script src="resources/dist/libs/jquery.js"></script>
+	<script src="resources/dist/jstree.min.js"></script>
+	
+    <!-- JS Libraies -->
+	<script src="resources/dist/assets/modules/summernote/summernote-bs4.js"></script>
+	<script src="resources/dist/assets/modules/codemirror/lib/codemirror.js"></script>
+	<script src="resources/dist/assets/modules/codemirror/mode/javascript/javascript.js"></script>
+	<script src="resources/dist/assets/modules/jquery-selectric/jquery.selectric.min.js"></script>
 		
 	<script>
 	
@@ -604,11 +626,10 @@
 	  }
 	});
 	
-	
+  </script>
 	
   </script>
 	
-
 	
 
 	

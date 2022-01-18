@@ -98,7 +98,8 @@
         <div class="main-wrapper main-wrapper-1">
             <div class="navbar-bg"></div>
             <nav class="navbar navbar-expand-lg main-navbar">
-                <form class="form-inline mr-auto" id="searchItem">
+            	<c:url var="searchAdbook" value="searchAdbook.ab"/>
+                <form class="form-inline mr-auto" id="searchItem" action="${ searchAdbook }">
                     <ul class="navbar-nav mr-3">
                         <li>
                             <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg">
@@ -112,8 +113,8 @@
                         </li>
                     </ul>
                     <div class="search-element">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search"
-                            data-width="250">
+                        <input class="form-control" type="search" placeholder="이름 · 전화번호 · 이메일" aria-label="Search"
+                            data-width="250" name="searchValue">
                         <button class="btn" type="submit" id="searchIcon">
                             <i class="fas fa-search"></i>
                         </button>

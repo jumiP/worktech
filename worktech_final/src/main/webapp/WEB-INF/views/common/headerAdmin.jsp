@@ -38,7 +38,7 @@
         <div class="main-wrapper main-wrapper-1">
             <div class="navbar-bg"></div>
             <nav class="navbar navbar-expand-lg main-navbar">
-                <form class="form-inline mr-auto" id="searchItem">
+                <div class="form-inline mr-auto" id="searchItem">
                     <ul class="navbar-nav mr-3">
                         <li>
                             <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg">
@@ -52,13 +52,13 @@
                         </li>
                     </ul>
                     <div class="search-element">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                        <input class="form-control" type="search" placeholder="검색할 사원명을 입력하세요" aria-label="Search" id="searchValue"
                             data-width="250">
-                        <button class="btn" type="submit" id="searchIcon">
+                        <button class="btn" type="submit" onclick="searchMem();" id="searchIcon">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
-                </form>
+                </div>
                 <ul class="navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
@@ -125,26 +125,33 @@
                 </aside>
             </div>
             
-            </div>
-            </div>
+          </div>
+       </div>
 
-            <!-- General JS Scripts -->
-            <script src="resources/dist/assets/modules/jquery.min.js"></script>
-            <script src="resources/dist/assets/modules/popper.js"></script>
-            <script src="resources/dist/assets/modules/tooltip.js"></script>
-            <script src="resources/dist/assets/modules/bootstrap/js/bootstrap.min.js"></script>
-            <script src="resources/dist/assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
-            <script src="resources/dist/assets/modules/moment.min.js"></script>
-            <script src="resources/dist/assets/js/stisla.js"></script>
+    <!-- General JS Scripts -->
+    <script src="resources/dist/assets/modules/jquery.min.js"></script>
+    <script src="resources/dist/assets/modules/popper.js"></script>
+    <script src="resources/dist/assets/modules/tooltip.js"></script>
+    <script src="resources/dist/assets/modules/bootstrap/js/bootstrap.min.js"></script>
+    <script src="resources/dist/assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
+    <script src="resources/dist/assets/modules/moment.min.js"></script>
+    <script src="resources/dist/assets/js/stisla.js"></script>
 
-            <!-- JS Libraies -->
+    <!-- JS Libraies -->
 
-            <!-- Page Specific JS File -->
+    <!-- Page Specific JS File -->
 
-            <!-- Template JS File -->
-            <script src="resources/dist/assets/js/scripts.js"></script>
-            <script src="resources/dist/assets/js/custom.js"></script>
-
+    <!-- Template JS File -->
+    <script src="resources/dist/assets/js/scripts.js"></script>
+    <script src="resources/dist/assets/js/custom.js"></script>
+	<script>
+		function searchMem(){
+			var searchValue = $("#searchValue").val();
+			var searchCondition = 'name';
+			
+			location.href = "searchMem.me?searchValue=" + searchValue + "&searchCondition=" + searchCondition;
+		}
+	</script>
 </body>
 
 </html>

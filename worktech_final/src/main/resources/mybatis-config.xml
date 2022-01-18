@@ -22,6 +22,9 @@
 		<typeAlias type="com.groupware.worktech.alarm.model.vo.Alarm" alias="Alarm"/>
 		<typeAlias type="com.groupware.worktech.commut.model.vo.QRCode" alias="QRCode"/>
 		<typeAlias type="com.groupware.worktech.member.model.vo.Profile" alias="Profile"/>
+		<typeAlias type="com.groupware.worktech.mail.model.vo.Mail" alias="Mail"/>
+		<typeAlias type="com.groupware.worktech.mail.model.vo.MailFile" alias="MailFile"/>
+		<typeAlias type="com.groupware.worktech.mail.model.vo.MailSR" alias="MailSR"/>
 	</typeAliases>
 	
 	<mappers>
@@ -34,6 +37,7 @@
 		<mapper resource="mappers/reservation-mapper.xml"/>
 		<mapper resource="mappers/alarm-mapper.xml"/>
 		<mapper resource="mappers/commut-mapper.xml"/>
+		<mapper resource="mappers/mail-mapper.xml"/>
 	</mappers>
 	
 </configuration>

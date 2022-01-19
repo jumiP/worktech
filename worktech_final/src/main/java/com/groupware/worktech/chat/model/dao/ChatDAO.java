@@ -75,8 +75,8 @@ public class ChatDAO {
 		return (ArrayList)sqlSession.selectList("chatMapper.getMessageList", chatRoomNo);
 	}
 
-	public int insertMessage(SqlSessionTemplate sqlSession, ChatMessage chatRoom) {
-		return sqlSession.insert("chatMapper.insertMessage", chatRoom);
+	public int insertMessage(SqlSessionTemplate sqlSession, ChatMessage chatMsg) {
+		return sqlSession.insert("chatMapper.insertMessage", chatMsg);
 	}
 
 	public int updateChatRoomReadTime(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
@@ -111,8 +111,8 @@ public class ChatDAO {
 		return (ArrayList)sqlSession.selectList("chatMapper.selectNames", mNoes);
 	}
 
-	public int insertSystemMessage(SqlSessionTemplate sqlSession, ChatMessage chatRoom) {
-		return sqlSession.insert("chatMapper.insertSystemMessage", chatRoom);
+	public int insertSystemMessage(SqlSessionTemplate sqlSession, ChatMessage chatMsg) {
+		return sqlSession.insert("chatMapper.insertSystemMessage", chatMsg);
 	}
 
 }

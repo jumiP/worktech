@@ -128,7 +128,7 @@
 
 	<!-- 캘린더 관련 -->
 	<servlet>
-		<servlet-name>ScheduleServlet</servlet-name>
+		<servlet-name>calendarServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
@@ -137,7 +137,7 @@
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>ScheduleServlet</servlet-name>
+		<servlet-name>calendarServlet</servlet-name>
 		<url-pattern>*.cr</url-pattern>
 	</servlet-mapping>
 	

@@ -267,9 +267,6 @@
                                     <li>
                                         <a class="nav-link" href="myCal.cr">개인 캘린더</a>
                                     </li>
-                                    <li>
-                                        <a class="nav-link" href="teamCal.cr">팀 캘린더</a>
-                                    </li>
                                 </ul>
                         </li>
                         <li class="dropdown">

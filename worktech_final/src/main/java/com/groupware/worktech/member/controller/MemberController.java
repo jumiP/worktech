@@ -40,6 +40,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.groupware.worktech.adbook.model.exception.AdbookException;
+import com.groupware.worktech.adbook.model.service.AdbookService;
 import com.groupware.worktech.admin.model.service.AdminService;
 import com.groupware.worktech.admin.model.vo.Department;
 import com.groupware.worktech.common.PageInfo;
@@ -51,7 +53,7 @@ import com.groupware.worktech.member.model.service.MemberService;
 import com.groupware.worktech.member.model.vo.Member;
 import com.groupware.worktech.member.model.vo.Profile;
 
-@SessionAttributes({"loginUser", "qr"})
+@SessionAttributes({"loginUser", "qr", "list"})
 @Controller
 public class MemberController {
 	
@@ -67,6 +69,9 @@ public class MemberController {
 	private CommutService coService;
 	
 	@Autowired
+	private AdbookService abService;
+	
+	@Autowired
 	private BCryptPasswordEncoder bcrypt;
 	
 	
@@ -80,11 +85,21 @@ public class MemberController {
 		if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
 			model.addAttribute("loginUser", loginMember);
 			
-			QRCode qr = coService.getinfo(loginMember.getmNo());
-			if(qr != null) {
-				model.addAttribute("qr", qr);
+			if(loginMember.getmGrade().equals("USER")) {
+				QRCode qr = coService.getinfo(loginMember.getmNo());
+				
+				if(qr != null) {
+					model.addAttribute("qr", qr);
+				}
+				
+				ArrayList<Member> list = abService.selectAdbookMainList(loginMember.getmNo());
+				
+				if(list != null) {
+					model.addAttribute("list", list);
+				} else {
+					throw new AdbookException("메인 사내 주소록 조회에 실패하였습니다.");
+				}
 			}
-//				logger.info(loginMember.getmNo());
 			return "redirect:home.do";
 		} else {
 			throw new MemberException("로그인에 실패하였습니다.");

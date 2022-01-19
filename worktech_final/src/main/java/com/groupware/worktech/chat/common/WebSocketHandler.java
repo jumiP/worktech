@@ -45,16 +45,16 @@ public class WebSocketHandler extends TextWebSocketHandler implements Initializi
 		
 		String msg = message.getPayload();
 		
-		ChatMessage chatRoom = objectMapper.readValue(msg, ChatMessage.class);
+		ChatMessage chatMsg = objectMapper.readValue(msg, ChatMessage.class);
 		
 		int result = 0;
 		
-		if(chatRoom.getReadYN() != null && chatRoom.getReadYN().equals("Y")) {
+		if(chatMsg.getReadYN() != null && chatMsg.getReadYN().equals("Y")) {
 			// 받은 메시지가 시스템 메시지인 경우
-			result = cService.insertSystemMessage(chatRoom);
+			result = cService.insertSystemMessage(chatMsg);
 		} else {
 			// 받은 메시지가 일반 메시지인 경우
-			result = cService.insertMessage(chatRoom);
+			result = cService.insertMessage(chatMsg);
 		}
 		
 		if(result <= 0) {

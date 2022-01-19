@@ -82,6 +82,10 @@ public class AdbookDAO {
 		return (ArrayList)sqlSession.selectList("adbookMapper.selectSearchpAdbookList", searchMap, rowBounds);
 	}
 
+	public ArrayList<Member> selectAdbookMainList(SqlSessionTemplate sqlSession, String mNo) {
+		return (ArrayList)sqlSession.selectList("adbookMapper.selectAdbookMainList", mNo);
+	}
+
 
 	
 

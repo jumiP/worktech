@@ -90,8 +90,8 @@ public class ChatService {
 		return cDAO.getMessageList(sqlSession, chatRoomNo);
 	}
 
-	public int insertMessage(ChatMessage chatRoom) {
-		return cDAO.insertMessage(sqlSession, chatRoom);
+	public int insertMessage(ChatMessage chatMsg) {
+		return cDAO.insertMessage(sqlSession, chatMsg);
 	}
 
 	public int updateChatRoomReadTime(HashMap<String, Object> map) {
@@ -126,7 +126,7 @@ public class ChatService {
 		return cDAO.selectNames(sqlSession, mNoes);
 	}
 
-	public int insertSystemMessage(ChatMessage chatRoom) {
-		return cDAO.insertSystemMessage(sqlSession, chatRoom);
+	public int insertSystemMessage(ChatMessage chatMsg) {
+		return cDAO.insertSystemMessage(sqlSession, chatMsg);
 	}
 }

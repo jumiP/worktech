@@ -7,7 +7,24 @@
 
 <meta charset="UTF-8">
 <title>main</title>
+<link href='resources/fullcalendar/lib/main.css' rel='stylesheet' />
+<script src='resources/fullcalendar/lib/main.js'></script>
+<script src="resources/fullcalendar/lib/locales-all.js"></script>
+<script>
 
+  document.addEventListener('DOMContentLoaded', function() {
+    var srcCalendarEl = document.getElementById('source-calendar');
+
+    var srcCalendar = new FullCalendar.Calendar(srcCalendarEl, {
+      editable: true,
+      businessHours: true,
+      initialDate: new Date()
+    });
+
+    srcCalendar.render();
+  });
+
+</script>
 <style>
    .memCard{
       display: flex;
@@ -82,6 +99,54 @@
       margin-top: 12px;
    }
    
+    body {
+    margin: 20px 0 0 20px;
+    font-size: 14px;
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  }
+
+  #source-calendar {
+    float: left;
+    width: 48%;
+    margin: 0 0 20px 20px;
+  }
+  #userDiv {
+    float: left;
+    width: 45%;
+    margin: 0 5% 20px 0;
+  }
+  
+	 #userTable {
+	  width: 100%;
+	  border-collapse: collapse;
+	  background: white;
+	}
+	 
+	 #userTable th, td {
+	     border-bottom: 1px solid #e3e3e3;
+	    vertical-align: middle;
+	    text-align: center;
+	    font-size: 13px;
+	    height: 40px;
+	}
+	
+	#userTable th {
+	   border-bottom: 1px solid #e3e3e3;
+	   border-top: 1px solid #e3e3e3;
+	    background-color: rgba(0, 0, 0, 0.04);
+	   color: #666;
+	}
+  
+  	#more{
+  		float: right; display: inline-block;
+  		margin-top: 3%;
+  	}
+  	
+  	#more:hover {
+		cursor: pointer;
+		text-decoration-line : none;
+	}
+  
 </style>
 
 </head>
@@ -242,85 +307,43 @@
          </div>
          
       </section>
-      
-      <!-- todo start -->
-   <div class="col-md-5 grid-margin stretch-card">
-                     <div class="card">
-                        <div class="card-body">
-                           <h4 class="card-title">To Do Lists</h4>
-                           <div class="list-wrapper pt-2">
-                              <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
-                                 <li>
-                                    <div class="form-check form-check-flat">
-                                       <label class="form-check-label">
-                                          <input class="checkbox" type="checkbox">
-                                          Become A Travel Pro In One Easy Lesson
-                                       </label>
-                                    </div>
-                                    <i class="remove ti-trash"></i>
-                                 </li>
-                                 <li class="completed">
-                                    <div class="form-check form-check-flat">
-                                       <label class="form-check-label">
-                                          <input class="checkbox" type="checkbox" checked>
-                                          See The Unmatched Beauty Of The Great Lakes
-                                       </label>
-                                    </div>
-                                    <i class="remove ti-trash"></i>
-                                 </li>
-                                 <li>
-                                    <div class="form-check form-check-flat">
-                                       <label class="form-check-label">
-                                          <input class="checkbox" type="checkbox">
-                                          Copper Canyon
-                                       </label>
-                                    </div>
-                                    <i class="remove ti-trash"></i>
-                                 </li>
-                                 <li class="completed">
-                                    <div class="form-check form-check-flat">
-                                       <label class="form-check-label">
-                                          <input class="checkbox" type="checkbox" checked>
-                                          Top Things To See During A Holiday In Hong Kong
-                                       </label>
-                                    </div>
-                                    <i class="remove ti-trash"></i>
-                                 </li>
-                                 <li>
-                                    <div class="form-check form-check-flat">
-                                       <label class="form-check-label">
-                                          <input class="checkbox" type="checkbox">
-                                          Travelagent India
-                                       </label>
-                                    </div>
-                                    <i class="remove ti-trash"></i>
-                                 </li>
-                              </ul>
-                  </div>
-                  <div class="add-items d-flex mb-0 mt-4">
-                              <input type="text" class="form-control todo-list-input mr-2"  placeholder="Add new task">
-                              <button class="add btn btn-icon text-primary todo-list-add-btn bg-transparent"><i class="ti-location-arrow"></i></button>
-                           </div>
-                        </div>
-                        
-                     </div>
-            </div>
-              <!-- todo end -->
-            <!-- calendar start -->
-      <div class="col-xl-4 col-md-6 grid-margin stretch-card">
-                <!--datepicker-->
-                <div class="card">
+      <div class="row">
+            <div class="col-12">
+               <div class="card">
                   <div class="card-body">
-                    <div id="inline-datepicker" class="datepicker table-responsive"></div>
-                  </div>
-                </div>
-                <!--datepicker ends-->
-              </div>
-         <!-- calendar end -->
-
+                  	<div id="userDiv">
+                  		<h5 style="margin: 2% 0 4% 0; display: inline-block;">사내 주소록</h5> 
+                  		<a href="adbookList.ab" id="more">더보기 <i class="fas fa-angle-right"></i></a>
+	                  	<table class="table table-striped" id="userTable">
+							<thead>
+								<tr>
+									<th>이름</th>
+									<th>전화번호</th>
+									<th>이메일</th>
+									<th>부서</th>
+									<th>직책</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="a" items="${ list }">
+									<tr>
+										<td>${ a.name }</td>
+										<td>${ a.phone }</td>
+										<td>${ a.email }</td>
+										<td>${ a.dName }</td>
+										<td>${ a.jobGrade }</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+					<div id='source-calendar'></div>
+				  </div>
+				</div>
+			</div>
+		</div>
+   
    </div>
-   
-   
    
 <script>
 		$(function(){

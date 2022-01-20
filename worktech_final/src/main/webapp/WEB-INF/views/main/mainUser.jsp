@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -200,14 +201,41 @@
                            </td>
                         </tr>
                         <tr>
-                           <td>출근 시간</td>      
-                           <td><div id="test1" name="goWork"></div></td>                     
-                           <td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="gowork()">출근하기</button></td>
+                            <td>출근 시간</td>
+                           <c:set var="today" value="<%= new java.util.Date() %>"/>
+                           <fmt:formatDate value="${ today }" pattern="yyyy-MM-dd" var="nowDate"/>
+                           <c:if test="${ empty co.goWork }">    
+                          		<td id="test1">
+                          	 	</td> 
+                          	 	<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="gowork()">출근하기</button></td>
+                           </c:if>
+                          	<c:if test="${ !empty co.goWork }">             
+                          		 <td id="gowork">
+                          	 		<fmt:formatDate value="${ co.goWork }" pattern="HH:mm"/>
+                          	 	</td> 
+                          	 	<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="gowork()" disabled>출근하기</button></td>
+                          	 </c:if>
                         </tr>
                         <tr>
                            <td>퇴근 시간</td>
-                           <td><div id="test2" name="leaveWork"></div></td>
-                           <td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="location.href='leavework.co'">퇴근하기</button></td>
+                         	  	<c:if test="${ empty co.leaveWork }">
+                         	  		<c:choose>
+                         	  			<c:when test= "${ empty co.goWork }">
+	                         	  			<td id="test2">
+	                          	 			<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="leavework1()">퇴근하기</button></td>
+                         	  			</c:when>
+                         	  			<c:when test= "${ !empty co.goWork }">
+	                         	  			<td id="test2">
+	                          	 			<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="leavework2()">퇴근하기</button></td>
+                         	  			</c:when>
+                         	  		</c:choose>
+                          	 	</c:if>
+                          	 	<c:if test="${ !empty co.leaveWork }">
+                          	 	 <td id="leavework">
+                          	 			<fmt:formatDate value="${ co.leaveWork }" pattern="HH:mm"/>
+                          	 		<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="leavework()" disabled>퇴근하기</button></td>
+                          	 	</td>
+                          	 	</c:if>
                         </tr>
                      </table>
                   </div>
@@ -539,6 +567,19 @@
        		var qrURL = window.open('qrcode.co', 'goToWork', 'width=500px,height=500px,scrollbars=yes');
 //        		location.href='qrcode.co';
 		}
+       	
+       	function leavework1() {
+       		alert("금일 출근 기록이 없습니다.");
+		}
+       	
+       	function leavework2() {
+       		var bool = confirm('정말 퇴근하시겠습니까?');
+       		
+       		if(bool){
+       			location.href='leavework.co';
+       		}
+		}
+       	
     </script>
 
 

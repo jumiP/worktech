@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.groupware.worktech.commut.model.dao.CommutDAO;
+import com.groupware.worktech.commut.model.vo.Commut;
 import com.groupware.worktech.commut.model.vo.QRCode;
 
 @Service("coService")
@@ -28,5 +29,17 @@ public class CommutService {
 	public QRCode getinfo(String getmNo) {
 		return coDAO.selectQStatus(getmNo, sqlSession);
 		}
+	
+	public int insertGoWork(Commut c) {
+		return coDAO.insertGoWork(c, sqlSession);
+	}
+
+	public int updateLeaveWork(Commut c) {
+		return coDAO.updateLeaveWork(c, sqlSession);
+	}
+
+	public Commut selectGowork(String mNo) {
+		return coDAO.selectGowork(mNo, sqlSession);
+	}
 
 }

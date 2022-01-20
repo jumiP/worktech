@@ -103,11 +103,7 @@ public class MemberController {
 				}
 				
 				Commut co = coService.selectGowork(loginMember.getmNo());
-				if(co != null) {
-					model.addAttribute("co", co);					
-				} else {
-					throw new CommutException("출근 기록 조회에 실패하였습니다.");
-				}
+				model.addAttribute("co", co);					
 			}
 			return "redirect:home.do";
 		} else {

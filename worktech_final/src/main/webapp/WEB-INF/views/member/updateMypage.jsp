@@ -31,12 +31,11 @@
 				<h1>마이페이지</h1>
 				<div class="section-header-breadcrumb">
 					<div class="breadcrumb-item active">
-						<a href="#">마이페이지</a>
+						<a href="${ myPage.me }">마이페이지</a>
 					</div>
 					<div class="breadcrumb-item">나의 정보 수정</div>
 				</div>
 			</div>
-			
 			
 			<div class="section-body">
 				<h2 class="section-title">나의 정보 수정</h2>
@@ -45,21 +44,13 @@
 						<div class="card">
 							<div class="card-body">
 							
-							<!-- 파일업로드 필요 : encType="multipart/form-data" 사용 -->
 							<form action="mUpdate.me" method="post" encType="multipart/form-data" id="updateMypageForm">
 			                    <div class="form-group">
 			                    	<label>프로필 사진</label>
 			                    </div>
-			                    
-			                    <!-- 프로필 이미지 영역 -->
-			                    <!-- Basic avatar examples : https://picturepan2.github.io/spectre/components/avatars.html-->
-<!-- 				                <figure class="avatar avatar-xl" id="titleImgArea"> -->
-<!-- 									<img id="titleImg" src="./resources/assets/img/avatar/avatar-3.png" > -->
-<!-- 								</figure> <br><br><br> -->
 								
 								<!-- Basic avatar examples : https://picturepan2.github.io/spectre/components/avatars.html-->
 						             <figure class="avatar avatar-xl" id="titleImgArea">
-										<!-- pUrl이 비어있을때는 기본이미지 출력 -->
 										<c:choose>									
 		   									<c:when test="${ loginUser.profile.pReName eq null }" >
 		   										<img id="titleImg" src="resources/dist/assets/img/avatar/avatar-3.png" >
@@ -71,12 +62,12 @@
 									</figure>
 									<br><br><br>
 			                    
-			                    <!-- 파일 업로드 하는 부분-->
+			                    <!-- 파일 업로드 -->
 			                    <div id="fileArea">
 			                    	<input type="file" class="form-control" id="proImg" multiple="multiple" name="proImg" onchange="LoadImg(this,1)"> 
 			                    </div>
 			                    
-			                    
+			         
 			                    <div class="form-group">
 			                    	<label>사번</label>
 			                     	<input type="text" id="mNo" name="mNo"  class="form-control" readonly style="background : white;" value="${ loginUser.mNo }">
@@ -104,7 +95,6 @@
 			                    
 			                    <div class="form-group">
 			                      <label>사내 Email</label>
-			                      <!-- 사내 이메일 : 수정 불가 -->
 			                      <input type="email" class="form-control" id="email" name="email" readonly style="background : white;" value="${ loginUser.email }">
 			                    </div>
 			                    
@@ -168,6 +158,7 @@
 			                      </table>
 			                    </div>
 			                    
+			                    <!-- 주소 -->
 			                    <c:forTokens var="addr" items="${ loginUser.address }" delims="/" varStatus="status">
 									<c:if test="${ status.index eq 0 && addr >= '0' && addr <= '99999' }">
 										<c:set var="post" value="${ addr }"/>
@@ -185,6 +176,7 @@
 										<c:set var="address3" value="${ addr }"/>
 									</c:if>
 								</c:forTokens>
+								
 			                    <div class="form-group">
 			                      <label>주소</label>
 			                      <!-- https://postcode.map.daum.net/guide : 2. 사용자가 선택한 값 이용하기 -->
@@ -212,8 +204,6 @@
 			                      		</tr>
 			                      	</table>
 			                    </div>
-			                    
-			                   
 			                   
 			                  
 								<div class="card-footer text-right">
@@ -221,7 +211,7 @@
 				                    <button class="btn btn-secondary" type="button" onclick="location.href='myPage.me'">취소</button>
 								</div>
 							
-								<!-- null값으로 넘어가서 넘겨주기위해 hidden사용 -->
+								<!-- 값을 넘겨주기위해 hidden사용 -->
 			                    <input type="hidden" class="form-control" name="pwd" value="${ loginUser.pwd }">
 			                    <input type="hidden" class="form-control" name="mGrade" value="${ loginUser.mGrade }">
 			                    <input type="hidden" class="form-control" name="dNo" value="${ loginUser.dNo }">
@@ -253,7 +243,7 @@
 		});
 		
 		
-		// 각각의 영역에 파일을 첨부 했을 경우 미리 보기가 가능하도록 하는 함수
+		// 파일을 첨부 했을 경우 미리 보기가 가능하도록 하는 함수
 		function LoadImg(value, num){
 			if(value.files && value.files[0]){ // 파일이 들어왔다고 했을때 
 				var reader = new FileReader();

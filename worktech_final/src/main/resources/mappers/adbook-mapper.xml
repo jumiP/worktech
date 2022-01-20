@@ -135,6 +135,9 @@
 		<where>
 			ad_status = 'Y'
 			and ad_writer = #{adWriter}
+			<if test="adNo != null">
+				and ad_no != #{adNo}
+			</if>
 			<if test="phone != null">
 				and (ad_phone = #{phone}
 			</if>

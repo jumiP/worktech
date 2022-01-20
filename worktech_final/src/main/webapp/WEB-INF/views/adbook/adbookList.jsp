@@ -154,7 +154,7 @@ h4.section-title:hover {
 															<c:if test="${ searchValue ne null }">
 																<c:param name="searchValue" value="${ searchValue }" />
 															</c:if>
-															<c:if test="${ searchCategory ne null }">
+															<c:if test="${ selectCategory ne null }">
 																<c:param name="selectCategory" value="${ selectCategory }" />
 																<c:param name="selectValue" value="${ selectValue }" />
 															</c:if>
@@ -167,7 +167,7 @@ h4.section-title:hover {
 															<c:if test="${ searchValue ne null }">
 																<c:param name="searchValue" value="${ searchValue }" />
 															</c:if>
-															<c:if test="${ searchCategory ne null }">
+															<c:if test="${ selectCategory ne null }">
 																<c:param name="selectCategory" value="${ selectCategory }" />
 																<c:param name="selectValue" value="${ selectValue }" />
 															</c:if>
@@ -189,7 +189,7 @@ h4.section-title:hover {
 																<c:if test="${ searchValue ne null }">
 																	<c:param name="searchValue" value="${ searchValue }" />
 																</c:if>
-																<c:if test="${ searchCategory ne null }">
+																<c:if test="${ selectCategory ne null }">
 																	<c:param name="selectCategory" value="${ selectCategory }" />
 																	<c:param name="selectValue" value="${ selectValue }" />
 																</c:if>
@@ -215,7 +215,7 @@ h4.section-title:hover {
 															<c:if test="${ searchValue ne null }">
 																<c:param name="searchValue" value="${ searchValue }" />
 															</c:if>
-															<c:if test="${ searchCategory ne null }">
+															<c:if test="${ selectCategory ne null }">
 																<c:param name="selectCategory" value="${ selectCategory }" />
 																<c:param name="selectValue" value="${ selectValue }" />
 															</c:if>
@@ -228,7 +228,7 @@ h4.section-title:hover {
 															<c:if test="${ searchValue ne null }">
 																<c:param name="searchValue" value="${ searchValue }" />
 															</c:if>
-															<c:if test="${ searchCategory ne null }">
+															<c:if test="${ selectCategory ne null }">
 																<c:param name="selectCategory" value="${ selectCategory }" />
 																<c:param name="selectValue" value="${ selectValue }" />
 															</c:if>

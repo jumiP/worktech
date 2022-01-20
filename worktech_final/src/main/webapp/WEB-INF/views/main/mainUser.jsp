@@ -190,7 +190,7 @@
                      <table id="comTable" style="width: 100%; text-align: center; border: none;">
                         <tr>
                            <td style="width: 30%;"><h5 style="display: inline-block">근태 관리</h5></td>
-                           <td style="width: 50%;">0시간 0분</td>
+                           <td style="width: 50%;" id="nowTime"></td>
                            <td>
 	                           <c:if test="${ empty qr || qr.file_name eq null }">
 	                              <button class="btn btn-warning btn-sm comBtn" onclick="createQR()">QR코드 생성</button>
@@ -204,6 +204,7 @@
                             <td>출근 시간</td>
                            <c:set var="today" value="<%= new java.util.Date() %>"/>
                            <fmt:formatDate value="${ today }" pattern="yyyy-MM-dd" var="nowDate"/>
+                           <fmt:formatDate value="${ today }" pattern="HH:mm" var="nowTime"/>
                            <c:if test="${ empty co.goWork }">    
                           		<td id="test1">
                           	 	</td> 
@@ -530,15 +531,28 @@
     
         <script>
        function nowTime(){
-          var today = new Date();
-          var h = today.getHours(); // date의 시 추출
-          var m = today.getMinutes(); //date의 분 추출
-          h = dasi(h);
-          m = dasi(m);
-          
-          document.getElementById('test1').innerHTML = h+":"+m;
-          document.getElementById('test2').innerHTML = h+":"+m;
-          var t = setTimeout(function(){nowTime()},1000); // 1초마다 페이지 로드
+    	   var today = new Date();
+	 		var nowTime = document.getElementById('nowTime');
+	 		var gowork = '${ co.goWork }';
+	 		var h = today.getHours(); // date의 시 추출
+	 		var m = today.getMinutes(); //date의 분 추출
+			var goworkh = gowork.substring(11, 13); //출근 시간의 시 추출
+			var goworkm = gowork.substring(14, 16); // 출근 시간의 분 추출
+	 		
+			
+			// 추출한 숫자 Number 타입으로 변환
+	 		h = Number(h); 
+	 		m = Number(m);
+	 		goworkh = Number(goworkh);
+	 		goworkm = Number(goworkm);
+	 		
+	 		gh = h-goworkh;
+	 		gm = m-goworkm;
+	 		
+	 		
+	 		nowTime.innerHTML = gh+"시간"+"&nbsp;"+"&nbsp;"+gm+"분";
+	 		
+	 		setTimeout('nowTime()', 1000); // 1초마다 페이지 로드
        }
        
        function dasi(i){

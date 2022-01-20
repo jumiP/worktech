@@ -55,8 +55,8 @@ public class RvService {
 		return rvDAO.getCountUpdate(sqlSession, rvp);
 	}
 
-	public ArrayList<Reservation> selectMyOrvList() {
-		return rvDAO.selectMyOrvList(sqlSession);
+	public ArrayList<Reservation> selectMyOrvList(String rvMember) {
+		return rvDAO.selectMyOrvList(sqlSession, rvMember);
 	}
 
 	public Reservation myOrvDetail(int rvNo) {
@@ -69,6 +69,10 @@ public class RvService {
 
 	public int getCountDelete(Reservation rvp) {
 		return rvDAO.getCountDelete(sqlSession, rvp);
+	}
+
+	public int updateMyOtherReservation() {
+		return rvDAO.updateMyOtherReservation(sqlSession);
 	}
 
 	

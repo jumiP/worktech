@@ -177,7 +177,7 @@
                         <a href="home.do"><img src="resources/dist/assets/img/logo.png" width="60%" height="auto"></a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
-                        <a href="home.do"><img src="resources/dist/assets/img/logo_small.png" width="45%" height="auto" style="padding-top: 30%;"></a>
+                        <a href="home.do">WT</a>
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">User Menu</li>
@@ -254,21 +254,21 @@
                                 <li>
                                     <a class="nav-link" href="components-chat-box.html">익명 게시판</a>
                                 </li>
-                                <li>
-                                    <a class="nav-link" href="components-chat-box.html">화상 회의</a>
-                                </li>
+<!--                                 <li> -->
+<!--                                     <a class="nav-link" href="zoom.bo">화상 회의</a> -->
+<!--                                 </li> -->
                             </ul>
                         </li>
-                        <li class="dropdown">
-                            <a href="myCal.cr" class="nav-link has-dropdown">
-                                <i class="fas fa-calendar-alt"></i>
-                                <span>캘린더</span></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="nav-link" href="myCal.cr">개인 캘린더</a>
-                                    </li>
-                                </ul>
-                        </li>
+<!--                         <li class="dropdown"> -->
+<!--                             <a href="myCal.cr" class="nav-link has-dropdown"> -->
+<!--                                 <i class="fas fa-calendar-alt"></i> -->
+<!--                                 <span>캘린더</span></a> -->
+<!--                                 <ul class="dropdown-menu"> -->
+<!--                                     <li> -->
+<!--                                         <a class="nav-link" href="myCal.cr">개인 캘린더</a> -->
+<!--                                     </li> -->
+<!--                                 </ul> -->
+<!--                         </li> -->
                         <li class="dropdown">
                             <a href="myPage.me" class="nav-link">
                                 <i class="fas fa-user-lock"></i>

@@ -67,7 +67,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-title">관리자 님 환영합니다!</div>
-                            <a href="#" class="dropdown-item has-icon text-danger">
+                            <a href="logout.me" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i>
                                 Logout
                             </a>

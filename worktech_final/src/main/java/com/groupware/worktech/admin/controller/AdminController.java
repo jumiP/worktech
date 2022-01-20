@@ -202,20 +202,21 @@ public class AdminController {
 		return "adminNoticeUpdate";
 	}
 	
+	@Transactional
 	@RequestMapping("nupdate.ad")
 	public String updateNotice(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile,
 							   @RequestParam(value="fNo",required=false) ArrayList<Integer> fNoes, @RequestParam("page") int page, 
-							  HttpServletRequest request, Model model) {
+							   @RequestParam("flag") int flag, HttpServletRequest request, Model model) {
+		ArrayList<BoardFile> oldFileList = bService.selectNotice(b.getbNo(), "Y").getFileList();
+
 		// 저장되어 있는 파일 삭제
 		if(fNoes != null && !fNoes.isEmpty()) { 
-			ArrayList<BoardFile> fileList = bService.selectNotice(b.getbNo(), "Y").getFileList();
 			
-			for(int i = 0; i < fileList.size(); i++) {
-				int fNo = fileList.get(i).getfNo();
+			for(int i = 0; i < oldFileList.size(); i++) {
+				int fNo = oldFileList.get(i).getfNo();
 				
 				if(!fNoes.contains(fNo)) {
-					
-					deleteFile(fileList.get(i).getfRname(), request);
+					deleteFile(oldFileList.get(i).getfRname(), request);
 					
 					int result = bService.deleteNoticeFile(fNo);
 					
@@ -225,11 +226,25 @@ public class AdminController {
 				}
 				
 			}
+		} else if(flag == 1) {
+			for(int i = 0; i < oldFileList.size(); i++) {
+				int fNo = oldFileList.get(i).getfNo();
+				
+				deleteFile(oldFileList.get(i).getfRname(), request);
+				
+				int result = bService.deleteNoticeFile(fNo);
+				
+				if(result <= 0) {
+					throw new BoardException("첨부 파일 삭제에 실패하였습니다."); 
+				}
+			}
 		}
 		
 		// 새로 추가한 파일 등록
-		ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
-		if(reloadFile != null && reloadFile[0].getOriginalFilename() != null) {
+		ArrayList<BoardFile> fileList = null;
+		
+		if(reloadFile != null && !reloadFile[0].getOriginalFilename().trim().equals("")) {
+			fileList = new ArrayList<BoardFile>();
 			for(int i=0; i<reloadFile.length; i++) {
 				HashMap<String, String> fileInfo = saveFile(reloadFile[i], request); 
 				
@@ -249,7 +264,13 @@ public class AdminController {
 		
 		int result = bService.updateNotice(b);
 		
-		if(result >= b.getFileList().size() + 1) {
+		int length = 0;
+		
+		if(fileList != null) {
+			length = fileList.size();
+		} 
+		
+		if(result >= length + 1) {
 			model.addAttribute("page", page);
 			return "redirect:ndetail.ad?bNo=" + b.getbNo() + "&upd=Y";
 		} else {

@@ -549,6 +549,8 @@
 	 		gh = h-goworkh;
 	 		gm = m-goworkm;
 	 		
+	 		console.log(gh);
+	 		
 	 		
 	 		nowTime.innerHTML = gh+"시간"+"&nbsp;"+"&nbsp;"+gm+"분";
 	 		

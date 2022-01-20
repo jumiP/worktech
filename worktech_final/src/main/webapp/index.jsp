@@ -2305,8 +2305,8 @@ label+.MuiInput-formControl {
 }
 
 .jss3 {
-	width: 165px;
-	margin-bottom: 32px;
+	width: 130px;
+	margin-bottom: 20px;
 }
 
 .jss4 {
@@ -2461,7 +2461,7 @@ label+.MuiInput-formControl {
 	<div id="root">
 		<div class="MuiGrid-root jss1 MuiGrid-container">
 			<div class="jss2">
-				<img src="resources/dist/assets/img/login_logo.png" alt="logo"
+				<img src="resources/dist/assets/img/login_logo_2.png" alt="logo"
 					class="jss3">
 				<p class="MuiTypography-root jss4 MuiTypography-body1">WorkTech</p>
 			</div>

@@ -25,6 +25,7 @@
 		<typeAlias type="com.groupware.worktech.mail.model.vo.Mail" alias="Mail"/>
 		<typeAlias type="com.groupware.worktech.mail.model.vo.MailFile" alias="MailFile"/>
 		<typeAlias type="com.groupware.worktech.mail.model.vo.MailSR" alias="MailSR"/>
+		<typeAlias type="com.groupware.worktech.commut.model.vo.Commut" alias="Commut"/>
 	</typeAliases>
 	
 	<mappers>
@@ -38,6 +39,7 @@
 		<mapper resource="mappers/alarm-mapper.xml"/>
 		<mapper resource="mappers/commut-mapper.xml"/>
 		<mapper resource="mappers/mail-mapper.xml"/>
+		<mapper resource="mappers/calendar-mapper.xml"/>
 	</mappers>
 	
 </configuration>

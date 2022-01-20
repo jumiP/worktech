@@ -207,7 +207,7 @@
 	<div class="main-content">
 		<section class="section">
 			<div class="section-header">
-				<h1>예약 자산 추가</h1>
+				<h1>회의실 예약</h1>
 				<div class="section-header-breadcrumb">
 					<div class="breadcrumb-item active">
 						<a href="#">예약</a>

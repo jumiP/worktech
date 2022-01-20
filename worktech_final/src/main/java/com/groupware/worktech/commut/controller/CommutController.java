@@ -21,7 +21,7 @@ import com.groupware.worktech.commut.model.vo.QRCode;
 import com.groupware.worktech.commut.qrutil.QrUtil;
 import com.groupware.worktech.member.model.vo.Member;
 
-@SessionAttributes("qr")
+@SessionAttributes("co")
 @Controller
 public class CommutController {
 	

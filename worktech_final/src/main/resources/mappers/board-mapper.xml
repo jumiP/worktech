@@ -326,4 +326,139 @@
 		where b_status='Y'
 		order by b_no desc
 	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="selectAnonyList" resultMap="noticeResultSet">
+		select b_no, b_title, b_content, b_date, b_count, b_type, b_writer, b_status,
+				f_no, f_url, f_name, f_rname
+		from board
+				left join board_file using (b_no)
+		where b_status = 'N'
+			  and b_type = 'ANONY'
+		order by b_no desc
+	</select>
+	
+	<insert id="insertAnony">
+		insert into board
+		values(SEQ_BOARD.NEXTVAL, #{bTitle}, #{bContent}, SYSDATE, DEFAULT, 'ANONY', NULL, 
+				#{bWriter}, NULL, DEFAULT)
+	</insert>
+	
+	<select id="selectAnonyBoard" resultMap="anonyBoardResultSet">
+		select b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, b_status, f_no, f_url, f_name, f_rname
+		from board
+			 join member on(b_writer = m_no)
+			 left join board_file using(b_no)
+		where b_status = 'N' and b_no = #{bNo}
+	</select>
+	
+	<resultMap type="Board" id="anonyBoardResultSet">
+		<id column="B_NO" property="bNo"/>
+		<result column="B_TITLE" property="bTitle"/>
+		<result column="B_CONTENT" property="bContent"/>
+		<result column="B_DATE" property="bDate"/>
+		<result column="B_COUNT" property="bCount"/>
+		<result column="B_TYPE" property="bType"/>
+		<result column="B_WRITER" property="bWriter"/>
+		<result column="NAME" property="name"/>
+		<result column="B_STATUS" property="bStatus"/>
+		<collection property="fileList" resultMap="fileResultSet" javaType="arrayList"/>
+	</resultMap>
+	
+	<update id="updateAnonyBoard">
+		update board
+		set b_title = #{bTitle}, b_content = #{bContent}
+		where b_no = #{bNo}
+		and b_status = 'N'
+	</update>
+	
+	<update id="deleteAnony">
+		update board
+		set b_status = 'Y'
+		where b_no = #{bNo}
+	</update>
+	
+	<insert id="insertAnonyReply">
+		insert into reply
+		values(seq_reply.nextval, #{rContent}, sysdate, #{bNo}, #{rName}, default)
+	</insert>
+	
+	<select id="getAnonySearchListCount" resultType="_int">
+		select count(*)
+		from board
+		<where>
+			<if test="searchCategory == 'title'">
+				b_title like '%' || #{searchValue} || '%'
+			</if>
+			<if test="searchCategory == 'content'">
+				and b_content like '%' || #{searchValue} || '%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectAnonySearchList" resultMap="anonyBoardResultSet">
+			select b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, b_status, f_no, f_url, f_name, f_rname
+		from board
+			 join member on(b_writer = m_no)
+			 left join board_file using(b_no)
+		<where>
+			b_type = 'ANONY'
+			and b_status = 'N'
+			<if test="searchCategory == 'title'">
+				and b_title like '%' || #{searchValue} || '%'
+			</if>
+			<if test="searchCategory == 'content'">
+				and b_content like '%' || #{searchValue} || '%'
+			</if>
+		</where>	  
+		order by b_no desc
+	</select>
 </mapper>

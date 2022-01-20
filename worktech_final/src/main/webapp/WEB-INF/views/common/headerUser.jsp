@@ -252,7 +252,7 @@
                                     <a class="nav-link" href="commonList.bo">일반 게시판</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="components-chat-box.html">익명 게시판</a>
+                                    <a class="nav-link" href="anonyList.bo">익명 게시판</a>
                                 </li>
                                 <li>
                                     <a class="nav-link" href="components-chat-box.html">화상 회의</a>

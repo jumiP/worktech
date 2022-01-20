@@ -27,7 +27,7 @@
 				<h1>부서 등록</h1>
 				<div class="section-header-breadcrumb">
 					<div class="breadcrumb-item active">
-						<a href="#">부서 관리</a>
+						<a href="dList.ad">부서 관리</a>
 					</div>
 					<div class="breadcrumb-item">부서 등록</div>
 				</div>

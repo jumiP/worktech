@@ -2,14 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-
 <html>
-<head>
-<script src="resources/js/jquery-3.6.0.min.js"></script>
-    <title>일반 게시판</title>
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-  
+<head>
+    <title>익명 게시판 목록</title>
+
     <style>
         table {
             border-collapse: collapse;
@@ -60,56 +57,30 @@
             display: flex;
             justify-content: center;
         }
-        
-        .select {
-        	border: 1px solid white;
-        }
-        
-        .select:focus{
-        	border: 1px solid black;
-        }
     </style>
 </head>
 
 <body>
-	<c:if test="${ loginUser.mGrade eq 'USER' }">
-		<c:import url="../common/headerUser.jsp" />
-	</c:if>
-    <c:if test="${ loginUser.mGrade eq 'ADMIN' }">
-    	<c:import url="../common/headerAdmin.jsp" />
-    </c:if>
-    
+    <c:import url="../common/headerUser.jsp" />
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>일반 게시판</h1>
+                <h1>익명 게시판</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item">게시판</div>
-                    <div class="breadcrumb-item">일반 게시판</div>
+                    <div class="breadcrumb-item">익명 게시판</div>
                 </div>
             </div>
+
             <div class="section-body">
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 style="font-size: 20px;">일반 게시판 목록</h4>
+                                <h4 style="font-size: 20px;">익명 게시판 목록</h4>
                             </div>
                             <div class="card-body">
-                            	<div class="category">
-	                            	<i class="fas fa-chevron-circle-down"></i>
-	                            	<select class="select" name="categoryNo" onchange="selectCategory(this)">
-	                            		<option selected disabled>카테고리</option>
-	                            		<option value="0">전체</option>
-	                            		<option value="100" <c:if test="${ category == 100 }">selected</c:if>>회의</option>
-	                            		<option value="200" <c:if test="${ category == 200 }">selected</c:if>>출장</option>
-	                            		<option value="300" <c:if test="${ category == 300 }">selected</c:if>>홍보</option>
-	                            		<option value="400" <c:if test="${ category == 400 }">selected</c:if>>기타</option>
-	                            		<option value="500" <c:if test="${ category == 500 }">selected</c:if>>자료</option>
-	                            	</select>
-                            	</div>
-                            	<br>
                                 <table class="table" id="tb">
                                     <thead>
                                         <tr>
@@ -121,23 +92,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<c:forEach var="n" items="${ list }">
+                                    	<c:forEach var="b" items="${ list }">
 	                                        <tr>
-	                                            <td style="height: 45px;">${ n.bNo }</td>
-												<td>
-													[ ${ n.categoryName } ] ${ n.bTitle }
-													<c:if test="${ !empty n.fileList.get(0).fName }">
+	                                            <td style="height: 45px;">${ b.bNo }</td>
+                                    			<td>${ b.bTitle }
+                                    				<c:if test="${ !empty n.fileList.get(0).fName }">
                                     					&nbsp;<i class="fas fa-save"></i>
-                                    				</c:if>
-												</td>
-                                    			<td>${ n.name }</td>
-                                    			<td>${ n.bDate }</td>
-                                    			<td>${ n.bCount }</td>
+                                    				</c:if>	
+                                    			</td>
+                                    			<td>익명</td>
+                                    			<td>${ b.bDate }</td>
+                                    			<td>${ b.bCount }</td>
                                     		</tr>
                                     	</c:forEach>
                                     </tbody>
                                 </table>
-                                <button class="btn btn-primary push" onclick="location.href='cinsertView.bo';">글쓰기</button>
+                                <button class="btn btn-primary push" onclick="location.href='ainsertView.bo';">글쓰기</button>
                                 <br clear="all">
                                 <div class="card-body paging-area">
                                     <div class="buttons">
@@ -158,33 +128,20 @@
                                                 	</li>
 	                                            </c:if>
                                             	<c:if test="${ pi.currentPage > 1 }">
-                                            		<c:url var="start" value="${ loc }">
-														<c:param name="page" value="1"/>
-														<c:if test="${ category ne null }">
-															<c:param name="category" value="${ category }"/>
-														</c:if>
-														<c:if test="${ searchCategory ne null }">
-															<c:param name="searchCategory" value="${ searchCategory }"/>
-															<c:param name="searchValue" value="${ searchValue }"/>
-														</c:if>
-													</c:url>
-	                                                <li class="page-item">
-	                                                    <a class="page-link" href="${ start }" aria-label="Previous">
-	                                                        <i class="fas fa-angle-double-left"></i>
-	                                                    </a>
-	                                                </li>
-													<c:url var="before" value="${ loc }">
+                                            		<c:url var="before" value="noticeList.ad">
 														<c:param name="page" value="${ pi.currentPage - 1 }"/>
-														<c:if test="${ category ne null }">
-															<c:param name="category" value="${ category }"/>
-														</c:if>
-														<c:if test="${ searchCategory ne null }">
-															<c:param name="searchCategory" value="${ searchCategory }"/>
-															<c:param name="searchValue" value="${ searchValue }"/>
-														</c:if>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ before }" aria-label="Previous">
+	                                                        <i class="fas fa-angle-double-left"></i>
+	                                                    </a>
+	                                                </li>
+	                                                
+                                            		<c:url var="start" value="noticeList.ad">
+														<c:param name="page" value="1"/>
+													</c:url>
+	                                                <li class="page-item">
+	                                                    <a class="page-link" href="${ start }" aria-label="Previous">
 	                                                        <i class="fas fa-angle-left"></i>
 	                                                    </a>
 	                                                </li>
@@ -196,15 +153,8 @@
 	                                            	</c:if>
 	                                            
 	                                            	<c:if test="${ p ne pi.currentPage }">
-		                                            	<c:url var="pagination" value="${ loc }">
+		                                            	<c:url var="pagination" value="noticeList.ad">
 															<c:param name="page" value="${ p }"/>
-															<c:if test="${ category ne null }">
-																<c:param name="category" value="${ category }"/>
-															</c:if>
-															<c:if test="${ searchCategory ne null }">
-																<c:param name="searchCategory" value="${ searchCategory }"/>
-																<c:param name="searchValue" value="${ searchValue }"/>
-															</c:if>
 														</c:url>
 	                                            		<li class="page-item">
 	                                            			<a class="page-link" href="${ pagination }">${ p }</a>
@@ -227,15 +177,8 @@
 												</c:if>
 
 												<c:if test="${ pi.currentPage < pi.maxPage }">
-													<c:url var="after" value="${ loc }">
+													<c:url var="after" value="noticeList.ad">
 														<c:param name="page" value="${ pi.currentPage + 1 }"/>
-														<c:if test="${ category ne null }">
-															<c:param name="category" value="${ category }"/>
-														</c:if>
-														<c:if test="${ searchCategory ne null }">
-															<c:param name="searchCategory" value="${ searchCategory }"/>
-															<c:param name="searchValue" value="${ searchValue }"/>
-														</c:if>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ after }" aria-label="Next">
@@ -243,15 +186,8 @@
 	                                                    </a>
 	                                                </li>
 													
-													<c:url var="end" value="${ loc }">
+													<c:url var="end" value="noticeList.ad">
 														<c:param name="page" value="${ pi.maxPage }"/>
-														<c:if test="${ category ne null }">
-															<c:param name="category" value="${ category }"/>
-														</c:if>
-														<c:if test="${ searchCategory ne null }">
-															<c:param name="searchCategory" value="${ searchCategory }"/>
-															<c:param name="searchValue" value="${ searchValue }"/>
-														</c:if>
 													</c:url>
 	                                                <li class="page-item">
 	                                                    <a class="page-link" href="${ end }" aria-label="Next">
@@ -264,20 +200,17 @@
                                     </div>
                                 </div>
                                 <div class="search">
-                                	<c:url var="search" value="searchCommon.bo"/>
-                                	<form action="${ search }" onsubmit="return checkInput()">
-                                		<c:if test="${ category ne null }">
-                                			<input type="hidden" name="category" value="${ category }">
-                                		</c:if>
+                                	<c:url var="search" value="searchAnony.bo"/>
+                                	<form action="${ search }">
 	                                    <select name="searchCategory" style="height: 30px; width: 80px; border: 1px solid #e3e3e3;">
 	                                        <option value="title">제목</option>
 	                                        <option value="content">내용</option>
-	                                        <option value="writer">작성자</option>
 	                                    </select>
-	                                    <input name="searchValue" id="inputValue" type="text" style="height: 30px; width: 200px; border: 1px solid #e3e3e3;">
+	                                    <input name="searchValue" type="text" style="height: 30px; width: 200px; border: 1px solid #e3e3e3;">
 	                                    <button class="Searchbtn">검색</button>
                                 	</form>
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -287,10 +220,6 @@
     <c:import url="../common/footer.jsp" />
     
     <script>
-//     	var category = '${category}';
-//     	var searchCategory = '${searchCategory}';
-//     	var searchValue = '${searchValue}';
-    	
 	    $(function() {
 			$('#tb tbody td').mouseenter(function() {
 				$(this).parent().css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
@@ -298,44 +227,11 @@
 				$(this).parent().css({'background':'white', 'font-weight':'normal'});
 			}).click(function() {
 				var bNo = $(this).parent().children().eq(0).text();
-				
-				<c:url var="commonDetail" value="cdetail.bo">
-					<c:param name="page" value="${ pi.currentPage }"/>
-					<c:if test="${ category ne null }">
-						<c:param name="category" value="${ category }"/>
-					</c:if>
-					<c:if test="${ searchCategory ne null }">
-						<c:param name="searchCategory" value="${ searchCategory }"/>
-						<c:param name="searchValue" value="${ searchValue }"/>
-					</c:if>
-				</c:url>
-				
-				location.href = "${ commonDetail }" + "&bNo=" + bNo;
+				location.href="adetail.bo?bNo=" + bNo + '&page=' + ${pi.currentPage};
 			});
 		});
-	    
-		// 카테고리 선택 시
-	    function selectCategory(value){
-	    	var categoryNo = $('option:selected').val();
-			
-	    	if(categoryNo == '0'){
-	    		location.href = "commonList.bo";
-	    	} else {
-	    		location.href = "commonList.bo?category=" + categoryNo;
-	    	}
-	    }
-		
-		function checkInput() {
-			var value = $('#inputValue').val();
-			
-			if(value == '' || value == null){
-				alert('검색어를 입력하세요');
-				return false;
-			} else {
-				return true;
-			}
-		}
-	    
     </script>
+
 </body>
+
 </html>

@@ -170,4 +170,18 @@
 			  or ad_job like '%'||#{searchValue}||'%')
 		order by ad_no desc
 	</select>
+	
+	<select id="selectAdbookMainList" resultMap="adbookResultSet">
+		select *
+		from (select m_no, email, name, job_grade, phone, d_no, d_name, m_hired, 
+			  	     profile_no, p_url, p_name, p_rname
+			  from member
+				   left join department using(d_no)
+				   left join profile using(m_no)
+			  where m_status = 'Y'
+			  		and m_no != #{mNo}
+			  		and m_grade = 'USER'
+			  order by m_no)
+		where rownum <![CDATA[<=]]> 6
+	</select>
 </mapper>

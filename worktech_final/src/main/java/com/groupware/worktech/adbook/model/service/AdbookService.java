@@ -79,6 +79,10 @@ public class AdbookService {
 		return abDAO.selectSearchpAdbookList(sqlSession, pi, searchMap);
 	}
 
+	public ArrayList<Member> selectAdbookMainList(String mNo) {
+		return abDAO.selectAdbookMainList(sqlSession, mNo);
+	}
+
 
 	
 }

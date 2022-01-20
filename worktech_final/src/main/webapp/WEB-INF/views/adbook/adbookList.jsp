@@ -65,9 +65,7 @@ h4.section-title:hover {
 								<div class="card-header-form">
 
 									<!-- 사내 주소록 검색 -->
-									<c:url var="searchAdbook" value="searchAdbook.ab">
-										<c:param name="page" value="${ pi.currentPage }" />
-									</c:url>
+									<c:url var="searchAdbook" value="searchAdbook.ab"/>
 									<form action="${ searchAdbook }">
 										<div class="input-group">
 											<input type="text" class="form-control" name="searchValue" placeholder="이름 · 전화번호 · 이메일">

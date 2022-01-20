@@ -40,6 +40,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.groupware.worktech.adbook.model.exception.AdbookException;
+import com.groupware.worktech.adbook.model.service.AdbookService;
 import com.groupware.worktech.admin.model.service.AdminService;
 import com.groupware.worktech.admin.model.vo.Department;
 import com.groupware.worktech.common.PageInfo;
@@ -51,7 +53,7 @@ import com.groupware.worktech.member.model.service.MemberService;
 import com.groupware.worktech.member.model.vo.Member;
 import com.groupware.worktech.member.model.vo.Profile;
 
-@SessionAttributes("loginUser")
+@SessionAttributes({"loginUser", "qr", "list"})
 @Controller
 public class MemberController {
 	
@@ -67,6 +69,9 @@ public class MemberController {
 	private CommutService coService;
 	
 	@Autowired
+	private AdbookService abService;
+	
+	@Autowired
 	private BCryptPasswordEncoder bcrypt;
 	
 	
@@ -74,17 +79,27 @@ public class MemberController {
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
 	public String login(Member m, Model model) {	
 		
-		System.out.println(bcrypt.encode(m.getPwd()));
+//		System.out.println(bcrypt.encode(m.getPwd()));
 		
 		Member loginMember = mService.memberLogin(m);
 		if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
 			model.addAttribute("loginUser", loginMember);
 			
-			QRCode qr = coService.getinfo(loginMember.getmNo());
-			if(qr != null) {
-				model.addAttribute("qr", qr);
+			if(loginMember.getmGrade().equals("USER")) {
+				QRCode qr = coService.getinfo(loginMember.getmNo());
+				
+				if(qr != null) {
+					model.addAttribute("qr", qr);
+				}
+				
+				ArrayList<Member> list = abService.selectAdbookMainList(loginMember.getmNo());
+				
+				if(list != null) {
+					model.addAttribute("list", list);
+				} else {
+					throw new AdbookException("메인 사내 주소록 조회에 실패하였습니다.");
+				}
 			}
-//				logger.info(loginMember.getmNo());
 			return "redirect:home.do";
 		} else {
 			throw new MemberException("로그인에 실패하였습니다.");
@@ -685,12 +700,10 @@ public class MemberController {
 		
 	// admin main ajax
 	@RequestMapping("mListMain.me")
-	public void mListMain(Model model, HttpServletResponse response) {
+	public void mListMain(HttpServletResponse response) {
 		
 		// 메인 사원 목록 
 		ArrayList<Member> mList = mService.selectMainMemList();
-		// 총 사원의 수
-		int memCount = mService.countMember();
 		
 		if(mList != null) {
 			
@@ -701,17 +714,28 @@ public class MemberController {
 			Gson gson = gb.create();
 			try {
 				gson.toJson(mList, response.getWriter());
-				gson.toJson(memCount, response.getWriter());
 			} catch (JsonIOException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
-			model.addAttribute("mList", mList);
-//			model.addAttribute("memCount", memCount);
 		} else {
 			throw new MemberException("메인 화면 사원 목록 조회에 실패하였습니다.");
 		}
+	}
+	
+	@RequestMapping("mGetMaitCount.me")
+	public void mMainCount(HttpServletResponse response) {
+		// 총 사원의 수
+		int memCount = mService.countMember();
+		
+		try {
+			response.getWriter().println(memCount);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

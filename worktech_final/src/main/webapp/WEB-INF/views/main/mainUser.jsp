@@ -530,15 +530,28 @@
     
         <script>
        function nowTime(){
-          var today = new Date();
-          var h = today.getHours(); // date의 시 추출
-          var m = today.getMinutes(); //date의 분 추출
-          h = dasi(h);
-          m = dasi(m);
-          
-          document.getElementById('test1').innerHTML = h+":"+m;
-          document.getElementById('test2').innerHTML = h+":"+m;
-          var t = setTimeout(function(){nowTime()},1000); // 1초마다 페이지 로드
+    	   var today = new Date();
+	 		var nowTime = document.getElementById('nowTime');
+	 		var gowork = '${ co.goWork }';
+	 		var h = today.getHours(); // date의 시 추출
+	 		var m = today.getMinutes(); //date의 분 추출
+			var goworkh = gowork.substring(11, 13); //출근 시간의 시 추출
+			var goworkm = gowork.substring(14, 16); // 출근 시간의 분 추출
+	 		
+			
+			// 추출한 숫자 Number 타입으로 변환
+	 		h = Number(h); 
+	 		m = Number(m);
+	 		goworkh = Number(goworkh);
+	 		goworkm = Number(goworkm);
+	 		
+	 		gh = h-goworkh;
+	 		gm = m-goworkm;
+	 		
+	 		
+	 		nowTime.innerHTML = gh+"시간"+"&nbsp;"+"&nbsp;"+gm+"분";
+	 		
+	 		setTimeout('nowTime()', 1000); // 1초마다 페이지 로드
        }
        
        function dasi(i){

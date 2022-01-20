@@ -182,7 +182,8 @@ public class BoardController {
 	}
 	
 	@RequestMapping("cupdateView.bo")
-	public String commonBoardUpdateView(@RequestParam("bNo") int bNo, @RequestParam("upd") String upd, Model model) {
+	public String commonBoardUpdateView(@RequestParam("bNo") int bNo, 
+										@RequestParam("upd") String upd, Model model) {
 		Board b = bService.selectCommonBoard(bNo, upd);
 		
 		model.addAttribute("b", b);
@@ -194,7 +195,8 @@ public class BoardController {
 	@Transactional
 	@RequestMapping("cupdate.bo")
 	public String commonBoardUpdate(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile,
-									@RequestParam(value = "fNo", required = false) ArrayList<Integer> fNoes, @RequestParam("upd") String upd,
+									@RequestParam(value = "fNo", required = false) ArrayList<Integer> fNoes, 
+									@RequestParam("upd") String upd,
 									@RequestParam("flag") int flag, HttpServletRequest request, Model model) {
 		
 		ArrayList<BoardFile> oldFileList = bService.selectCommonBoard(b.getbNo(), upd).getFileList();

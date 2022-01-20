@@ -46,14 +46,16 @@ import com.groupware.worktech.admin.model.service.AdminService;
 import com.groupware.worktech.admin.model.vo.Department;
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.common.Pagination;
+import com.groupware.worktech.commut.model.exception.CommutException;
 import com.groupware.worktech.commut.model.service.CommutService;
+import com.groupware.worktech.commut.model.vo.Commut;
 import com.groupware.worktech.commut.model.vo.QRCode;
 import com.groupware.worktech.member.model.exception.MemberException;
 import com.groupware.worktech.member.model.service.MemberService;
 import com.groupware.worktech.member.model.vo.Member;
 import com.groupware.worktech.member.model.vo.Profile;
 
-@SessionAttributes({"loginUser", "qr", "list"})
+@SessionAttributes({"loginUser", "qr", "list",  "co"})
 @Controller
 public class MemberController {
 	
@@ -98,6 +100,13 @@ public class MemberController {
 					model.addAttribute("list", list);
 				} else {
 					throw new AdbookException("메인 사내 주소록 조회에 실패하였습니다.");
+				}
+				
+				Commut co = coService.selectGowork(loginMember.getmNo());
+				if(co != null) {
+					model.addAttribute("co", co);					
+				} else {
+					throw new CommutException("출근 기록 조회에 실패하였습니다.");
 				}
 			}
 			return "redirect:home.do";

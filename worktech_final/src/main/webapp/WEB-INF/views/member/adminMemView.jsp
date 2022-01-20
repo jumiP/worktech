@@ -101,7 +101,7 @@
 				                  <div class="card-footer text-right">
 <!-- 				                    <button class="btn btn-primary mr-1" type="button" id="updatePwd">비밀정보 변경</button> -->
 				                    <button class="btn btn-primary mr-1" type="submit" >사원 정보 변경</button>
-				                    <button class="btn btn-secondary" type="button" id="delete">사원 삭제</button>
+				                    <button class="btn btn-danger" type="button" id="delete">사원 삭제</button>&nbsp;
 				                  	<button class="btn btn-secondary" type="button" onclick="location.href='mList.me'">목록으로 돌아가기</button>
 				                  </div>
 								</form>					

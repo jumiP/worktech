@@ -187,7 +187,7 @@
                      <table id="comTable" style="width: 100%; text-align: center; border: none;">
                         <tr>
                            <td style="width: 30%;"><h5 style="display: inline-block">근태 관리</h5></td>
-                           <td style="width: 50%;">0시간 0분</td>
+                           <td style="width: 50%;" id="nowTime"></td>
                            <td>
 	                           <c:if test="${ empty qr || qr.file_name eq null }">
 	                              <button class="btn btn-warning btn-sm comBtn" onclick="createQR()">QR코드 생성</button>
@@ -201,6 +201,7 @@
                             <td>출근 시간</td>
                            <c:set var="today" value="<%= new java.util.Date() %>"/>
                            <fmt:formatDate value="${ today }" pattern="yyyy-MM-dd" var="nowDate"/>
+                           <fmt:formatDate value="${ today }" pattern="HH:mm" var="nowTime"/>
                            <c:if test="${ empty co.goWork }">    
                           		<td id="test1">
                           	 	</td> 

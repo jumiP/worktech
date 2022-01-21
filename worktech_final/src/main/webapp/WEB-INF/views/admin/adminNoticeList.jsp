@@ -8,6 +8,17 @@
     <title>공지사항 게시판 목록</title>
 
     <style>
+        
+         h4.section-title {
+			top: -13px;
+			display: inline;
+		}
+	
+		h4.section-title:hover{
+			cursor: pointer;
+			color: #67d4ef;
+		}
+		
         table {
             border-collapse: collapse;
             background: white;
@@ -69,6 +80,21 @@
         #searchValue{
         	padding-left: 5px;
         }
+        
+        
+        /* 검색창 css 테스트중 */
+/*         #searchCondition{ border-radius : 30px; }  */
+        
+        .searchOption{color : black; 
+				  background : white;
+/* 				  border : 1px solid skyblue; */
+/*   				  border-radius: 4px; */
+	}
+	
+ 	#searchb{
+/* 		height : 30px; */
+ 		vertical-align : middle;
+ 	} 
     </style>
 </head>
 
@@ -95,12 +121,16 @@
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 style="font-size: 20px;">공지사항 목록</h4>
+                                <c:url var="adNoList" value="noticeList.ad"/>
+								<h4 style="font-size: 20px;" class="section-title" onclick="location.href='${ adNoList }'">공지사항 목록</h4>
+                                
+<!--                                 <h4 style="font-size: 20px;">공지사항 목록</h4> -->
+
                             </div>
                             <div class="card-body">
 	                            <div class="limit">
 	                            	게시글 수
-		                            <select style="height: 30px; width: 80px; border: 1px solid #e3e3e3;" name="boardLimit" id="boardLimit">
+		                            <select style="height: 30px; width: 80px; border: 1px solid #e3e3e3;" name="boardLimit" id="boardLimit" class="btn btn-se dropdown-toggle">
 		                                <option value="10" <c:if test="${ boardLimit eq 10 }">selected</c:if>>10개</option>
 		                                <option value="20" <c:if test="${ boardLimit eq 20 }">selected</c:if>>20개</option>
 		                                <option value="50" <c:if test="${ boardLimit eq 50 }">selected</c:if>>50개</option>
@@ -256,6 +286,8 @@
                                     <input type="search" id="searchValue" style="height: 30px; width: 200px; border: 1px solid #e3e3e3;"
                                     	<c:if test="${ !empty searchValue }">value="${ searchValue }"</c:if>>
                                     <button class="Searchbtn" onclick="searchBoard();">검색</button>
+
+
                                 </div>
                             </div>
                         </div>
@@ -269,9 +301,9 @@
     	// 게시글 목록 마우스오버 이벤트
 	    $(function() {
 			$('#tb tbody td').mouseenter(function() {
-				$(this).parent().css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
+				$(this).parent().css({'color':'#6ED7F9', 'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});
 			}).mouseout(function() {
-				$(this).parent().css({'background':'white', 'font-weight':'normal'});
+				$(this).parent().css({'color':'#656D73','background':'white', 'font-weight':'normal'});
 			}).click(function() {
 				var bNo = $(this).parent().children().eq(0).text();
 				var boardLimit = $('#boardLimit').val();

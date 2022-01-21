@@ -90,25 +90,25 @@ h4.section-title:hover {
 												<th><select class="select" name="dept" id="dept"
 													onchange="selectAdbook(this)">
 														<option selected disabled>부서</option>
-														<option value="200">경영지원부</option>
-														<option value="300">전략기획부</option>
-														<option value="400">인사부</option>
-														<option value="500">기술영업부</option>
-														<option value="600">개발부</option>
-														<option value="700">디자인부</option>
-														<option value="800">고객관리부</option>
-														<option value="900">품질관리부</option>
+														<option value="200" <c:if test="${ selectCategory == 'dept' && selectValue == 200 }">selected</c:if>>경영지원부</option>
+														<option value="300" <c:if test="${ selectCategory == 'dept' && selectValue == 300 }">selected</c:if>>전략기획부</option>
+														<option value="400" <c:if test="${ selectCategory == 'dept' && selectValue == 400 }">selected</c:if>>인사부</option>
+														<option value="500" <c:if test="${ selectCategory == 'dept' && selectValue == 500 }">selected</c:if>>기술영업부</option>
+														<option value="600" <c:if test="${ selectCategory == 'dept' && selectValue == 600 }">selected</c:if>>개발부</option>
+														<option value="700" <c:if test="${ selectCategory == 'dept' && selectValue == 700 }">selected</c:if>>디자인부</option>
+														<option value="800" <c:if test="${ selectCategory == 'dept' && selectValue == 800 }">selected</c:if>>고객관리부</option>
+														<option value="900" <c:if test="${ selectCategory == 'dept' && selectValue == 900 }">selected</c:if>>품질관리부</option>
 												</select></th>
 												<th><select class="select" name="job" id="job"
 													onchange="selectAdbook(this)">
 														<option selected disabled>직책&nbsp;&nbsp;&nbsp;</option>
-														<option>사장</option>
-														<option>팀장</option>
-														<option>부장</option>
-														<option>과장</option>
-														<option>대리</option>
-														<option>주임</option>
-														<option>사원</option>
+														<option <c:if test="${ selectCategory == 'job' && selectValue == '사장' }">selected</c:if>>사장</option>
+														<option <c:if test="${ selectCategory == 'job' && selectValue == '팀장' }">selected</c:if>>팀장</option>
+														<option <c:if test="${ selectCategory == 'job' && selectValue == '부장' }">selected</c:if>>부장</option>
+														<option <c:if test="${ selectCategory == 'job' && selectValue == '과장' }">selected</c:if>>과장</option>
+														<option <c:if test="${ selectCategory == 'job' && selectValue == '대리' }">selected</c:if>>대리</option>
+														<option <c:if test="${ selectCategory == 'job' && selectValue == '주임' }">selected</c:if>>주임</option>
+														<option <c:if test="${ selectCategory == 'job' && selectValue == '사원' }">selected</c:if>>사원</option>
 												</select></th>
 												<th>입사일</th>
 											</tr>

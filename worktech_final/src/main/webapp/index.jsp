@@ -839,7 +839,7 @@ body::backdrop {
 }
 
 .MuiTypography-colorPrimary {
-	color: #536DFE;
+	color: #67d4ef;
 }
 
 .MuiTypography-colorSecondary {
@@ -1201,7 +1201,7 @@ label[data-shrink=false]+.MuiInputBase-formControl .MuiInputBase-input:focus::-m
 
 .MuiButton-root:hover {
 	text-decoration: none;
-	background-color: rgba(74, 74, 74, 0.04);
+  	background-color: rgba(74, 74, 74, 0.04);
 }
 
 .MuiButton-root.Mui-disabled {
@@ -1230,11 +1230,11 @@ label[data-shrink=false]+.MuiInputBase-formControl .MuiInputBase-input:focus::-m
 }
 
 .MuiButton-textPrimary {
-	color: #536DFE;
+	color: #67d4ef;
 }
 
 .MuiButton-textPrimary:hover {
-	background-color: rgba(83, 109, 254, 0.04);
+  	background-color: rgba(83, 109, 254, 0.04);
 }
 
 @media ( hover : none) {
@@ -1248,7 +1248,7 @@ label[data-shrink=false]+.MuiInputBase-formControl .MuiInputBase-input:focus::-m
 }
 
 .MuiButton-textSecondary:hover {
-	background-color: rgba(255, 92, 147, 0.04);
+ 	background-color: rgba(255, 92, 147, 0.04);
 }
 
 @media ( hover : none) {
@@ -1267,13 +1267,13 @@ label[data-shrink=false]+.MuiInputBase-formControl .MuiInputBase-input:focus::-m
 }
 
 .MuiButton-outlinedPrimary {
-	color: #536DFE;
+	color: #67d4ef;
 	border: 1px solid rgba(83, 109, 254, 0.5);
 }
 
 .MuiButton-outlinedPrimary:hover {
-	border: 1px solid #536DFE;
-	background-color: rgba(83, 109, 254, 0.04);
+	border: 1px solid #67d4ef;
+ 	background-color: rgba(83, 109, 254, 0.04);
 }
 
 @media ( hover : none) {
@@ -1289,7 +1289,7 @@ label[data-shrink=false]+.MuiInputBase-formControl .MuiInputBase-input:focus::-m
 
 .MuiButton-outlinedSecondary:hover {
 	border: 1px solid #FF5C93;
-	background-color: rgba(255, 92, 147, 0.04);
+ 	background-color: rgba(255, 92, 147, 0.04);
 }
 
 .MuiButton-outlinedSecondary.Mui-disabled {
@@ -1312,7 +1312,7 @@ label[data-shrink=false]+.MuiInputBase-formControl .MuiInputBase-input:focus::-m
 .MuiButton-contained:hover {
 	box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px
 		rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-	background-color: #d5d5d5;
+ 	background-color: #d5d5d5;
 }
 
 .MuiButton-contained.Mui-focusVisible {
@@ -1335,7 +1335,7 @@ label[data-shrink=false]+.MuiInputBase-formControl .MuiInputBase-input:focus::-m
 	.MuiButton-contained:hover {
 		box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px
 			rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-		background-color: #e0e0e0;
+ 		background-color: #e0e0e0;
 	}
 }
 
@@ -1345,16 +1345,16 @@ label[data-shrink=false]+.MuiInputBase-formControl .MuiInputBase-input:focus::-m
 
 .MuiButton-containedPrimary {
 	color: #fff;
-	background-color: #536DFE;
+	background-color: #67d4ef;
 }
 
 .MuiButton-containedPrimary:hover {
-	background-color: #072cfe;
+	background-color: #00a6cf
 }
 
 @media ( hover : none) {
 	.MuiButton-containedPrimary:hover {
-		background-color: #536DFE;
+		background-color: #67d4ef;
 	}
 }
 
@@ -2044,7 +2044,7 @@ label+.MuiInput-formControl {
 	position: absolute;
 	transform: scaleX(0);
 	transition: transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
-	border-bottom: 2px solid #536DFE;
+	border-bottom: 2px solid #67d4ef;
 	pointer-events: none;
 }
 
@@ -2161,7 +2161,7 @@ label+.MuiInput-formControl {
 }
 
 .MuiTab-textColorPrimary.Mui-selected {
-	color: #536DFE;
+	color: #67d4ef;
 }
 
 .MuiTab-textColorPrimary.Mui-disabled {
@@ -2210,7 +2210,7 @@ label+.MuiInput-formControl {
 }
 
 .jss26 {
-	background-color: #536DFE;
+	background-color: #67d4ef;
 }
 
 .jss27 {
@@ -2295,7 +2295,7 @@ label+.MuiInput-formControl {
 	align-items: center;
 	flex-direction: column;
 	justify-content: center;
-	background-color: #536DFE;
+	background-color: #67d4ef;
 }
 
 @media ( max-width :1279.95px) {
@@ -2415,7 +2415,7 @@ label+.MuiInput-formControl {
 }
 
 .jss19:after {
-	border-bottom-color: #536DFE;
+	border-bottom-color: #67d4ef;
 }
 
 .jss19:hover:before {
@@ -2453,6 +2453,12 @@ label+.MuiInput-formControl {
 		bottom: 16px;
 		position: absolute;
 	}
+}
+
+#loginFail{
+	color: #FF1616;
+	text-align: center;
+	font-weight: bold;
 }
 </style>
 </head>
@@ -2499,6 +2505,12 @@ label+.MuiInput-formControl {
 									placeholder="비밀번호를 입력하세요" type="password"
 									class="MuiInputBase-input MuiInput-input jss20">
 							</div>
+						</div>
+						<!-- 로그인 실패 시 -->
+						<div id="loginFail">
+							<c:if test="${ msg ne null }">
+								${ msg }
+							</c:if>
 						</div>
 						<div class="jss21">
 							<button

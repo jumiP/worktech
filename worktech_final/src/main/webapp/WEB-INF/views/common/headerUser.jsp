@@ -265,7 +265,8 @@
                                 <span>캘린더</span></a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="nav-link" href="myCal.cr">개인 캘린더</a>
+<!--                                         <a class="nav-link" href="myCal.cr">개인 캘린더</a> -->
+                                        <a class="nav-link" href="todo.to">TODO LIST</a>
                                     </li>
                                 </ul>
                         </li>

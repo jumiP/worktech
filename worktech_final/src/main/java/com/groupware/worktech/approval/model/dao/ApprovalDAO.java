@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.groupware.worktech.admin.model.vo.Department;
 import com.groupware.worktech.approval.model.vo.Approval;
+import com.groupware.worktech.approval.model.vo.Form;
 import com.groupware.worktech.common.PageInfo;
 
 @Repository("AppDAO")
@@ -20,9 +21,6 @@ public class ApprovalDAO {
 		return (ArrayList)sqlSession.selectList("approvalMapper.selectMainList", mNo);
 	}
 
-	public List<Department> approvallinelist(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectList("approvalMapper.approvallinelist");
-	}
 
 	public ArrayList<Approval> selectWaitList(SqlSessionTemplate sqlSession, PageInfo pi, String mNo) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
@@ -58,6 +56,53 @@ public class ApprovalDAO {
 
 	public int getListCountComplete(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("approvalMapper.getListCountComplete");
+	}
+
+	public int insertApproval(SqlSessionTemplate sqlSession, Approval app) {
+		return sqlSession.insert("approvalMapper.insertApproval", app);
+	}
+
+	public int insertApprovalFile(SqlSessionTemplate sqlSession, Form form) {
+		return sqlSession.insert("approvalMapper.insertApprovalFile", form);
+	}
+
+
+	public int insertApprovalLine(SqlSessionTemplate sqlSession, Approval app) {
+		return sqlSession.insert("approvalMapper.insertApproval", app);
+	}
+
+	public Approval selectApproval(SqlSessionTemplate sqlSession, int appNo) {
+		return sqlSession.selectOne("approvalMapper.selectApproval", appNo);
+	}
+
+
+	public int deleteForm(SqlSessionTemplate sqlSession, int formNo) {
+		return sqlSession.delete("approvalMapper.deleteForm", formNo);
+	}
+
+
+	public int updateApproval(SqlSessionTemplate sqlSession, Approval app) {
+		return sqlSession.update("approvalMapper.updateApproval", app);
+	}
+
+
+	public int updateApprovalFile(SqlSessionTemplate sqlSession, Form form) {
+		return sqlSession.insert("approvalMapper.updateApprovalFile", form);
+	}
+
+
+	public int ApprovalApp(SqlSessionTemplate sqlSession, int appNo) {
+		return sqlSession.update("approvalMapper.ApprovalApp", appNo);
+	}
+
+
+	public int ApprovalReturn(SqlSessionTemplate sqlSession, int appNo) {
+		return sqlSession.update("approvalMapper.ApprovalReturn", appNo);
+	}
+
+
+	public int deleteApproval(SqlSessionTemplate sqlSession, int appNo) {
+		return sqlSession.update("approvalMapper.deleteApproval", appNo);
 	}
 
 

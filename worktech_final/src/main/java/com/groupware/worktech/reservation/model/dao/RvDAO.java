@@ -134,8 +134,8 @@ public class RvDAO {
 		return sqlSession.update("reservationMapper.getCountUpdate", rvp);
 	}
 
-	public ArrayList<Reservation> selectMyOrvList(SqlSessionTemplate sqlSession) {
-		return (ArrayList)sqlSession.selectList("reservationMapper.selectMyOrvList");
+	public ArrayList<Reservation> selectMyOrvList(SqlSessionTemplate sqlSession, String rvMember) {
+		return (ArrayList)sqlSession.selectList("reservationMapper.selectMyOrvList", rvMember);
 	}
 
 	public Reservation myOrvDetail(SqlSessionTemplate sqlSession, int rvNo) {
@@ -148,6 +148,10 @@ public class RvDAO {
 
 	public int getCountDelete(SqlSessionTemplate sqlSession, Reservation rvp) {
 		return sqlSession.update("reservationMapper.getCountDelete", rvp);
+	}
+
+	public int updateMyOtherReservation(SqlSessionTemplate sqlSession) {
+		return sqlSession.update("reservationMapper.updateMyOtherReservation");
 	}
 
 

@@ -38,6 +38,19 @@
 .card {
 	margin: 20px;
 }
+
+.dupDiv{
+	visibility: hidden;
+}
+
+#dupMsg{
+	font-weight: bold;
+	color: #FF1616;
+}
+
+.required{
+		color: #FF1616;
+}
 </style>
 <body>
 	<div class="card">
@@ -45,47 +58,52 @@
 			<h4>개인 주소록 수정</h4>
 		</div>
 		<div class="card-body">
+		<form name="form">
 			<div class="form-group row">
-				<label for="name" class="col-sm-3 col-form-label">이름</label>
+				<label for="name" class="col-sm-3 col-form-label">이름 <span class="required">*</span></label>
 				<div class="col-sm-9">
-					<input type="text" class="form-control" name="name" value="${ a.adName }">
+					<input type="text" class="form-control" name="adName" value="${ a.adName }">
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="phone" class="col-sm-3 col-form-label">전화번호</label>
+				<label for="phone" class="col-sm-3 col-form-label">전화번호 <span class="required">*</span></label>
 				<div class="col-sm-9">
-					<input type="tel" class="form-control" name="phone" value="${ a.adPhone }">
+					<input type="tel" class="form-control" name="adPhone" value="${ a.adPhone }" onblur="checkDup()">
 				</div>
 			</div>
 			<div class="form-group row">
-				<label for="inputPassword3" class="col-sm-3 col-form-label">이메일</label>
+				<label for="inputPassword3" class="col-sm-3 col-form-label">이메일 <span class="required">*</span></label>
 				<div class="col-sm-9">
-					<input type="email" class="form-control" name="email" value="${ a.adEmail }">
+					<input type="email" class="form-control" name="adEmail" value="${ a.adEmail }" onblur="checkDup()">
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="company" class="col-sm-3 col-form-label">회사</label>
 				<div class="col-sm-9">
-					<input type="text" class="form-control" name="company" value="${ a.adCompany }">
+					<input type="text" class="form-control" name="adCompany" value="${ a.adCompany }">
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="department" class="col-sm-3 col-form-label">부서</label>
 				<div class="col-sm-9">
-					<input type="text" class="form-control" name="dept" value="${ a.adDept }">
+					<input type="text" class="form-control" name="adDept" value="${ a.adDept }">
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="job" class="col-sm-3 col-form-label">직책</label>
 				<div class="col-sm-9">
-					<input type="text" class="form-control" name="job" value="${ a.adJob }">
+					<input type="text" class="form-control" name="adJob" value="${ a.adJob }">
 				</div>
 			</div>
-
+			<div class="text-center dupDiv">
+					<span id="dupMsg">전화번호 또는 이메일이 일치하는 연락처가 이미 존재합니다</span>
+				</div>
 			<div class="card-footer text-center">
-				<button class="btn btn-primary" id="pAdbookUpdateBtn">저장</button>
-				<button class="btn btn-danger" type="button">취소</button>
+				<button class="btn btn-primary" type="button" onclick="updatepAd();">저장</button>
+				<button class="btn btn-danger" type="button" onclick="closePopup()">취소</button>
 			</div>
+			<input type="hidden" name="adNo" value="${ a.adNo }">
+		</form>
 		</div>
 	</div>
 
@@ -109,34 +127,72 @@
 	<script src="resources/dist/assets/js/custom.js"></script>
 	
 	<script>
-		$('#pAdbookUpdateBtn').on('click', function(){
-			var adNo = ${ a.adNo };
-			var adName = $('input[name=name]').val();
-			var adPhone = $('input[name=phone]').val();
-			var adEmail = $('input[name=email]').val();
-			var adCompany = $('input[name=company]').val();
-			var adDept = $('input[name=dept]').val();
-			var adJob = $('input[name=job]').val();
+		var filled = false;
+		var adNo = "${ a.adNo }";
+		
+		function closePopup() {
+			window.close();
+		}
+		
+		// 전화번호/이메일 중복 여부 확인
+		function checkDup() {
+			var adPhone = $('input[name=adPhone]').val();
+			var adEmail = $('input[name=adEmail]').val();
 			
 			$.ajax({
-				url: 'pAdbookUpdate.ab',
-				type: 'POST',
-				data: {adNo:adNo, adName:adName, adPhone:adPhone, adEmail:adEmail, adCompany:adCompany, adDept:adDept, adJob:adJob},
+				url: 'checkpAdDup.ab',
+				data: {phone:adPhone, email:adEmail, adNo:adNo},
 				success: function(data){
 					console.log(data);
 					
-					if(data.trim() == 'success'){
-						console.log('성공');
-						
-						opener.parent.location.reload();
-						window.close();
+					if(data > 0){
+						$('.dupDiv').css('visibility', 'visible');
+					} else {
+						$('.dupDiv').css('visibility', 'hidden');
 					}
 				},
 				error: function(data){
 					console.log(data);
 				}
 			});
-		});
+		}
+		
+		function updatepAd(){
+			var adName = $('input[name=adName]').val();
+			var adPhone = $('input[name=adPhone]').val();
+			var adEmail = $('input[name=adEmail]').val();
+			
+			if(adName != '' && adPhone != '' && adEmail != ''){
+				filled = true;
+			} else {
+				alert('이름, 전화번호, 이메일을 입력하세요');
+			}
+			
+			// 전화번호/이메일 중복 여부 확인
+			$.ajax({
+				url: 'checkpAdDup.ab',
+				data: {phone:adPhone, email:adEmail, adNo:adNo},
+				success: function(data){
+					console.log(data);
+					
+					if(data > 0){
+						$('.dupDiv').css('visibility', 'visible');
+					} else {
+						$('.dupDiv').css('visibility', 'hidden');
+
+						document.form.target = "pAdParent";
+						document.form.action = "pAdbookUpdate.ab";
+						document.form.method = "POST";
+						document.form.submit();
+						
+						self.close();
+					}
+				},
+				error: function(data){
+					console.log(data);
+				}
+			});
+		}
 	</script>
 </body>
 </html>

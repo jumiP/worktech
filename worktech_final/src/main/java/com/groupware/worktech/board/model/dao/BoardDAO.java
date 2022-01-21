@@ -305,18 +305,127 @@ public class BoardDAO {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectZList", null, rowBounds);
 	}
 
-	public int zoomInsert(SqlSessionTemplate sqlSession, Board b) {
-		return sqlSession.insert("boardMapper.zoomInsert", b);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 익명 게시판
+
+	
+
+	public ArrayList<Board> selectAnonyList(PageInfo pi, SqlSessionTemplate sqlSession) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList)sqlSession.selectList("boardMapper.selectAnonyList", pi, rowBounds);
 	}
 
-	public Board selectZoom(SqlSessionTemplate sqlSession, int bNo) {
-		return sqlSession.selectOne("boardMapper.zoomDetail", bNo);
+	public int insertAnony(SqlSessionTemplate sqlSession, Board b) {
+		
+		return sqlSession.insert("boardMapper.insertAnony", b);
 	}
 
-	public int zoomDelete(SqlSessionTemplate sqlSession, int bNo) {
-		return sqlSession.update("boardMapper.zoomDelete", bNo);
+	public Board selectAnonyBoard(SqlSessionTemplate sqlSession, int bNo) {
+		return sqlSession.selectOne("boardMapper.selectAnonyBoard", bNo);
 	}
 
+	public int updateAnonyBoard(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.update("boardMapper.updateAnonyBoard", b);
+	}
+
+	public int deleteAnony(int bNo, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("boardMapper.deleteAnony", bNo);
+	}
+
+	public int insertAnonyReply(Reply r, SqlSessionTemplate sqlSession) {
+		return sqlSession.insert("boardMapper.insertAnonyReply", r);
+	}
+
+	public int getAnonySearchListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> searchCountMap) {
+		return sqlSession.selectOne("boardMapper.getAnonySearchListCount", searchCountMap);
+	}
+
+	public ArrayList<Board> selectAnonySearchList(SqlSessionTemplate sqlSession,
+			HashMap<String, Object> searchListMap) {
+		PageInfo pi = (PageInfo)searchListMap.get("pi");
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.selectAnonySearchList", searchListMap, rowBounds);	
+	}
+	
+	
 	
 
 	

@@ -124,7 +124,7 @@ public class AdbookController {
 		}
 	}
 	
-	@RequestMapping("pAdbookDetail.ab")
+	@RequestMapping("pAdbookUpdateView.ab")
 	public String pAdbookDetail(@RequestParam("adNo") int adNo, Model model) {
 		Adbook adbook = abService.selectpAdbookDetail(adNo);
 		
@@ -134,23 +134,15 @@ public class AdbookController {
 			throw new AdbookException("개인 주소록 상세 조회에 실패하였습니다.");
 		}
 		
-		return "personalAdbookDetail";
-	}
-	
-	@RequestMapping("pAdbookUpdateView.ab")
-	public String pAdbookUpdateView(@ModelAttribute Adbook adbook, Model model) {
-		model.addAttribute("a", adbook);
-		
 		return "personalAdbookUpdateForm";
 	}
 	
 	@RequestMapping("pAdbookUpdate.ab")
-	@ResponseBody
 	public String updatepAdbook(@ModelAttribute Adbook adbook) {
 		int result = abService.updatepAdbook(adbook);
 		
 		if(result > 0) {
-			return "success";
+			return "redirect:pAdbookList.ab";
 		} else {
 			throw new AdbookException("개인 주소록 수정에 실패하였습니다.");
 		}
@@ -169,10 +161,12 @@ public class AdbookController {
 	
 	@RequestMapping("checkpAdDup.ab")
 	@ResponseBody
-	public int checkpAdDup(@RequestParam("phone") String phone, @RequestParam("email") String email, HttpServletRequest request) {
+	public int checkpAdDup(@RequestParam("phone") String phone, @RequestParam("email") String email,
+						   @RequestParam(value="adNo", required=false) String adNo, HttpServletRequest request) {
 		HashMap<String, String> checkMap = new HashMap<String, String>();
 		checkMap.put("phone", phone);
 		checkMap.put("email", email);
+		checkMap.put("adNo", adNo);
 		
 		String adWriter = ((Member)request.getSession().getAttribute("loginUser")).getmNo();
 		checkMap.put("adWriter", adWriter);

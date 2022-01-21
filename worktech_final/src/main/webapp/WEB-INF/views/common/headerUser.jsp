@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
@@ -251,10 +252,10 @@
                                     <a class="nav-link" href="commonList.bo">일반 게시판</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="components-chat-box.html">익명 게시판</a>
+                                    <a class="nav-link" href="anonyList.bo">익명 게시판</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="zoom.bo">화상 회의</a>
+                                    <a class="nav-link" href="components-chat-box.html">화상 회의</a>
                                 </li>
                             </ul>
                         </li>
@@ -264,9 +265,7 @@
                                 <span>캘린더</span></a>
                                 <ul class="dropdown-menu">
                                     <li>
-<!--                                         <a class="nav-link" href="myCal.cr">개인 캘린더</a> -->
-                                        <a class="nav-link" onclick="openTodo();">TODO LIST</a>
-                                        
+                                        <a class="nav-link" href="myCal.cr">개인 캘린더</a>
                                     </li>
                                 </ul>
                         </li>
@@ -290,12 +289,7 @@
             
             </div>
             </div>
-	<script>
-		// todo 팝업
-    function openTodo() {
-       window.open('todo.to', '투두 리스트', 'width=1250px, height=850px');
-    }
-	</script>
+
     <!-- General JS Scripts -->
     <script src="resources/dist/assets/modules/jquery.min.js"></script>
     <script src="resources/dist/assets/modules/popper.js"></script>

@@ -7,7 +7,9 @@
 <head>
 <meta charset="UTF-8">
 <title>기타 예약</title>
-
+	<link rel="stylesheet" href="resources/dist/assets/modules/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="resources/dist/assets/css/style.css">
+	<link rel="stylesheet" href="resources/dist/assets/css/components.css">
 	<!-- timepicker -->
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
@@ -24,7 +26,7 @@
 		border: 1px solid #e3e3e3;
 	}
 	.title{
-		/* margin-top: 8%; */
+		 margin-top: 8%;
 		margin-left: 10%;
 	}
 	.table{
@@ -119,7 +121,8 @@
 					<input type="hidden" name="rvCategory" value="${ rv.pdCategory }">
 				</div>
 			<div class="btn_class">
-				<button type="submit" onclick="return addOtherReservation();">예약</button><button onclick="window.close();">취소</button>
+				<button class="btn btn-primary mr-1"  type="submit" onclick="return addOtherReservation();">예약</button>
+				<button class="btn btn-danger mr-1"  onclick="window.close();">취소</button>
 			</div>
 		</form>
 	</div>

@@ -46,14 +46,16 @@ import com.groupware.worktech.admin.model.service.AdminService;
 import com.groupware.worktech.admin.model.vo.Department;
 import com.groupware.worktech.common.PageInfo;
 import com.groupware.worktech.common.Pagination;
+import com.groupware.worktech.commut.model.exception.CommutException;
 import com.groupware.worktech.commut.model.service.CommutService;
+import com.groupware.worktech.commut.model.vo.Commut;
 import com.groupware.worktech.commut.model.vo.QRCode;
 import com.groupware.worktech.member.model.exception.MemberException;
 import com.groupware.worktech.member.model.service.MemberService;
 import com.groupware.worktech.member.model.vo.Member;
 import com.groupware.worktech.member.model.vo.Profile;
 
-@SessionAttributes({"loginUser", "qr", "list"})
+@SessionAttributes({"loginUser", "qr", "list",  "co"})
 @Controller
 public class MemberController {
 	
@@ -77,33 +79,40 @@ public class MemberController {
 	
 	// 로그인(암호화) --> DB에 Spring 콘솔에 입력된 비밀번호(암호화)를 넣고 저장 후 로그인!
 	@RequestMapping(value="login.me", method=RequestMethod.POST)
-	public String login(Member m, Model model) {	
+	public String login(Member m, Model model, HttpServletRequest request) {	
 		
 //		System.out.println(bcrypt.encode(m.getPwd()));
 		
 		Member loginMember = mService.memberLogin(m);
-		if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
-			model.addAttribute("loginUser", loginMember);
-			
-			if(loginMember.getmGrade().equals("USER")) {
-				QRCode qr = coService.getinfo(loginMember.getmNo());
+		
+		if(loginMember != null) {
+			if(bcrypt.matches(m.getPwd(), loginMember.getPwd())) {
+				model.addAttribute("loginUser", loginMember);
 				
-				if(qr != null) {
-					model.addAttribute("qr", qr);
+				if(loginMember.getmGrade().equals("USER")) {
+					QRCode qr = coService.getinfo(loginMember.getmNo());
+					
+					if(qr != null) {
+						model.addAttribute("qr", qr);
+					}
+					
+					ArrayList<Member> list = abService.selectAdbookMainList(loginMember.getmNo());
+					
+					if(list != null) {
+						model.addAttribute("list", list);
+					} else {
+						throw new AdbookException("메인 사내 주소록 조회에 실패하였습니다.");
+					}
+					
+					Commut co = coService.selectGowork(loginMember.getmNo());
+					model.addAttribute("co", co);					
 				}
-				
-				ArrayList<Member> list = abService.selectAdbookMainList(loginMember.getmNo());
-				
-				if(list != null) {
-					model.addAttribute("list", list);
-				} else {
-					throw new AdbookException("메인 사내 주소록 조회에 실패하였습니다.");
-				}
-			}
-			return "redirect:home.do";
-		} else {
-			throw new MemberException("로그인에 실패하였습니다.");
+				return "redirect:home.do";
+			} 
 		}
+		
+		model.addAttribute("msg", "아이디 또는 비밀번호를 확인하세요");
+		return "../../../index";
 	}
 	
 	//로그아웃

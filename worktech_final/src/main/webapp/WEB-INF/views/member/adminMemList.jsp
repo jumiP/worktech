@@ -8,6 +8,19 @@
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
 <title>사원 관리</title>
 <style>
+	
+	h4.section-title {
+		top: -13px;
+		display: inline;
+	}
+	
+	h4.section-title:hover{
+		cursor: pointer;
+		color: #67d4ef;
+	}
+	
+	#count{margin-bottom : 15px;}
+	
 	.paging-area {
             display: flex;
             justify-content: center;
@@ -21,6 +34,7 @@
 /*   				  border-radius: 4px; */
 	}
 	
+	
 </style>
 </head>
 
@@ -33,7 +47,7 @@
 				<h1>사원관리</h1>
 				<div class="section-header-breadcrumb">
 					<div class="breadcrumb-item active">
-						<a href="#">사원관리</a>
+						<a href="mList.me">사원관리</a>
 					</div>
 					<div class="breadcrumb-item">사원목록</div>
 				</div>
@@ -41,30 +55,28 @@
 			
 			
 			<div class="section-body">
-				<h2 class="section-title">사원 목록</h2>
-				
 				 <div class="row">
 	              <div class="col-12">
 	                <div class="card">
 	                  <div class="card-header">
-	                  	<!-- 아이콘 : ion-person-stalker -->
-	                    <h4>총 사원의 수는 <span style="color : #6ED7F9">${ memCount }</span>명 입니다. </h4>
-	                    <!-- 관리자를 제외한 사원의 수 -->
+	                    <!-- 2 -->
+	                    <c:url var="adMemList" value="mList.me"/>
+								<h4 style="font-size: 20px;" class="section-title" onclick="location.href='${ adMemList }'">사원 목록</h4>
+	                    		
+	                        <!-- 1 -->
+<!-- 	                  	<h4 style="font-size: 20px;">사원 목록</h4> -->
+	                    
 	                    <div class="card-header-form">
-	                     
 	                     <!-- 검색 : 이름 / 부서 / 직급 -->
 <!-- 	                      <form action="memList.me" method="post" id="listForm"> -->
-	                        <div class="input-group">
-		                        
+	                        <div class="input-group">   
 		                        <select id="searchCondition" name="searchCondition"  class="btn btn-primary dropdown-toggle">
  	                        		<option class="searchOption" value="">검색 조건</option> 
  	                        		<option class="searchOption" value="name">이름</option> 
  	                        		<option class="searchOption" value="department">부서</option> 
  	                        		<option class="searchOption" value="grade">직급</option> 
  	                        	</select> &nbsp;&nbsp;&nbsp; 
- 	                        	<!-- 선택하려고 클릭시 박스가 너무 못생겼는데 수정 못하겠음... -->
 
-<!-- 	                          <input type="text" class="form-control" placeholder="Search" id="searchValue"> -->
 	                          <input type="search" class="form-control" placeholder="Search" id="searchValue" name="searchValue">
 	                          <div class="input-group-btn">
 	                            <button class="btn btn-primary" type="button" onclick="searchBoard();"><i class="fas fa-search"></i></button>
@@ -74,9 +86,10 @@
 	                      
 	                    </div>
 	                  </div>
-	                  <div class="card-body p-0">
+	                  <div class="card-body">
 	                    <div class="table-responsive">
-	                    
+	                      <!-- 관리자를 제외한 사원의 수 -->
+	                      <h6 id="count" >총 사원의 수는 <span style="color : #6ED7F9">${ memCount }</span>명 입니다. </h6>
 	                      <table class="table table-striped" id="memberTable">
 	                        <tr>
 	                          <th width="30px;"></th>
@@ -97,11 +110,6 @@
 			                        <tr class="cls">
 			                          <td></td>
 			                          <td class="p-0 text-center"  onclick="event.cancelBubble=true;">
-				                           <!-- 체크박스 -->
-		<!-- 	                          	   <div class="custom-checkbox custom-control"> -->
-		<!-- 		                              <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1" name="checkB"> -->
-		<!-- 		                              <label for="checkbox-1" class="custom-control-label">&nbsp;</label> -->
-		<!-- 		                           </div> -->
 			                          </td>
 			                          <td onclick="event.cancelBubble=true;">
 			                          		<b>${ a.mNo }</b>
@@ -255,7 +263,7 @@
                         <!-- 사원 등록 & 전체 삭제 버튼 -->
                         <div class="card-footer text-right">
 						    <button class="btn btn-primary mr-1" type="button" onclick="location.href='enrollView.me'">사원 등록</button>
-						    <button class="btn btn-secondary" type="button" id="selectDelete">전체 삭제</button>
+						    <button class="btn btn-danger" type="button" id="selectDelete">전체 삭제</button>
 					    </div>
                       
                     </div>

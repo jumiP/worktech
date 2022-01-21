@@ -26,7 +26,7 @@
 		border: 1px solid #e3e3e3;
 	}
 	.title{
-		/* margin-top: 8%; */
+		 margin-top: 8%;
 		margin-left: 10%;
 	}
 	.table{
@@ -122,7 +122,7 @@
 				</div>
 			<div class="btn_class">
 				<button class="btn btn-primary mr-1"  type="submit" onclick="return addOtherReservation();">예약</button>
-				<button class="btn btn-primary mr-1"  onclick="window.close();">취소</button>
+				<button class="btn btn-danger mr-1"  onclick="window.close();">취소</button>
 			</div>
 		</form>
 	</div>

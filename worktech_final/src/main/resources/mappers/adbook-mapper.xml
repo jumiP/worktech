@@ -28,7 +28,7 @@
 			<if test='selectCategory == "job"'>
 				and job_grade = #{selectValue}
 			</if>
-		order by m_no
+		order by name
 	</select>
 	
 	<resultMap type="Member" id="adbookResultSet">

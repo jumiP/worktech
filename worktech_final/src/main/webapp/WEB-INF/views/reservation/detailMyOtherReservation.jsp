@@ -121,6 +121,7 @@
 				data: {rvNo:rvNo, rvpNo:rvpNo, rvCount:rvCount},
 				success: function(data){
 					console.log(data);
+					opener.parent.location.reload();
 					self.close();
 				},
 				error: function(data){

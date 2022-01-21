@@ -7,7 +7,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>일반 게시판 상세</title>
+    <title>익명 게시판 상세</title>
 
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="resources/dist/assets/modules/summernote/summernote-bs4.css">
@@ -85,28 +85,29 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>일반 게시판</h1>
+                <h1>익명 게시판</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active">
                         <a href="#">게시판</a>
                     </div>
-                    <div class="breadcrumb-item">일반 게시판</div>
+                    <div class="breadcrumb-item">익명 게시판</div>
                 </div>
             </div>
 
             <div class="section-body">
-                <h2 class="section-title">일반 게시판 상세</h2>
+                <h2 class="section-title">익명 게시판 상세</h2>
                 <div class="row">
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>글 제목</label>
-                                    <input type="text" class="form-control" id="bTitle" disabled value="[ ${b.categoryName} ] ${ b.bTitle }">
+                                    <input type="text" class="form-control" id="bTitle" disabled value="${ b.bTitle }">
                                 </div>
                                 <div class="form-group half-col left-item">
                                     <label>작성자</label>
-                                    <input type="text" class="form-control" disabled value="${ b.name }">
+                                    <input type="text" class="form-control" disabled value="익명">
+                                    <input type="hidden" class="form-control" disabled value="${ b.name }">
                                 </div>
                                 <div class="form-group half-col">
                                     <label>작성일</label>
@@ -118,8 +119,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>작성 내용</label>
-                                    <div class="summernote">
-                                    	${ b.bContent }
+                                    <div class="inputData">
+                                    	<c:out value="${ b.bContent }" escapeXml="false" />
                                     </div>
                                 </div>
                             <div class="form-group">
@@ -143,43 +144,36 @@
                             <div class="card-footer text-right">
                             	
                             	<c:if test="${ (loginUser.mNo eq b.bWriter) || (loginUser.mGrade eq 'ADMIN') }">
-		                            <c:url var="cupView" value="cupdateView.bo">
+		                            <c:url var="aupView" value="aupdateView.bo">
 										<c:param name="bNo" value="${ b.bNo }"/>
 										<c:param name="page" value="${ page }"/>
 										<c:param name="upd" value="Y"/>
 									</c:url>
 									
-	                                <button class="btn btn-primary mr-1" type="button" onclick="location.href='${ cupView }'">수정</button>
+	                                <button class="btn btn-primary mr-1" type="button" onclick="location.href='${ aupView }'">수정</button>
 	                                
-									<form action="commonDelete.bo" method="post" class="formStyle">
+									<form action="anonyDelete.bo" method="post" class="formStyle">
 										<input type="hidden" name="bNo" value="${ b.bNo }">
-	                                	<button class="btn btn-danger" type="submit" onclick="return deleteCommonBoard();">삭제</button>
+	                                	<button class="btn btn-danger" type="submit" onclick="return deleteAnonyBoard();">삭제</button>
 	                                </form>
 								</c:if>
 								
 								<c:if test="${ null eq searchCategory }">
-									<c:url var="clist" value="commonList.bo">
-										<c:if test="${ page ne null }">
-											<c:param name="page" value="${ page }"/>
-										</c:if>
-										<c:if test="${ category ne null }">
-											<c:param name="category" value="${ category }"/>
-										</c:if>
+									<c:url var="alist" value="anonyList.bo">
+										<c:param name="page" value="${ page }"/>
 									</c:url>
 								</c:if>
-								<c:if test="${ null ne searchCategory }">
-									<c:url var="clist" value="searchCommon.bo">
-										<c:if test="${ page ne null }">
-											<c:param name="page" value="${ page }"/>
-										</c:if>
+							    <c:if test="${ null ne searchCategory }">
+									<c:url var="alist" value="searchAnony.bo">
+										<c:param name="page" value="${ page }"/>
 										<c:if test="${ category ne null }">
 											<c:param name="category" value="${ category }"/>
 										</c:if>
 										<c:param name="searchCategory" value="${ searchCategory }"/>
 										<c:param name="searchValue" value="${ searchValue }"/>
 									</c:url>
-								</c:if>
-                                <button class="btn btn-secondary" type="button" onclick="location.href='${ clist }'">목록으로</button>
+								</c:if> 
+                                <button class="btn btn-secondary" type="button" onclick="location.href='${ alist }'">목록으로</button>
                             </div>
                             <div class="card-footer form-group">
                             	<label id="rCount"></label>
@@ -197,14 +191,14 @@
         </section>
     </div>
     <c:import url="../common/footer.jsp" />
-    <script src="resources/dist/assets/modules/summernote/summernote-detail.js"></script>
+    <script src="resources/dist/assets/modules/summernote/summernote-bs4.js"></script>
     <script src="resources/dist/assets/modules/codemirror/lib/codemirror.js"></script>
     <script src="resources/dist/assets/modules/codemirror/mode/javascript/javascript.js"></script>
     <script src="resources/dist/assets/modules/jquery-selectric/jquery.selectric.min.js"></script>
 
 	<script>
 		// 게시글 삭제 확인
-		function deleteCommonBoard() {
+		function deleteAnonyBoard() {
 			var result = confirm('정말 삭제하시겠습니까?');
 			
 			if(!result){
@@ -224,7 +218,7 @@
 			var bTitle = '${ b.bTitle}';
 			
 			$.ajax({
-				url: 'addCommonReply.bo',
+				url: 'addAnonyReply.bo',
 				data: {rName:rWriter, rContent:rContent, bNo:bNo},
 				success: function(data){
 					console.log(data);
@@ -233,6 +227,7 @@
 					$('#replyBox').val('');
 					
 					let socketMsg = "cReply," + bWriter + "," + data + "," + rName + "," + bNo + "," + bTitle;
+					console.log("msg: " + socketMsg);
 					socket.send(socketMsg);
 				},
 				error: function(data){
@@ -264,7 +259,8 @@
 						for(var i in data){
 							$tr = $('<tr>');
 							$rNo = $('<td>').html('<input type="hidden" name="rNo" value="' + data[i].rNo + '">');
-							$name = $('<td width="15%" style="text-align: center;">').html('<b>' + data[i].name + '</b>');
+							$name = $('<td width="15%" style="text-align: center;">').html('<b>' + '익명' + '</b>');
+							$hiddenName = $('<td width="15%" style="text-align: center;">').html('<input type= "hidden" value="data[i].name">');
 							$content = $('<td width="65%">').text(data[i].rContent);
 							$date = $('<td width="15%" style="text-align: center;">').text(data[i].rDate);
 							$deleteBtn = $('<td width="5%">').html('<i class="fas fa-times" name="rDeleteBtn"></i>');
@@ -318,6 +314,7 @@
 					console.log(data);
 				}
 			});
+// 			location.href="deleteCommonReply.bo?bNo=" + bNo + "&rNo=" + rNo;
 		});
 	</script>
 </body>

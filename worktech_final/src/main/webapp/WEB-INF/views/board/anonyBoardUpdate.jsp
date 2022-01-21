@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>일반 게시판 수정</title>
+    <title>익명 게시판 수정</title>
     
 	<!-- CSS Libraries -->
 	<link rel="stylesheet" href="resources/dist/assets/modules/summernote/summernote-bs4.css">
@@ -100,19 +100,19 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>일반 게시판</h1>
+                <h1>익명 게시판</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item">게시판</div>
-                    <div class="breadcrumb-item active"><a href="commonList.bo">일반 게시판</a></div>
+                    <div class="breadcrumb-item active"><a href="anonymList.bo">익명 게시판</a></div>
                 </div>
             </div>
 
             <div class="section-body">
-                <h2 class="section-title">일반 게시판 수정</h2>
-                <c:url var="cupdate" value="cupdate.bo">
+                <h2 class="section-title">익명 게시판 수정</h2>
+                <c:url var="aupdate" value="aupdate.bo">
                 	<c:param name="upd" value="Y"/>
                 </c:url>
-                <form action="${ cupdate }" method="post" enctype="Multipart/form-data">
+                <form action="${ aupdate }" method="post" enctype="Multipart/form-data">
                 	<input type="hidden" name="page" value="${ page }">
 					<input type="hidden" name="bNo" value="${ b.bNo }">
                 	
@@ -120,16 +120,6 @@
 	                    <div class="col-12 col-md-12 col-lg-12">
 	                        <div class="card">
 	                            <div class="card-body">
-	                            	<div class="form-group">
-		                            	<label>카테고리&nbsp;&nbsp;</label>
-		                            	<select class="select" name="categoryNo">
-		                            		<option value=100 <c:if test="${ b.categoryNo == 100 }">selected</c:if>>회의</option>
-		                            		<option value=200 <c:if test="${ b.categoryNo == 200 }">selected</c:if>>출장</option>
-		                            		<option value=300 <c:if test="${ b.categoryNo == 300 }">selected</c:if>>홍보</option>
-		                            		<option value=400 <c:if test="${ b.categoryNo == 400 }">selected</c:if>>기타</option>
-		                            		<option value=500 <c:if test="${ b.categoryNo == 500 }">selected</c:if>>자료</option>
-		                            	</select>
-                            		</div>
 	                                <div class="form-group">
 	                                    <label>글 제목</label>
 	                                    <input type="text" class="form-control" name="bTitle" value="${ b.bTitle }">
@@ -137,7 +127,7 @@
 	                                </div>
 	                                <div class="form-group half-col left-item">
 	                                    <label>작성자</label>
-	                                    <input type="text" class="form-control" disabled value="${ b.name }">
+	                                    <input type="text" class="form-control" disabled value="익명">
 	                                    <input type="hidden" name="bWriter" value="${ b.bWriter }">
 	                                </div>
 	                                <div class="form-group half-col">
@@ -173,8 +163,8 @@
 	                            </div>
 	                            <div class="card-footer text-right">
 	                                <button class="btn btn-primary mr-1" type="submit">수정</button>
-	                                <c:url var="clist" value="commonList.bo"/>
-	                                <button class="btn btn-danger" type="button" onclick="location.href='${ clist }'">취소</button>
+	                                <c:url var="alist" value="anonyList.bo"/>
+	                                <button class="btn btn-danger" type="button" onclick="location.href='${ alist }'">취소</button>
 	                            </div>
 	                        </div>
 	                    </div>

@@ -16,11 +16,26 @@
   	<link rel="stylesheet" href="resources/assets/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
   	
 	<style>
+        table {
+            border-collapse: collapse;
+            background: white;
+        }
+
+        table th {
+            border-bottom: 1px solid #e3e3e3;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        table td {
+            text-align: center;
+            font-size: 15px;
+        }		
+	
 		.section-header{
 			padding: 20px, 35px;
 			margin: -10px, -30px, 30px;
 		}
-		td{text-align: center;}
 		
 		.paging-area {
             display: flex;
@@ -67,7 +82,7 @@
                   		<div class="card-body">
                   			<div class="row">
                     		<div class="form-group col-md-6 col-12">
-                      		<label>Date Range Picker</label>
+                      		<label>작성일</label>
                       			<div class="input-group">
                         			<div class="input-group-prepend">
                           				<div class="input-group-text">
@@ -78,7 +93,7 @@
                       			</div>
                     		</div>
 	                  		<div class="card-footer text-right">
-	                     		<button class="btn btn-primary">Save Changes</button>
+	                     		<button class="btn btn-primary">검색</button>
 	                    	</div>                    		
                   		</div>
                 	</div>
@@ -94,14 +109,23 @@
 				<div class="row">
 					<div class="col-12 col-md-12 col-lg-12">
 						<div class="card">
-						<c:forEach var="app" items="${ list }">
 							<div class="row row-cols-1 row-cols-md-3 mb-3">
 								<div class="col">
 									<div class="card mb-4 rounded-3 shadow-sm">
-										<table class="table">
+										<table class="table" id="table">
+											<thead>
+                                        		<tr>
+                                            		<th class="col-1">결재 번호</th>
+                                            		<th class="col-1"></th>
+                                            		<th class="col-5">결재 작성자 / 결재 작성일</th>
+                                            		<th class="col-3">결재 작성자 / 부서명</th>
+                                            		<th class="col-3">결재 진행도</th>
+                                        		</tr>
+                                    		</thead>
 											<tbody>
+											<c:forEach var="app" items="${ list }">
 												<tr>
-												<td rowspan="2" class="col-1"><h4 class="my-0 fw-normal">${ app.appNo }</h4></td>
+													<td rowspan="2" class="col-1"><h4 class="my-0 fw-normal">${ app.appNo }</h4></td>
 													<td rowspan="2" class="col-1">
 														<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
 			  												<path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
@@ -110,18 +134,25 @@
 													</td>
 													<td class="col-5"><h4 class="my-0 fw-normal">${ app.appTitle }</h4></td>
 													<td class="col-3"> <h4 class="my-0 fw-normal">${ app.mName } ${ app.jobGrade }</h4></td>
-													<td rowspan="2" class="col-3">진행중 - 취소</td>
+													<td rowspan="2" class="col-3">
+														<c:choose>
+															<c:when test="${ app.appResult eq '0' }">대기중</c:when>
+															<c:when test="${ app.appResult eq '1' }">진행중</c:when>
+															<c:when test="${ app.appResult eq '2' }">승인</c:when>
+															<c:when test="${ app.appResult eq '3' }">반려</c:when>
+														</c:choose>
+													</td>
 												</tr>
 												<tr>
 													<td class="col-5">${ app.appDate }</td>
 													<td class="col-3">${ app.dName }</td>
 												</tr>
+											</c:forEach>
 											</tbody>
 						          		</table>
 						       		</div>					       								       		
 						      	</div>				
 							</div>						
-							</c:forEach>
 							<div class="card-body paging-area">
 								<div class="buttons">
 									<nav aria-label="Page navigation example">
@@ -203,7 +234,7 @@
                                             </ul>
                                         </nav>
                                     </div>
-                                </div>							
+                                </div>						
 						</div>
 					</div>
 				</div>
@@ -211,6 +242,19 @@
 	</section>
 	</div>
 	<c:import url="../common/footer.jsp" />
+	
+	<script>
+		$(function(){
+			$('#table tr td').mouseenter(function(){
+				$(this).parent().css({'color':'yellowgreen', 'font-weight':'bold', 'cursor':'pointer'});
+			}).mouseout(function(){
+				$(this).parent().css({'color':'black', 'font-weight':'normal'});
+			}).click(function(){
+				var appNo = $(this).parent().children().eq(0).text();
+				location.href="appdetail.ap?appNo=" + appNo + '&page=' + ${pi.currentPage};
+			});
+		});
+	</script>
 	
 		  <!-- JS Libraies -->
   <script src="resources/assets/modules/cleave-js/dist/cleave.min.js"></script>

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -181,7 +182,8 @@ public class BoardController {
 	}
 	
 	@RequestMapping("cupdateView.bo")
-	public String commonBoardUpdateView(@RequestParam("bNo") int bNo, @RequestParam("upd") String upd, Model model) {
+	public String commonBoardUpdateView(@RequestParam("bNo") int bNo, 
+										@RequestParam("upd") String upd, Model model) {
 		Board b = bService.selectCommonBoard(bNo, upd);
 		
 		model.addAttribute("b", b);
@@ -193,10 +195,11 @@ public class BoardController {
 	@Transactional
 	@RequestMapping("cupdate.bo")
 	public String commonBoardUpdate(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile,
-			@RequestParam(value = "fNo", required = false) ArrayList<Integer> fNoes, @RequestParam("upd") String upd,
-			@RequestParam("flag") int flag, HttpServletRequest request, Model model) {
-
-ArrayList<BoardFile> oldFileList = bService.selectCommonBoard(b.getbNo(), upd).getFileList();
+									@RequestParam(value = "fNo", required = false) ArrayList<Integer> fNoes, 
+									@RequestParam("upd") String upd,
+									@RequestParam("flag") int flag, HttpServletRequest request, Model model) {
+		
+		ArrayList<BoardFile> oldFileList = bService.selectCommonBoard(b.getbNo(), upd).getFileList();
 
 		// 저장되어 있는 파일 삭제
 		if (fNoes != null && !fNoes.isEmpty()) {
@@ -438,111 +441,10 @@ ArrayList<BoardFile> oldFileList = bService.selectCommonBoard(b.getbNo(), upd).g
 		
 		return jsonObject.toString();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	// 화상회의 게시판
 	@RequestMapping("zoom.bo")
-public /*String*/ModelAndView zBoardList(@RequestParam(value="page", required=false) Integer page, /*Model model*/ ModelAndView mv) {	
+	public /*String*/ModelAndView zBoardList(@RequestParam(value="page", required=false) Integer page, /*Model model*/ ModelAndView mv) {	
 		
 		int currentPage = 1;
 		if(page != null) {
@@ -572,45 +474,389 @@ public /*String*/ModelAndView zBoardList(@RequestParam(value="page", required=fa
 		return "zoomInsertForm";
 	}
 	
-	@RequestMapping("zinsert.bo")
-	public String zoomInsert(@ModelAttribute Board b) {
-		System.out.println("b"+b);
-		
-		int result = bService.zoomInsert(b);
-		
-		if(result>0) {
-			return "redirect:zoom.bo";
-		} else {
-			throw new BoardException("게시글 등록 실패");
-		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 익명 게시판
+
+	
+	@RequestMapping("ainsertView.bo")
+	public String anonymBoardInsertView() {
+		return "anonyBoardInsertForm";
 	}
 	
-	@RequestMapping("zoomdetail.bo")
-	public String zoomDetail(@RequestParam("bNo") int bNo, @RequestParam(value="page", required=false) Integer page, 
-						Model model) {
-		Board b = bService.selectZoom(bNo);
-
-		if(b != null) {
-		model.addAttribute("b", b);
-		model.addAttribute("page", page);
-		} else {
-		throw new BoardException("게시글 상세 조회에 실패하였습니다.");
+	@RequestMapping("anonyList.bo")
+	public String anonymBoardList(@RequestParam(value="page", required = false) Integer page, @RequestParam(value="boardLimit", required = false) Integer boardLimit,
+												Model model) {
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = page;
 		}
 		
-		return "zoomDetail";
-		} 
-	
-	@RequestMapping("zoomDelete.bo")
-	public String zoomDelete(@RequestParam("bNo") int bNo, Model model) {
-		Board b = bService.selectZoom(bNo);
+		int listCount = bService.getListCount("ANONY");
+		PageInfo pi = null;
 		
-		int result = bService.zoomDelete(bNo);
+		if(boardLimit != null) {
+			pi = Pagination.getPageInfo(currentPage, listCount, boardLimit);
+			model.addAttribute("boardLimit", boardLimit);
+		} else {
+			pi = Pagination.getPageInfo(currentPage, listCount);
+		}
+		ArrayList<Board> list = bService.selectAnonyList(pi);
+		if(list != null) {
+			model.addAttribute("pi", pi);
+			model.addAttribute("list", list);
+			
+		} else {
+			throw new BoardException("익명 게시판 목록 조회에 실패하였습니다.");
+		}
+	
+		return "anonyBoardList";
+	}
+	
+	@RequestMapping("ainsert.bo")
+	public String anonymBoardInsert(@ModelAttribute Board b, @RequestParam("uploadFile") MultipartFile[] uploadFile,
+									MultipartHttpServletRequest request) {
+		
+		ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
+		
+		if(uploadFile != null && !uploadFile[0].isEmpty()) {
+			for(int i = 0; i < uploadFile.length; i++) {
+				HashMap<String, String> fileInfo = saveFile(uploadFile[i], request);
+				
+				if(fileInfo.get("renameFileName") != null) {
+					BoardFile f = new BoardFile();
+					
+					f.setfName(uploadFile[i].getOriginalFilename());
+					f.setfRname(fileInfo.get("renameFileName"));
+					f.setfURL(fileInfo.get("renamePath"));
+					f.setRefBNo(b.getbNo());
+					
+					fileList.add(f);
+					
+				}
+			}
+		}
+	
+		b.setFileList(fileList);
+		
+		int result = bService.insertAnonyBoard(b);
 		
 		if(result > 0) {
-			return "redirect:zoom.bo";
+			return "redirect:anonyList.bo";
 		} else {
-			throw new BoardException("게시글 삭제에 실패하였습니다.");
+			throw new BoardException("게시글 등록에 실패하였습니다.");
 		}
+		}
+
+	@RequestMapping("adetail.bo")
+	public String anonyBoardDetail(@RequestParam("bNo") int bNo, @RequestParam(value="page", required=false) Integer page,
+			@RequestParam(value="upd", required=false) String upd,
+			@RequestParam(value="searchCategory", required=false) String searchCategory,
+			@RequestParam(value="searchValue", required=false) String searchValue, Model model) {
+		
+		Board b = bService.selectAnonyBoard(bNo, upd);
+		
+		if(b != null) {
+			model.addAttribute("b", b);
+			model.addAttribute("page", page);
+			model.addAttribute("searchCategory", searchCategory);
+			model.addAttribute("searchValue", searchValue);
+		} else {
+			throw new BoardException("게시글 상세 조회에 실패하였습니다.");
+		}
+		
+		return "anonyBoardDetail";
+	}
+	
+	@RequestMapping("aupdateView.bo")
+	public String anonyBoardUpdate(@RequestParam("bNo") int bNo, @RequestParam("upd") String upd, Model model) {
+	
+		Board b = bService.selectAnonyBoard(bNo, upd);
+		
+		model.addAttribute("b", b);
+		
+		return "anonyBoardUpdate";
+	}
+	
+	@Transactional
+	@RequestMapping("aupdate.bo")
+	public String anonyBoardUpdate(@ModelAttribute Board b, @RequestParam("reloadFile") MultipartFile[] reloadFile,
+			@RequestParam(value = "fNo", required = false) ArrayList<Integer> fNoes, @RequestParam("upd") String upd,
+			@RequestParam("flag") int flag, HttpServletRequest request, Model model) {
+		
+		ArrayList<BoardFile> oldFileList = bService.selectAnonyBoard(b.getbNo(), upd).getFileList();
+
+		// 저장되어 있는 파일 삭제
+		if (fNoes != null && !fNoes.isEmpty()) {
+
+			for (int i = 0; i < oldFileList.size(); i++) {
+				int fNo = oldFileList.get(i).getfNo();
+
+				if (!fNoes.contains(fNo)) {
+					deleteFile(oldFileList.get(i).getfRname(), request);
+
+					int result = bService.deleteNoticeFile(fNo);
+
+					if (result <= 0) {
+						throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
+					}
+				}
+			}
+		} else if (flag == 1) {
+			for (int i = 0; i < oldFileList.size(); i++) {
+				int fNo = oldFileList.get(i).getfNo();
+
+				deleteFile(oldFileList.get(i).getfRname(), request);
+
+				int result = bService.deleteNoticeFile(fNo);
+
+				if (result <= 0) {
+					throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
+				}
+			}
+		}
+
+		// 새로 추가한 파일 등록
+		ArrayList<BoardFile> fileList = null;
+
+		if (reloadFile != null && !reloadFile[0].getOriginalFilename().trim().equals("")) {
+			fileList = new ArrayList<BoardFile>();
+			for (int i = 0; i < reloadFile.length; i++) {
+				HashMap<String, String> fileInfo = saveFile(reloadFile[i], request);
+
+				if (fileInfo.get("renameFileName") != null) {
+					BoardFile f = new BoardFile();
+					f.setfName(reloadFile[i].getOriginalFilename());
+					f.setfRname(fileInfo.get("renameFileName"));
+					f.setfURL(fileInfo.get("renamePath"));
+					f.setRefBNo(b.getbNo());
+
+					fileList.add(f);
+				}
+			}
+		}
+
+		b.setFileList(fileList);
+
+		int result = bService.updateAnonyBoard(b);
+
+		int length = 0;
+
+		if (fileList != null) {
+			length = fileList.size();
+		}
+
+		if (result >= length + 1) {
+			return "redirect:adetail.bo?bNo=" + b.getbNo() + "&upd=Y";
+		} else {
+			throw new BoardException("게시글 수정에 실패하였습니다.");
+		}
+		
+	}
+	
+	@RequestMapping("anonyDelete.bo") 
+	public String deleteAnonyBoard(@RequestParam("bNo") int bNo, Model model) {
+		Board b = bService.selectAnonyBoard(bNo, "Y");
+				
+				ArrayList<BoardFile> fileList = b.getFileList();
+				
+				if(fileList != null && fileList.get(0).getfRname() != null) {
+					for(int i = 0; i < fileList.size(); i++) {
+						int result = bService.deleteNoticeFile(fileList.get(i).getfNo());
+						
+						if(result < 0) {
+							throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
+						}
+					}
+				}
+				
+				int result = bService.deleteAnony(bNo);
+				
+				if(result > 0) {
+					return "redirect:anonyList.bo";
+				} else {
+					throw new BoardException("게시글 삭제에 실패하였습니다.");
+				}
+	}
+	
+	@RequestMapping("addAnonyReply.bo")
+	@ResponseBody
+	public int insertAnonyReply(@ModelAttribute Reply r) {
+		int result = bService.insertAnonyReply(r);
+		int alarmNo = alService.selectAlarmNo() - 1;
+				
+				if(result > 0) {
+					return alarmNo;
+				} else {
+					throw new BoardException("댓글 등록에 실패하였습니다.");
+			}
+	
+	}
+	
+	@RequestMapping("searchAnony.bo")
+	public String searchAnonyBoard(@RequestParam("searchCategory") String searchCategory, @RequestParam("searchValue") String searchValue, 
+									@RequestParam(value="page", required=false) Integer page, Model model) {
+		int currentPage = 1;
+		
+		if(page != null) {
+			currentPage = page;
+		}
+		
+		HashMap<String, Object> searchCountMap = new HashMap<String, Object>();
+		searchCountMap.put("searchCategory", searchCategory);
+		searchCountMap.put("searchValue", searchValue);
+		
+		int listCount = bService.getAnonySearchListCount(searchCountMap);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		HashMap<String, Object> searchListMap = new HashMap<String, Object>();
+		searchListMap.put("pi", pi);
+		searchListMap.put("searchCategory", searchCategory);
+		searchListMap.put("searchValue", searchValue);
+		
+		ArrayList<Board> list = bService.selectAnonySearchList(searchListMap);
+		
+		if(list != null) {
+			model.addAttribute("list", list);
+			model.addAttribute("searchCategory", searchCategory);
+			model.addAttribute("searchValue", searchValue);
+			model.addAttribute("pi", pi);
+		}
+		
+		return "anonyBoardList";
+		
 	}
 	
 }

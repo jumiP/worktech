@@ -58,23 +58,23 @@
 			<h4>개인 주소록 추가</h4>
 		</div>
 		<div class="card-body">
-			<form id="pAdForm" name="form">
+			<form name="form">
 				<div class="form-group row">
 					<label for="name" class="col-sm-3 col-form-label">이름 <span class="required">*</span></label>
 					<div class="col-sm-9">
-						<input type="text" class="form-control" name="adName" placeholder="이름" required>
+						<input type="text" class="form-control" name="adName" placeholder="이름">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="phone" class="col-sm-3 col-form-label">전화번호 <span class="required">*</span></label>
 					<div class="col-sm-9">
-						<input type="tel" class="form-control" name="adPhone" placeholder="전화번호" onblur="checkDup()" required>
+						<input type="tel" class="form-control" name="adPhone" placeholder="전화번호" onblur="checkDup()">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="inputPassword3" class="col-sm-3 col-form-label">이메일 <span class="required">*</span></label>
 					<div class="col-sm-9">
-						<input type="email" class="form-control" name="adEmail" placeholder="이메일" onblur="checkDup()" required>
+						<input type="email" class="form-control" name="adEmail" placeholder="이메일" onblur="checkDup()">
 					</div>
 				</div>
 				<div class="form-group row">
@@ -99,7 +99,7 @@
 					<span id="dupMsg">전화번호 또는 이메일이 일치하는 연락처가 이미 존재합니다</span>
 				</div>
 				<div class="card-footer text-center">
-					<button class="btn btn-primary" type="button" id="pAdbookBtn" onclick="insertpAd();">저장</button>
+					<button class="btn btn-primary" type="button" onclick="insertpAd();">저장</button>
 					<button class="btn btn-danger" type="button" onclick="closePopup()">취소</button>
 				</div>
 			</form>
@@ -128,7 +128,6 @@
 	<script>
 		var noDup = false;
 		var filled = false;
-		var form = $('#pAdForm');
 		
 		// 전화번호/이메일 중복 여부 확인
 		function checkDup() {

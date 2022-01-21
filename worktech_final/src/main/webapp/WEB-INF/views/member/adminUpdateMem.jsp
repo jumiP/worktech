@@ -30,7 +30,7 @@
 				<h1>사원 정보 수정</h1>
 				<div class="section-header-breadcrumb">
 					<div class="breadcrumb-item active">
-						<a href="#">사원 관리</a>
+						<a href="mList.me">사원 관리</a>
 					</div>
 					<div class="breadcrumb-item">사원 정보 수정</div>
 				</div>
@@ -117,7 +117,7 @@
 				                  
 				                  <div class="card-footer text-right">
 				                    <button class="btn btn-primary mr-1" type="submit">수정하기</button>
-				                    <button class="btn btn-secondary" onclick="location.href='${mdetail.me}'">취소</button>
+				                    <button class="btn btn-danger" onclick="location.href='${mdetail.me}'">취소</button>
 				                  </div>
 								
 								</form>

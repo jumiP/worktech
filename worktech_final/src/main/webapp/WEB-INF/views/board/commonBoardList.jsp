@@ -265,7 +265,7 @@
                                 </div>
                                 <div class="search">
                                 	<c:url var="search" value="searchCommon.bo"/>
-                                	<form action="${ search }">
+                                	<form action="${ search }" onsubmit="return checkInput()">
                                 		<c:if test="${ category ne null }">
                                 			<input type="hidden" name="category" value="${ category }">
                                 		</c:if>
@@ -274,11 +274,10 @@
 	                                        <option value="content">내용</option>
 	                                        <option value="writer">작성자</option>
 	                                    </select>
-	                                    <input name="searchValue" type="text" style="height: 30px; width: 200px; border: 1px solid #e3e3e3;">
+	                                    <input name="searchValue" id="inputValue" type="text" style="height: 30px; width: 200px; border: 1px solid #e3e3e3;">
 	                                    <button class="Searchbtn">검색</button>
                                 	</form>
                                 </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -325,6 +324,17 @@
 	    		location.href = "commonList.bo?category=" + categoryNo;
 	    	}
 	    }
+		
+		function checkInput() {
+			var value = $('#inputValue').val();
+			
+			if(value == '' || value == null){
+				alert('검색어를 입력하세요');
+				return false;
+			} else {
+				return true;
+			}
+		}
 	    
     </script>
 </body>

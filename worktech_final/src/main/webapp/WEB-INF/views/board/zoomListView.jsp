@@ -140,7 +140,7 @@
 	                                        <tr>
 	                                            <td style="height: 45px;">${ n.bNo }</td>
 												<td>
-													[ ${ n.categoryName } ] ${ n.bTitle }
+													[ ZOOM ] ${ n.bTitle }
 													<c:if test="${ !empty n.fileList.get(0).fName }">
                                     					&nbsp;<i class="fas fa-save"></i>
                                     				</c:if>
@@ -248,44 +248,8 @@
                                         </nav>
                                     </div>
                                 </div>
-	
-<!--                     <div id="accordion"> -->
-<!--                       <div class="accordion"> -->
-<!--                         <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-1" aria-expanded="true"> -->
-<!--                           <h4>2021-12-27</h4> -->
-<!--                         </div> -->
-<!--                         <div class="accordion-body collapse show" id="panel-body-1" data-parent="#accordion"> -->
-<!--                           <p class="mb-0">오늘 회의는 화상으로 진행합니다. 반드시 참석해주세요.</p> -->
-<!--                         </div> -->
-<!--                       </div> -->
-<!--                       <div class="accordion"> -->
-<!--                         <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-2"> -->
-<!--                           <h4>2021-12-17</h4> -->
-<!--                         </div> -->
-<!--                         <div class="accordion-body collapse" id="panel-body-2" data-parent="#accordion"> -->
-<!--                           <p class="mb-0">퇴사하고 싶어요...</p> -->
-<!--                         </div> -->
-<!--                       </div> -->
-<!--                       <div class="accordion"> -->
-<!--                         <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-3"> -->
-<!--                           <h4>2021-12-14</h4> -->
-<!--                         </div> -->
-<!--                         <div class="accordion-body collapse" id="panel-body-2" data-parent="#accordion"> -->
-<!--                           <p class="mb-0">회의 불참합니다.</p> -->
-<!--                         </div> -->
-<!--                       </div> -->
-<!--                       <div class="accordion"> -->
-<!--                         <div class="accordion-header" role="button" data-toggle="collapse" data-target="#panel-body-4"> -->
-<!--                           <h4>2021-12-07</h4> -->
-<!--                         </div> -->
-<!--                         <div class="accordion-body collapse" id="panel-body-3" data-parent="#accordion"> -->
-<!--                           <p class="mb-0">Zoom 회의 참가 -->
-<!-- https://zoom.us/j/97669409222?pwd=NUFDVFVKRWN1eW41OU5wN1E2bURrZz09 -->
-<!--                           </p> -->
-<!--                         </div> -->
-<!--                       </div> -->
-                      
-<!--                     </div> -->
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -294,42 +258,23 @@
         <!--**********************************
             Content body end
         ***********************************-->
-<!--         <div class="float-center"> -->
-<!--                       <nav> -->
-<!--                         <ul class="pagination"> -->
-<!--                           <li class="page-item disabled"> -->
-<!--                             <a class="page-link" href="#" aria-label="Previous"> -->
-<!--                               <span aria-hidden="true">&laquo;</span> -->
-<!--                               <span class="sr-only">Previous</span> -->
-<!--                             </a> -->
-<!--                           </li> -->
-<!--                           <li class="page-item active"> -->
-<!--                             <a class="page-link" href="#">1</a> -->
-<!--                           </li> -->
-<!--                           <li class="page-item"> -->
-<!--                             <a class="page-link" href="#">2</a> -->
-<!--                           </li> -->
-<!--                           <li class="page-item"> -->
-<!--                             <a class="page-link" href="#">3</a> -->
-<!--                           </li> -->
-<!--                           <li class="page-item"> -->
-<!--                             <a class="page-link" href="#">4</a> -->
-<!--                           </li> -->
-<!--                           <li class="page-item"> -->
-<!--                             <a class="page-link" href="#">5</a> -->
-<!--                           </li> -->
-<!--                           <li class="page-item"> -->
-<!--                             <a class="page-link" href="#" aria-label="Next"> -->
-<!--                               <span aria-hidden="true">&raquo;</span> -->
-<!--                               <span class="sr-only">Next</span> -->
-<!--                             </a> -->
-<!--                           </li> -->
-<!--                         </ul> -->
-<!--                       </nav> -->
-<!--                     </div> -->
                     
                     
-                    
+         <script>
+         $(function(){
+        	 $('#tb tbody td').mouseenter(function(){
+        		 $(this).parent().css({'background':'rgba(0, 0, 0, 0.04)', 'font-weight':'bold', 'cursor':'pointer'});             
+        		 }).mouseout(function() {
+        			 $(this).parent().css({'background':'white', 'font-weight':'normal'});             
+        			 }).click(function() {
+        				 var bNo = $(this).parent().children().eq(0).text();
+        				 <c:url var="zoomDetail" value="zoomdetail.bo">
+        				 <c:param name="page" value="${ pi.currentPage }"/> 
+        				 </c:url>
+        				 location.href = "${ zoomDetail }" + "&bNo=" + bNo;             
+        				 });         
+        	 });
+         </script>   
                     
                     
                     

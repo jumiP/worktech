@@ -305,6 +305,18 @@ public class BoardDAO {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectZList", null, rowBounds);
 	}
 
+	public int zoomInsert(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.insert("boardMapper.zoomInsert", b);
+	}
+
+	public Board selectZoom(SqlSessionTemplate sqlSession, int bNo) {
+		return sqlSession.selectOne("boardMapper.zoomDetail", bNo);
+	}
+
+	public int zoomDelete(SqlSessionTemplate sqlSession, int bNo) {
+		return sqlSession.update("boardMapper.zoomDelete", bNo);
+	}
+
 	
 	
 	
@@ -377,7 +389,7 @@ public class BoardDAO {
 	
 	
 	
-	// 익명 게시판
+	// �씡紐� 寃뚯떆�뙋
 
 	
 

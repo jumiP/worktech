@@ -1,4 +1,4 @@
-package com.groupware.worktech.calendar.vo;
+package com.groupware.worktech.calendar.model.vo;
 
 import java.sql.Timestamp;
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.groupware.worktech.calendar.model.exception.CalendarException;
 import com.groupware.worktech.calendar.model.service.CalendarService;
-import com.groupware.worktech.calendar.vo.Calendar;
+import com.groupware.worktech.calendar.model.vo.Calendar;
 import com.groupware.worktech.member.model.vo.Member;
 
 @Controller
@@ -39,7 +39,7 @@ public class CalendarController {
 										@RequestParam("calEndStr") String calEndStr, HttpSession session) {
 		c.setCalWriter(((Member)session.getAttribute("loginUser")).getmNo());
 		
-		// Timestamp에 넣기 위해 변환
+		// Timestamp�뿉 �꽔湲� �쐞�빐 蹂��솚
 		calStartStr = calStartStr.replace("T", " ");
 		calEndStr = calEndStr.replace("T", " ");
 		
@@ -63,7 +63,7 @@ public class CalendarController {
 		if(result > 0) {
 			return "redirect:myCal.cr";
 		} else {
-			throw new CalendarException("일정 등록에 실패하였습니다.");
+			throw new CalendarException("�씪�젙 �벑濡앹뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 	}
 

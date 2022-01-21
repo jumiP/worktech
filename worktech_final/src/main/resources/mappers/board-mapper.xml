@@ -313,19 +313,71 @@
 		<result column="B_STATUS" property="bStatus"/>
 	</resultMap>
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<select id="getZListCount" resultType="_int">
 		select count(*)
 		from board
-		where b_status = 'Y'
+		where b_status = 'N'
 	</select>
 	
 	<select id="selectZList" resultMap="noticeResultSet">
 		select * 
 		from board
-			join member on(b_writer = email)
-		where b_status='Y'
+			join member on(b_writer = m_no)
+		where b_status='N'
 		order by b_no desc
 	</select>
+	
+	<insert id="zoomInsert">
+		insert into board
+		values(seq_board.nextval, #{bTitle}, #{bContent}, SYSDATE, default, 'ZOOM', default,
+				#{bWriter}, default, default)
+	</insert>
+	
+	<select id="zoomDetail" resultMap="zoomResultSet">
+		select b_no, b_title, b_content, b_date, b_count, b_type, b_writer, name, category_no, b_status
+		from board
+			 join member on(b_writer = m_no)
+		where b_status = 'N' and b_no = #{bNo}
+	</select>
+	
+	<resultMap type="Board" id="zoomResultSet">
+		<id column="B_NO" property="bNo"/>
+		<result column="B_TITLE" property="bTitle"/>
+		<result column="B_CONTENT" property="bContent"/>
+		<result column="B_DATE" property="bDate"/>
+		<result column="B_COUNT" property="bCount"/>
+		<result column="B_TYPE" property="bType"/>
+		<result column="B_CRITICAL" property="bCritical"/>
+		<result column="B_WRITER" property="bWriter"/>
+		<result column="NAME" property="name"/>
+		<result column="CATEGORY_NO" property="categoryNo"/>
+		<result column="CATEGORY_NAME" property="categoryName"/>
+		<result column="B_STATUS" property="bStatus"/>
+	</resultMap>
+	
+	<update id="zoomDelete">
+		update board
+		set b_status = 'Y'
+		where b_no = #{bNo}
+	</update>
+
 	
 	
 	

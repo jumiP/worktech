@@ -656,12 +656,6 @@ public class BoardController {
 	
 	
 	
-	
-	// �씡紐� 寃뚯떆�뙋
-	@RequestMapping("zinsertView.bo")
-	public String insertView() {
-		return "zoomInsertForm";
-	}
 
 	
 	// 익명 게시판

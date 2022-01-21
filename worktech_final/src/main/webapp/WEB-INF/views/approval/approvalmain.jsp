@@ -73,7 +73,7 @@
 							
 								<div class="col">
 									<div class="card mb-4 rounded-3 shadow-sm">
-										<table class="table">
+										<table class="table" id="table">
 											<tbody>
 												<tr>
 													<td rowspan="2" class="col-1"><h4 class="my-0 fw-normal">${ app.appNo }</h4></td>
@@ -107,6 +107,17 @@
 
 	<script>
 		document.getElementById('addDate').value = new Date().toISOString().substring(0, 10);;
+		
+		$(function(){
+			$('#table tr td').mouseenter(function(){
+				$(this).parent().css({'color':'yellowgreen', 'font-weight':'bold', 'cursor':'pointer'});
+			}).mouseout(function(){
+				$(this).parent().css({'color':'black', 'font-weight':'normal'});
+			}).click(function(){
+				var appNo = $(this).parent().children().eq(0).text();
+				location.href="appdetail.ap?appNo=" + appNo + '&page=' + ${pi.currentPage};
+			});
+		});		
 	</script>
 </body>
 

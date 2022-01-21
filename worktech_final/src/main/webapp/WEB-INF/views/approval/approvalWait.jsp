@@ -8,11 +8,25 @@
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
 	<title>전자 결재</title>
 	<style>
+        table {
+            border-collapse: collapse;
+            background: white;
+        }
+
+        table th {
+            border-bottom: 1px solid #e3e3e3;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        table td {
+            text-align: center;
+            font-size: 15px;
+        }		
 		.section-header{
 			padding: 20px, 35px;
 			margin: -10px, -30px, 30px;
 		}
-		td{text-align: center;}
 		
 		.paging-area {
             display: flex;
@@ -58,7 +72,7 @@
                   			<div class="card-body">
                   				<div class="row">
                     				<div class="form-group col-md-6 col-12">
-                      					<label>Date Range Picker</label>
+                      					<label>작성일</label>
                       					<div class="input-group">
                         					<div class="input-group-prepend">
                           						<div class="input-group-text">
@@ -82,12 +96,21 @@
 				<div class="row">
 					<div class="col-12 col-md-12 col-lg-12">
 						<div class="card">
-						<c:forEach var="app" items="${ list }">
 							<div class="row row-cols-1 row-cols-md-3 mb-3">
 								<div class="col">
 									<div class="card mb-4 rounded-3 shadow-sm">
 										<table class="table" id="table">
+											<thead>
+                                        		<tr>
+                                            		<th class="col-1">결재 번호</th>
+                                            		<th class="col-1"></th>
+                                            		<th class="col-5">결재 작성자 / 결재 작성일</th>
+                                            		<th class="col-3">결재 작성자 / 부서명</th>
+                                            		<th class="col-3">결재 진행도</th>
+                                        		</tr>
+                                    		</thead>
 											<tbody>
+											<c:forEach var="app" items="${ list }">
 												<tr>
 													<td rowspan="2" class="col-1"><h4 class="my-0 fw-normal">${ app.appNo }</h4></td>
 													<td rowspan="2" class="col-1">
@@ -96,20 +119,27 @@
 			  												<path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
 														</svg>
 													</td>
-													<td class="col-4"><h4 class="my-0 fw-normal">${ app.appTitle }</h4></td>
+													<td class="col-5"><h4 class="my-0 fw-normal">${ app.appTitle }</h4></td>
 													<td class="col-3"> <h4 class="my-0 fw-normal">${ app.mName } ${ app.jobGrade }</h4></td>
-													<td rowspan="2" class="col-3">진행중 - 취소</td>
+													<td rowspan="2" class="col-3">
+														<c:choose>
+															<c:when test="${ app.appResult eq '0' }">대기중</c:when>
+															<c:when test="${ app.appResult eq '1' }">진행중</c:when>
+															<c:when test="${ app.appResult eq '2' }">승인</c:when>
+															<c:when test="${ app.appResult eq '3' }">반려</c:when>
+														</c:choose>
+													</td>
 												</tr>
 												<tr>
 													<td class="col-5">${ app.appDate }</td>
 													<td class="col-3">${ app.dName }</td>
 												</tr>
+											</c:forEach>
 											</tbody>
 						          		</table>
 						       		</div>					       								       		
 						      	</div>				
 							</div>						
-						</c:forEach>
 							<div class="card-body paging-area">
 								<div class="buttons">
 									<nav aria-label="Page navigation example">
@@ -191,8 +221,8 @@
                                             </ul>
                                         </nav>
                                     </div>
-                                </div>
-							</div>
+                                </div>						
+						</div>
 					</div>
 				</div>
 			</div>
@@ -202,13 +232,13 @@
 	
 	<script>
 		$(function(){
-			$('#table tr').mouseenter(function(){
+			$('#table tr td').mouseenter(function(){
 				$(this).parent().css({'color':'yellowgreen', 'font-weight':'bold', 'cursor':'pointer'});
 			}).mouseout(function(){
 				$(this).parent().css({'color':'black', 'font-weight':'normal'});
 			}).click(function(){
-				var mNo = $(this).parent().children().eq(0).text();
-				location.href="appdetail.ap?mNo=" + mNo + '&page=' + ${pi.currentPage};
+				var appNo = $(this).parent().children().eq(0).text();
+				location.href="appdetail.ap?appNo=" + appNo + '&page=' + ${pi.currentPage};
 			});
 		});
 	</script>

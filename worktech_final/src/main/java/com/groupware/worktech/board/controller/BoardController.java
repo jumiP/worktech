@@ -72,7 +72,7 @@ public class BoardController {
 			model.addAttribute("list", list);
 			model.addAttribute("category", category);
 		} else {
-			throw new BoardException("일반 게시판 전체 조회에 실패하였습니다.");
+			throw new BoardException("�씪諛� 寃뚯떆�뙋 �쟾泥� 議고쉶�뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 		
 		return "commonBoardList";
@@ -110,7 +110,7 @@ public class BoardController {
 		if(result > 0) {
 			return "redirect:commonList.bo";
 		} else {
-			throw new BoardException("게시글 등록에 실패하였습니다.");
+			throw new BoardException("寃뚯떆湲� �벑濡앹뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 		
 	}
@@ -175,7 +175,7 @@ public class BoardController {
 			model.addAttribute("searchCategory", searchCategory);
 			model.addAttribute("searchValue", searchValue);
 		} else {
-			throw new BoardException("게시글 상세 조회에 실패하였습니다.");
+			throw new BoardException("寃뚯떆湲� �긽�꽭 議고쉶�뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 		
 		return "commonBoardDetail";
@@ -201,7 +201,7 @@ public class BoardController {
 		
 		ArrayList<BoardFile> oldFileList = bService.selectCommonBoard(b.getbNo(), upd).getFileList();
 
-		// 저장되어 있는 파일 삭제
+		// ���옣�릺�뼱 �엳�뒗 �뙆�씪 �궘�젣
 		if (fNoes != null && !fNoes.isEmpty()) {
 
 			for (int i = 0; i < oldFileList.size(); i++) {
@@ -213,7 +213,7 @@ public class BoardController {
 					int result = bService.deleteNoticeFile(fNo);
 
 					if (result <= 0) {
-						throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
+						throw new BoardException("泥⑤� �뙆�씪 �궘�젣�뿉 �떎�뙣�븯���뒿�땲�떎.");
 					}
 				}
 			}
@@ -226,12 +226,12 @@ public class BoardController {
 				int result = bService.deleteNoticeFile(fNo);
 
 				if (result <= 0) {
-					throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
+					throw new BoardException("泥⑤� �뙆�씪 �궘�젣�뿉 �떎�뙣�븯���뒿�땲�떎.");
 				}
 			}
 		}
 
-		// 새로 추가한 파일 등록
+		// �깉濡� 異붽��븳 �뙆�씪 �벑濡�
 		ArrayList<BoardFile> fileList = null;
 
 		if (reloadFile != null && !reloadFile[0].getOriginalFilename().trim().equals("")) {
@@ -264,7 +264,7 @@ public class BoardController {
 		if (result >= length + 1) {
 			return "redirect:cdetail.bo?bNo=" + b.getbNo() + "&upd=Y";
 		} else {
-			throw new BoardException("게시글 수정에 실패하였습니다.");
+			throw new BoardException("寃뚯떆湲� �닔�젙�뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 	}
 	
@@ -290,7 +290,7 @@ public class BoardController {
 				int result = bService.deleteNoticeFile(fileList.get(i).getfNo());
 				
 				if(result < 0) {
-					throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
+					throw new BoardException("泥⑤� �뙆�씪 �궘�젣�뿉 �떎�뙣�븯���뒿�땲�떎.");
 				}
 			}
 		}
@@ -300,7 +300,7 @@ public class BoardController {
 		if(result > 0) {
 			return "redirect:commonList.bo";
 		} else {
-			throw new BoardException("게시글 삭제에 실패하였습니다.");
+			throw new BoardException("寃뚯떆湲� �궘�젣�뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 	}
 	
@@ -350,7 +350,7 @@ public class BoardController {
 		if(result > 0) {
 			return alarmNo;
 		} else {
-			throw new BoardException("댓글 등록에 실패하였습니다.");
+			throw new BoardException("�뙎湲� �벑濡앹뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 	}
 	
@@ -381,7 +381,7 @@ public class BoardController {
 		if(result > 0) {
 			return "success";
 		} else {
-			throw new BoardException("댓글 삭제에 실패하였습니다.");
+			throw new BoardException("�뙎湲� �궘�젣�뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 	}
 	
@@ -406,19 +406,19 @@ public class BoardController {
 		}
 	}
 	
-	// summernote 이미지 삽입
+	// summernote �씠誘몄� �궫�엯
 	@RequestMapping("uploadSummernoteImageFile")
 	@ResponseBody
 	public String SummerNoteImageFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
 		JSONObject jsonObject = new JSONObject();
 		
-		// 내부경로로 저장
+		// �궡遺�寃쎈줈濡� ���옣
 		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
 		String fileRoot = contextRoot+"resources/fileupload/";
 		
-		String originalFileName = file.getOriginalFilename();	//오리지날 파일명
-		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
-		String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
+		String originalFileName = file.getOriginalFilename();	//�삤由ъ��궇 �뙆�씪紐�
+		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//�뙆�씪 �솗�옣�옄
+		String savedFileName = UUID.randomUUID() + extension;	//���옣�맆 �뙆�씪 紐�
 		
 		File folder = new File(fileRoot);
 		
@@ -429,12 +429,12 @@ public class BoardController {
 		File targetFile = new File(fileRoot + savedFileName);	
 		try {
 			InputStream fileStream = file.getInputStream();
-			FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
-			jsonObject.put("url", "resources/fileupload/"+savedFileName); // contextroot + resources + 저장할 내부 폴더명
+			FileUtils.copyInputStreamToFile(fileStream, targetFile);	//�뙆�씪 ���옣
+			jsonObject.put("url", "resources/fileupload/"+savedFileName); // contextroot + resources + ���옣�븷 �궡遺� �뤃�뜑紐�
 			jsonObject.put("responseCode", "success");
 				
 		} catch (IOException e) {
-			FileUtils.deleteQuietly(targetFile);	//저장된 파일 삭제
+			FileUtils.deleteQuietly(targetFile);	//���옣�맂 �뙆�씪 �궘�젣
 			jsonObject.put("responseCode", "error");
 			e.printStackTrace();
 		}
@@ -442,33 +442,222 @@ public class BoardController {
 		return jsonObject.toString();
 	}
 
-	// 화상회의 게시판
-	@RequestMapping("zoom.bo")
-	public /*String*/ModelAndView zBoardList(@RequestParam(value="page", required=false) Integer page, /*Model model*/ ModelAndView mv) {	
-		
-		int currentPage = 1;
-		if(page != null) {
-			currentPage = page;
-		}
-		
-		int listCount = bService.getZListCount();
-		
-		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		
-		ArrayList<Board> list = bService.selectZList(pi);
-		
-		if(list != null) {
-			mv.addObject("pi", pi);
-			mv.addObject("list", list);
-			mv.setViewName("zoomListView");
-			
-		} else {
-			throw new BoardException("게시글 전체 조회에 실패하였습니다.");
-		}
-		
-		return mv;
-	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 화상회의 게시판
+		@RequestMapping("zoom.bo")
+	public /*String*/ModelAndView zBoardList(@RequestParam(value="page", required=false) Integer page, /*Model model*/ ModelAndView mv) {	
+			
+			int currentPage = 1;
+			if(page != null) {
+				currentPage = page;
+			}
+			
+			int listCount = bService.getZListCount();
+			
+			PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+			
+			ArrayList<Board> list = bService.selectZList(pi);
+			
+			if(list != null) {
+				mv.addObject("pi", pi);
+				mv.addObject("list", list);
+				mv.setViewName("zoomListView");
+				
+			} else {
+				throw new BoardException("게시글 전체 조회에 실패하였습니다.");
+			}
+			
+			return mv;
+		}
+		
+		@RequestMapping("zinsertView.bo")
+		public String insertView() {
+			return "zoomInsertForm";
+		}
+		
+		@RequestMapping("zinsert.bo")
+		public String zoomInsert(@ModelAttribute Board b) {
+			System.out.println("b"+b);
+			
+			int result = bService.zoomInsert(b);
+			
+			if(result>0) {
+				return "redirect:zoom.bo";
+			} else {
+				throw new BoardException("게시글 등록 실패");
+			}
+		}
+		
+		@RequestMapping("zoomdetail.bo")
+		public String zoomDetail(@RequestParam("bNo") int bNo, @RequestParam(value="page", required=false) Integer page, 
+							Model model) {
+			Board b = bService.selectZoom(bNo);
+
+			if(b != null) {
+			model.addAttribute("b", b);
+			model.addAttribute("page", page);
+			} else {
+			throw new BoardException("게시글 상세 조회에 실패하였습니다.");
+			}
+			
+			return "zoomDetail";
+			} 
+		
+		@RequestMapping("zoomDelete.bo")
+		public String zoomDelete(@RequestParam("bNo") int bNo, Model model) {
+			Board b = bService.selectZoom(bNo);
+			
+			int result = bService.zoomDelete(bNo);
+			
+			if(result > 0) {
+				return "redirect:zoom.bo";
+			} else {
+				throw new BoardException("게시글 삭제에 실패하였습니다.");
+			}
+		}
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// �씡紐� 寃뚯떆�뙋
 	@RequestMapping("zinsertView.bo")
 	public String insertView() {
 		return "zoomInsertForm";
@@ -507,7 +696,7 @@ public class BoardController {
 			model.addAttribute("list", list);
 			
 		} else {
-			throw new BoardException("익명 게시판 목록 조회에 실패하였습니다.");
+			throw new BoardException("�씡紐� 寃뚯떆�뙋 紐⑸줉 議고쉶�뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 	
 		return "anonyBoardList";
@@ -544,7 +733,7 @@ public class BoardController {
 		if(result > 0) {
 			return "redirect:anonyList.bo";
 		} else {
-			throw new BoardException("게시글 등록에 실패하였습니다.");
+			throw new BoardException("寃뚯떆湲� �벑濡앹뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 		}
 
@@ -562,7 +751,7 @@ public class BoardController {
 			model.addAttribute("searchCategory", searchCategory);
 			model.addAttribute("searchValue", searchValue);
 		} else {
-			throw new BoardException("게시글 상세 조회에 실패하였습니다.");
+			throw new BoardException("寃뚯떆湲� �긽�꽭 議고쉶�뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 		
 		return "anonyBoardDetail";
@@ -586,7 +775,7 @@ public class BoardController {
 		
 		ArrayList<BoardFile> oldFileList = bService.selectAnonyBoard(b.getbNo(), upd).getFileList();
 
-		// 저장되어 있는 파일 삭제
+		// ���옣�릺�뼱 �엳�뒗 �뙆�씪 �궘�젣
 		if (fNoes != null && !fNoes.isEmpty()) {
 
 			for (int i = 0; i < oldFileList.size(); i++) {
@@ -598,7 +787,7 @@ public class BoardController {
 					int result = bService.deleteNoticeFile(fNo);
 
 					if (result <= 0) {
-						throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
+						throw new BoardException("泥⑤� �뙆�씪 �궘�젣�뿉 �떎�뙣�븯���뒿�땲�떎.");
 					}
 				}
 			}
@@ -611,12 +800,12 @@ public class BoardController {
 				int result = bService.deleteNoticeFile(fNo);
 
 				if (result <= 0) {
-					throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
+					throw new BoardException("泥⑤� �뙆�씪 �궘�젣�뿉 �떎�뙣�븯���뒿�땲�떎.");
 				}
 			}
 		}
 
-		// 새로 추가한 파일 등록
+		// �깉濡� 異붽��븳 �뙆�씪 �벑濡�
 		ArrayList<BoardFile> fileList = null;
 
 		if (reloadFile != null && !reloadFile[0].getOriginalFilename().trim().equals("")) {
@@ -649,7 +838,7 @@ public class BoardController {
 		if (result >= length + 1) {
 			return "redirect:adetail.bo?bNo=" + b.getbNo() + "&upd=Y";
 		} else {
-			throw new BoardException("게시글 수정에 실패하였습니다.");
+			throw new BoardException("寃뚯떆湲� �닔�젙�뿉 �떎�뙣�븯���뒿�땲�떎.");
 		}
 		
 	}
@@ -665,7 +854,7 @@ public class BoardController {
 						int result = bService.deleteNoticeFile(fileList.get(i).getfNo());
 						
 						if(result < 0) {
-							throw new BoardException("첨부 파일 삭제에 실패하였습니다.");
+							throw new BoardException("泥⑤� �뙆�씪 �궘�젣�뿉 �떎�뙣�븯���뒿�땲�떎.");
 						}
 					}
 				}
@@ -675,7 +864,7 @@ public class BoardController {
 				if(result > 0) {
 					return "redirect:anonyList.bo";
 				} else {
-					throw new BoardException("게시글 삭제에 실패하였습니다.");
+					throw new BoardException("寃뚯떆湲� �궘�젣�뿉 �떎�뙣�븯���뒿�땲�떎.");
 				}
 	}
 	
@@ -688,7 +877,7 @@ public class BoardController {
 				if(result > 0) {
 					return alarmNo;
 				} else {
-					throw new BoardException("댓글 등록에 실패하였습니다.");
+					throw new BoardException("�뙎湲� �벑濡앹뿉 �떎�뙣�븯���뒿�땲�떎.");
 			}
 	
 	}

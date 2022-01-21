@@ -82,6 +82,8 @@ table {
 #searchItem {
 	margin-top: 12px;
 }
+
+td{ font-size : 11pt; }
 </style>
 
 </head>
@@ -96,7 +98,7 @@ table {
 				<div class="card">
 					<div class="card-body">
 						<div>
-							<h5>
+							<h5 style="margin-top : 10px;">
 								총 사원의 수는 <span id="count" style="color: #6ED7F9"></span>명 입니다.
 							</h5>
 						</div>

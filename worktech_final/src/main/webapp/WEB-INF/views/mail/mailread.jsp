@@ -108,33 +108,6 @@ td {
 .mailbox-read-message {
 	min-height: 400px;
 }
-
-.mailbox-read-info {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-  padding: 10px;
-}
-
-.mailbox-read-info h3 {
-  font-size: 20px;
-  margin: 0;
-}
-
-.mailbox-read-info h5 {
-  margin: 0;
-  padding: 5px 0 0;
-}
-
-.mailbox-read-info{border-bottom:1px solid rgba(0,0,0,.125);padding:10px}
-.mailbox-read-info h3{font-size:20px;margin:0}
-.mailbox-read-info h5{margin:0;padding:5px 0 0}
-.mailbox-read-time{color:#999;font-size:13px}
-.mailbox-read-message{padding:10px}
-.mailbox-attachments{padding-left:0;list-style:none}
-.mailbox-attachments li{border:1px solid #eee;float:left;margin-bottom:10px;margin-right:10px;width:200px}
-.mailbox-attachment-name{color:#666;font-weight:700}
-.mailbox-attachment-icon,.mailbox-attachment-info,.mailbox-attachment-size{display:block}
-.mailbox-attachment-info{background-color:#f8f9fa;padding:10px}
-.mailbox-attachment-size{color:#999;font-size:12px}
 </style>
 
 </head>
@@ -145,17 +118,13 @@ td {
 			<!-- Content Header (Page header) -->
 			<section class="section">
 				<div class="section-header">
-					<h1>메일읽기</h1>
+					<div class="row mb-2">
+							<h1>메일읽기</h1>
 							<div class="section-header-breadcrumb"></div>
-					
+					</div>
 				</div>
-				<div class="section-header-breadcrumb"></div>
-				</div>
-			<div class="section-body">
-				<h2 class="section-title">메일함</h2>
-				<p class="section-lead">메일 삭제, 중요메일 관리를 할 수 있습니다.</p>
-				
-		</section>
+			</section>
+
 			<!-- Main content -->
 			<section class="content">
 				<div class="container-fluid">
@@ -199,18 +168,20 @@ td {
 									<h3 class="card-title">${mail.etitle }</h3>
 
 									<div class="card-tools">
-										<div></div>
+										<a href="#" class="btn btn-tool" title="Previous"><i
+											class="fas fa-chevron-left"></i></a> <a href="#"
+											class="btn btn-tool" title="Next"><i
+											class="fas fa-chevron-right"></i></a>
 									</div>
 								</div>
 								<!-- /.card-header -->
 								<div class="card-body p-0">
 									<div class="mailbox-read-info">
-										
 										<h6>
 											보낸 사람 : &lt;${mail.senderName }&gt; ${mail.mNo}@worktech.com
-										</h6>
+											</h5>
 											<h6>
-												&nbsp;받는 사람 :
+												받는 사람 :
 												<c:if test="${mail.receiverName != null }">&lt;${mail.receiverName }&gt;</c:if>
 												${mail.receiveEmp} <span
 													class="mailbox-read-time float-right">
@@ -221,11 +192,22 @@ td {
 									<!-- /.mailbox-read-info -->
 									<div class="mailbox-controls with-border text-center">
 										<div class="btn-group">
-											<input type="hidden">
+											<button type="button" class="btn btn-default btn-sm "
+												data-container="body" title="Delete">
+												<i class="far fa-trash-alt"></i>
+											</button>
+											<button type="button" class="btn btn-default btn-sm"
+												data-container="body" title="Reply">
+												<i class="fas fa-reply"></i>
+											</button>
+											<button type="button" class="btn btn-default btn-sm"
+												data-container="body" title="Forward">
+												<i class="fas fa-share"></i>
+											</button>
 										</div>
 									</div>
 									<!-- 이메일 내용 -->
-									<div class="mailbox-read-message">${mail.econtent}</div>
+									<div class="read-content-body">${mail.econtent}</div>
 
 								</div>
 								<!-- /.card-body -->
@@ -236,9 +218,10 @@ td {
 											<c:if test="${mF.mFileNo != 0}">
 												<li><span class="mailbox-attachment-icon"><i
 														class="far fa-file-pdf"></i></span>
-														
+
 													<div class="mailbox-attachment-info">
-														<a href="${contextPath }/resources/mailUploadFiles/${mF.mChangeName}" 
+														<a 
+														href="${contextPath }/resources/mailUploadFiles/${mF.mChangeName}" 
 														download="${mF.mOriginalName }"
 														class="mailbox-attachment-name"><i
 															class="fas fa-paperclip"></i> ${mF.mOriginalName }</a> <span
@@ -259,13 +242,18 @@ td {
 								<!-- /.card-footer -->
 								<div class="card-footer">
 									<div class="float-right">
-										<input type="hidden">
+										<button type="button" class="btn btn-default">
+											<i class="fas fa-reply"></i> 답장
+										</button>
+										<button type="button" class="btn btn-default">
+											<i class="fas fa-share"></i> 전달
+										</button>
 									</div>
-									<button onclick="location.href='javascript:history.back();'" type="reset" class="btn btn-default">뒤로가기</button>
+									<button type="button" class="btn btn-default">
+										<i class="far fa-trash-alt"></i> 삭제
+									</button>
 								</div>
 								<!-- /.card-footer -->
-								
-								</div>
 							</div>
 							<!-- /.card -->
 						</div>
@@ -282,14 +270,19 @@ td {
 		
 
 
-
+	<!-- jQuery -->
+	<script src="${contextPath}/resources/plugins/jquery/jquery.min.js"></script>
 	<!-- Bootstrap 4 -->
-	<script src="resources/dist/js/bootstrap.bundle.min.js"></script>
+	<script
+		src="${contextPath}/resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<!-- AdminLTE App -->
-	<script src="resources/dist/js/adminlte.min.js"></script>
+	<script src="${contextPath}/resources/dist/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
-	<script src="resources/dist/js/demo.js"></script>
+	<script src="${contextPath}/resources/dist/js/demo.js"></script>
+	<script>
 
+	
+	</script>
 	
 </body>
 </html>

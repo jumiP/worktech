@@ -7,11 +7,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AdminLTE 3 | Calendar</title>
+<title>Calendar</title>
 <!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
 <!-- Font Awesome -->
-<link rel="stylesheet" href="resources/plugins/fontawesome-free/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
 <!-- Theme style -->
 <link rel="stylesheet" href="resources/dist/css/adminlte.min.css" />
 <!-- myFullCalendar -->
@@ -24,6 +26,9 @@
 
 
 <style>
+body {font-family: 'Do Hyeon', sans-serif;
+font-family: 'IBM Plex Sans KR', sans-serif;}
+
 /* select2 */
 .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-search.select2-search--inline .select2-search__field
 	{
@@ -124,7 +129,8 @@
 <!-- 			<!-- 			</section>
 
 			<!-- Main content -->
-			<h1 class="section-title" style="text-align:center; ">개인 캘린더</h1>
+			<br>
+			<h1 class="section-title" style="text-align:center; text-weight:bold;">개인 캘린더</h1><br>
 			<section class="section">
 			<div class="section-header">
 <!-- 				<h1>개인 캘린더</h1> -->

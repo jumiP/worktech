@@ -327,55 +327,6 @@
 		order by b_no desc
 	</select>
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	<select id="selectAnonyList" resultMap="noticeResultSet">
 		select b_no, b_title, b_content, b_date, b_count, b_type, b_writer, b_status,
 				f_no, f_url, f_name, f_rname

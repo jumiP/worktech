@@ -1,6 +1,9 @@
 package com.groupware.worktech.approval.model.vo;
 
 import java.sql.Date;
+import java.util.ArrayList;
+
+import com.groupware.worktech.board.model.vo.BoardFile;
 
 public class Approval {
 	private int appNo;
@@ -9,16 +12,21 @@ public class Approval {
 	private String appWriter;
 	private String mName;	// 기획자명
 	private String dName;	// 부서명
-	private String jobGrade;	// 직급ㅁ며
+	private String jobGrade;	// 직급명
 	private int appResult;
 	private String appDelete;
 	private Date appDate;
-	private int formNo;
+	private String appLiMember;
+	private String appLiMemberName;
+	private String appRefMember;
+	private String appRefMemberName;
+	private ArrayList<Form> fileList;
 	
 	public Approval() {}
 
 	public Approval(int appNo, String appTitle, String appContent, String appWriter, String mName, String dName,
-			String jobGrade, int appResult, String appDelete, Date appDate, int formNo) {
+			String jobGrade, int appResult, String appDelete, Date appDate, String appLiMember, String appLiMemberName,
+			String appRefMember, String appRefMemberName, ArrayList<Form> fileList) {
 		super();
 		this.appNo = appNo;
 		this.appTitle = appTitle;
@@ -30,7 +38,11 @@ public class Approval {
 		this.appResult = appResult;
 		this.appDelete = appDelete;
 		this.appDate = appDate;
-		this.formNo = formNo;
+		this.appLiMember = appLiMember;
+		this.appLiMemberName = appLiMemberName;
+		this.appRefMember = appRefMember;
+		this.appRefMemberName = appRefMemberName;
+		this.fileList = fileList;
 	}
 
 	public int getAppNo() {
@@ -113,22 +125,55 @@ public class Approval {
 		this.appDate = appDate;
 	}
 
-	public int getFormNo() {
-		return formNo;
+	public String getAppLiMember() {
+		return appLiMember;
 	}
 
-	public void setFormNo(int formNo) {
-		this.formNo = formNo;
+	public void setAppLiMember(String appLiMember) {
+		this.appLiMember = appLiMember;
+	}
+
+	public String getAppLiMemberName() {
+		return appLiMemberName;
+	}
+
+	public void setAppLiMemberName(String appLiMemberName) {
+		this.appLiMemberName = appLiMemberName;
+	}
+
+	public String getAppRefMember() {
+		return appRefMember;
+	}
+
+	public void setAppRefMember(String appRefMember) {
+		this.appRefMember = appRefMember;
+	}
+
+	public String getAppRefMemberName() {
+		return appRefMemberName;
+	}
+
+	public void setAppRefMemberName(String appRefMemberName) {
+		this.appRefMemberName = appRefMemberName;
+	}
+
+	public ArrayList<Form> getFileList() {
+		return fileList;
+	}
+
+	public void setFileList(ArrayList<Form> fileList) {
+		this.fileList = fileList;
 	}
 
 	@Override
 	public String toString() {
 		return "Approval [appNo=" + appNo + ", appTitle=" + appTitle + ", appContent=" + appContent + ", appWriter="
 				+ appWriter + ", mName=" + mName + ", dName=" + dName + ", jobGrade=" + jobGrade + ", appResult="
-				+ appResult + ", appDelete=" + appDelete + ", appDate=" + appDate + ", formNo=" + formNo + "]";
+				+ appResult + ", appDelete=" + appDelete + ", appDate=" + appDate + ", appLiMember=" + appLiMember
+				+ ", appLiMemberName=" + appLiMemberName + ", appRefMember=" + appRefMember + ", appRefMemberName="
+				+ appRefMemberName + ", fileList=" + fileList + "]";
 	}
 
-	
-	
+
 	
 }

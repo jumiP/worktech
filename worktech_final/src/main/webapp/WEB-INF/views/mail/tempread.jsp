@@ -221,33 +221,40 @@ td {
     color: #ffffff !important;
 } 
 
-
+.mailbox-read-info{border-bottom:1px solid rgba(0,0,0,.125);padding:10px}
+.mailbox-read-info h3{font-size:20px;margin:0}
+.mailbox-read-info h5{margin:0;padding:5px 0 0}
+.mailbox-read-time{color:#999;font-size:13px}
+.mailbox-read-message{padding:10px}
+.mailbox-attachments{padding-left:0;list-style:none}
+.mailbox-attachments li{border:1px solid #eee;float:left;margin-bottom:10px;margin-right:10px;width:200px}
+.mailbox-attachment-name{color:#666;font-weight:700}
+.mailbox-attachment-icon,.mailbox-attachment-info,.mailbox-attachment-size{display:block}
+.mailbox-attachment-info{background-color:#f8f9fa;padding:10px}
+.mailbox-attachment-size{color:#999;font-size:12px}
 </style>
 
 </head>
-<body class="hold-transition sidebar-mini">
-	<div class="wrapper">
+<body>
+	<div>
 		<jsp:include page="../common/headerUser.jsp"></jsp:include>
 
 		<!-- Content Wrapper. Contains page content -->
-		<div class="content-wrapper">
-			<!-- Content Header (Page header) -->
-			<section class="content-header">
-				<div class="container-fluid">
+		<div class="main-content">
+			<section class="section">
+				<div class="section-header">
 					<div class="row mb-2">
-						<div class="col-sm-6">
-							<h1>메일 보내기</h1>
+							<h1>메일 임시저장읽기</h1>
 							<div class="section-header-breadcrumb"></div>
-						</div>
 					</div>
 				</div>
-				<!-- /.container-fluid -->
-			</section>
-
-			<!-- Main content -->
-			<section class="content">
-				<div class="container-fluid">
-					<div class="row">
+			
+					
+			<div class="section-body">
+				<h2 class="section-title">메일함</h2>
+				<p class="section-lead">메일 삭제, 중요메일 관리를 할 수 있습니다.</p>
+				</section>
+						<div class="row">
 						<div class="col-md-3">
 						<div class="card">
 							<div class="card-header">
@@ -292,18 +299,15 @@ td {
 									enctype="Multipart/form-data">
 									<div class="card-body">
 										<input type="hidden" value="${loginUser.mNo}"
-											name="senderMailId" /> <input type="hidden"
-											value="${loginUser.Name}" name=senderName /> <input
-											type="hidden" value="${mail.mailNo}" name=mailNo />
+											name="senderMailId" /> 
+<%-- 											<input type="hidden" value="${loginUser.Name}" name=senderName /> --%>
+											 <input type="hidden" value="${mail.mailNo}" name=mailNo />
 
 										<div class="mailsubtitle-flex-container">
 											<div class="mailsubtitle-left">
 												<b>받는 사람</b>
 											</div>
-											<div>
-												<button type="button" class="btn btn-sm btn-primary"
-													style="background-color: #007BFF" id="chart">조직도</button>
-											</div>
+
 											<div class="form-group mailsubtitle-right">
 												<input type="email" id="email"
 												  	class="form-control mail-subtitle" placeholder="받는 이"

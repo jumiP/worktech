@@ -103,6 +103,10 @@ td {
 	display: none;
 	width: 0px;
 }
+.mailbox-controls{padding:5px}
+.mailbox-controls.with-border{border-bottom:1px solid rgba(0,0,0,.125)}
+.table-responsive{overflow:auto}.table-responsive>.table tr td,.table-responsive>
+.mailbox-messages>.table{margin:0}
 </style>
 </head>
 <body>
@@ -112,13 +116,17 @@ td {
 		<div class="main-content">
 			<section class="section">
 				<div class="section-header">
-					<div class="row mb-2">
-						<h1>보낸메일함</h1>
-						<div class="section-header-breadcrumb"></div>
-					</div>
+					<h1>보낸 메일함</h1>
+				<div class="section-header-button">
+					<a href="send.mail" class="btn btn-primary">메일 보내기</a>
 				</div>
-			</section>
-
+				<div class="section-header-breadcrumb"></div>
+				</div>
+			
+			<div class="section-body">
+				<h2 class="section-title">메일함</h2>
+				<p class="section-lead">메일 삭제, 중요메일 관리를 할 수 있습니다.</p>
+				</section>
 			<!-- Main content -->
 			<section class="content">
 				<div class="container-fluid">
@@ -149,7 +157,7 @@ td {
 									<li class="nav-item"><a href="templist.mail" class="nav-link templist">
 									<i class="far fa-file-alt mail-icon"></i> 임시보관함 </a></li>
 									<li class="nav-item"><a href="favoriteslist.mail" class="nav-link favoriteslist"> 
-									<i class="far fa-star favorites" id="favorites-icon"></i> 즐겨찾기 </a></li>
+									<i class="far fa-star favorites" id="favorites-icon"></i>&nbsp;즐겨찾기 </a></li>
 									<li class="nav-item"><a href="deletelist.mail" class="deletelist nav-link"> 
 									<i class="far fa-trash-alt mail-icon"></i> 휴지통 </a></li>
 								</ul>
@@ -186,12 +194,6 @@ td {
 										<div class="btn-group">
 											<button type="button" class="btn btn-default btn-sm deleteMailBtn">
 												<i class="far fa-trash-alt"></i>
-											</button>
-											<button type="button" class="btn btn-default btn-sm">
-												<i class="fas fa-reply"></i>
-											</button>
-											<button type="button" class="btn btn-default btn-sm">
-												<i class="fas fa-share"></i>
 											</button>
 										</div>
 										<!-- /.btn-group -->

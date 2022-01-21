@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.groupware.worktech.calendar.model.exception.CalendarException;
 import com.groupware.worktech.calendar.model.service.CalendarService;
-import com.groupware.worktech.calendar.vo.Calendar;
+import com.groupware.worktech.calendar.model.vo.Calendar;
 import com.groupware.worktech.member.model.vo.Member;
 
 @Controller

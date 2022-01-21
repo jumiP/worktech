@@ -30,7 +30,7 @@
 				<h1>사원 정보 확인</h1>
 				<div class="section-header-breadcrumb">
 					<div class="breadcrumb-item active">
-						<a href="mList.me">사원관리</a>
+						<a href="#">사원관리</a>
 					</div>
 					<div class="breadcrumb-item">사원 정보 확인</div>
 				</div>
@@ -101,7 +101,7 @@
 				                  <div class="card-footer text-right">
 <!-- 				                    <button class="btn btn-primary mr-1" type="button" id="updatePwd">비밀정보 변경</button> -->
 				                    <button class="btn btn-primary mr-1" type="submit" >사원 정보 변경</button>
-				                    <button class="btn btn-danger" type="button" id="delete">사원 삭제</button>&nbsp;
+				                    <button class="btn btn-secondary" type="button" id="delete">사원 삭제</button>
 				                  	<button class="btn btn-secondary" type="button" onclick="location.href='mList.me'">목록으로 돌아가기</button>
 				                  </div>
 								</form>					

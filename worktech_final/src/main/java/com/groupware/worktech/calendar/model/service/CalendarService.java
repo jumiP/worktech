@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.groupware.worktech.calendar.model.dao.CalendarDAO;
-import com.groupware.worktech.calendar.vo.Calendar;
+import com.groupware.worktech.calendar.model.vo.Calendar;
 
 @Service("calService")
 public class CalendarService {

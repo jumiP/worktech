@@ -230,7 +230,7 @@
 		$('#pAdbookTable tbody td:not(:first-child)').on('click', function(){
 			var adNo = $(this).parent().children().eq(0).children().eq(0).val();
 			
-			open('pAdbookUpdateView.ab?adNo=' + adNo, '개인 주소록 수정', 'width=600px, height=650px, top=50px, left=400px');
+			open('pAdbookDetail.ab?adNo=' + adNo, '개인 주소록 상세', 'width=600px, height=650px, top=50px, left=400px');
 		});
 		
 		// 개인 주소록 삭제

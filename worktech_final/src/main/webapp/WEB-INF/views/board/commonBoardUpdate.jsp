@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>일반 게시판 수정</title>
+    <title>공지사항 게시판 수정</title>
     
 	<!-- CSS Libraries -->
 	<link rel="stylesheet" href="resources/dist/assets/modules/summernote/summernote-bs4.css">
@@ -103,7 +103,7 @@
                 <h1>일반 게시판</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item">게시판</div>
-                    <div class="breadcrumb-item active"><a href="commonList.bo">일반 게시판</a></div>
+                    <div class="breadcrumb-item active"><a href="noticeList.ad">일반 게시판</a></div>
                 </div>
             </div>
 
@@ -123,6 +123,7 @@
 	                            	<div class="form-group">
 		                            	<label>카테고리&nbsp;&nbsp;</label>
 		                            	<select class="select" name="categoryNo">
+		                            		
 		                            		<option value=100 <c:if test="${ b.categoryNo == 100 }">selected</c:if>>회의</option>
 		                            		<option value=200 <c:if test="${ b.categoryNo == 200 }">selected</c:if>>출장</option>
 		                            		<option value=300 <c:if test="${ b.categoryNo == 300 }">selected</c:if>>홍보</option>

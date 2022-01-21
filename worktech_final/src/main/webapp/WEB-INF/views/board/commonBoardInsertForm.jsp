@@ -97,7 +97,7 @@
 
             <div class="section-body">
                 <h2 class="section-title">일반 게시판 등록</h2>
-                <form action="cinsert.bo" method="post" enctype="Multipart/form-data" onsubmit="return checkCategory()">
+                <form action="cinsert.bo" method="post" enctype="Multipart/form-data">
 	                <div class="row">
 	                    <div class="col-12 col-md-12 col-lg-12">
 	                        <div class="card">
@@ -105,7 +105,6 @@
 	                            	<div class="form-group">
 		                            	<label>카테고리&nbsp;&nbsp;</label>
 		                            	<select class="select" name="categoryNo">
-		                            		<option selected disabled>선택</option>
 		                            		<option value=100>회의</option>
 		                            		<option value=200>출장</option>
 		                            		<option value=300>홍보</option>
@@ -178,7 +177,7 @@
 
             var files = e.target.files;
             var fileArr = Array.prototype.slice.call(files);
-            
+
             fileArr.forEach(function (f) {
                 if (files.length < 4) {
                     sel_files.push(f);
@@ -201,19 +200,7 @@
             })
             if (files.length > 4) {
                 alert("파일은 최대 3개까지 업로드 가능합니다.");
-                console.log('check');
             }
-        }
-        
-        function checkCategory() {
-        	var category = $('select[name=categoryNo]').val();
-        	
-        	if(category == null){
-        		alert('카테고리를 선택하세요');
-        		return false;
-        	} else {
-        		return true;
-        	}
         }
         
     </script>

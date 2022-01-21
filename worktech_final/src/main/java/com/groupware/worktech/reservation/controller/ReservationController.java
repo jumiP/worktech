@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -316,11 +315,9 @@ public class ReservationController {
 	}
 	
 	@RequestMapping("myOrvList.rv")
-	public String otherReservationListView(Model model, HttpSession session) {
+	public String otherReservationListView(Model model) {
 		
-		String rvMember = ((Member)session.getAttribute("loginUser")).getmNo();
-		
-		ArrayList<Reservation> list = rvService.selectMyOrvList(rvMember);
+		ArrayList<Reservation> list = rvService.selectMyOrvList();
 		
 		if(list != null) {
 			model.addAttribute("list", list);
@@ -364,16 +361,6 @@ public class ReservationController {
 			throw new RvException("나의 예약 목록 신청 취소에 실패하였습니다.");
 		}
 		
-	} 
-	
-	@Scheduled(cron="0/10 * * * * *")
-	public void updateMyOtherReservation() {
-	
-		int result = rvService.updateMyOtherReservation();
-		
-		if(result > 0) {
-			System.out.println("들어왔나요?");
-		}
 	}
 	
 }

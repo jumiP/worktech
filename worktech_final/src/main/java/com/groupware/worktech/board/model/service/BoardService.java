@@ -307,6 +307,18 @@ public class BoardService {
 	public ArrayList<Board> selectZList(PageInfo pi) {
 		return bDAO.selectZList(sqlSession, pi);
 	}
+
+	public int zoomInsert(Board b) {
+		return bDAO.zoomInsert(sqlSession, b);
+	}
+
+	public Board selectZoom(int bNo) {
+		return bDAO.selectZoom(sqlSession, bNo);
+	}
+
+	public int zoomDelete(int bNo) {
+		return bDAO.zoomDelete(sqlSession, bNo);
+	}
 		
 	
 	
@@ -321,143 +333,6 @@ public class BoardService {
 
 	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 익명 게시판
-	
-	public ArrayList<Board> selectAnonyList(PageInfo pi) {
-		return bDAO.selectAnonyList(pi, sqlSession);
-	}
-
-	@Transactional
-	public int insertAnonyBoard(Board b) {
-		int result = bDAO.insertAnony(sqlSession, b);
-		
-		if(result > 0 && !b.getFileList().isEmpty()) {
-			for(int i = 0; i < b.getFileList().size(); i++) {
-				result += bDAO.insertNoticeFile(sqlSession, b.getFileList().get(i));
-			}
-		}
-		return result;
-
-	}
-
-	@Transactional
-	public Board selectAnonyBoard(int bNo, String upd) {
-		Board b = null;
-		
-		if(upd != null && upd.equals("Y")) {
-			b = bDAO.selectAnonyBoard(sqlSession, bNo);
-		} else {
-			int result = bDAO.addReadCount(sqlSession, bNo);
-			
-			if(result > 0) {
-				b = bDAO.selectAnonyBoard(sqlSession, bNo);
-			} 
-			
-		}
-		
-		return b;
-	}
-
-	public int updateAnonyBoard(Board b) {
-		int result = bDAO.updateAnonyBoard(sqlSession, b);
-		
-		if(result > 0 && b.getFileList() != null) {
-			for(int i = 0; i < b.getFileList().size(); i++) {
-				result += bDAO.updateNoticeFile(sqlSession, b.getFileList().get(i));
-			}
-		}
-			
-		return result;
-	}
-
-	public int deleteAnony(int bNo) {
-		return bDAO.deleteAnony(bNo, sqlSession);
-	}
-
-	public int insertAnonyReply(Reply r) {
-		return bDAO.insertAnonyReply(r, sqlSession);
-	}
-
-	public int getAnonySearchListCount(HashMap<String, Object> searchCountMap) {
-		return bDAO.getAnonySearchListCount(sqlSession, searchCountMap);
-	}
-
-	public ArrayList<Board> selectAnonySearchList(HashMap<String, Object> searchListMap) {
-		return bDAO.selectAnonySearchList(sqlSession, searchListMap);
-	}
-
-	
-
-	
 	
 
 

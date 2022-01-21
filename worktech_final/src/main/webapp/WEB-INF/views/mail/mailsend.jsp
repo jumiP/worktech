@@ -221,8 +221,7 @@
 								<i class="far fa-envelope"></i> 보내기
 							</button>
 						</div>
-						<button onclick="location.href='javascript:history.back();'"
-							type="reset" class="btn btn-default">
+						<button onclick="location.href='javascript:history.back();'" type="reset" class="btn btn-default">
 							<i class="fas fa-times"></i> 취소
 						</button>
 					</div>

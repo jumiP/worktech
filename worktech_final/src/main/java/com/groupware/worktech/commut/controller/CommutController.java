@@ -1,9 +1,5 @@
 package com.groupware.worktech.commut.controller;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,17 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.groupware.worktech.commut.model.exception.CommutException;
 import com.groupware.worktech.commut.model.service.CommutService;
-import com.groupware.worktech.commut.model.vo.Commut;
 import com.groupware.worktech.commut.model.vo.QRCode;
 import com.groupware.worktech.commut.qrutil.QrUtil;
 import com.groupware.worktech.member.model.vo.Member;
 
-@SessionAttributes("co")
+@SessionAttributes("qr")
 @Controller
 public class CommutController {
 	
@@ -89,52 +83,12 @@ public class CommutController {
 		return "qrcode";
 	}
 	
-	@RequestMapping("gowork.co")
-	public String goWork(@RequestParam("mNo") String mNo, Model model) {
+	@RequestMapping("goWork.co")
+	public String goWork() {
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-		String today = sdf.format(new Date(System.currentTimeMillis()));
-
-			Timestamp goWork = Timestamp.valueOf(today);
-			
-			Commut c = new Commut(0, null, goWork, mNo);
-			
-			int result = coService.insertGoWork(c);
-
-			if(result > 0) {
-				Commut co = coService.selectGowork(mNo);
-				System.out.println(co);
-				model.addAttribute("co", co);
-				return "redirect:home.do";
-			} else {
-				throw new CommutException("출근 기록에 실패하였습니다.");
-			}
-
+		System.out.println("여기에 들어왔나요?");
 		
-	}
-	
-	@RequestMapping("leavework.co")
-	public String leaveWork(HttpServletRequest request, HttpSession session, Model model) {
-		
-		String mNo = ((Member)session.getAttribute("loginUser")).getmNo();
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-		String today = sdf.format(new Date(System.currentTimeMillis()));
-
-			Timestamp leaveWork = Timestamp.valueOf(today);
-			
-			Commut c = new Commut(leaveWork, mNo);
-			
-			int result = coService.updateLeaveWork(c);
-			
-			if(result > 0) {
-				Commut co = coService.selectGowork(mNo);
-				model.addAttribute("co", co);
-				return "redirect:home.do";	
-			} else {
-				throw new CommutException("퇴근 기록에 실패하였습니다.");
-			}
-			
+		return "redirect:home.do";
 	}
 		
 }

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>화상 글쓰기</title>
+<title>화상게시판 작성</title>
 <!-- CSS Libraries -->
 	<link rel="stylesheet" href="../../resources/dist/assets/modules/summernote/summernote-bs4.css">
 	<link rel="stylesheet" href="../../../resources/dist/assets/modules/codemirror/lib/codemirror.css">
@@ -84,12 +84,12 @@
           <div class="section-header">
             <h1>화상회의</h1>
           </div>
-
+		<form action="zinsert.bo" method="post">
           <div class="section-body">
          <div class="section-body">
         <div class="row">
         <div class="col-12 col-md-12 col-lg-12">
-                <div class="card" >
+               <div class="card" >
                   <div class="card-header">
                     <h4>ZOOM 알림 게시판</h4>
                   </div>
@@ -100,25 +100,36 @@
 	              </div>
 	              <div class="form-group half-col left-item">
 	              <label>작성자</label>
-	              <input type="text" class="form-control" disabled value="${ loginUser.name }">
-	              <input type="hidden" name="bWriter" value="000000">
+	              <input type="text" class="form-control"  value="${ loginUser.name }">
+	              <input type="hidden"  name="bWriter" value="${ loginUser.mNo }">
 	              </div>
+	               <div class="form-group half-col">
+	                  <label>작성일</label>
+	                <input type="date" class="form-control" name="bDate">
+	               </div>
 	             <div class="form-group">
                       <label>내용</label>
-                      <textarea class="form-control"></textarea>
+                      <textarea class="form-control" name="bContent">
+                      Zoom 회의 참가
+						https://zoom.us/j/97612342222?pwd=NUFDVFVKRWN1eW41OU5wN1E2bURrZz09
+						
+						회의 ID: 976 1234 2222
+						암호: worktech
+                      </textarea>
                     </div>
                     <div class="card-footer text-right">
                     <button class="btn btn-primary mr-1" type="submit">등록</button>
                     <button class="btn btn-secondary" type="reset">취소</button>
                   </div>
                   </div>
-                </div>
-              </div>
-        </div>
-        </div>
-        </div>
-        </section>
-        </div>
+				</div>
+				</div>
+				</div>
+				</div>
+				</div>
+			</form>
+				</section>
+				</div>
         
         
         <!-- JS Libraies -->

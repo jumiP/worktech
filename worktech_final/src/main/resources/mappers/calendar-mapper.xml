@@ -1,8 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="calendarMapper">
-	<insert id="insertPCalendar">
+
+	<insert id="insertCal" parameterType="Calendar">
 		insert into calendar
-		values(SEQ_CAL.NEXTVAL, 0, #{calStart}, #{calEnd}, #{calTitle}, #{calContent}, #{calWriter}, DEFAULT)
+		values(seq_cal.nextval, #{cal_start}, #{cal_end}, #{cal_end}, #{cal_title},
+		#{cal_content}, #{cal_writer})
 	</insert>
+	
+	<select id="calBoardList" parameterType="Map" resultType="Calendar">
+		select cal_no, cal_start, cal_end, cal_title, cal_content, cal_writer
+		from calendar
+		where cal_writer=#{cal_writer} and substr(cal_start,1,8)=#{yyyyMMdd}
+		order by desc
+	</select>
+	
+	<select id="calDetail" parameterType="_int" resultType="Calendar">
+		select cal_no, cal_start, cal_end, cal_title, cal_content, cal_writer
+		from calendar
+		where cal_no=#{cal_no}
+	</select>
+	
+	<update id="calUpdate" parameterType="Calendar">
+		update calendar set
+		cal_title=#{cal_title}, cal_content=#{cal_content},
+		cal_start=#{cal_start}, cal_end=#{cal_end},
+		where cal_no=#{cal_no}
+	</update>
+	
+	<delete id="calMuldel" parameterType="Map">
+		delete from calendar
+		where cal_no in
+		<foreach collection="calNo" item="cal_no" open="(" close=")" separator=",">
+			#{cal_no}
+		</foreach>
+	</delete>
+	
+	<select id="calCount" parameterType="Map" resultType="int">
+		select count(*)
+		from calendar
+		where cal_no=#{cal_no} and substr(cal_start,1,8)=#{yyyyMMdd}
+	</select>
 </mapper>

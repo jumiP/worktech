@@ -7,11 +7,6 @@
 <script src="resources/js/jquery-3.6.0.min.js"></script>
 <title>예약 자원 목록</title>
 
-	<link rel="stylesheet" href="resources/dist/assets/modules/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="resources/dist/assets/modules/fontawesome/css/all.min.css">
-	<link rel="stylesheet" href="resources/dist/assets/css/style.css">
-	<link rel="stylesheet" href="resources/dist/assets/css/components.css">
-
     <!-- General CSS Files -->
     <link rel="stylesheet" href="assets/modules/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/modules/fontawesome/css/all.min.css">
@@ -157,10 +152,10 @@
                                             			<td name="pdName" id="pdName" value="${ o.pdName }">${ o.pdName }</td>
                                             			<td>
 															<c:if test="${ o.pdCount > 0 }">
-                                            					<button class="btn btn-primary mr-1" id="${ o.pdNo }" onclick="rvPopup(this.id)">예약 가능</button>
+                                            					<button class="perso" id="${ o.pdNo }" onclick="rvPopup(this.id)">예약 가능</button>
                                             				</c:if>
                                             				<c:if test="${ o.pdCount eq 0}">
-                                            					<button class="btn btn-primary mr-1" disabled>예약 불가</button>
+                                            					<button class="perso" disabled>예약 불가</button>
                                             				</c:if> 
                                             			</td>
                                             		</tr>

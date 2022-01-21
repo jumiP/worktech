@@ -18,11 +18,11 @@
 
 
 <link rel="stylesheet"
-	href="${contextPath}/resources/dist/assets/modules/summernote/summernote-bs4.css">
+	href="resources/dist/assets/modules/summernote/summernote-bs4.css">
 <link rel="stylesheet"
-	href="${contextPath}/resources/dist/assets/modules/jquery-selectric/selectric.css">
+	href="resources/dist/assets/modules/jquery-selectric/selectric.css">
 <link rel="stylesheet"
-	href="${contextPath}/resources/dist/assets/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
+	href="resources/dist/assets/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
 
 <script async="async"
 	src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
@@ -127,6 +127,13 @@ td {
 .table td:nth-child(4) {
 	font-size: 14px;
 }
+.mailbox-controls{padding:5px}
+.mailbox-controls.with-border{border-bottom:1px solid rgba(0,0,0,.125)}
+.table-responsive{overflow:auto}.table-responsive>.table tr td,.table-responsive>
+.mailbox-messages>.table{margin:0}
+.card-tools{margin:.3rem .5rem}
+.card-tools{float:right;margin-right:-.625rem}
+
 </style>
 </head>
 <body>
@@ -172,7 +179,7 @@ td {
 									<li class="nav-item"><a href="templist.mail" class="nav-link templist">
 									<i class="far fa-file-alt mail-icon"></i> 임시보관함 </a></li>
 									<li class="nav-item"><a href="favoriteslist.mail" class="nav-link favoriteslist"> 
-									<i class="far fa-star favorites" id="favorites-icon"></i> 즐겨찾기 </a></li>
+									<i class="far fa-star favorites" id="favorites-icon"></i> &nbsp;즐겨찾기 </a></li>
 									<li class="nav-item"><a href="deletelist.mail" class="deletelist nav-link"> 
 									<i class="far fa-trash-alt mail-icon"></i> 휴지통 </a></li>
 								</ul>
@@ -463,13 +470,13 @@ td {
 	<jsp:include page="../common/footer.jsp"></jsp:include>
 
 	<script
-		src="${contextPath}/resources/dist/assets/modules/summernote/summernote-bs4.js"></script>
+		src="resources/dist/assets/modules/summernote/summernote-bs4.js"></script>
 	<script
-		src="${contextPath}/resources/dist/assets/modules/jquery-selectric/jquery.selectric.min.js"></script>
+		src="resources/dist/assets/modules/jquery-selectric/jquery.selectric.min.js"></script>
 	<script
-		src="${contextPath}/resources/dist/assets/modules/upload-preview/assets/js/jquery.uploadPreview.min.js"></script>
+		src="resources/dist/assets/modules/upload-preview/assets/js/jquery.uploadPreview.min.js"></script>
 	<script
-		src="${contextPath}/resources/dist/assets/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+		src="resources/dist/assets/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 
 	<!-- Page Specific JS File -->
 	<script

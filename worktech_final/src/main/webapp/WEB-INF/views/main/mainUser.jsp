@@ -1,10 +1,6 @@
-
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -190,7 +186,7 @@
                      <table id="comTable" style="width: 100%; text-align: center; border: none;">
                         <tr>
                            <td style="width: 30%;"><h5 style="display: inline-block">근태 관리</h5></td>
-                           <td style="width: 50%;" id="nowTime"></td>
+                           <td style="width: 50%;">0시간 0분</td>
                            <td>
 	                           <c:if test="${ empty qr || qr.file_name eq null }">
 	                              <button class="btn btn-warning btn-sm comBtn" onclick="createQR()">QR코드 생성</button>
@@ -201,42 +197,14 @@
                            </td>
                         </tr>
                         <tr>
-                            <td>출근 시간</td>
-                           <c:set var="today" value="<%= new java.util.Date() %>"/>
-                           <fmt:formatDate value="${ today }" pattern="yyyy-MM-dd" var="nowDate"/>
-                           <fmt:formatDate value="${ today }" pattern="HH:mm" var="nowTime"/>
-                           <c:if test="${ empty co.goWork }">    
-                          		<td id="test1">
-                          	 	</td> 
-                          	 	<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="gowork()">출근하기</button></td>
-                           </c:if>
-                          	<c:if test="${ !empty co.goWork }">             
-                          		 <td id="gowork">
-                          	 		<fmt:formatDate value="${ co.goWork }" pattern="HH:mm"/>
-                          	 	</td> 
-                          	 	<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="gowork()" disabled>출근하기</button></td>
-                          	 </c:if>
+                           <td>출근 시간</td>      
+                           <td><div id="test1" name="goWork"></div></td>                     
+                           <td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="gowork()">출근하기</button></td>
                         </tr>
                         <tr>
                            <td>퇴근 시간</td>
-                         	  	<c:if test="${ empty co.leaveWork }">
-                         	  		<c:choose>
-                         	  			<c:when test= "${ empty co.goWork }">
-	                         	  			<td id="test2">
-	                          	 			<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="leavework1()">퇴근하기</button></td>
-                         	  			</c:when>
-                         	  			<c:when test= "${ !empty co.goWork }">
-	                         	  			<td id="test2">
-	                          	 			<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="leavework2()">퇴근하기</button></td>
-                         	  			</c:when>
-                         	  		</c:choose>
-                          	 	</c:if>
-                          	 	<c:if test="${ !empty co.leaveWork }">
-                          	 	 <td id="leavework">
-                          	 			<fmt:formatDate value="${ co.leaveWork }" pattern="HH:mm"/>
-                          	 		<td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="leavework()" disabled>퇴근하기</button></td>
-                          	 	</td>
-                          	 	</c:if>
+                           <td><div id="test2" name="leaveWork"></div></td>
+                           <td style="text-align: right;"><button class="btn btn-primary btn-sm comBtn" onclick="location.href='leavework.co'">퇴근하기</button></td>
                         </tr>
                      </table>
                   </div>
@@ -530,33 +498,17 @@
     <script src="resources/dist/assets/vendors/js/vendor.bundle.base.js"></script>
     
         <script>
-	       function nowTime(){
-	    	   var today = new Date();
-		 		var nowTime = document.getElementById('nowTime');
-		 		var gowork = '${ co.goWork }';
-		 		var h = today.getHours(); // date의 시 추출
-		 		var m = today.getMinutes(); //date의 분 추출
-				var goworkh = gowork.substring(11, 13); //출근 시간의 시 추출
-				var goworkm = gowork.substring(14, 16); // 출근 시간의 분 추출
-		 		
-				
-				// 추출한 숫자 Number 타입으로 변환
-		 		h = Number(h); 
-		 		m = Number(m);
-		 		goworkh = Number(goworkh);
-		 		goworkm = Number(goworkm);
-		 		
-		 		gh = h-goworkh;
-		 		gm = m-goworkm;
-
-		 		nowTime.innerHTML = gh+"시간"+"&nbsp;"+"&nbsp;"+gm+"분";
-		 		
-		 		setTimeout('nowTime()', 1000); // 1초마다 페이지 로드
+       function nowTime(){
+          var today = new Date();
+          var h = today.getHours(); // date의 시 추출
+          var m = today.getMinutes(); //date의 분 추출
+          h = dasi(h);
+          m = dasi(m);
+          
+          document.getElementById('test1').innerHTML = h+":"+m;
+          document.getElementById('test2').innerHTML = h+":"+m;
+          var t = setTimeout(function(){nowTime()},1000); // 1초마다 페이지 로드
        }
-	       
-	       window.onload = function(){
-		 		nowTime();
-		 	};
        
        function dasi(i){
           if(i < 10) {
@@ -584,19 +536,6 @@
        		var qrURL = window.open('qrcode.co', 'goToWork', 'width=500px,height=500px,scrollbars=yes');
 //        		location.href='qrcode.co';
 		}
-       	
-       	function leavework1() {
-       		alert("금일 출근 기록이 없습니다.");
-		}
-       	
-       	function leavework2() {
-       		var bool = confirm('정말 퇴근하시겠습니까?');
-       		
-       		if(bool){
-       			location.href='leavework.co';
-       		}
-		}
-       	
     </script>
 
 

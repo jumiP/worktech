@@ -118,8 +118,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>작성 내용</label>
-                                    <div class="summernote">
-                                    	${ b.bContent }
+                                    <div class="inputData">
+                                    	<c:out value="${ b.bContent }" escapeXml="false" />
                                     </div>
                                 </div>
                             <div class="form-group">
@@ -159,9 +159,7 @@
 								
 								<c:if test="${ null eq searchCategory }">
 									<c:url var="clist" value="commonList.bo">
-										<c:if test="${ page ne null }">
-											<c:param name="page" value="${ page }"/>
-										</c:if>
+										<c:param name="page" value="${ page }"/>
 										<c:if test="${ category ne null }">
 											<c:param name="category" value="${ category }"/>
 										</c:if>
@@ -169,9 +167,7 @@
 								</c:if>
 								<c:if test="${ null ne searchCategory }">
 									<c:url var="clist" value="searchCommon.bo">
-										<c:if test="${ page ne null }">
-											<c:param name="page" value="${ page }"/>
-										</c:if>
+										<c:param name="page" value="${ page }"/>
 										<c:if test="${ category ne null }">
 											<c:param name="category" value="${ category }"/>
 										</c:if>
@@ -197,7 +193,7 @@
         </section>
     </div>
     <c:import url="../common/footer.jsp" />
-    <script src="resources/dist/assets/modules/summernote/summernote-detail.js"></script>
+    <script src="resources/dist/assets/modules/summernote/summernote-bs4.js"></script>
     <script src="resources/dist/assets/modules/codemirror/lib/codemirror.js"></script>
     <script src="resources/dist/assets/modules/codemirror/mode/javascript/javascript.js"></script>
     <script src="resources/dist/assets/modules/jquery-selectric/jquery.selectric.min.js"></script>

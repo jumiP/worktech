@@ -53,16 +53,9 @@
 													<fmt:formatDate value="${ rv.rvStartTime }" pattern="HH:mm"/>~
 													<fmt:formatDate value="${ rv.rvEndTime }" pattern="HH:mm"/>
 													</td>
-													<c:if test="${ rv.rvStatus eq 'N' }">
-														<td style="font-size: 13px;">예약 중
-															<button class="btn btn-primary mr-1" style="margin-left: 20px;" id="${ rv.rvNo }" onclick="popup(this.id)">상세 보기</button>
-														</td>
-													</c:if>
-													<c:if test="${ rv.rvStatus eq 'Y' }">
-														<td style="font-size: 13px;">반납 완료
-															<button class="btn btn-primary mr-1" style="margin-left: 20px;" id="${ rv.rvNo }" onclick="popup(this.id)">상세 보기</button>
-														</td>
-													</c:if>
+													<td style="font-size: 13px;">예약 중
+														<button class="btn btn-primary mr-1" style="margin-left: 20px;" id="${ rv.rvNo }" onclick="popup(this.id)">상세 보기</button>
+													</td>
 												</tr>
 											</c:forEach>
                                         </table>
@@ -81,7 +74,12 @@
             </div>
     <c:import url="../common/footer.jsp" />
     <script>
+       var startTime = document.getElementById('startTime').value;
+       var endTime =  document.getElementById('endTime').value;
        
+       console.log(startTime);
+       console.log('오왜아찍혀');
+    
             function popup(rvNo){	
             	window.open('myOrvDetail.rv?rvNo=' + rvNo, '자원 예약 폼', 'width=500px,height=570px,scrollbars=yes');       
         	}

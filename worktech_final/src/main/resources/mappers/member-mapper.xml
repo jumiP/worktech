@@ -94,7 +94,7 @@
 			select count(*)
 			from member
 			    join department using(d_no)
-			where m_status='Y' and m_grade='USER'
+			where m_status='Y'
 	 		<if test="condition == 'name'"> 
 		 		and name like '%' || #{value} || '%'
 		 	</if>
@@ -112,7 +112,7 @@
 				d_no, d_name, m_hired, m_status
 		from member
 		    join department using (d_no)
-		where m_status='Y' and m_grade='USER'
+		where m_status='Y'
 		 		<choose>
 		 			<when test="condition == 'name'">
 		 				and name like '%' || #{value} || '%'

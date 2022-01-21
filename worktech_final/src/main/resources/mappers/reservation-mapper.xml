@@ -112,12 +112,14 @@
 		where pd_no=#{rvpNo}
 	</update>
 	
-	<select id="selectMyOrvList" resultMap="myOrvResultSet">
+		<select id="selectMyOrvList" resultMap="myOrvResultSet">
 		select rv_no, rv_type, rvp_no, rv_name, rv_date, rv_start_time, 
 				rv_end_time, rv_usage, rv_member, rv_status, pd_category as rv_category
 		from reservation
 			 join rv_product on(rvp_no = pd_no)
-		where rv_status = 'N' and rv_type = 'ETC'
+		where rv_type = 'ETC' and rv_member=#{rvMember}
+			  and rv_date >= to_char(sysdate-7, 'yymmdd')
+		order by rv_status 
 	</select>
 	
 	<resultMap type="Reservation" id="myOrvResultSet">
@@ -151,6 +153,12 @@
 		update rv_product
 		set pd_count = pd_count+#{rvCount}
 		where pd_no=#{rvpNo}
+	</update>
+	
+	<update id="updateMyOtherReservation">
+		update reservation
+		set rv_status = 'Y'
+		where to_char(rv_end_time, 'YY-MM-DD HH24:MI') = to_char(sysdate, 'YY-MM-DD HH24:MI')
 	</update>
 	
 </mapper>

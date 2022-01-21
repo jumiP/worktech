@@ -39,8 +39,10 @@
 				<div class="row">
 					<div class="col-12 col-md-12 col-lg-12">
 						<div class="card">
+<!-- 							<div class="card-header"> -->
+<!--                                 <h4 style="font-size: 20px;">부서 등록</h4> -->
+<!--                             </div> -->
 							<div class="card-body">
-							    
 								<form action="dInsert.ad" method="post" id="insertDepForm">
 				                    
 				                    <div class="form-group">
@@ -70,7 +72,7 @@
 				                  <div class="card-footer text-right">
 <!-- 				                    <button class="btn btn-primary mr-1" type="submit">등록</button> -->
 				                    <button class="btn btn-primary mr-1" onclick="return validate();">등록</button>
-				                    <button class="btn btn-secondary" type="reset">취소</button>
+				                    <button class="btn btn-danger" type="reset">취소</button>
 				                  </div>
 								
 								</form>

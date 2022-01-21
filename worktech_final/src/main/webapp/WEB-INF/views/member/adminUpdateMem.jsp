@@ -117,7 +117,7 @@
 				                  
 				                  <div class="card-footer text-right">
 				                    <button class="btn btn-primary mr-1" type="submit">수정하기</button>
-				                    <button class="btn btn-secondary" onclick="location.href='${mdetail.me}'">취소</button>
+				                    <button class="btn btn-danger" onclick="location.href='${mdetail.me}'">취소</button>
 				                  </div>
 								
 								</form>
